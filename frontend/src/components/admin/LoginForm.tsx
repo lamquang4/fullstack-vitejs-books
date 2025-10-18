@@ -1,0 +1,110 @@
+import Image from "../Image";
+import { useState } from "react";
+
+import { HiOutlineEyeOff, HiOutlineEye } from "react-icons/hi";
+function LoginForm() {
+  const [data, setData] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const toggleShowPassword = () => {
+    setShowPassword((prev) => !prev);
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+  };
+
+  return (
+    <>
+      <section className="bg-[#F1F4F9] w-full">
+        <div className="flex justify-center items-center h-screen sm:px-[15px] px-[10px]">
+          <div className="relative bg-white rounded-lg shadow-md border border-gray-300 max-w-[850px] w-full h-[500px]">
+            <div className="h-full grid grid-cols-1 sm:grid-cols-2 items-center">
+              <div className="w-full px-4 sm:px-8 bg-white">
+                <h1 className="relative text-center uppercase mb-6">Login</h1>
+
+                <form className="space-y-[15px]" onSubmit={handleSubmit}>
+                  <div className="space-y-[5px]">
+                    <label
+                      htmlFor=""
+                      className="block text-[0.9rem] font-medium"
+                    >
+                      Email <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="email"
+                      value={data.email}
+                      onChange={handleChange}
+                      className="text-[0.9rem] block w-full px-3 py-2 outline-none border border-gray-300 focus:border-[#0AB39C] focus:text-[#0AB39C]"
+                      placeholder="Enter email"
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-[5px]">
+                    <label
+                      htmlFor=""
+                      className="block text-[0.9rem] font-medium"
+                    >
+                      Password <span className="text-red-500">*</span>
+                    </label>
+
+                    <div className="relative">
+                      <input
+                        type={!showPassword ? "password" : "text"}
+                        name="password"
+                        value={data.password}
+                        onChange={handleChange}
+                        placeholder="Enter password"
+                        className="text-[0.9rem] block w-full px-3 pr-12 py-2 outline-none border border-gray-300 focus:border-[#0AB39C] focus:text-[#0AB39C]"
+                        required
+                      />
+
+                      <button
+                        type="button"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+                        onClick={toggleShowPassword}
+                      >
+                        {!showPassword ? (
+                          <HiOutlineEye size={22} />
+                        ) : (
+                          <HiOutlineEyeOff size={22} />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full bg-[#0AB39C] text-[0.9rem] text-white focus:outline-none font-semibold rounded-sm px-5 py-2.5 text-center mt-6"
+                  >
+                    Login
+                  </button>
+                </form>
+              </div>
+
+              <div className="hidden sm:block border-l-2 border-gray-200 sm:px-2">
+                <Image
+                  source={"/assets/urban.webp"}
+                  alt={""}
+                  className={"w-auto"}
+                  loading="eager"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+export default LoginForm;
