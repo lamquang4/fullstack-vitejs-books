@@ -11,7 +11,6 @@ import {
   LuRedo,
   LuUnderline,
   LuUndo,
-  LuVideo,
 } from "react-icons/lu";
 import { GoHorizontalRule } from "react-icons/go";
 import { BsQuote } from "react-icons/bs";
@@ -93,20 +92,6 @@ function ButtonTool({
     editor?.chain().focus().setHorizontalRule().run();
   };
 
-  const handleAddVideoUrl = () => {
-    const url = window.prompt("URL video");
-
-    if (url) {
-      editor
-        ?.chain()
-        .focus()
-        .setYoutubeVideo({
-          src: url,
-        })
-        .run();
-    }
-  };
-
   const buttonTools = [
     {
       label: <LuUndo size={18} />,
@@ -180,19 +165,13 @@ function ButtonTool({
       active: editor?.isActive("horizontalRule"),
       title: "Horizontal rule",
     },
-    {
-      label: <LuVideo size={18} />,
-      onClick: handleAddVideoUrl,
-      active: false,
-      title: "Video",
-    },
   ];
 
   const tools =
     visibleTools && visibleTools.length > 0
       ? buttonTools.filter((_, index) => visibleTools.includes(index))
       : buttonTools;
-      
+
   return (
     <>
       {tools.map((tool, index) => (

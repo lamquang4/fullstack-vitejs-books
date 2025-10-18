@@ -4,8 +4,17 @@ import toast from "react-hot-toast";
 import TextBoxEditor from "../TextBoxEditor/TextBoxEditor";
 import { Link } from "react-router-dom";
 import { useInputImage } from "../../../hooks/admin/useInputImage";
+import useAddBook from "../../../hooks/admin/useAddBook";
+import useGetCategories from "../../../hooks/admin/useGetCategories";
+import useGetAuthors from "../../../hooks/admin/useGetAuthors";
+import useGetPublishers from "../../../hooks/admin/useGetPublishers";
 
-function AddProduct() {
+function AddBook() {
+  const { addBook, isLoading } = useAddBook();
+  const { categories } = useGetCategories();
+  const { authors } = useGetAuthors();
+  const { publishers } = useGetPublishers();
+
   const [data, setData] = useState({
     title: "",
     price: 1,
@@ -51,6 +60,11 @@ function AddProduct() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    try {
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message);
+    }
   };
 
   return (
@@ -101,7 +115,7 @@ function AddProduct() {
                   >
                     <option value="">Select category</option>
                     {categories.map((category) => (
-                      <option value={category._id} key={category._id}>
+                      <option value={category.id} key={category.id}>
                         {category.name}
                       </option>
                     ))}
@@ -121,7 +135,7 @@ function AddProduct() {
                   >
                     <option value="">Select author</option>
                     {authors.map((author) => (
-                      <option value={author._id} key={author._id}>
+                      <option value={author.id} key={author.id}>
                         {author.fullname}
                       </option>
                     ))}
@@ -141,7 +155,7 @@ function AddProduct() {
                   >
                     <option value="">Select publisher</option>
                     {publishers.map((publisher) => (
-                      <option value={publisher._id} key={publisher._id}>
+                      <option value={publisher.id} key={publisher.id}>
                         {publisher.name}
                       </option>
                     ))}
@@ -342,7 +356,7 @@ function AddProduct() {
               {isLoading ? "Adding..." : "Add"}
             </button>
             <Link
-              to="/admin/products"
+              to="/admin/books"
               className="p-[6px_10px] bg-red-500 text-white text-[0.9rem] text-center hover:bg-red-600 rounded-sm"
             >
               Back
@@ -354,4 +368,4 @@ function AddProduct() {
   );
 }
 
-export default AddProduct;
+export default AddBook;

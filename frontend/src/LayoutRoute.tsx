@@ -28,6 +28,9 @@ import EditAdminPage from "./pages/admin/EditAdminPage";
 import CustomerPage from "./pages/admin/CustomerPage";
 import AddCustomerPage from "./pages/admin/AddCustomerPage";
 import EditCustomerPage from "./pages/admin/EditCustomerPage";
+import BookPage from "./pages/admin/BookPage";
+import AddBookPage from "./pages/admin/AddBookPage";
+import EditBookPage from "./pages/admin/EditBookPage";
 function LayoutRoute() {
   return (
     <Routes>
@@ -66,6 +69,13 @@ function LayoutRoute() {
       <Route path="/admin/customers" element={<CustomerPage />} />
       <Route path="/admin/add-customer" element={<AddCustomerPage />} />
       <Route path="/admin/edit-customer/:id" element={<EditCustomerPage />} />
+
+      <Route path="/admin/books" element={<BookPage />} />
+      <Route path="/admin/add-book" element={<AddBookPage />} />
+      <Route path="/admin/edit-book/:id" element={<EditBookPage />} />
+
+      <Route path="/admin/orders" element={<OrderPage />} />
+      <Route path="/admin/order" element={<OrderDetailPage />} />
     </Routes>
   );
 }

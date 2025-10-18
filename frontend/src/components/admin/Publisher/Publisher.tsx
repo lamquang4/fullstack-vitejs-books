@@ -58,8 +58,6 @@ function Category() {
             <tr className="bg-[#E9EDF2] text-left">
               <th className="p-[1rem]   ">Name</th>
 
-              <th className="p-[1rem]  ">Number of products</th>
-
               <th className="p-[1rem]  ">Action</th>
             </tr>
           </thead>
@@ -74,8 +72,6 @@ function Category() {
               publishers.map((publisher) => (
                 <tr key={publisher.id} className="hover:bg-[#f2f3f8]">
                   <td className="p-[1rem]">{publisher.name}</td>
-
-                  <td className="p-[1rem]  ">Chưa làm</td>
 
                   <td className="p-[1rem]  ">
                     <div className="flex items-center gap-[15px]">

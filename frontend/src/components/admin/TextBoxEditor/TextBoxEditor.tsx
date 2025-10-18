@@ -6,8 +6,6 @@ import BulletList from "@tiptap/extension-bullet-list";
 import OrderedList from "@tiptap/extension-ordered-list";
 import TextAlign from "@tiptap/extension-text-align";
 import HorizontalRule from "@tiptap/extension-horizontal-rule";
-import Image from "@tiptap/extension-image";
-import Youtube from "@tiptap/extension-youtube";
 import { CharacterCount } from "@tiptap/extensions";
 import {
   Table,
@@ -16,7 +14,6 @@ import {
   TableHeader,
 } from "@tiptap/extension-table";
 import Link from "@tiptap/extension-link";
-import ImageResize from "tiptap-extension-resize-image";
 import ToolBar from "./ToolBar/ToolBar";
 import BubbleMenuBar from "./BubbleMenuBar";
 
@@ -52,14 +49,6 @@ function TextBoxEditor({ content, onChange }: Props) {
       TableHeader,
       TableCell,
       HorizontalRule,
-      Image.configure({
-        inline: true,
-      }),
-      ImageResize,
-      Youtube.configure({
-        controls: false,
-        nocookie: true,
-      }),
     ],
     content: content,
     editorProps: {
@@ -78,8 +67,6 @@ function TextBoxEditor({ content, onChange }: Props) {
       editor.commands.setContent(content);
     }
   }, [content, editor]);
-
-  console.log("render");
 
   return (
     <div className="w-full text-[0.9rem]">

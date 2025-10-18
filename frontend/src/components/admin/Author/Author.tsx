@@ -59,8 +59,6 @@ function Author() {
             <tr className="bg-[#E9EDF2] text-left">
               <th className="p-[1rem]   ">Fullname</th>
 
-              <th className="p-[1rem]  ">Number of products</th>
-
               <th className="p-[1rem]  ">Action</th>
             </tr>
           </thead>
@@ -75,8 +73,6 @@ function Author() {
               authors.map((author) => (
                 <tr key={author.id} className="hover:bg-[#f2f3f8]">
                   <td className="p-[1rem]">{author.fullname}</td>
-
-                  <td className="p-[1rem]  ">chưa làm</td>
 
                   <td className="p-[1rem]  ">
                     <div className="flex items-center gap-[15px]">

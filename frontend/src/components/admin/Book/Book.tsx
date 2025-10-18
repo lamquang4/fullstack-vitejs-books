@@ -9,9 +9,11 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Loading from "../../Loading";
 import InputSearch from "../InputSearch";
 import toast from "react-hot-toast";
-import { useState } from "react";
 import { Link } from "react-router-dom";
-function Product() {
+import useGetBooks from "../../../hooks/admin/useGetBooks";
+import useDeleteBook from "../../../hooks/admin/useDeleteBook";
+import useUpdateStatusBook from "../../../hooks/admin/useUpdateStatusBook";
+function Book() {
   const array = [
     {
       name: "All",
@@ -27,17 +29,59 @@ function Product() {
     },
   ];
 
+  const {
+    books,
+    mutate,
+    isLoading,
+    totalPages,
+    totalItems,
+    currentPage,
+    limit,
+  } = useGetBooks();
+  const { deleteBook, isLoading: isLoadingDelete } = useDeleteBook();
+  const { updateStatusBook, isLoading: isLoadingUpdate } =
+    useUpdateStatusBook();
+
+  const handleDelete = async (id: string) => {
+    if (!id) {
+      return;
+    }
+    try {
+      await deleteBook(id);
+      mutate();
+    } catch (err: any) {
+      toast.error(err?.response?.data?.msg);
+      mutate();
+    }
+  };
+
+  const handleUpdateStatus = async (id: string, status: number) => {
+    if (!id && !status) {
+      return;
+    }
+
+    try {
+      await updateStatusBook(id, status);
+      mutate();
+    } catch (err: any) {
+      toast.error(err?.response?.data?.msg);
+      mutate();
+    }
+  };
+
   return (
     <>
       <div className="py-[1.3rem] px-[1.2rem] bg-[#f1f4f9]">
-        <h2 className="mb-[20px] text-[#74767d]">Book ({0})</h2>
+        <div className="flex justify-between items-center">
+          <h2 className="mb-[20px] text-[#74767d]">Book ({totalItems})</h2>
 
-        <Link
-          to={"/admin/add-product"}
-          className="bg-[#daf4f0] border-0 cursor-pointer text-[0.9rem] font-medium w-[90px] !flex p-[10px_12px] items-center justify-center gap-[5px] text-[#0ab39c] hover:bg-[#0ab39c] hover:text-white"
-        >
-          <IoMdAddCircle size={22} /> Add
-        </Link>
+          <Link
+            to={"/admin/add-book"}
+            className="bg-[#daf4f0] border-0 cursor-pointer text-[0.9rem] font-medium w-[90px] !flex p-[10px_12px] items-center justify-center gap-[5px] text-[#0ab39c] hover:bg-[#0ab39c] hover:text-white"
+          >
+            <IoMdAddCircle size={22} /> Add
+          </Link>
+        </div>
       </div>
 
       <div className=" bg-white w-full overflow-auto">
@@ -71,48 +115,38 @@ function Product() {
                   <Loading height={60} size={50} color="black" thickness={2} />
                 </td>
               </tr>
-            ) : products.length > 0 ? (
-              products.map((product) => {
+            ) : books.length > 0 ? (
+              books.map((book) => {
                 return (
-                  <tr key={product._id} className="hover:bg-[#f2f3f8]">
+                  <tr key={book.id} className="hover:bg-[#f2f3f8]">
                     <td className="p-[1rem]">
                       <div className="flex gap-[10px] items-center">
                         <div className="relative group">
-                          {product.images[0] && (
+                          {book.images[0] && (
                             <Image
-                              source={product.images[0]}
-                              alt={product.name}
+                              source={book.images[0]}
+                              alt={book.title}
                               className={"w-[80px] z-1 relative"}
                               loading="lazy"
-                            />
-                          )}
-                          {product.images[1] && (
-                            <Image
-                              source={product.images[1]}
-                              alt={product.name}
-                              className={
-                                "w-[80px] absolute top-0 left-0 opacity-0 z-2 transition-opacity duration-300 group-hover:opacity-100"
-                              }
-                              loading="eager"
                             />
                           )}
                         </div>
 
                         <p className="text-[0.9rem] font-medium  text-[#444]">
-                          {product.name}
+                          {book.title}
                         </p>
                       </div>
                     </td>
 
                     <td className="p-[1rem]  ">
-                      {product.discount > 0 ? (
+                      {book.discount > 0 ? (
                         <div className="flex gap-[12px]  ">
                           <del className="text-[#707072] text-[1rem]">
-                            {product.price.toLocaleString("vi-VN")}₫
+                            {book.price.toLocaleString("vi-VN")}₫
                           </del>
 
                           <p className="font-medium text-[#c00]">
-                            {(product.price - product.discount).toLocaleString(
+                            {(book.price - book.discount).toLocaleString(
                               "vi-VN"
                             )}
                             ₫
@@ -120,34 +154,41 @@ function Product() {
                         </div>
                       ) : (
                         <p className="font-medium">
-                          {product.price.toLocaleString("vi-VN")}₫
+                          {book.price.toLocaleString("vi-VN")}₫
                         </p>
                       )}
                     </td>
 
                     <td className="p-[1rem]  ">
                       <div className="flex flex-col gap-1.5">
-                        <p>Stock: {product.stock}</p>
-                        <p>Sold: {product.totalSold}</p>
+                        <p>Stock: {book.stock}</p>
                       </div>
                     </td>
 
-                    <td className="p-[1rem]  ">{product.author.fullname}</td>
-                    <td className="p-[1rem]  ">{product.publisher.name}</td>
-                    <td className="p-[1rem]  ">{product.category.name}</td>
+                    <td className="p-[1rem]  ">{book.author.fullname}</td>
+                    <td className="p-[1rem]  ">{book.publisher.name}</td>
+                    <td className="p-[1rem]  ">{book.category.name}</td>
 
                     <td className="p-[1rem]  ">
-                      {product.status === 1
+                      {book.status === 1
                         ? "Show"
-                        : product.status === 0
+                        : book.status === 0
                         ? "Hidden"
                         : ""}
                     </td>
 
                     <td className="p-[1rem]  ">
                       <div className="flex items-center gap-[15px]">
-                        <button>
-                          {product.status === 1 ? (
+                        <button
+                          disabled={isLoadingUpdate}
+                          onClick={() =>
+                            handleUpdateStatus(
+                              book.id || "",
+                              book.status === 1 ? 0 : 1
+                            )
+                          }
+                        >
+                          {book.status === 1 ? (
                             <FaRegEyeSlash
                               size={22}
                               className="text-[#74767d]"
@@ -159,10 +200,13 @@ function Product() {
                             />
                           )}
                         </button>
-                        <Link to={`/admin/edit-product/${product._id}`}>
+                        <Link to={`/admin/edit-book/${book.id}`}>
                           <LiaEdit size={22} className="text-[#076ffe]" />
                         </Link>
-                        <button>
+                        <button
+                          disabled={isLoadingDelete}
+                          onClick={() => handleDelete(book.id!)}
+                        >
                           <VscTrash size={22} className="text-[#d9534f]" />
                         </button>
                       </div>
@@ -188,16 +232,14 @@ function Product() {
         </table>
       </div>
 
-      {/*
-    <Pagination
+      <Pagination
         totalPages={totalPages}
         currentPage={currentPage}
         limit={limit}
         totalItems={totalItems}
       />
-  */}
     </>
   );
 }
 
-export default Product;
+export default Book;

@@ -5,11 +5,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 import { TbCategoryPlus } from "react-icons/tb";
 import { FaRegAddressCard } from "react-icons/fa";
-import {
-  LuChartNoAxesCombined,
-  LuHousePlus,
-  LuUserRoundPen,
-} from "react-icons/lu";
+import { LuHousePlus, LuUserRoundPen } from "react-icons/lu";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { RiShoppingBag4Line } from "react-icons/ri";
 import { Link, useLocation } from "react-router-dom";
@@ -29,17 +25,12 @@ function MenuSide({ menuOpen, toggleMenu }: Props) {
       title: "Goods",
       items: [
         {
-          icon: <LuChartNoAxesCombined size={20} />,
-          label: "Statistics",
-          path: "/dashboard",
-        },
-        {
           icon: <GrBook size={20} />,
           label: "Books",
           key: "2a",
           children: [
-            { label: "List books", path: "/admin/products" },
-            { label: "Add book", path: "/admin/add-product" },
+            { label: "List books", path: "/admin/books" },
+            { label: "Add book", path: "/admin/add-book" },
           ],
         },
         {

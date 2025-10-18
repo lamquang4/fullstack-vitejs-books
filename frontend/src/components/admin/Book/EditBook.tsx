@@ -11,10 +11,17 @@ import { useInputImage } from "../../../hooks/admin/useInputImage";
 import { useInputImage1 } from "../../../hooks/admin/useInputImage1";
 import { VscTrash } from "react-icons/vsc";
 import InputImage1 from "../InputImage1";
+import useGetCategories from "../../../hooks/admin/useGetCategories";
+import useGetAuthors from "../../../hooks/admin/useGetAuthors";
+import useGetPublishers from "../../../hooks/admin/useGetPublishers";
 
-function EditProduct() {
+function EditBook() {
   const navigate = useNavigate();
   const { id } = useParams();
+
+  const { categories } = useGetCategories();
+  const { authors } = useGetAuthors();
+  const { publishers } = useGetPublishers();
 
   const [data, setData] = useState({
     title: "",
@@ -88,7 +95,7 @@ function EditProduct() {
           <div className="flex gap-[25px] w-full flex-col">
             <div className="md:p-[25px] p-[15px] bg-white rounded-md w-full">
               <InputImage
-                InputId="images-product"
+                InputId="images-Book"
                 previewImages={previewImages}
                 onPreviewImage={handlePreviewImage}
                 onRemovePreviewImage={handleRemovePreviewImage}
@@ -96,7 +103,7 @@ function EditProduct() {
               />
 
               <div className="flex gap-3 flex-wrap justify-center">
-                {product?.images?.map((img, imgIndex) => (
+                {Book?.images?.map((img, imgIndex) => (
                   <div className="relative" key={imgIndex}>
                     <div
                       className="cursor-pointer"
@@ -421,7 +428,7 @@ function EditProduct() {
               {isLoading ? "Updating..." : "Update"}
             </button>
             <Link
-              to="/admin/products"
+              to="/admin/books"
               className="p-[6px_10px] bg-red-500 text-white text-[0.9rem] text-center hover:bg-red-600 rounded-sm"
             >
               Back
@@ -441,4 +448,4 @@ function EditProduct() {
   );
 }
 
-export default EditProduct;
+export default EditBook;
