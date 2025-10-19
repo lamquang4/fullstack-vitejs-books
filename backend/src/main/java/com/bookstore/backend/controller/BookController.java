@@ -22,13 +22,13 @@ public class BookController {
     }
     
  @GetMapping
-    public ResponseEntity<?> getBooks(
+    public ResponseEntity<?> getAllBooks(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "12") int limit,
             @RequestParam(required = false) String q,
             @RequestParam(required = false) Integer status
     ) {
-        Page<BookDTO> bookPage = bookService.getBooks(page, limit, q, status);
+        Page<BookDTO> bookPage = bookService.getAllBooks(page, limit, q, status);
 
         return ResponseEntity.ok(Map.of(
                 "books", bookPage.getContent(),
@@ -36,6 +36,41 @@ public class BookController {
                 "total", bookPage.getTotalElements()
         ));
     }
+
+     @GetMapping("/active")
+    public ResponseEntity<?> getAllActiveBooks(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(required = false) String q
+    ) {
+        Page<BookDTO> bookPage = bookService.getAllActiveBooks(page, q);
+
+        return ResponseEntity.ok(Map.of(
+                "books", bookPage.getContent(),
+                "totalPages", bookPage.getTotalPages(),
+                "total", bookPage.getTotalElements()
+        ));
+    }
+
+@GetMapping("/active/{slug}")
+public ResponseEntity<?> getActiveBooksByCategory(
+        @PathVariable("slug") String slug,
+        @RequestParam(defaultValue = "1") int page,
+        @RequestParam(required = false) String q
+) {
+    Page<BookDTO> bookPage = bookService.getActiveBooksByCategory(slug, page, q);
+
+    return ResponseEntity.ok(Map.of(
+            "books", bookPage.getContent(),
+            "totalPages", bookPage.getTotalPages(),
+            "total", bookPage.getTotalElements()
+    ));
+}
+
+@GetMapping("/slug/{slug}")
+public ResponseEntity<BookDetailDTO> getBookBySlug(@PathVariable String slug) {
+    BookDetailDTO bookDetail = bookService.getBookBySlug(slug);
+    return ResponseEntity.ok(bookDetail);
+}
 
     @GetMapping("/{id}")
 public ResponseEntity<BookDetailDTO> getBookById(@PathVariable String id) {

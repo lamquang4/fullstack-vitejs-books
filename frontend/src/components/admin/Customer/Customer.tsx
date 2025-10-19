@@ -23,7 +23,8 @@ function Customer() {
     limit,
   } = useGetCustomers();
   const { deleteUser, isLoading: isLoadingDelete } = useDeleteUser();
-  const { updateStatusUser, isLoading: isLoadingUpdate } = useUpdateStatusUser();
+  const { updateStatusUser, isLoading: isLoadingUpdate } =
+    useUpdateStatusUser();
 
   const array = [
     { name: "All", value: null },
@@ -66,7 +67,7 @@ function Customer() {
 
           <Link
             to={"/admin/add-customer"}
-            className="bg-[#daf4f0] border-0 cursor-pointer text-[0.9rem] font-medium w-[90px] !flex p-[10px_12px] items-center justify-center gap-[5px] text-[#0ab39c] hover:bg-[#0ab39c] hover:text-white"
+            className="bg-[#C62028] border-0 cursor-pointer text-[0.9rem] font-medium w-[90px] !flex p-[10px_12px] items-center justify-center gap-[5px] text-white"
           >
             <IoMdAddCircle size={22} /> Add
           </Link>
@@ -103,7 +104,7 @@ function Customer() {
             ) : customers.length > 0 ? (
               customers.map((customer) => (
                 <tr key={customer.id} className="hover:bg-[#f2f3f8]">
-                  <td className="p-[1rem]  ">{customer.email}</td>
+                  <td className="p-[1rem]  font-semibold">{customer.email}</td>
 
                   <td className="p-[1rem]  ">
                     {customer.status === 1 ? "Normal" : "Blocked"}

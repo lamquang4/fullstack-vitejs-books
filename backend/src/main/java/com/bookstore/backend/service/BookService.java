@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.Collections; 
+import java.util.Comparator;
+
 
 @Service
 public class BookService {
@@ -43,7 +45,7 @@ public class BookService {
         this.cartItemRepository = cartItemRepository;
     }
 
-  public Page<BookDTO> getBooks(int page, int limit, String q, Integer status) {
+  public Page<BookDTO> getAllBooks(int page, int limit, String q, Integer status) {
     Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
     Page<Book> bookPage;
 
@@ -94,13 +96,14 @@ public class BookService {
         }
 
         if (book.getImages() != null && !book.getImages().isEmpty()) {
-            List<ImageBookDTO> imageDTOs = book.getImages().stream()
-                    .map(img -> new ImageBookDTO(
-                            img.getId(),
-                            img.getImage(),
-                            img.getCreatedAt() != null ? img.getCreatedAt().format(formatter) : null
-                    ))
-                    .collect(Collectors.toList());
+           List<ImageBookDTO> imageDTOs = book.getImages().stream()
+    .sorted(Comparator.comparing(img -> img.getCreatedAt())) 
+    .map(img -> new ImageBookDTO(
+        img.getId(),
+        img.getImage(),
+        img.getCreatedAt() != null ? img.getCreatedAt().format(formatter) : null
+    ))
+    .collect(Collectors.toList());
             dto.setImages(imageDTOs);
         } else {
             dto.setImages(Collections.emptyList());
@@ -109,6 +112,208 @@ public class BookService {
         return dto;
     });
 }
+
+public Page<BookDTO> getAllActiveBooks(int page, String q) {
+   int limit = 12;
+   
+    Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
+    Page<Book> bookPage;
+int status = 1;
+
+    if (q != null && !q.isEmpty()) {
+        bookPage = bookRepository.findByTitleContainingIgnoreCaseAndStatus(q, status, pageable);
+    } else {
+        bookPage = bookRepository.findByStatus(status, pageable);
+    }
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    return bookPage.map(book -> {
+        BookDTO dto = new BookDTO();
+        dto.setId(book.getId());
+        dto.setTitle(book.getTitle());
+        dto.setPrice(book.getPrice());
+        dto.setDiscount(book.getDiscount());
+        dto.setSlug(book.getSlug());
+        dto.setStock(book.getStock());
+        dto.setStatus(book.getStatus());
+
+        if (book.getAuthor() != null) {
+            dto.setAuthor(new AuthorDTO(
+                    book.getAuthor().getId(),
+                    book.getAuthor().getFullname(),
+                    book.getAuthor().getSlug()
+            ));
+        }
+
+        if (book.getPublisher() != null) {
+            dto.setPublisher(new PublisherDTO(
+                    book.getPublisher().getId(),
+                    book.getPublisher().getName(),
+                    book.getPublisher().getSlug()
+            ));
+        }
+
+        if (book.getCategory() != null) {
+            dto.setCategory(new CategoryDTO(
+                    book.getCategory().getId(),
+                    book.getCategory().getName(),
+                    book.getCategory().getSlug()
+            ));
+        }
+
+        if (book.getImages() != null && !book.getImages().isEmpty()) {
+         List<ImageBookDTO> imageDTOs = book.getImages().stream()
+    .sorted(Comparator.comparing(img -> img.getCreatedAt())) 
+    .map(img -> new ImageBookDTO(
+        img.getId(),
+        img.getImage(),
+        img.getCreatedAt() != null ? img.getCreatedAt().format(formatter) : null
+    ))
+    .collect(Collectors.toList());
+            dto.setImages(imageDTOs);
+        } else {
+            dto.setImages(Collections.emptyList());
+        }
+
+        return dto;
+    });
+}
+
+public Page<BookDTO> getActiveBooksByCategory(String categorySlug, int page, String q) {
+   int limit = 12;
+   
+    Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
+    Page<Book> bookPage;
+int status = 1;
+
+    if (q != null && !q.isEmpty()) {
+        bookPage = bookRepository.findByTitleContainingIgnoreCaseAndCategory_SlugAndStatus(q, categorySlug, status, pageable);
+    } else {
+        bookPage = bookRepository.findByCategory_SlugAndStatus(categorySlug, status, pageable);
+    }
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    return bookPage.map(book -> {
+        BookDTO dto = new BookDTO();
+        dto.setId(book.getId());
+        dto.setTitle(book.getTitle());
+        dto.setPrice(book.getPrice());
+        dto.setDiscount(book.getDiscount());
+        dto.setSlug(book.getSlug());
+        dto.setStock(book.getStock());
+        dto.setStatus(book.getStatus());
+
+        if (book.getAuthor() != null) {
+            dto.setAuthor(new AuthorDTO(
+                    book.getAuthor().getId(),
+                    book.getAuthor().getFullname(),
+                    book.getAuthor().getSlug()
+            ));
+        }
+
+        if (book.getPublisher() != null) {
+            dto.setPublisher(new PublisherDTO(
+                    book.getPublisher().getId(),
+                    book.getPublisher().getName(),
+                    book.getPublisher().getSlug()
+            ));
+        }
+
+        if (book.getCategory() != null) {
+            dto.setCategory(new CategoryDTO(
+                    book.getCategory().getId(),
+                    book.getCategory().getName(),
+                    book.getCategory().getSlug()
+            ));
+        }
+
+        if (book.getImages() != null && !book.getImages().isEmpty()) {
+      List<ImageBookDTO> imageDTOs = book.getImages().stream()
+    .sorted(Comparator.comparing(img -> img.getCreatedAt())) 
+    .map(img -> new ImageBookDTO(
+        img.getId(),
+        img.getImage(),
+        img.getCreatedAt() != null ? img.getCreatedAt().format(formatter) : null
+    ))
+    .collect(Collectors.toList());
+            dto.setImages(imageDTOs);
+        } else {
+            dto.setImages(Collections.emptyList());
+        }
+
+        return dto;
+    });
+}
+
+public BookDetailDTO getBookBySlug(String slug) {
+    Book book = bookRepository.findBySlug(slug)
+            .orElseThrow(() -> new EntityNotFoundException("Book not found with slug: " + slug));
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    AuthorDTO authorDTO = null;
+    if (book.getAuthor() != null) {
+        authorDTO = new AuthorDTO(
+                book.getAuthor().getId(),
+                book.getAuthor().getFullname(),
+                book.getAuthor().getSlug()
+        );
+    }
+
+    PublisherDTO publisherDTO = null;
+    if (book.getPublisher() != null) {
+        publisherDTO = new PublisherDTO(
+                book.getPublisher().getId(),
+                book.getPublisher().getName(),
+                book.getPublisher().getSlug()
+        );
+    }
+
+    CategoryDTO categoryDTO = null;
+    if (book.getCategory() != null) {
+        categoryDTO = new CategoryDTO(
+                book.getCategory().getId(),
+                book.getCategory().getName(),
+                book.getCategory().getSlug()
+        );
+    }
+
+    List<ImageBookDTO> imageDTOs = (book.getImages() != null && !book.getImages().isEmpty())
+            ? book.getImages().stream()
+                .sorted((i1, i2) -> i1.getCreatedAt().compareTo(i2.getCreatedAt()))
+                .map(img -> new ImageBookDTO(
+                        img.getId(),
+                        img.getImage(),
+                        img.getCreatedAt() != null ? img.getCreatedAt().format(formatter) : null
+                ))
+                .collect(Collectors.toList())
+            : Collections.emptyList();
+
+    return new BookDetailDTO(
+            book.getId(),
+            book.getTitle(),
+            book.getPrice(),
+            book.getDiscount(),
+            book.getDescription(),
+            book.getSlug(),
+            book.getNumberOfPages(),
+            book.getPublicationDate(),
+            book.getWeight(),
+            book.getWidth(),
+            book.getLength(),
+            book.getThickness(),
+            book.getStock(),
+            book.getStatus(),
+            book.getCreatedAt() != null ? book.getCreatedAt().format(formatter) : null,
+            authorDTO,
+            publisherDTO,
+            categoryDTO,
+            imageDTOs
+    );
+}
+
 
 public BookDetailDTO getBookById(String id) {
     Book book = bookRepository.findById(id)

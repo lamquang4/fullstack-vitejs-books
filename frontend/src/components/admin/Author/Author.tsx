@@ -42,7 +42,7 @@ function Author() {
 
           <Link
             to={"/admin/add-author"}
-            className="bg-[#daf4f0] border-0 cursor-pointer text-[0.9rem] font-medium !flex p-[10px_12px] items-center justify-center gap-[5px] text-[#0ab39c] hover:bg-[#0ab39c] hover:text-white"
+            className="bg-[#C62028] border-0 cursor-pointer text-[0.9rem] font-medium w-[90px] !flex p-[10px_12px] items-center justify-center gap-[5px] text-white"
           >
             <IoMdAddCircle size={22} /> Add
           </Link>
@@ -72,7 +72,7 @@ function Author() {
             ) : authors.length > 0 ? (
               authors.map((author) => (
                 <tr key={author.id} className="hover:bg-[#f2f3f8]">
-                  <td className="p-[1rem]">{author.fullname}</td>
+                  <td className="p-[1rem] font-semibold">{author.fullname}</td>
 
                   <td className="p-[1rem]  ">
                     <div className="flex items-center gap-[15px]">

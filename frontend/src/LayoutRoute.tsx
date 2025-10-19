@@ -6,11 +6,9 @@ import ResetPasswordPage from "./pages/client/ResetPasswordPage";
 import AccountPage from "./pages/client/AccountPage";
 import AddressPage from "./pages/client/AddressPage";
 import OrderPage from "./pages/client/OrderPage";
-import ProductDetailPage from "./pages/client/ProductDetailPage";
+import BookDetailPage from "./pages/client/BookDetailPage";
 import OrderDetailPage from "./pages/client/OrderDetailPage";
-import ProductSalePage from "./pages/client/ProductSalePage";
-import ProductCollectionPage from "./pages/client/ProductCollectionPage";
-import ProductSearchPage from "./pages/client/ProductSearchPage";
+import BookSalePage from "./pages/client/BookSalePage";
 import LoginAdminPage from "./pages/admin/LoginAdminPage";
 import AccountAdminPage from "./pages/admin/AccountAdminPage";
 import AuthorPage from "./pages/admin/AuthorPage";
@@ -31,6 +29,7 @@ import EditCustomerPage from "./pages/admin/EditCustomerPage";
 import BookPage from "./pages/admin/BookPage";
 import AddBookPage from "./pages/admin/AddBookPage";
 import EditBookPage from "./pages/admin/EditBookPage";
+import BookCategoryPage from "./pages/client/BookCategoryPage";
 function LayoutRoute() {
   return (
     <Routes>
@@ -42,10 +41,9 @@ function LayoutRoute() {
       <Route path="/address" element={<AddressPage />} />
       <Route path="/order" element={<OrderPage />} />
       <Route path="/order/:code" element={<OrderDetailPage />} />
-      <Route path="/product/:slug" element={<ProductDetailPage />} />
-      <Route path="/collection/:slug" element={<ProductSearchPage />} />
-      <Route path="/collection/:slug" element={<ProductCollectionPage />} />
-      <Route path="/sale" element={<ProductSalePage />} />
+      <Route path="/book/:slug" element={<BookDetailPage />} />
+      <Route path="/:slug" element={<BookCategoryPage />} />
+      <Route path="/sale" element={<BookSalePage />} />
 
       <Route path="/admin/login" element={<LoginAdminPage />} />
       <Route path="/admin/account" element={<AccountAdminPage />} />

@@ -77,7 +77,7 @@ function Book() {
 
           <Link
             to={"/admin/add-book"}
-            className="bg-[#daf4f0] border-0 cursor-pointer text-[0.9rem] font-medium w-[90px] !flex p-[10px_12px] items-center justify-center gap-[5px] text-[#0ab39c] hover:bg-[#0ab39c] hover:text-white"
+            className="bg-[#C62028] border-0 cursor-pointer text-[0.9rem] font-medium w-[90px] !flex p-[10px_12px] items-center justify-center gap-[5px] text-white"
           >
             <IoMdAddCircle size={22} /> Add
           </Link>
@@ -147,7 +147,7 @@ function Book() {
                             {book.price.toLocaleString("vi-VN")}₫
                           </del>
 
-                          <p className="font-medium text-[#c00]">
+                          <p className="font-medium text-[#C62028]">
                             {(book.price - book.discount).toLocaleString(
                               "vi-VN"
                             )}

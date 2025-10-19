@@ -29,8 +29,8 @@ function LoginForm() {
         <div className="mx-auto w-full max-w-[1350px]">
           <div className="flex items-center justify-center">
             <div className="max-w-sm w-full">
-              <h2 className="uppercase mb-[20px] text-center text-black">
-                Đăng nhập
+              <h2 className="uppercase mb-[20px] text-center text-[#C62028]">
+                Login
               </h2>
               <form className="space-y-[15px]" onSubmit={handleSubmit}>
                 <div className="space-y-[5px]">
@@ -41,19 +41,19 @@ function LoginForm() {
                     Email
                   </label>
                   <input
-                    type="text"
+                    type="email"
                     name="email"
                     value={data.email}
                     onChange={handleChange}
                     className="text-[0.9rem] block w-full px-3 py-2 border border-gray-200"
-                    placeholder="Nhập email"
+                    placeholder="Enter email"
                     required
                   />
                 </div>
 
                 <div className="space-y-[5px]">
                   <label htmlFor="" className="block text-[0.9rem] font-medium">
-                    Mật khẩu
+                    Password
                   </label>
 
                   <div className="relative">
@@ -62,7 +62,7 @@ function LoginForm() {
                       name="password"
                       value={data.password}
                       onChange={handleChange}
-                      placeholder="Nhập mật khẩu"
+                      placeholder="Enter password"
                       className="text-[0.9rem] block w-full  px-3 pr-12 py-2 border border-gray-200"
                       required
                     />
@@ -81,26 +81,17 @@ function LoginForm() {
                   </div>
                 </div>
 
-                <div className="mt-4">
-                  <Link
-                    to="/reset"
-                    className="text-[0.9rem] text-blue-400 font-medium"
-                  >
-                    Quên mật khẩu?
-                  </Link>
-                </div>
-
                 <button
                   type="submit"
-                  className="w-full bg-black text-white focus:outline-none font-semibold rounded-sm text-[0.9rem] px-5 py-2.5 text-center"
+                  className="w-full bg-[#C62028] text-white focus:outline-none font-semibold rounded-sm text-[0.9rem] px-5 py-2.5 text-center"
                 >
-                  Đăng nhập
+                  Login
                 </button>
 
                 <p className="flex text-black gap-1.5 justify-center font-medium">
-                  Bạn chưa có tài khoản ư?
+                  Don't have an account yet?
                   <Link to="/register" className="text-blue-400 font-medium">
-                    Đăng kí
+                    Register
                   </Link>
                 </p>
               </form>

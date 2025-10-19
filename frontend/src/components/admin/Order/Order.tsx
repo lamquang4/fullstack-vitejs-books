@@ -47,7 +47,7 @@ function Order() {
   return (
     <>
       <div className="py-[1.3rem] px-[1.2rem] bg-[#f1f4f9] space-y-[20px]">
-        <h2 className=" text-[#74767d]">Đơn hàng</h2>
+        <h2 className=" text-[#74767d]">Order</h2>
 
         <div>
           <form onSubmit={handleSubmit}>
@@ -118,9 +118,7 @@ function Order() {
             ) : orders.length > 0 ? (
               orders.map((order) => (
                 <tr key={order._id} className="hover:bg-[#f2f3f8]">
-                  <td className="p-[1rem] text-[#22BAA0] font-semibold text-[0.9rem]">
-                    {order.orderCode}
-                  </td>
+                  <td className="p-[1rem] font-semibold">{order.orderCode}</td>
                   <td className="p-[1rem]  ">{order.fullname}</td>
                   <th className="p-[1rem]  ">Quanglam</th>
                   <td className="p-[1rem]  ">{order.paymethod}</td>

@@ -41,7 +41,7 @@ function Category() {
 
           <Link
             to={"/admin/add-category"}
-            className="bg-[#daf4f0] border-0 cursor-pointer text-[0.9rem] font-medium !flex p-[10px_12px] items-center justify-center gap-[5px] text-[#0ab39c] hover:bg-[#0ab39c] hover:text-white"
+            className="bg-[#C62028] border-0 cursor-pointer text-[0.9rem] font-medium w-[90px] !flex p-[10px_12px] items-center justify-center gap-[5px] text-white"
           >
             <IoMdAddCircle size={22} /> Add
           </Link>
@@ -71,7 +71,7 @@ function Category() {
             ) : categories.length > 0 ? (
               categories.map((category) => (
                 <tr key={category.id} className="hover:bg-[#f2f3f8]">
-                  <td className="p-[1rem]">{category.name}</td>
+                  <td className="p-[1rem] font-semibold">{category.name}</td>
 
                   <td className="p-[1rem]  ">
                     <div className="flex items-center gap-[15px]">

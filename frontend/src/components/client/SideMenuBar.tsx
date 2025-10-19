@@ -105,7 +105,7 @@ function SideMenuBar() {
 
         <button
           type="button"
-          className=" py-3 px-3.5 text-left text-red-500 font-medium hover:bg-gray-100 w-full"
+          className=" py-3 px-3.5 text-left text-[#C62028] font-medium hover:bg-gray-100 w-full"
         >
           <div className="flex items-center gap-5">
             <svg

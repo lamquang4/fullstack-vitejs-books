@@ -116,7 +116,7 @@ function MenuSide({ menuOpen, toggleMenu }: Props) {
           <Image
             source={"/assets/logo.png"}
             alt=""
-            className="w-[80px]"
+            className="w-[100px]"
             loading="eager"
           />
         </div>
@@ -133,7 +133,7 @@ function MenuSide({ menuOpen, toggleMenu }: Props) {
                         className={`${
                           openMenus[item.key] ||
                           item.children.some((child) => pathname === child.path)
-                            ? "text-[#0AB39C]"
+                            ? "text-[#C62028]"
                             : "hover:bg-gray-100"
                         } rounded-lg p-3 w-full cursor-pointer flex justify-between items-center`}
                       >
@@ -164,7 +164,7 @@ function MenuSide({ menuOpen, toggleMenu }: Props) {
                             key={childIndex}
                             className={`rounded-lg w-full cursor-pointer my-[5px] ${
                               pathname === child.path
-                                ? "text-[#0AB39C] bg-[#daf4f0]"
+                                ? "text-white bg-[#C62028]"
                                 : "hover:bg-gray-100"
                             }`}
                           >
@@ -183,7 +183,7 @@ function MenuSide({ menuOpen, toggleMenu }: Props) {
                       to={item.path}
                       className={`${
                         pathname === item.path
-                          ? "text-[#0AB39C] bg-[#daf4f0]"
+                          ? "text-white bg-[#C62028]"
                           : "hover:bg-gray-100"
                       } rounded-lg p-3 w-full cursor-pointer flex justify-between items-center`}
                     >

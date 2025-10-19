@@ -10,7 +10,10 @@ import SearchMobile from "./SearchMobile";
 import MenuMobile from "./MenuMobile";
 import Overplay from "../Overplay";
 import { useCallback, useEffect, useState } from "react";
+import useGetCategories from "../../../hooks/admin/useGetCategories";
 function Header() {
+  const { categories } = useGetCategories();
+
   const [openSearch, setOpenSearch] = useState<boolean>(false);
   const [menuMobileOpen, setMenuMobileOpen] = useState<boolean>(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState<boolean>(false);
@@ -53,7 +56,7 @@ function Header() {
               <Image
                 source={"/assets/logo.png"}
                 alt={"logo"}
-                className={"w-[80px]"}
+                className={"w-[100px]"}
                 loading="eager"
               />
             </Link>
@@ -62,19 +65,21 @@ function Header() {
               <ul className="flex items-center gap-[30px] text-[0.9rem] font-semibold uppercase">
                 <li className="relative group">
                   <span className="cursor-pointer relative after:content-[''] after:absolute after:-bottom-2.5 after:left-0 after:w-full after:h-[1.5px] after:bg-black after:origin-left after:scale-x-0 after:transition-transform after:duration-200 after:ease-in-out hover:after:scale-x-100">
-                    Giảm giá
+                    Category
                   </span>
 
                   <MenuDropDown
                     items={[
-                      { name: "Giảm giá đồ nam", href: "/sale/nam" },
-                      { name: "Giảm giá đồ nữ", href: "/sale/nu" },
+                      ...categories.map((c) => ({
+                        name: c.name,
+                        href: `/${c.slug}`,
+                      })),
                     ]}
                   />
                 </li>
 
                 <li className="relative group">
-                  <Link to={"/blog"}>Tin tức</Link>
+                  <Link to={"/sale"}>Sale</Link>
                 </li>
               </ul>
             </nav>
@@ -97,7 +102,7 @@ function Header() {
                 <small
                   className="absolute flex items-center justify-center 
     top-[-9px] right-[-11px] 
-    bg-[#197FB6] text-white text-[0.7rem] font-medium leading-none 
+    bg-[#C62028] text-white text-[0.7rem] font-medium leading-none 
     rounded-full w-[20px] h-[20px]"
                 >
                   0
@@ -129,7 +134,7 @@ function Header() {
                 <small
                   className="absolute flex items-center justify-center 
     top-[-9px] right-[-11px] 
-    bg-[#197FB6] text-white text-[0.7rem] font-medium leading-none 
+    bg-[#C62028] text-white text-[0.7rem] font-medium leading-none 
     rounded-full w-[20px] h-[20px]"
                 >
                   0

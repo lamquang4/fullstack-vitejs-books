@@ -159,7 +159,7 @@ function OrderHistory() {
                           {item.discount > 0 ? (
                             <>
                               <del>{item.price.toLocaleString("vi-VN")}₫</del>
-                              <span className="font-medium text-[#c00]">
+                              <span className="font-medium text-[#C62028]">
                                 {(item.price - item.discount).toLocaleString(
                                   "vi-VN"
                                 )}

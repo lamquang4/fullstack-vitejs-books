@@ -70,7 +70,7 @@ function Admin() {
 
           <Link
             to={"/admin/add-admin"}
-            className="bg-[#daf4f0] badmin.address-0 cursor-pointer text-[0.9rem] font-medium w-[90px] !flex p-[10px_12px] items-center justify-center gap-[5px] text-[#0ab39c] hover:bg-[#0ab39c] hover:text-white"
+            className="bg-[#C62028] border-0 cursor-pointer text-[0.9rem] font-medium w-[90px] !flex p-[10px_12px] items-center justify-center gap-[5px] text-white"
           >
             <IoMdAddCircle size={22} /> Add
           </Link>
@@ -112,7 +112,7 @@ function Admin() {
             ) : admins.length > 0 ? (
               admins.map((admin) => (
                 <tr key={admin.id} className="hover:bg-[#f2f3f8]">
-                  <td className="p-[1rem] text-[0.9rem] font-semibold text-[#22BAA0]">
+                  <td className="p-[1rem] text-[0.9rem] font-semibold">
                     {admin.address.fullname}
                   </td>
                   <td className="p-[1rem]  ">{admin.email}</td>

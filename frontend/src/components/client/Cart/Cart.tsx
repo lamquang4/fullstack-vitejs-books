@@ -1,6 +1,6 @@
 import Loading from "../../Loading";
 import CartItem from "./CartItem";
-import ProductSlider from "../Product/ProductSlider";
+import ProductSlider from "../Book/BookSlider";
 
 function Cart() {
   const isLoading = false;

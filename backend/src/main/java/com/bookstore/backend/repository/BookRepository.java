@@ -12,9 +12,15 @@ public interface BookRepository extends JpaRepository<Book, String> {
  boolean existsByAuthor(Author author);
   boolean existsByPublisher(Publisher publisher);
 Optional<Book> findByTitle(String title);
+Optional<Book> findBySlug(String slug);
  Page<Book> findByTitleContainingIgnoreCase(String title, Pageable pageable);
 
     Page<Book> findByStatus(Integer status, Pageable pageable);
 
     Page<Book> findByTitleContainingIgnoreCaseAndStatus(String title, Integer status, Pageable pageable);
+
+Page<Book> findByCategory_SlugAndStatus(String slug, Integer status, Pageable pageable);
+
+Page<Book> findByTitleContainingIgnoreCaseAndCategory_SlugAndStatus(String title, String slug, Integer status, Pageable pageable);
+
 }
