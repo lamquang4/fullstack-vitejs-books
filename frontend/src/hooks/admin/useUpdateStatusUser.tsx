@@ -25,8 +25,7 @@ export default function useUpdateStatusUser() {
     setIsLoading(true);
     try {
       const url = `${import.meta.env.VITE_BACKEND_URL}/api/user/status/${id}`;
-
-      await axios.patch(url);
+      await axios.patch(url, { status });
 
       toast.dismiss(loadingToast);
       toast.success("Updated successfully");

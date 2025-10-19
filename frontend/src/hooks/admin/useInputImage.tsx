@@ -1,15 +1,19 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 
 export function useInputImage(max: number = 1) {
   const [previewImages, setPreviewImages] = useState<string[]>([]);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const allUrlsRef = useRef<string[]>([]);
+  const location = useLocation();
 
   useEffect(() => {
     return () => {
-      previewImages.forEach((url) => URL.revokeObjectURL(url));
+      allUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
+      allUrlsRef.current = [];
     };
-  }, [previewImages]);
+  }, [location.pathname]);
 
   const handleRemovePreviewImage = useCallback(
     (index: number) => {
@@ -20,6 +24,7 @@ export function useInputImage(max: number = 1) {
 
       setPreviewImages(newImages);
       setSelectedFiles(newFiles);
+      allUrlsRef.current = allUrlsRef.current.filter((_, i) => i !== index);
     },
     [previewImages, selectedFiles]
   );
@@ -32,12 +37,14 @@ export function useInputImage(max: number = 1) {
       const incomingFiles = Array.from(files);
 
       if (previewImages.length + incomingFiles.length > max) {
-        toast.error(`Tổng số hình không được vượt quá ${max}.`);
+        toast.error(`The total number of images must not exceed ${max}.`);
         e.target.value = "";
         return;
       }
 
       const imageUrls = incomingFiles.map((file) => URL.createObjectURL(file));
+
+      allUrlsRef.current.push(...imageUrls);
 
       setPreviewImages((prev) => [...prev, ...imageUrls]);
       setSelectedFiles((prev) => [...prev, ...incomingFiles]);

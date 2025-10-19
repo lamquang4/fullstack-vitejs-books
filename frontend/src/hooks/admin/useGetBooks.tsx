@@ -28,7 +28,7 @@ export default function useGetBooks() {
 
   const url = `${
     import.meta.env.VITE_BACKEND_URL
-  }/api/user/book?${query.toString()}`;
+  }/api/book?${query.toString()}`;
 
   const { data, error, isLoading, mutate } = useSWR<ResponseType>(
     url,

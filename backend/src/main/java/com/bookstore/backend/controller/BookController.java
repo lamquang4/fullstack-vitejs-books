@@ -1,15 +1,15 @@
 package com.bookstore.backend.controller;
-
 import com.bookstore.backend.dto.BookDTO;
 import com.bookstore.backend.dto.BookDetailDTO;
 import com.bookstore.backend.entities.Book;
 import com.bookstore.backend.service.BookService;
-import java.io.IOException;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
+import java.util.Map;
+import org.springframework.data.domain.Page;
 
 @RestController
 @RequestMapping("/api/book")
@@ -17,44 +17,67 @@ import java.util.List;
 public class BookController {
 
     private final BookService bookService;
-
     public BookController(BookService bookService) {
         this.bookService = bookService;
     }
+    
+ @GetMapping
+    public ResponseEntity<?> getBooks(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "12") int limit,
+            @RequestParam(required = false) String q,
+            @RequestParam(required = false) Integer status
+    ) {
+        Page<BookDTO> bookPage = bookService.getBooks(page, limit, q, status);
 
-    @GetMapping
-public List<BookDTO> getAllBooks() {
-    return bookService.getAllBooks();
-}
+        return ResponseEntity.ok(Map.of(
+                "books", bookPage.getContent(),
+                "totalPages", bookPage.getTotalPages(),
+                "total", bookPage.getTotalElements()
+        ));
+    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BookDetailDTO> getBookById(@PathVariable String id) {
-        return bookService.getBookById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
+public ResponseEntity<BookDetailDTO> getBookById(@PathVariable String id) {
+    BookDetailDTO bookDetail = bookService.getBookById(id);
+    return ResponseEntity.ok(bookDetail);
+}
 
-@PostMapping
-    public ResponseEntity<Book> createBook(
-            @RequestPart("book") Book book,
-            @RequestPart(value = "images", required = false) List<MultipartFile> images
-    ) throws IOException {
-        Book created = bookService.createBook(book, images);
-        return ResponseEntity.ok(created);
-    }
+@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+public ResponseEntity<Book> createBook(
+        @RequestPart("book") Book book,
+        @RequestPart(value = "files", required = true) List<MultipartFile> files
+) {
+    Book savedBook = bookService.createBook(book, files);
+    return ResponseEntity.ok(savedBook);
+}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Book> updateBook(
+@PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+public ResponseEntity<Book> updateBook(
+        @PathVariable String id,
+        @RequestPart("book") Book book,
+        @RequestPart(value = "files", required = false) List<MultipartFile> files
+) {
+    Book updatedBook = bookService.updateBook(id, book, files);
+    return ResponseEntity.ok(updatedBook);
+}
+
+    @PatchMapping("/status/{id}")
+    public ResponseEntity<?> updateBookStatus(
             @PathVariable String id,
-            @RequestPart("book") Book book,
-            @RequestPart(value = "images", required = false) List<MultipartFile> images
-    ) throws IOException {
-        Book updated = bookService.updateBook(id, book, images);
-        if (updated != null) {
-            return ResponseEntity.ok(updated);
-        } else {
-            return ResponseEntity.notFound().build();
+            @RequestBody Map<String, Integer> body
+    ) {
+        Integer status = body.get("status");
+        if (status == null) {
+            throw new IllegalArgumentException("Status is required");
         }
+
+        Book updated = bookService.updateBookStatus(id, status);
+
+        return ResponseEntity.ok(Map.of(
+                "id", updated.getId(),
+                "status", updated.getStatus()
+        ));
     }
 
     @DeleteMapping("/{id}")
@@ -62,4 +85,21 @@ public List<BookDTO> getAllBooks() {
         bookService.deleteBook(id);
         return ResponseEntity.noContent().build();
     }
+
+    // image book
+@PutMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+public ResponseEntity<?> updateImagesBook(
+        @RequestParam(value = "oldImageIds", required = false) List<String> oldImageIds,
+        @RequestPart(value = "files", required = false) List<MultipartFile> files
+) {
+    bookService.updateImagesBook(files, oldImageIds);
+    return ResponseEntity.noContent().build();
+}
+
+       @DeleteMapping("/image/{imageId}")
+    public ResponseEntity<Void> deleteImageBook(@PathVariable String imageId) {
+        bookService.deleteImageBook(imageId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

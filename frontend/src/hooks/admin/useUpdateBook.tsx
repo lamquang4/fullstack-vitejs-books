@@ -15,6 +15,7 @@ export default function useUpdateBook(id: string) {
           "Content-Type": "multipart/form-data",
         },
       });
+
       toast.dismiss(loadingToast);
       toast.success("Updated successfully");
     } catch (err) {

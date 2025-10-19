@@ -1,21 +1,24 @@
 package com.bookstore.backend.dto;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class BookDTO {
     private String id;
     private String title;
-    private List<String> images; 
-    private Double price;
-    private Double discount;
+    private double price;
+    private double discount;
     private String slug;
-    private String authorName;
-    private String publisherName;
-    private String categoryName;
-    private Integer stock;
-    private Integer status;
+    private int stock;
+    private int status;
+private String createdAt;
+    private AuthorDTO author;
+    private PublisherDTO publisher;
+    private CategoryDTO category;
+
+    private List<ImageBookDTO> images;
 }

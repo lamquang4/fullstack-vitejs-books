@@ -1,22 +1,32 @@
 package com.bookstore.backend.service;
-
+import com.bookstore.backend.dto.AuthorDTO;
 import com.bookstore.backend.dto.BookDTO;
 import com.bookstore.backend.dto.BookDetailDTO;
+import com.bookstore.backend.dto.CategoryDTO;
+import com.bookstore.backend.dto.ImageBookDTO;
+import com.bookstore.backend.dto.PublisherDTO;
 import com.bookstore.backend.entities.Book;
 import com.bookstore.backend.entities.ImageBook;
 import com.bookstore.backend.repository.BookRepository;
 import com.bookstore.backend.repository.CartItemRepository;
 import com.bookstore.backend.repository.ImageBookRepository;
 import com.bookstore.backend.repository.OrderDetailRepository;
+import org.springframework.transaction.annotation.Transactional;
 import com.bookstore.backend.utils.SlugUtil;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.io.File;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.Collections; 
 
 @Service
 public class BookService {
@@ -25,7 +35,7 @@ public class BookService {
     private final BookRepository bookRepository;
     private final ImageBookRepository imageBookRepository;
     private final OrderDetailRepository orderDetailRepository;
-        private final CartItemRepository cartItemRepository;
+    private final CartItemRepository cartItemRepository;
     public BookService(BookRepository bookRepository, ImageBookRepository imageBookRepository, OrderDetailRepository orderDetailRepository, CartItemRepository cartItemRepository) {
         this.bookRepository = bookRepository;
         this.imageBookRepository = imageBookRepository;
@@ -33,87 +43,196 @@ public class BookService {
         this.cartItemRepository = cartItemRepository;
     }
 
-public List<BookDTO> getAllBooks() {
-    List<Book> books = bookRepository.findAll();
-    return books.stream().map(book -> {
-        List<String> imagePaths = book.getImages() != null 
-            ? book.getImages().stream()
-                  .map(ImageBook::getImage)
-                  .toList()
-            : List.of(); 
+  public Page<BookDTO> getBooks(int page, int limit, String q, Integer status) {
+    Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
+    Page<Book> bookPage;
 
-        return new BookDTO(
+    if (q != null && !q.isEmpty() && status != null) {
+        bookPage = bookRepository.findByTitleContainingIgnoreCaseAndStatus(q, status, pageable);
+    } else if (q != null && !q.isEmpty()) {
+        bookPage = bookRepository.findByTitleContainingIgnoreCase(q, pageable);
+    } else if (status != null) {
+        bookPage = bookRepository.findByStatus(status, pageable);
+    } else {
+        bookPage = bookRepository.findAll(pageable);
+    }
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    return bookPage.map(book -> {
+        BookDTO dto = new BookDTO();
+        dto.setId(book.getId());
+        dto.setTitle(book.getTitle());
+        dto.setPrice(book.getPrice());
+        dto.setDiscount(book.getDiscount());
+        dto.setSlug(book.getSlug());
+        dto.setStock(book.getStock());
+        dto.setStatus(book.getStatus());
+
+        if (book.getAuthor() != null) {
+            dto.setAuthor(new AuthorDTO(
+                    book.getAuthor().getId(),
+                    book.getAuthor().getFullname(),
+                    book.getAuthor().getSlug()
+            ));
+        }
+
+        if (book.getPublisher() != null) {
+            dto.setPublisher(new PublisherDTO(
+                    book.getPublisher().getId(),
+                    book.getPublisher().getName(),
+                    book.getPublisher().getSlug()
+            ));
+        }
+
+        if (book.getCategory() != null) {
+            dto.setCategory(new CategoryDTO(
+                    book.getCategory().getId(),
+                    book.getCategory().getName(),
+                    book.getCategory().getSlug()
+            ));
+        }
+
+        if (book.getImages() != null && !book.getImages().isEmpty()) {
+            List<ImageBookDTO> imageDTOs = book.getImages().stream()
+                    .map(img -> new ImageBookDTO(
+                            img.getId(),
+                            img.getImage(),
+                            img.getCreatedAt() != null ? img.getCreatedAt().format(formatter) : null
+                    ))
+                    .collect(Collectors.toList());
+            dto.setImages(imageDTOs);
+        } else {
+            dto.setImages(Collections.emptyList());
+        }
+
+        return dto;
+    });
+}
+
+public BookDetailDTO getBookById(String id) {
+    Book book = bookRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Book not found with ID: " + id));
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    AuthorDTO authorDTO = null;
+    if (book.getAuthor() != null) {
+        authorDTO = new AuthorDTO(
+                book.getAuthor().getId(),
+                book.getAuthor().getFullname(),
+                book.getAuthor().getSlug()
+        );
+    }
+
+    PublisherDTO publisherDTO = null;
+    if (book.getPublisher() != null) {
+        publisherDTO = new PublisherDTO(
+                book.getPublisher().getId(),
+                book.getPublisher().getName(),
+                book.getPublisher().getSlug()
+        );
+    }
+
+    CategoryDTO categoryDTO = null;
+    if (book.getCategory() != null) {
+        categoryDTO = new CategoryDTO(
+                book.getCategory().getId(),
+                book.getCategory().getName(),
+                book.getCategory().getSlug()
+        );
+    }
+
+List<ImageBookDTO> imageDTOs = (book.getImages() != null && !book.getImages().isEmpty())
+        ? book.getImages().stream()
+            .sorted((i1, i2) -> i1.getCreatedAt().compareTo(i2.getCreatedAt()))
+            .map(img -> new ImageBookDTO(
+                    img.getId(),
+                    img.getImage(),
+                    img.getCreatedAt() != null ? img.getCreatedAt().format(formatter) : null
+            ))
+            .collect(Collectors.toList())
+        : Collections.emptyList();
+
+    return new BookDetailDTO(
             book.getId(),
             book.getTitle(),
-            imagePaths,
             book.getPrice(),
             book.getDiscount(),
+            book.getDescription(),
             book.getSlug(),
-            book.getAuthor().getFullname(),
-            book.getPublisher().getName(),
-            book.getCategory().getName(),
+            book.getNumberOfPages(),
+            book.getPublicationDate(),
+            book.getWeight(),
+            book.getWidth(),
+            book.getLength(),
+            book.getThickness(),
             book.getStock(),
-            book.getStatus()
-        );
-    }).collect(Collectors.toList());
+            book.getStatus(),
+            book.getCreatedAt() != null ? book.getCreatedAt().format(formatter) : null, // convert createdAt của book
+            authorDTO,
+            publisherDTO,
+            categoryDTO,
+            imageDTOs
+    );
 }
 
-public Optional<BookDetailDTO> getBookById(String id) {
-    return bookRepository.findById(id)
-            .map(book -> {
-                List<String> imagePaths = book.getImages() != null 
-                        ? book.getImages().stream()
-                            .map(ImageBook::getImage)
-                            .toList()
-                        : List.of();
+@Transactional
+public Book createBook(Book book, List<MultipartFile> files) {
+    String slug = SlugUtil.toSlug(book.getTitle());
+    book.setSlug(slug);
 
-                return new BookDetailDTO(
-                        book.getId(),
-                        book.getTitle(),
-                        imagePaths,
-                        book.getPrice(),
-                        book.getDiscount(),
-                        book.getDescription(),
-                        book.getSlug(),
-                        book.getAuthor().getFullname(),
-                        book.getCategory().getName(),
-                        book.getNumberOfPages(),
-                        book.getWeight(),
-                        book.getWidth(),
-                        book.getLength(),
-                        book.getThickness(),
-                        book.getStock(),
-                        book.getStatus()
-                );
-            });
-}
-
-
-public Book createBook(Book book, List<MultipartFile> files) throws IOException {
     if (bookRepository.findByTitle(book.getTitle()).isPresent()) {
         throw new IllegalArgumentException("Book title already exists");
     }
 
-    book.setSlug(SlugUtil.toSlug(book.getTitle()));
-
     Book savedBook = bookRepository.save(book);
+    String id = savedBook.getId();
 
-File bookDir = new File(UPLOAD_DIR + book.getSlug());
-    if (!bookDir.exists()) {
-        bookDir.mkdirs();
-    }
+    if (files != null && !files.isEmpty()) {
+        String uploadRoot = System.getProperty("user.dir") + File.separator + "uploads" + File.separator + "books" + File.separator + id;
+        File bookDir = new File(uploadRoot);
+        if (!bookDir.exists()) {
+            bookDir.mkdirs();
+        }
 
-     if (files != null && !files.isEmpty()) {
+        List<String> allowedExtensions = List.of("jpg", "jpeg", "png", "webp");
+        List<String> allowedMimeTypes = List.of("image/jpeg", "image/png", "image/webp");
+
         for (MultipartFile file : files) {
-            String filename = file.getOriginalFilename();
-            File dest = new File(bookDir, filename);
-            file.transferTo(dest);
+            try {
+                String originalName = file.getOriginalFilename();
+                if (originalName == null) throw new IllegalArgumentException("File name is invalid");
 
-            ImageBook imageBook = ImageBook.builder()
-                    .image(book.getSlug() + "/" + filename)
-                    .book(savedBook)
-                    .build();
-            imageBookRepository.save(imageBook);
+                String extension = "";
+                if (originalName.contains(".")) {
+                    extension = originalName.substring(originalName.lastIndexOf(".") + 1).toLowerCase();
+                }
+
+                if (!allowedExtensions.contains(extension)) {
+                    throw new IllegalArgumentException("Only JPG, PNG, or WEBP images are allowed");
+                }
+
+                String contentType = file.getContentType();
+                if (contentType == null || !allowedMimeTypes.contains(contentType)) {
+                    throw new IllegalArgumentException("Invalid image type: " + contentType);
+                }
+
+                String filename = id + "_" + UUID.randomUUID() + "." + extension;
+                File destinationFile = new File(bookDir, filename);
+                file.transferTo(destinationFile);
+
+                String relativePath = "/uploads/books/" + id + "/" + filename;
+
+                ImageBook imageBook = ImageBook.builder()
+                        .image(relativePath)
+                        .book(savedBook)
+                        .build();
+
+                imageBookRepository.save(imageBook);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to save image: " + file.getOriginalFilename(), e);
+            }
         }
     }
 
@@ -121,61 +240,89 @@ File bookDir = new File(UPLOAD_DIR + book.getSlug());
 }
 
 
-public Book updateBook(String id, Book book, List<MultipartFile> newFiles) throws IOException {
-    return bookRepository.findById(id)
-            .map(existingBook -> {
-                bookRepository.findByTitle(book.getTitle())
-                        .filter(b -> !b.getId().equals(id))
-                        .ifPresent(b -> { throw new IllegalArgumentException("Book title already exists"); });
+@Transactional
+public Book updateBook(String id, Book updatedBookData, List<MultipartFile> files) {
+    Book existingBook = bookRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Book not found"));
 
-                book.setSlug(SlugUtil.toSlug(book.getTitle()));
+    existingBook.setTitle(updatedBookData.getTitle());
+    existingBook.setPrice(updatedBookData.getPrice());
+    existingBook.setDiscount(updatedBookData.getDiscount());
+    existingBook.setDescription(updatedBookData.getDescription());
+    existingBook.setPublicationDate(updatedBookData.getPublicationDate());
+    existingBook.setNumberOfPages(updatedBookData.getNumberOfPages());
+    existingBook.setWeight(updatedBookData.getWeight());
+    existingBook.setWidth(updatedBookData.getWidth());
+    existingBook.setLength(updatedBookData.getLength());
+    existingBook.setThickness(updatedBookData.getThickness());
+    existingBook.setStock(updatedBookData.getStock());
+    existingBook.setStatus(updatedBookData.getStatus());
 
-                existingBook.setTitle(book.getTitle());
-                existingBook.setSlug(book.getSlug());
-                existingBook.setPrice(book.getPrice());
-                existingBook.setDiscount(book.getDiscount());
-                existingBook.setDescription(book.getDescription());
-                existingBook.setPublicationDate(book.getPublicationDate());
-                existingBook.setNumberOfPages(book.getNumberOfPages());
-                existingBook.setWeight(book.getWeight());
-                existingBook.setWidth(book.getWidth());
-                existingBook.setLength(book.getLength());
-                existingBook.setThickness(book.getThickness());
-                existingBook.setStatus(book.getStatus());
-                existingBook.setStock(book.getStock());
-                existingBook.setCategory(book.getCategory());
-                existingBook.setAuthor(book.getAuthor());
-                existingBook.setPublisher(book.getPublisher());
+    if (updatedBookData.getAuthor() != null) existingBook.setAuthor(updatedBookData.getAuthor());
+    if (updatedBookData.getPublisher() != null) existingBook.setPublisher(updatedBookData.getPublisher());
+    if (updatedBookData.getCategory() != null) existingBook.setCategory(updatedBookData.getCategory());
 
-                Book updatedBook = bookRepository.save(existingBook);
+    String newSlug = SlugUtil.toSlug(existingBook.getTitle());
+    existingBook.setSlug(newSlug);
 
-                File bookDir = new File(UPLOAD_DIR + book.getSlug());
-                if (!bookDir.exists()) {
-                    bookDir.mkdirs();
+    Book updatedBook = bookRepository.save(existingBook);
+
+    if (files != null && !files.isEmpty()) {
+        String uploadRoot = System.getProperty("user.dir") + File.separator + "uploads" + File.separator + "books" + File.separator + id;
+        File bookDir = new File(uploadRoot);
+        if (!bookDir.exists()) bookDir.mkdirs();
+
+        List<String> allowedExtensions = List.of("jpg", "jpeg", "png", "webp");
+        List<String> allowedMimeTypes = List.of("image/jpeg", "image/png", "image/webp");
+
+        for (MultipartFile file : files) {
+            try {
+                String originalName = file.getOriginalFilename();
+                if (originalName == null) throw new IllegalArgumentException("Invalid file name");
+
+                String extension = "";
+                if (originalName.contains(".")) {
+                    extension = originalName.substring(originalName.lastIndexOf(".") + 1).toLowerCase();
                 }
 
-                if (newFiles != null && !newFiles.isEmpty()) {
-                    for (MultipartFile file : newFiles) {
-                        String filename = file.getOriginalFilename();
-                        File dest = new File(bookDir, filename);
-                        try {
-                            file.transferTo(dest);
-                        } catch (IOException e) {
-                            throw new RuntimeException("Failed to save image", e);
-                        }
-
-                        ImageBook imageBook = ImageBook.builder()
-                                .image(book.getSlug() + "/" + filename)
-                                .book(updatedBook)
-                                .build();
-                        imageBookRepository.save(imageBook);
-                    }
+                if (!allowedExtensions.contains(extension)) {
+                    throw new IllegalArgumentException("Only JPG, PNG, or WEBP images are allowed");
                 }
 
-                return updatedBook;
-            })
-            .orElse(null);
+                String contentType = file.getContentType();
+                if (contentType == null || !allowedMimeTypes.contains(contentType)) {
+                    throw new IllegalArgumentException("Invalid image type: " + contentType);
+                }
+
+                String filename = id + "_" + UUID.randomUUID() + "." + extension;
+                File destinationFile = new File(bookDir, filename);
+                file.transferTo(destinationFile);
+
+                String relativePath = "/uploads/books/" + id + "/" + filename;
+
+                ImageBook imageBook = ImageBook.builder()
+                        .image(relativePath)
+                        .book(updatedBook)
+                        .build();
+
+                imageBookRepository.save(imageBook);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to save image: " + file.getOriginalFilename(), e);
+            }
+        }
+    }
+
+    return updatedBook;
 }
+
+    public Book updateBookStatus(String id, Integer status) {
+        return bookRepository.findById(id)
+                .map(book -> {
+                    book.setStatus(status);
+                    return bookRepository.save(book);
+                })
+                .orElseThrow(() -> new EntityNotFoundException("Book not found"));
+    }
 
     public void deleteBook(String id) {
         Book book = bookRepository.findById(id)
@@ -202,4 +349,50 @@ public Book updateBook(String id, Book book, List<MultipartFile> newFiles) throw
 
         bookRepository.deleteById(id);
     }
+
+// image book
+@Transactional
+public void updateImagesBook(List<MultipartFile> files, List<String> oldImageIds) {
+    if (files == null || oldImageIds == null || files.isEmpty() || oldImageIds.isEmpty()) {
+        return; 
+    }
+
+    int size = Math.min(files.size(), oldImageIds.size());
+
+    for (int i = 0; i < size; i++) {
+        String imageId = oldImageIds.get(i);
+        MultipartFile file = files.get(i);
+
+        ImageBook imageBook = imageBookRepository.findById(imageId)
+                .orElseThrow(() -> new EntityNotFoundException("Book image not found"));
+
+        try {
+            String path = System.getProperty("user.dir") + File.separator + imageBook.getImage();
+            File oldFile = new File(path);
+            if (!oldFile.exists()) {
+                throw new RuntimeException("The old file does not exist: " + oldFile.getPath());
+            }
+
+            file.transferTo(oldFile);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save image: " + file.getOriginalFilename(), e);
+        }
+    }
+}
+
+
+ @Transactional
+    public void deleteImageBook(String imageId) {
+        ImageBook image = imageBookRepository.findById(imageId)
+                .orElseThrow(() -> new EntityNotFoundException("Image not found"));
+
+        File file = new File(System.getProperty("user.dir") + image.getImage());
+        if (file.exists()) {
+            file.delete();
+        }
+
+        imageBookRepository.delete(image);
+    }
+
 }

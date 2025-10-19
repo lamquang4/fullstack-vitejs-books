@@ -3,9 +3,6 @@ import com.bookstore.backend.dto.AdminDTO;
 import com.bookstore.backend.dto.CustomerDTO;
 import com.bookstore.backend.entities.User;
 import com.bookstore.backend.service.UserService;
-
-import jakarta.persistence.EntityNotFoundException;
-
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -89,12 +86,16 @@ public ResponseEntity<User> updateCustomer(@PathVariable String id, @RequestBody
     }
 
     @PatchMapping("/status/{id}")
-    public ResponseEntity<?> toggleUserStatus(@PathVariable String id) {
-        User user = userService.getUserById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+    public ResponseEntity<?> updateUserStatus(
+            @PathVariable String id,
+            @RequestBody Map<String, Integer> body
+    ) {
+        Integer status = body.get("status");
+        if (status == null) {
+            throw new IllegalArgumentException("Status is required");
+        }
 
-        Integer newStatus = user.getStatus() == 1 ? 0 : 1;
-        User updated = userService.updateUserStatus(id, newStatus);
+        User updated = userService.updateUserStatus(id, status);
 
         return ResponseEntity.ok(Map.of(
                 "id", updated.getId(),

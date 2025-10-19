@@ -1,4 +1,6 @@
 package com.bookstore.backend.entities;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,4 +31,8 @@ private String id;
 
     @Column(nullable = false, unique = true, length = 50)
     private String slug;
+
+    @Builder.Default
+@Column(nullable = false)
+private LocalDateTime createdAt = LocalDateTime.now();
 }

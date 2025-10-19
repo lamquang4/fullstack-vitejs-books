@@ -35,7 +35,7 @@ export interface Publisher {
 
 export interface Book {
   id: string;
-  images: string[];
+  images: ImageBook[];
   title: string;
   price: number;
   discount: number;
@@ -52,6 +52,11 @@ export interface Book {
   category: Category;
   author: Author;
   publisher: Publisher;
+}
+
+export interface ImageBook {
+  id: string;
+  image: string;
 }
 
 export interface Address {

@@ -122,9 +122,11 @@ function Book() {
                     <td className="p-[1rem]">
                       <div className="flex gap-[10px] items-center">
                         <div className="relative group">
-                          {book.images[0] && (
+                          {book.images?.[0]?.image && (
                             <Image
-                              source={book.images[0]}
+                              source={`${import.meta.env.VITE_BACKEND_URL}${
+                                book.images[0].image
+                              }`}
                               alt={book.title}
                               className={"w-[80px] z-1 relative"}
                               loading="lazy"
@@ -159,11 +161,7 @@ function Book() {
                       )}
                     </td>
 
-                    <td className="p-[1rem]  ">
-                      <div className="flex flex-col gap-1.5">
-                        <p>Stock: {book.stock}</p>
-                      </div>
-                    </td>
+                    <td className="p-[1rem]  ">{book.stock}</td>
 
                     <td className="p-[1rem]  ">{book.author.fullname}</td>
                     <td className="p-[1rem]  ">{book.publisher.name}</td>

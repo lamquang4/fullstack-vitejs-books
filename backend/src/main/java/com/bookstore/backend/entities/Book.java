@@ -1,4 +1,5 @@
 package com.bookstore.backend.entities;
+import java.time.LocalDateTime;
 import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -16,7 +17,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 @Entity
 @Table(name = "book")
 @Getter
@@ -79,6 +79,10 @@ private String id;
     private Publisher publisher;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-private List<ImageBook> images; // khi xóa book thì imagebook cũng bị xóa theo
+private List<ImageBook> images;
+
+    @Builder.Default
+@Column(nullable = false)
+private LocalDateTime createdAt = LocalDateTime.now();
 
 }

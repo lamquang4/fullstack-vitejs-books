@@ -25,8 +25,7 @@ export default function useUpdateStatusBook() {
     setIsLoading(true);
     try {
       const url = `${import.meta.env.VITE_BACKEND_URL}/api/book/status/${id}`;
-
-      await axios.patch(url);
+      await axios.patch(url, { status });
 
       toast.dismiss(loadingToast);
       toast.success("Updated successfully");

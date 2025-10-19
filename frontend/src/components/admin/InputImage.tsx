@@ -31,7 +31,7 @@ function InputImage({
     <div className="flex items-center justify-center w-full h-full">
       <label
         htmlFor={InputId}
-        className="flex flex-col p-[15px] items-center justify-center w-full min-h-80 h-auto border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 "
+        className="flex flex-col p-[15px] items-center justify-center w-full min-h-70 h-auto border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 "
       >
         {!previewImages.length ? (
           <div className="flex flex-col items-center justify-center text-[#ADB0BB]">
@@ -55,7 +55,7 @@ function InputImage({
             <p>PNG, JPG, WEBP</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-3 flex-wrap justify-center h-80 overflow-y-auto">
+          <div className="grid md:grid-cols-4 grid-cols-2 gap-3 items-center h-70 overflow-y-auto">
             {previewImages.map((image, index) => (
               <div className=" relative" key={index}>
                 <div
@@ -69,7 +69,7 @@ function InputImage({
                   <Image
                     source={image}
                     alt={`preview-${index}`}
-                    className="w-full"
+                    className="w-[150px]"
                     loading="eager"
                   />
                 </div>

@@ -33,7 +33,7 @@ function AddBook() {
     status: "",
   });
 
-  const max = 6;
+  const max = 20;
 
   const {
     previewImages,
@@ -60,12 +60,93 @@ function AddBook() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (data.numberOfPages <= 0) {
+      toast.error("Number of pages must be greater than 0");
+      return;
+    }
+
+    if (data.weight <= 0) {
+      toast.error("Weight must be greater than 0");
+      return;
+    }
+
+    if (data.width <= 0) {
+      toast.error("Width must be greater than 0");
+      return;
+    }
+
+    if (data.length <= 0) {
+      toast.error("Length must be greater than 0");
+      return;
+    }
+
+    if (data.thickness <= 0) {
+      toast.error("Thickness must be greater than 0");
+      return;
+    }
+
+    if (!selectedFiles) {
+      toast.error("Please select at least one image");
+      return;
+    }
 
     try {
+      const formData = new FormData();
+
+      const bookData = {
+        title: data.title,
+        price: data.price,
+        discount: data.discount,
+        description: data.description,
+        publicationDate: data.publicationDate,
+        numberOfPages: data.numberOfPages,
+        weight: data.weight,
+        width: data.width,
+        length: data.length,
+        thickness: data.thickness,
+        stock: data.stock,
+        status: data.status,
+        author: { id: data.author },
+        publisher: { id: data.publisher },
+        category: { id: data.category },
+      };
+
+      formData.append(
+        "book",
+        new Blob([JSON.stringify(bookData)], { type: "application/json" })
+      );
+
+      selectedFiles.forEach((file) => {
+        formData.append("files", file);
+      });
+
+      await addBook(formData);
+      setPreviewImages([]);
+      setSelectedFiles([]);
+      setData({
+        title: "",
+        price: 1,
+        discount: 0,
+        description: "",
+        publicationDate: "",
+        numberOfPages: 1,
+        weight: 1,
+        width: 1,
+        length: 1,
+        thickness: 1,
+        stock: 1,
+        author: "",
+        publisher: "",
+        category: "",
+        status: "",
+      });
     } catch (err: any) {
       toast.error(err?.response?.data?.message);
     }
   };
+
+  console.log(selectedFiles);
 
   return (
     <>
@@ -87,21 +168,21 @@ function AddBook() {
             <div className="sm:p-[25px] p-[15px] bg-white rounded-md flex flex-col gap-[20px] w-full">
               <h5 className="font-bold text-[#74767d]">General information</h5>
 
-              <div className="flex flex-wrap md:flex-nowrap gap-[15px]">
-                <div className="flex flex-col gap-1 w-full">
-                  <label htmlFor="" className="text-[0.9rem] font-medium">
-                    Title
-                  </label>
-                  <input
-                    type="text"
-                    value={data.title}
-                    onChange={handleChange}
-                    name="title"
-                    required
-                    className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
-                  />
-                </div>
+              <div className="flex flex-col gap-1 w-full">
+                <label htmlFor="" className="text-[0.9rem] font-medium">
+                  Title
+                </label>
+                <input
+                  type="text"
+                  value={data.title}
+                  onChange={handleChange}
+                  name="title"
+                  required
+                  className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
+                />
+              </div>
 
+              <div className="flex flex-wrap md:flex-nowrap gap-[15px]">
                 <div className="flex flex-col gap-1 w-full">
                   <label htmlFor="" className="text-[0.9rem] font-medium">
                     Category
@@ -141,7 +222,9 @@ function AddBook() {
                     ))}
                   </select>
                 </div>
+              </div>
 
+              <div className="flex flex-wrap md:flex-nowrap gap-[15px]">
                 <div className="flex flex-col gap-1 w-full">
                   <label htmlFor="" className="text-[0.9rem] font-medium">
                     Publisher
@@ -248,100 +331,98 @@ function AddBook() {
                 Book detail information
               </h5>
 
-              <div className="flex flex-wrap md:flex-nowrap gap-[15px]">
-                <div className="flex gap-[15px] flex-wrap">
-                  <div className="flex flex-col gap-1 w-full">
-                    <label htmlFor="" className="text-[0.9rem] font-medium">
-                      Publication date
-                    </label>
-                    <input
-                      type="date"
-                      value={data.publicationDate}
-                      onChange={handleChange}
-                      name="publicationDate"
-                      required
-                      className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
-                    />
-                  </div>
-
-                  <div className="flex flex-col gap-1 w-full">
-                    <label htmlFor="" className="text-[0.9rem] font-medium">
-                      Number of pages
-                    </label>
-                    <input
-                      type="number"
-                      inputMode="numeric"
-                      value={data.numberOfPages}
-                      onChange={handleChange}
-                      name="numberOfPages"
-                      required
-                      className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
-                    />
-                  </div>
+              <div className="flex gap-[15px]">
+                <div className="flex flex-col gap-1 w-full">
+                  <label htmlFor="" className="text-[0.9rem] font-medium">
+                    Publication date
+                  </label>
+                  <input
+                    type="date"
+                    value={data.publicationDate}
+                    onChange={handleChange}
+                    name="publicationDate"
+                    required
+                    className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
+                  />
                 </div>
 
-                <div className="flex gap-[15px] flex-wrap">
-                  <div className="flex flex-col gap-1 w-full">
-                    <label htmlFor="" className="text-[0.9rem] font-medium">
-                      Width (cm)
-                    </label>
-                    <input
-                      type="number"
-                      name="width"
-                      inputMode="numeric"
-                      value={data.width}
-                      onChange={handleChange}
-                      required
-                      className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
-                    />
-                  </div>
+                <div className="flex flex-col gap-1 w-full">
+                  <label htmlFor="" className="text-[0.9rem] font-medium">
+                    Number of pages
+                  </label>
+                  <input
+                    type="number"
+                    inputMode="numeric"
+                    value={data.numberOfPages}
+                    onChange={handleChange}
+                    name="numberOfPages"
+                    required
+                    className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
+                  />
+                </div>
+              </div>
 
-                  <div className="flex flex-col gap-1 w-full">
-                    <label htmlFor="" className="text-[0.9rem] font-medium">
-                      Length (cm)
-                    </label>
-                    <input
-                      type="number"
-                      name="length"
-                      inputMode="numeric"
-                      value={data.length}
-                      onChange={handleChange}
-                      required
-                      className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
-                    />
-                  </div>
+              <div className="flex gap-[15px]">
+                <div className="flex flex-col gap-1 w-full">
+                  <label htmlFor="" className="text-[0.9rem] font-medium">
+                    Width (cm)
+                  </label>
+                  <input
+                    type="number"
+                    name="width"
+                    inputMode="numeric"
+                    value={data.width}
+                    onChange={handleChange}
+                    required
+                    className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
+                  />
                 </div>
 
-                <div className="flex gap-[15px] flex-wrap">
-                  <div className="flex flex-col gap-1 w-full">
-                    <label htmlFor="" className="text-[0.9rem] font-medium">
-                      Thickness (cm)
-                    </label>
-                    <input
-                      type="number"
-                      name="thickness"
-                      inputMode="numeric"
-                      value={data.thickness}
-                      onChange={handleChange}
-                      required
-                      className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
-                    />
-                  </div>
+                <div className="flex flex-col gap-1 w-full">
+                  <label htmlFor="" className="text-[0.9rem] font-medium">
+                    Length (cm)
+                  </label>
+                  <input
+                    type="number"
+                    name="length"
+                    inputMode="numeric"
+                    value={data.length}
+                    onChange={handleChange}
+                    required
+                    className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
+                  />
+                </div>
+              </div>
 
-                  <div className="flex flex-col gap-1 w-full">
-                    <label htmlFor="" className="text-[0.9rem] font-medium">
-                      Weight (kg)
-                    </label>
-                    <input
-                      type="number"
-                      name="weight"
-                      inputMode="numeric"
-                      value={data.weight}
-                      onChange={handleChange}
-                      required
-                      className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
-                    />
-                  </div>
+              <div className="flex gap-[15px]">
+                <div className="flex flex-col gap-1 w-full">
+                  <label htmlFor="" className="text-[0.9rem] font-medium">
+                    Thickness (cm)
+                  </label>
+                  <input
+                    type="number"
+                    name="thickness"
+                    inputMode="numeric"
+                    value={data.thickness}
+                    onChange={handleChange}
+                    required
+                    className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1 w-full">
+                  <label htmlFor="" className="text-[0.9rem] font-medium">
+                    Weight (kg)
+                  </label>
+                  <input
+                    type="number"
+                    name="weight"
+                    inputMode="numeric"
+                    value={data.weight}
+                    onChange={handleChange}
+                    required
+                    className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
+                  />
                 </div>
               </div>
             </div>

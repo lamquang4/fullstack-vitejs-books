@@ -5,6 +5,7 @@ import com.bookstore.backend.utils.SlugUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
@@ -18,7 +19,7 @@ public class CategoryService {
     }
 
 public Page<Category> getCategories(int page, int limit, String q) {
-    Pageable pageable = PageRequest.of(page - 1, limit);
+    Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
     if (q != null && !q.isEmpty()) {
         return categoryRepository.findByNameContainingIgnoreCase(q, pageable);
     }

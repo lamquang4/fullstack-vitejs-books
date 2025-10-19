@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -38,7 +39,7 @@ public class UserService {
 
     // customer
     public Page<CustomerDTO> getAllCustomers(int page, int limit, String q, Integer status) {
-    Pageable pageable = PageRequest.of(page - 1, limit);
+    Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
     List<Integer> roles = List.of(3);
 
     Page<User> usersPage;
@@ -96,7 +97,7 @@ public class UserService {
 
     // admin
 public Page<AdminDTO> getAllAdmins(int page, int limit, String q, Integer status) {
-        Pageable pageable = PageRequest.of(page - 1, limit);
+        Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
         List<Integer> roles = List.of(0, 1, 2); // admin roles
 
         Page<User> adminsPage;
@@ -128,7 +129,7 @@ public Page<AdminDTO> getAllAdmins(int page, int limit, String q, Integer status
                         address.getSpeaddress(),
                         address.getWard(),
                         address.getCity()
-                ));
+                    ));
             }
 
             return dto;
@@ -221,17 +222,13 @@ public Page<AdminDTO> getAllAdmins(int page, int limit, String q, Integer status
         }).orElse(null);
     }
 
-public User updateUserStatus(String id, Integer status) {
-    return userRepository.findById(id)
-            .map(user -> {
-                user.setStatus(status); 
-                return userRepository.save(user);
-            })
-            .orElseThrow(() -> new EntityNotFoundException("User not found"));
-}
-
-    public Optional<User> getUserById(String id) {
-        return userRepository.findById(id);
+    public User updateUserStatus(String id, Integer status) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    user.setStatus(status);
+                    return userRepository.save(user);
+                })
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
     // Xóa user

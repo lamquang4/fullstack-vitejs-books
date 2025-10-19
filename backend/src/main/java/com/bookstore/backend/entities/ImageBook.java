@@ -1,4 +1,6 @@
 package com.bookstore.backend.entities;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,10 +27,14 @@ public class ImageBook {
 @GeneratedValue(strategy = GenerationType.UUID)
 private String id;
 
-    @Column(nullable = false, unique = true, length = 50)    
+    @Column(nullable = false, length = 250)    
     private String image;
 
     @ManyToOne
     @JoinColumn(name = "bookId", nullable = false)
     private Book book;
+    
+    @Builder.Default
+@Column(nullable = false)
+private LocalDateTime createdAt = LocalDateTime.now();
 }
