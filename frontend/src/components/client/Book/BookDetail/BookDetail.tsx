@@ -8,12 +8,14 @@ import { HiOutlineMinusSmall } from "react-icons/hi2";
 import { HiOutlinePlusSmall } from "react-icons/hi2";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   book: Book;
 };
 
 function BookDetail({ book }: Props) {
+  const navigate = useNavigate();
   const [quantity, setQuantity] = useState<number>(1);
   const [mainImage, setMainImage] = useState<string>("");
   const [openViewer, setOpenViewer] = useState<boolean>(false);
@@ -72,14 +74,14 @@ function BookDetail({ book }: Props) {
     setQuantity((prev) => (prev > 1 ? prev - 1 : prev));
   };
   return (
-    <section className="w-full mb-[40px] px-[15px]">
+    <section className="w-full mb-[40px]">
       <div className="mx-auto w-full max-w-[1350px]">
         <div className="flex flex-col lg:flex-row gap-x-[15px] gap-y-[30px] w-full">
           <div
             id="div1"
             className="flex lg:flex-row flex-col-reverse gap-3 lg:sticky lg:top-[100px] flex-1"
           >
-            <div className="mx-auto lg:max-w-[90px] w-full">
+            <div className="mx-auto lg:max-w-[70px] w-full lg:px-0 px-[15px]">
               <Swiper
                 slidesPerView="auto"
                 spaceBetween={10}
@@ -158,21 +160,9 @@ function BookDetail({ book }: Props) {
             </div>
           </div>
 
-          <div className="relative flex-1" id="div2">
+          <div className="relative flex-1 px-[15px]" id="div2">
             <div className="space-y-[10px] ">
               <h2>{book?.title}</h2>
-
-              <div className="flex justify-between items-center gap-[15px] text-black">
-                <p>
-                  Publisher:{" "}
-                  <span className="font-medium">{book.publisher.name}</span>
-                </p>
-
-                <p>
-                  Author:{" "}
-                  <span className="font-medium">{book.author.fullname}</span>
-                </p>
-              </div>
 
               <div className="flex items-center gap-[15px]">
                 {book && book?.discount > 0 ? (
@@ -197,39 +187,48 @@ function BookDetail({ book }: Props) {
               </div>
 
               <div className="space-y-[15px]">
-                <div className="w-full flex items-center gap-[15px]">
-                  <h5 className="font-medium ">Quantity:</h5>
-                  <div className="relative flex justify-between items-center max-w-[8rem] border border-gray-300 rounded-sm">
-                    <button
-                      type="button"
-                      onClick={HandleDecrement}
-                      disabled={quantity <= 1}
-                      className=" p-3 h-11 outline-none"
-                    >
-                      <HiOutlineMinusSmall size={22} />
-                    </button>
-                    <input
-                      type="number"
-                      name="quantity"
-                      readOnly
-                      className="h-11 text-center text-black w-11 outline-none placeholder:text-[1.2rem] font-medium"
-                      placeholder="1"
-                      min={1}
-                      max={book?.stock! > 15 ? 15 : book?.stock!}
-                      value={quantity}
-                    />
-                    <button
-                      type="button"
-                      onClick={HandleIncrement}
-                      disabled={
-                        quantity >= (book?.stock! > 15 ? 15 : book?.stock!)
-                      }
-                      className=" p-3 h-11 outline-none"
-                    >
-                      <HiOutlinePlusSmall size={22} />
-                    </button>
+                {book && book.stock > 0 ? (
+                  <div className="w-full flex items-center gap-[15px]">
+                    <h5 className="font-medium ">Quantity:</h5>
+                    <div className="relative flex justify-between items-center max-w-[8rem] border border-gray-300 rounded-sm">
+                      <button
+                        type="button"
+                        onClick={HandleDecrement}
+                        disabled={quantity <= 1}
+                        className=" p-3 h-11 outline-none"
+                      >
+                        <HiOutlineMinusSmall size={22} />
+                      </button>
+                      <input
+                        type="number"
+                        name="quantity"
+                        readOnly
+                        className="h-11 text-center text-black w-11 outline-none placeholder:text-[1.2rem] font-medium"
+                        placeholder="1"
+                        min={1}
+                        max={book?.stock! > 15 ? 15 : book?.stock!}
+                        value={quantity}
+                      />
+                      <button
+                        type="button"
+                        onClick={HandleIncrement}
+                        disabled={
+                          quantity >= (book?.stock! > 15 ? 15 : book?.stock!)
+                        }
+                        className=" p-3 h-11 outline-none"
+                      >
+                        <HiOutlinePlusSmall size={22} />
+                      </button>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <button
+                    type="button"
+                    className="p-[10px] w-full uppercase text-[0.9rem] font-semibold border bg-transparent border-[#C62028] text-[#C62028]"
+                  >
+                    Out of stock
+                  </button>
+                )}
 
                 <button
                   type="submit"

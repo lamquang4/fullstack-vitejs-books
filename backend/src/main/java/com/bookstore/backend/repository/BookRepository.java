@@ -23,4 +23,10 @@ Page<Book> findByCategory_SlugAndStatus(String slug, Integer status, Pageable pa
 
 Page<Book> findByTitleContainingIgnoreCaseAndCategory_SlugAndStatus(String title, String slug, Integer status, Pageable pageable);
 
+// lấy sách có discount > 0
+Page<Book> findByDiscountGreaterThanAndStatus(int i, int status, Pageable pageable);
+Page<Book> findByDiscountGreaterThanAndStatusAndTitleContainingIgnoreCase(
+    int discount, int status, String title, Pageable pageable
+);
+
 }

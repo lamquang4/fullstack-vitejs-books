@@ -9,11 +9,7 @@ function RegisterForm() {
     fullname: "",
     email: "",
     password: "",
-    birthday: "",
-    phone: "",
-    otp: "",
   });
-  const [step, setStep] = useState<number>(1);
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const toggleShowPassword = () => {
@@ -44,6 +40,24 @@ function RegisterForm() {
                 Register
               </h2>
               <form className="space-y-[15px]" onSubmit={handleSubmit}>
+                <div className="space-y-[5px]">
+                  <label
+                    htmlFor=""
+                    className="block   text-[0.9rem] font-medium"
+                  >
+                    Fullname
+                  </label>
+                  <input
+                    type="text"
+                    name="fullname"
+                    value={data.fullname}
+                    onChange={handleChange}
+                    className="text-[0.9rem] block w-full px-3 py-2 border border-gray-200"
+                    placeholder="Enter fullname"
+                    required
+                  />
+                </div>
+
                 <div className="space-y-[5px]">
                   <label
                     htmlFor=""

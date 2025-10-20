@@ -10,7 +10,7 @@ import SearchMobile from "./SearchMobile";
 import MenuMobile from "./MenuMobile";
 import Overplay from "../Overplay";
 import { useCallback, useEffect, useState } from "react";
-import useGetCategories from "../../../hooks/admin/useGetCategories";
+import useGetCategories from "../../../hooks/client/useGetCategories";
 function Header() {
   const { categories } = useGetCategories();
 
@@ -70,15 +70,16 @@ function Header() {
 
                   <MenuDropDown
                     items={[
+                      { name: "All", href: "/books/all" },
                       ...categories.map((c) => ({
                         name: c.name,
-                        href: `/${c.slug}`,
+                        href: `/books/${c.slug}`,
                       })),
                     ]}
                   />
                 </li>
 
-                <li className="relative group">
+                <li className="cursor-pointer relative after:content-[''] after:absolute after:-bottom-2.5 after:left-0 after:w-full after:h-[1.5px] after:bg-black after:origin-left after:scale-x-0 after:transition-transform after:duration-200 after:ease-in-out hover:after:scale-x-100">
                   <Link to={"/sale"}>Sale</Link>
                 </li>
               </ul>

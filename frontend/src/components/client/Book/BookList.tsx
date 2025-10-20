@@ -19,20 +19,16 @@ function BookList({ category, books, isLoading, total }: Props) {
 
   const sortArray = [
     {
-      name: "Hàng mới",
+      name: "Newest",
       sort: "newest",
     },
     {
-      name: "Giá (thấp-cao)",
+      name: "Price (low-high)",
       sort: "price-asc",
     },
     {
-      name: "Giá (cao-thấp)",
+      name: "Price (high-low)",
       sort: "price-desc",
-    },
-    {
-      name: "Bán chạy nhất",
-      sort: "bestseller",
     },
   ];
 
@@ -51,13 +47,13 @@ function BookList({ category, books, isLoading, total }: Props) {
 
   return (
     <>
-      {!isLoading && category && (
-        <h2 className="mb-[20px] text-black">
-          {category} ({total})
-        </h2>
-      )}
-
       <div className="flex justify-between items-center flex-wrap mb-[35px]">
+        {!isLoading && (category || search) && (
+          <h2 className="mb-[20px] text-black capitalize">
+            {search ? search : category} ({total})
+          </h2>
+        )}
+
         <select
           onChange={handleSortChange}
           value={searchParams.get("sort") ?? ""}

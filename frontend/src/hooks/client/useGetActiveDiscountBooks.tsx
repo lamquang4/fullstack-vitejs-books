@@ -11,7 +11,7 @@ interface ResponseType {
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
-export default function useGetBooksByCategory(slug: string) {
+export default function useGetActiveDiscountBooks() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
@@ -22,9 +22,9 @@ export default function useGetBooksByCategory(slug: string) {
   if (page) query.set("page", page.toString());
   if (q) query.set("q", q || "");
 
-  const url = `${import.meta.env.VITE_BACKEND_URL}/api/book/active${
-    slug !== "all" ? `/${slug}` : ""
-  }?${query.toString()}`;
+  const url = `${
+    import.meta.env.VITE_BACKEND_URL
+  }/api/book/active/discount?${query.toString()}`;
 
   const { data, error, isLoading, mutate } = useSWR<ResponseType>(
     url,

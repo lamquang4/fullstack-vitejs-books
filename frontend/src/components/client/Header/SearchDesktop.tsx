@@ -1,19 +1,36 @@
 import { memo, useState } from "react";
 import { CiSearch } from "react-icons/ci";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, matchPath } from "react-router-dom";
 
 function SearchDesktop() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [search, setSearch] = useState<string>("");
+
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!search.trim()) {
-      return;
+    const query = search.trim();
+    if (!query) return;
+
+    const isBooksPage =
+      location.pathname === "/books/all" ||
+      "/sale" ||
+      matchPath("/books/:slug", location.pathname);
+
+    let target = "";
+
+    if (location.pathname === "/sale") {
+      target = `/sale?q=${encodeURIComponent(query)}`;
+    } else if (isBooksPage) {
+      target = `${location.pathname}?q=${encodeURIComponent(query)}`;
+    } else {
+      target = `/books/all?q=${encodeURIComponent(query)}`;
     }
 
-    navigate(`/search?q=${encodeURIComponent(search.trim())}`);
+    navigate(target);
     setSearch("");
   };
+
   return (
     <div className="relative">
       <form onSubmit={handleSearch}>
@@ -28,7 +45,7 @@ function SearchDesktop() {
           onChange={(e) => setSearch(e.target.value)}
         />
         <button
-          className="absolute top-1/2 right-[7px] transform -translate-y-1/2   flex items-center"
+          className="absolute top-1/2 right-[7px] transform -translate-y-1/2 flex items-center"
           type="submit"
         >
           <CiSearch size={20} />

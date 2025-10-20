@@ -37,7 +37,7 @@ function Footer() {
 
               <li className="py-[8px]">
                 <Link
-                  to="/all"
+                  to="/books/all"
                   className="inline-block max-w-max text-gray-500 font-medium text-[0.9rem] hover:text-black"
                 >
                   All books

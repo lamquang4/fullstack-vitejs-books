@@ -55,7 +55,7 @@ function AddAdmin() {
   };
 
   return (
-    <div className="py-[30px] sm:px-[25px] px-[15px] bg-[#F1F4F9] h-auto">
+    <div className="py-[30px] sm:px-[25px] px-[15px] bg-[#F1F4F9] h-full">
       <form className="flex flex-col gap-7 w-full" onSubmit={handleSubmit}>
         <h2 className=" text-[#74767d]">Add administrator</h2>
 
@@ -104,6 +104,7 @@ function AddAdmin() {
               >
                 <option value="">Select role</option>
                 <option value="0">System admin</option>
+                <option value="1">Sales manager</option>
               </select>
             </div>
 

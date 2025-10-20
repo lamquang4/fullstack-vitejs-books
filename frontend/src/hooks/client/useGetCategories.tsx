@@ -1,15 +1,15 @@
 import axios from "axios";
 import useSWR from "swr";
-import type { Book } from "../../types/type";
+import type { Category } from "../../types/type";
 
 interface ResponseType {
-  books: Book[];
+  categories: Category[];
 }
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
-export default function useGetActiveBooks() {
-  const url = `${import.meta.env.VITE_BACKEND_URL}/api/book/active`;
+export default function useGetCategories() {
+  const url = `${import.meta.env.VITE_BACKEND_URL}/api/category`;
 
   const { data, error, isLoading, mutate } = useSWR<ResponseType>(
     url,
@@ -21,7 +21,7 @@ export default function useGetActiveBooks() {
   );
 
   return {
-    books: data?.books ?? [],
+    categories: data?.categories ?? [],
     isLoading,
     error,
     mutate,

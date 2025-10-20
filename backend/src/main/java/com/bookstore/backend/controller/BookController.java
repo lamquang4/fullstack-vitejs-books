@@ -51,6 +51,21 @@ public class BookController {
         ));
     }
 
+    @GetMapping("/active/discount")
+public ResponseEntity<?> getDiscountedActiveBooks(
+        @RequestParam(defaultValue = "1") int page,
+        @RequestParam(defaultValue = "12") int limit,
+        @RequestParam(required = false) String q
+) {
+    Page<BookDTO> bookPage = bookService.getDiscountedActiveBooks(page, limit, q);
+
+    return ResponseEntity.ok(Map.of(
+        "books", bookPage.getContent(),
+        "totalPages", bookPage.getTotalPages(),
+        "total", bookPage.getTotalElements()
+    ));
+}
+
 @GetMapping("/active/{slug}")
 public ResponseEntity<?> getActiveBooksByCategory(
         @PathVariable("slug") String slug,

@@ -51,10 +51,10 @@ function Pagination({ totalPages, currentPage, totalItems }: Props) {
 
   return (
     <div className="mt-[20px] px-[15px]">
-      <div className="flex items-center justify-center w-full flex-wrap gap-2.5 text-gray-600 text-[0.9rem]">
+      <div className="flex items-center justify-center w-full flex-wrap gap-2.5 text-[#C62028] text-[0.9rem]">
         <button
           type="button"
-          className="h-8.5 w-8.5 flex justify-center items-center rounded-full border border-gray-600"
+          className="h-8.5 w-8.5 flex justify-center items-center border border-[#C62028]"
           disabled={currentPage <= 1}
           onClick={() => currentPage > 1 && goToPage(currentPage - 1)}
         >
@@ -68,7 +68,7 @@ function Pagination({ totalPages, currentPage, totalItems }: Props) {
                 type="button"
                 disabled
                 key={`ellipsis-${index}`}
-                className="group h-8.5 w-8.5 flex justify-center items-center rounded-full font-medium border border-gray-600"
+                className="group h-8.5 w-8.5 flex justify-center items-center   font-medium border border-[#C62028]"
               >
                 ...
               </button>
@@ -79,10 +79,10 @@ function Pagination({ totalPages, currentPage, totalItems }: Props) {
             <button
               key={page}
               onClick={() => goToPage(page as number)}
-              className={`h-8.5 w-8.5 border flex justify-center items-center font-medium rounded-full ${
+              className={`h-8.5 w-8.5 border border-[#C62028] flex justify-center items-center font-medium   ${
                 currentPage === page
-                  ? "bg-black text-white"
-                  : "border-gray-600 hover:bg-gray-50"
+                  ? "bg-[#C62028] text-white"
+                  : " hover:bg-gray-50"
               }`}
             >
               {page}
@@ -93,7 +93,7 @@ function Pagination({ totalPages, currentPage, totalItems }: Props) {
         <button
           disabled={currentPage >= totalPages}
           onClick={() => currentPage < totalPages && goToPage(currentPage + 1)}
-          className="h-8.5 w-8.5 flex justify-center items-center rounded-full border border-gray-600"
+          className="h-8.5 w-8.5 flex justify-center items-center  border border-[#C62028]"
         >
           <GrFormNext size={20} />
         </button>

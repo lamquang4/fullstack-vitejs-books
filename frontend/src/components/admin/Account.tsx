@@ -35,35 +35,6 @@ function Account() {
               />
             </div>
 
-            <div className="flex flex-wrap md:flex-nowrap gap-[15px]">
-              <div className="flex flex-col gap-1 w-full">
-                <label htmlFor="" className="text-[0.9rem]  font-medium">
-                  Phone
-                </label>
-                <input
-                  type="text"
-                  name="phone"
-                  inputMode="numeric"
-                  value={"057975757575"}
-                  readOnly
-                  className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
-                />
-              </div>
-
-              <div className="flex flex-col gap-1 w-full">
-                <label htmlFor="" className="text-[0.9rem]  font-medium">
-                  Birthday
-                </label>
-                <input
-                  type="date"
-                  name="birthday"
-                  value={"02-05-2004"}
-                  readOnly
-                  className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
-                />
-              </div>
-            </div>
-
             <div className="flex flex-col gap-1 w-full ">
               <label htmlFor="" className="text-[0.9rem]  font-medium">
                 Role
@@ -71,7 +42,7 @@ function Account() {
               <input
                 type="text"
                 name="role"
-                value={user === 0 ? "System admin" : ""}
+                value={user === 0 ? "System admin" : "Sales manager"}
                 readOnly
                 className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
               />

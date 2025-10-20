@@ -1,5 +1,5 @@
 import { memo, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { matchPath, useLocation, useNavigate } from "react-router-dom";
 
 type Props = {
   toggleSearch: () => void;
@@ -8,16 +8,30 @@ type Props = {
 
 function SearchMobile({ toggleSearch, openSearch }: Props) {
   const navigate = useNavigate();
-
+  const location = useLocation();
   const [search, setSearch] = useState<string>("");
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!search.trim()) {
-      return;
+    const query = search.trim();
+    if (!query) return;
+
+    const isBooksPage =
+      location.pathname === "/books/all" ||
+      "/sale" ||
+      matchPath("/books/:slug", location.pathname);
+
+    let target = "";
+    
+    if (location.pathname === "/sale") {
+      target = `/sale?q=${encodeURIComponent(query)}`;
+    } else if (isBooksPage) {
+      target = `${location.pathname}?q=${encodeURIComponent(query)}`;
+    } else {
+      target = `/books/all?q=${encodeURIComponent(query)}`;
     }
 
-    navigate(`/search?q=${encodeURIComponent(search.trim())}`);
+    navigate(target);
     setSearch("");
     toggleSearch();
   };

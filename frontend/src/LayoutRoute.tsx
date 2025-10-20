@@ -42,7 +42,7 @@ function LayoutRoute() {
       <Route path="/order" element={<OrderPage />} />
       <Route path="/order/:code" element={<OrderDetailPage />} />
       <Route path="/book/:slug" element={<BookDetailPage />} />
-      <Route path="/:slug" element={<BookCategoryPage />} />
+      <Route path="/books/:slug" element={<BookCategoryPage />} />
       <Route path="/sale" element={<BookSalePage />} />
 
       <Route path="/admin/login" element={<LoginAdminPage />} />

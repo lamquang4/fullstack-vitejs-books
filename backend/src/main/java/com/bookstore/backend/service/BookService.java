@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 import java.util.Collections; 
 import java.util.Comparator;
 
-
 @Service
 public class BookService {
 
@@ -115,10 +114,9 @@ public class BookService {
 
 public Page<BookDTO> getAllActiveBooks(int page, String q) {
    int limit = 12;
-   
+   int status = 1;
     Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
     Page<Book> bookPage;
-int status = 1;
 
     if (q != null && !q.isEmpty()) {
         bookPage = bookRepository.findByTitleContainingIgnoreCaseAndStatus(q, status, pageable);
@@ -179,6 +177,72 @@ int status = 1;
         return dto;
     });
 }
+
+public Page<BookDTO> getDiscountedActiveBooks(int page, int limit, String q) {
+    Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
+    int status = 1; // chỉ lấy sách active
+    Page<Book> bookPage;
+
+    if (q != null && !q.isEmpty()) {
+        bookPage = bookRepository.findByDiscountGreaterThanAndStatusAndTitleContainingIgnoreCase(0, status, q, pageable);
+    } else {
+        bookPage = bookRepository.findByDiscountGreaterThanAndStatus(0, status, pageable);
+    }
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    return bookPage.map(book -> {
+        BookDTO dto = new BookDTO();
+        dto.setId(book.getId());
+        dto.setTitle(book.getTitle());
+        dto.setPrice(book.getPrice());
+        dto.setDiscount(book.getDiscount());
+        dto.setSlug(book.getSlug());
+        dto.setStock(book.getStock());
+        dto.setStatus(book.getStatus());
+
+        if (book.getAuthor() != null) {
+            dto.setAuthor(new AuthorDTO(
+                book.getAuthor().getId(),
+                book.getAuthor().getFullname(),
+                book.getAuthor().getSlug()
+            ));
+        }
+
+        if (book.getPublisher() != null) {
+            dto.setPublisher(new PublisherDTO(
+                book.getPublisher().getId(),
+                book.getPublisher().getName(),
+                book.getPublisher().getSlug()
+            ));
+        }
+
+        if (book.getCategory() != null) {
+            dto.setCategory(new CategoryDTO(
+                book.getCategory().getId(),
+                book.getCategory().getName(),
+                book.getCategory().getSlug()
+            ));
+        }
+
+        if (book.getImages() != null && !book.getImages().isEmpty()) {
+            List<ImageBookDTO> imageDTOs = book.getImages().stream()
+                .sorted(Comparator.comparing(img -> img.getCreatedAt()))
+                .map(img -> new ImageBookDTO(
+                    img.getId(),
+                    img.getImage(),
+                    img.getCreatedAt() != null ? img.getCreatedAt().format(formatter) : null
+                ))
+                .collect(Collectors.toList());
+            dto.setImages(imageDTOs);
+        } else {
+            dto.setImages(Collections.emptyList());
+        }
+
+        return dto;
+    });
+}
+
 
 public Page<BookDTO> getActiveBooksByCategory(String categorySlug, int page, String q) {
    int limit = 12;
@@ -374,7 +438,7 @@ List<ImageBookDTO> imageDTOs = (book.getImages() != null && !book.getImages().is
             book.getThickness(),
             book.getStock(),
             book.getStatus(),
-            book.getCreatedAt() != null ? book.getCreatedAt().format(formatter) : null, // convert createdAt của book
+            book.getCreatedAt() != null ? book.getCreatedAt().format(formatter) : null,
             authorDTO,
             publisherDTO,
             categoryDTO,

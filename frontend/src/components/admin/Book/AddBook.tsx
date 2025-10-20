@@ -33,7 +33,7 @@ function AddBook() {
     status: "",
   });
 
-  const max = 20;
+  const max = 10;
 
   const {
     previewImages,
@@ -63,6 +63,21 @@ function AddBook() {
 
     if (data.discount > data.price) {
       toast.error("Discount cannot be greater than price");
+      return;
+    }
+
+    if (data.discount < 0) {
+      toast.error("Discount amount must be greater than or equal 0");
+      return;
+    }
+
+    if (data.price <= 0) {
+      toast.error("Price must be greater than 0");
+      return;
+    }
+
+    if (data.stock < 0) {
+      toast.error("Stock must be greater than or equal 0");
       return;
     }
 

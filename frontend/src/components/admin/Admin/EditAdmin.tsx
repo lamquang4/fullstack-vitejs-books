@@ -83,7 +83,7 @@ function EditAdmin() {
   };
 
   return (
-    <div className="py-[30px] sm:px-[25px] px-[15px] bg-[#F1F4F9] h-auto">
+    <div className="py-[30px] sm:px-[25px] px-[15px] bg-[#F1F4F9] h-full">
       <form className="flex flex-col gap-7 w-full" onSubmit={handleSubmit}>
         <h2 className="text-[#74767d]">Edit administrator</h2>
 
@@ -132,7 +132,8 @@ function EditAdmin() {
                   className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
                 >
                   <option value="">Select role</option>
-                  <option value="0">System user</option>
+                  <option value="0">System admin</option>
+                  <option value="1">Sales manager</option>
                 </select>
               </div>
 

@@ -37,7 +37,7 @@ function ProfileMenu({ menuOpen, toggleMenu }: Props) {
               </p>
 
               <Link
-                to={"/account"}
+                to={"/admin/account"}
                 className="w-ful block hover:bg-gray-100 px-3 py-3.5"
               >
                 <div className="flex items-center gap-[8px]">

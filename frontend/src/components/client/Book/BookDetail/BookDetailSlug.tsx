@@ -16,7 +16,7 @@ function BookDetailSlug() {
 
     if (!book) {
       toast.error("Book not found");
-      navigate("/");
+      navigate("/", { replace: true });
       return;
     }
   }, [book, isLoading, navigate]);
@@ -28,7 +28,7 @@ function BookDetailSlug() {
     },
     {
       name: book?.category?.name ?? "",
-      href: `/${book?.category?.slug ?? ""}`,
+      href: `/books/${book?.category?.slug ?? ""}`,
     },
     {
       name: book?.title ?? "",
@@ -42,7 +42,8 @@ function BookDetailSlug() {
       ) : (
         <>
           <BreadCrumb items={array} />
-          <BookDetail book={book!} />
+
+          {book && <BookDetail book={book} />}
         </>
       )}
     </>

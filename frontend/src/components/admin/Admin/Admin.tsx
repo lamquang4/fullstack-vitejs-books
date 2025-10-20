@@ -115,14 +115,11 @@ function Admin() {
                   </td>
                   <td className="p-[1rem]  ">{admin.email}</td>
 
-
                   <td className="p-[1rem]  ">
                     {admin.role === 0
                       ? "System admin"
                       : admin.role === 1
                       ? "Sales manager"
-                      : admin.role === 2
-                      ? "Content manager"
                       : ""}
                   </td>
                   <td className="p-[1rem]  ">

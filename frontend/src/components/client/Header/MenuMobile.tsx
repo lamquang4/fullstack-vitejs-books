@@ -3,11 +3,13 @@ import Overplay from "../Overplay";
 import { FaPlus } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import useGetCategories from "../../../hooks/client/useGetCategories";
 type MenuMobileProps = {
   isOpen: boolean;
   toggleMenu: () => void;
 };
 function MenuMobile({ isOpen, toggleMenu }: MenuMobileProps) {
+  const { categories } = useGetCategories();
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
 
   const toggleOpen = (menu: string) => {
@@ -60,7 +62,7 @@ function MenuMobile({ isOpen, toggleMenu }: MenuMobileProps) {
             onClick={() => toggleOpen(`a3`)}
           >
             <div className="w-full flex justify-between items-center py-[15px]">
-              <p>Giảm giá</p>
+              <p>Category</p>
               <button>
                 {openMenus[`a3`] ? (
                   <FaMinus className="text-[#3b3a3a]" size={15} />
@@ -77,13 +79,29 @@ function MenuMobile({ isOpen, toggleMenu }: MenuMobileProps) {
             >
               <li>
                 <Link
-                  to={"/sale/nam"}
+                  to={`/books/all`}
                   className="py-[15px] text-[0.9rem] text-[#444] font-medium hover:text-black"
                 >
-                  Giảm giá đồ nam
+                  All
                 </Link>
               </li>
+              {categories.map((category) => (
+                <li key={category.id}>
+                  <Link
+                    to={`/books/${category.slug}`}
+                    className="py-[15px] text-[0.9rem] text-[#444] font-medium hover:text-black"
+                  >
+                    {category.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
+          </li>
+
+          <li className="border-b border-gray-300 cursor-pointer">
+            <Link to={"/sale"} className="py-[15px]">
+              Sale
+            </Link>
           </li>
         </ul>
       </nav>
