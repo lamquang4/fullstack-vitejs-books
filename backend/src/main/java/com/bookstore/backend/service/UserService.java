@@ -1,12 +1,9 @@
 package com.bookstore.backend.service;
-import com.bookstore.backend.dto.AddressDTO;
-import com.bookstore.backend.dto.AdminDTO;
-import com.bookstore.backend.dto.CustomerDTO;
-import com.bookstore.backend.entities.Address;
-import com.bookstore.backend.entities.User;
-import com.bookstore.backend.repository.AddressRepository;
 import com.bookstore.backend.repository.OrderRepository;
 import com.bookstore.backend.repository.UserRepository;
+import com.bookstore.backend.repository.AddressRepository;
+import com.bookstore.backend.dto.UserDTO;
+import com.bookstore.backend.entities.User;
 import com.bookstore.backend.repository.CartRepository;
 import com.bookstore.backend.utils.ValidationUtils;
 import jakarta.persistence.EntityNotFoundException;
@@ -38,190 +35,132 @@ public class UserService {
     }
 
     // customer
-    public Page<CustomerDTO> getAllCustomers(int page, int limit, String q, Integer status) {
+public Page<UserDTO> getAllCustomers(int page, int limit, String q, Integer status) {
     Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
     List<Integer> roles = List.of(3);
 
-    Page<User> usersPage;
+    Page<User> customersPage;
+
     if (q != null && !q.isEmpty() && status != null) {
-        usersPage = userRepository.findByEmailContainingIgnoreCaseAndRoleInAndStatus(q, roles, status, pageable);
+        customersPage = userRepository.findByEmailContainingIgnoreCaseAndRoleInAndStatus(q, roles, status, pageable);
     } else if (q != null && !q.isEmpty()) {
-        usersPage = userRepository.findByEmailContainingIgnoreCaseAndRoleIn(q, roles, pageable);
+        customersPage = userRepository.findByEmailContainingIgnoreCaseAndRoleIn(q, roles, pageable);
     } else if (status != null) {
-        usersPage = userRepository.findByRoleInAndStatus(roles, status, pageable);
+        customersPage = userRepository.findByRoleInAndStatus(roles, status, pageable);
     } else {
-        usersPage = userRepository.findByRoleIn(roles, pageable);
+        customersPage = userRepository.findByRoleIn(roles, pageable);
     }
 
-    List<CustomerDTO> dtos = usersPage.getContent().stream()
-            .map(user -> CustomerDTO.builder()
-                    .id(user.getId())
-                    .email(user.getEmail())
-                    .role(user.getRole())
-                    .status(user.getStatus())
-                    .build())
-            .toList();
+    List<UserDTO> dtos = customersPage.getContent().stream().map(user -> 
+        UserDTO.builder()
+               .id(user.getId())
+               .email(user.getEmail())
+               .role(user.getRole())
+               .status(user.getStatus())
+               .fullname(user.getFullname())
+               .build()
+    ).toList();
 
-    return new PageImpl<>(dtos, pageable, usersPage.getTotalElements());
-}
-
-    public Optional<User> getCustomerById(String id) {
-        return userRepository.findById(id);
-    }
-
-       public User createCustomer(User user) {
-        if (!ValidationUtils.validateEmail(user.getEmail())) {
-            throw new IllegalArgumentException("Invalid email");
-        }
-       
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setStatus(1);
-        user.setRole(3);
-        return userRepository.save(user);
-    }
-
-    public User updateCustomer(String id, User user) {
-    if (!ValidationUtils.validateEmail(user.getEmail())) {
-        throw new IllegalArgumentException("Invalid email");
-    }
-    return userRepository.findById(id)
-            .map(existingUser -> {
-                existingUser.setEmail(user.getEmail());
-                existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
-                existingUser.setStatus(user.getStatus());
-                existingUser.setRole(3);
-                return userRepository.save(existingUser);
-            })
-            .orElse(null);
+    return new PageImpl<>(dtos, pageable, customersPage.getTotalElements());
 }
 
     // admin
-public Page<AdminDTO> getAllAdmins(int page, int limit, String q, Integer status) {
-        Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
-        List<Integer> roles = List.of(0, 1, 2); // admin roles
+public Page<UserDTO> getAllAdmins(int page, int limit, String q, Integer status) {
+    Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
+    List<Integer> roles = List.of(0, 1, 2);
 
-        Page<User> adminsPage;
+    Page<User> adminsPage;
 
-        if (q != null && !q.isEmpty() && status != null) {
-            adminsPage = userRepository.findByEmailContainingIgnoreCaseAndRoleInAndStatus(q, roles, status, pageable);
-        } else if (q != null && !q.isEmpty()) {
-            adminsPage = userRepository.findByEmailContainingIgnoreCaseAndRoleIn(q, roles, pageable);
-        } else if (status != null) {
-            adminsPage = userRepository.findByRoleInAndStatus(roles, status, pageable);
-        } else {
-            adminsPage = userRepository.findByRoleIn(roles, pageable);
-        }
+    if (q != null && !q.isEmpty() && status != null) {
+        adminsPage = userRepository.findByEmailContainingIgnoreCaseAndRoleInAndStatus(q, roles, status, pageable);
+    } else if (q != null && !q.isEmpty()) {
+        adminsPage = userRepository.findByEmailContainingIgnoreCaseAndRoleIn(q, roles, pageable);
+    } else if (status != null) {
+        adminsPage = userRepository.findByRoleInAndStatus(roles, status, pageable);
+    } else {
+        adminsPage = userRepository.findByRoleIn(roles, pageable);
+    }
 
-        List<AdminDTO> dtos = adminsPage.getContent().stream().map(user -> {
-            AdminDTO dto = AdminDTO.builder()
+    List<UserDTO> dtos = adminsPage.getContent().stream().map(user -> 
+        UserDTO.builder()
+               .id(user.getId())
+               .email(user.getEmail())
+               .role(user.getRole())
+               .status(user.getStatus())
+               .fullname(user.getFullname())
+               .build()
+    ).toList();
+
+    return new PageImpl<>(dtos, pageable, adminsPage.getTotalElements());
+}
+
+public Optional<UserDTO> getUserById(String id) {
+    return userRepository.findById(id)
+            .map(user -> UserDTO.builder()
                     .id(user.getId())
+                    .fullname(user.getFullname())
                     .email(user.getEmail())
                     .role(user.getRole())
                     .status(user.getStatus())
-                    .build();
+                    .build()
+            );
+}
 
-            Address address = addressRepository.findByUser(user).stream().findFirst().orElse(null);
-            if (address != null) {
-                dto.setAddress(new AddressDTO(
-                        address.getId(),
-                        address.getFullname(),
-                        address.getPhone(),
-                        address.getSpeaddress(),
-                        address.getWard(),
-                        address.getCity()
-                    ));
-            }
-
-            return dto;
-        }).toList();
-
-        return new PageImpl<>(dtos, pageable, adminsPage.getTotalElements());
+  public UserDTO createUser(UserDTO dto) {
+    if (!ValidationUtils.validateEmail(dto.getEmail())) {
+        throw new IllegalArgumentException("Invalid email");
     }
 
-    public Optional<AdminDTO> getAdminById(String id) {
-        return userRepository.findById(id).map(user -> {
-            AdminDTO dto = AdminDTO.builder()
-                    .id(user.getId())
-                    .email(user.getEmail())
-                    .role(user.getRole())
-                    .status(user.getStatus())
-                    .build();
-  Address address = addressRepository.findByUser(user).stream().findFirst().orElse(null);
-            if (address != null) {
-                dto.setAddress(new AddressDTO(
-                        address.getId(),
-                        address.getFullname(),
-                        address.getPhone(),
-                        address.getSpeaddress(),
-                        address.getWard(),
-                        address.getCity()
-                ));
-            }
-            return dto;
-        });
+                if (userRepository.findByEmail(dto.getFullname()).isPresent()) {
+        throw new IllegalArgumentException("Email already exists");
     }
 
-    public AdminDTO createAdmin(AdminDTO adminDTO) {
-        if (!ValidationUtils.validateEmail(adminDTO.getEmail())) {
+    User user = User.builder()
+            .email(dto.getEmail())
+            .fullname(dto.getFullname())
+            .password(passwordEncoder.encode(dto.getPassword()))
+            .status(dto.getStatus() != null ? dto.getStatus() : 1)
+            .role(dto.getRole() != null ? dto.getRole() : 3) 
+            .build();
+
+    User saved = userRepository.save(user);
+
+    dto.setId(saved.getId());
+    dto.setPassword(null);
+    return dto;
+}
+
+
+  public UserDTO updateUser(String id, UserDTO userDTO) {
+    return userRepository.findById(id).map(user -> {
+        if (!ValidationUtils.validateEmail(userDTO.getEmail())) {
             throw new IllegalArgumentException("Invalid email");
         }
 
-        User user = User.builder()
-                .email(adminDTO.getEmail())
-                .password(passwordEncoder.encode(adminDTO.getPassword()))
-                .status(adminDTO.getStatus() != null ? adminDTO.getStatus() : 1)
-                .role(adminDTO.getRole())
-                .build();
+              if (userRepository.findByEmail(userDTO.getFullname()).isPresent()) {
+        throw new IllegalArgumentException("Emailalready exists");
+    }
 
-        User savedUser = userRepository.save(user);
-
-        if (adminDTO.getAddress() != null) {
-            AddressDTO a = adminDTO.getAddress();
-            Address address = Address.builder()
-                    .fullname(a.getFullname())
-                    .phone(a.getPhone())
-                    .speaddress(a.getSpeaddress())
-                    .ward(a.getWard())
-                    .city(a.getCity())
-                    .user(savedUser)
-                    .build();
-            addressRepository.save(address);
+        user.setEmail(userDTO.getEmail());
+        if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         }
+        if (userDTO.getRole() != null) {
+            user.setRole(userDTO.getRole());
+        }
+        if (userDTO.getStatus() != null) {
+            user.setStatus(userDTO.getStatus());
+        }
+        userRepository.save(user);
 
-        adminDTO.setId(savedUser.getId());
-        return adminDTO;
-    }
 
-    public AdminDTO updateAdmin(String id, AdminDTO adminDTO) {
-        return userRepository.findById(id).map(user -> {
-            if (!ValidationUtils.validateEmail(adminDTO.getEmail())) {
-                throw new IllegalArgumentException("Invalid email");
-            }
-            user.setEmail(adminDTO.getEmail());
-            if (adminDTO.getPassword() != null && !adminDTO.getPassword().isEmpty()) {
-                user.setPassword(passwordEncoder.encode(adminDTO.getPassword()));
-            }
-            user.setRole(adminDTO.getRole());
-            user.setStatus(adminDTO.getStatus());
-            userRepository.save(user);
+        userDTO.setId(user.getId());
+        userDTO.setPassword(null); 
+        return userDTO;
+    }).orElse(null);
+}
 
-            if (adminDTO.getAddress() != null) {
-            Address address = addressRepository.findByUser(user).stream().findFirst().orElse(null);
-
-                AddressDTO a = adminDTO.getAddress();
-                address.setFullname(a.getFullname());
-                address.setPhone(a.getPhone());
-                address.setSpeaddress(a.getSpeaddress());
-                address.setWard(a.getWard());
-                address.setCity(a.getCity());
-                addressRepository.save(address);
-            }
-
-            adminDTO.setId(user.getId());
-            return adminDTO;
-        }).orElse(null);
-    }
-
+// cập nhật status
     public User updateUserStatus(String id, Integer status) {
         return userRepository.findById(id)
                 .map(user -> {

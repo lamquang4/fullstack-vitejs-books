@@ -1,18 +1,10 @@
 export interface User {
   id?: string;
+  fullname: string;
   email: string;
   role?: number;
   password?: string;
   status?: number;
-}
-
-export interface Admin {
-  id?: string;
-  email: string;
-  role?: number;
-  password?: string;
-  status?: number;
-  address: Address;
 }
 
 export interface Category {

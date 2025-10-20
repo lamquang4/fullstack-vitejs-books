@@ -82,8 +82,8 @@ function Customer() {
         <table className="w-[350%] border-collapse sm:w-[220%] xl:w-full text-[0.9rem]">
           <thead>
             <tr className="bg-[#E9EDF2] text-left">
+              <th className="p-[1rem]  ">Fullname</th>
               <th className="p-[1rem]  ">Email</th>
-
               <th className="p-[1rem]   relative">
                 <FilterDropDownMenu
                   title="Status"
@@ -104,8 +104,10 @@ function Customer() {
             ) : customers.length > 0 ? (
               customers.map((customer) => (
                 <tr key={customer.id} className="hover:bg-[#f2f3f8]">
-                  <td className="p-[1rem]  font-semibold">{customer.email}</td>
-
+                  <td className="p-[1rem]  font-semibold">
+                    {customer.fullname}
+                  </td>
+                  <td className="p-[1rem]">{customer.email}</td>
                   <td className="p-[1rem]  ">
                     {customer.status === 1 ? "Normal" : "Blocked"}
                   </td>

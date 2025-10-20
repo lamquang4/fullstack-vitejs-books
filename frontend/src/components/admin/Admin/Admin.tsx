@@ -88,8 +88,6 @@ function Admin() {
               <th className="p-[1rem]">Fullname</th>
 
               <th className="p-[1rem]">Email</th>
-              <th className="p-[1rem]">Phone</th>
-              <th className="p-[1rem]  ">Address</th>
 
               <th className="p-[1rem]  ">Role</th>
               <th className="p-[1rem]  ">
@@ -113,18 +111,10 @@ function Admin() {
               admins.map((admin) => (
                 <tr key={admin.id} className="hover:bg-[#f2f3f8]">
                   <td className="p-[1rem] text-[0.9rem] font-semibold">
-                    {admin.address.fullname}
+                    {admin.fullname}
                   </td>
                   <td className="p-[1rem]  ">{admin.email}</td>
-                  <td className="p-[1rem]  ">{admin.address.phone}</td>
 
-                  <td className="p-[1rem]">
-                    {admin.address?.speaddress}
-                    {", "}
-                    {admin.address?.city}
-                    {", "}
-                    {admin.address?.ward}
-                  </td>
 
                   <td className="p-[1rem]  ">
                     {admin.role === 0

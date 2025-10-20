@@ -155,7 +155,7 @@ function Book() {
                           </p>
                         </div>
                       ) : (
-                        <p className="font-medium">
+                        <p className="font-medium text-[#C62028]">
                           {book.price.toLocaleString("vi-VN")}₫
                         </p>
                       )}

@@ -1,16 +1,17 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import useAddCustomer from "../../../hooks/admin/useAddCustomer";
 import { Link } from "react-router-dom";
 import { validateEmail } from "../../../utils/validateEmail";
+import useAddUser from "../../../hooks/admin/useAddUser";
 
 function AddCustomer() {
   const [data, setData] = useState({
+    fullname: "",
     email: "",
     password: "",
   });
 
-  const { addCustomer, isLoading } = useAddCustomer();
+  const { addUser, isLoading } = useAddUser();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -33,12 +34,14 @@ function AddCustomer() {
       return;
     }
     try {
-      await addCustomer({
+      await addUser({
+        fullname: data.fullname.trim(),
         email: data.email.toLowerCase().trim(),
         password: data.password.trim(),
       });
 
       setData({
+        fullname: "",
         email: "",
         password: "",
       });
@@ -54,7 +57,21 @@ function AddCustomer() {
 
         <div className="flex gap-[25px] w-full flex-col">
           <div className="md:p-[25px] p-[15px] bg-white rounded-md flex flex-col gap-[20px] w-full">
-            <h5 className="font-bold text-[#74767d]">Account information</h5>
+            <h5 className="font-bold text-[#74767d]">General information</h5>
+
+            <div className="flex flex-col gap-1">
+              <label htmlFor="" className="text-[0.9rem] font-medium">
+                Fullname
+              </label>
+              <input
+                type="text"
+                name="fullname"
+                value={data.fullname}
+                onChange={handleChange}
+                required
+                className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
+              />
+            </div>
 
             <div className="flex flex-col gap-1">
               <label htmlFor="" className="text-[0.9rem] font-medium">
@@ -63,7 +80,6 @@ function AddCustomer() {
               <input
                 type="email"
                 name="email"
-                inputMode="numeric"
                 value={data.email}
                 onChange={handleChange}
                 required

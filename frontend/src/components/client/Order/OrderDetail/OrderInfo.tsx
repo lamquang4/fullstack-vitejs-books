@@ -153,7 +153,7 @@ function OrderInfo({ order, isLoading }: Props) {
                             {item.price.toLocaleString("vi-VN")}₫
                           </del>
 
-                          <p className="font-medium text-[#c00]">
+                          <p className="font-medium text-[#C62028]">
                             {(item.price - item.discount).toLocaleString(
                               "vi-VN"
                             )}
@@ -161,7 +161,7 @@ function OrderInfo({ order, isLoading }: Props) {
                           </p>
                         </div>
                       ) : (
-                        <p className="font-medium">
+                        <p className="font-medium text-[#C62028]">
                           {item.price.toLocaleString("vi-VN")}₫
                         </p>
                       )}

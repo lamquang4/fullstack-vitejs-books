@@ -16,22 +16,6 @@ function AccountInfo() {
               htmlFor=""
               className="block text-left text-[0.9rem] font-medium"
             >
-              Fullname:
-            </label>
-            <input
-              type="text"
-              name="fullname"
-              className="w-full rounded-sm p-[6px_10px] text-[0.9rem] border border-gray-300  focus:outline-0"
-              value={user.fullname || ""}
-              readOnly
-            />
-          </div>
-
-          <div className="space-y-[5px]">
-            <label
-              htmlFor=""
-              className="block text-left text-[0.9rem] font-medium"
-            >
               Email:
             </label>
             <input
@@ -39,39 +23,6 @@ function AccountInfo() {
               name="email"
               className="w-full  rounded-sm p-[6px_10px] text-[0.9rem] border border-gray-300  focus:outline-0"
               value={user.email || ""}
-              readOnly
-            />
-          </div>
-
-          <div className="space-y-[5px]">
-            <label
-              htmlFor=""
-              className="block text-left text-[0.9rem] font-medium"
-            >
-              Phone:
-            </label>
-            <input
-              type="number"
-              name="phone"
-              inputMode="numeric"
-              className="w-full rounded-sm p-[6px_10px] text-[0.9rem] border border-gray-300  focus:outline-0"
-              value={user.phone || ""}
-              readOnly
-            />
-          </div>
-
-          <div className="space-y-[5px]">
-            <label
-              htmlFor=""
-              className="block text-left text-[0.9rem] font-medium"
-            >
-              Birthday:
-            </label>
-            <input
-              type="date"
-              name="birthday"
-              className="w-full rounded-sm p-[6px_10px] text-[0.9rem] border border-gray-300  focus:outline-0"
-              value={user.birthday.slice(0, 10) || ""}
               readOnly
             />
           </div>

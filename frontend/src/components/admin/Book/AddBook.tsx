@@ -61,6 +61,11 @@ function AddBook() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (data.discount > data.price) {
+      toast.error("Discount cannot be greater than price");
+      return;
+    }
+
     if (data.numberOfPages <= 0) {
       toast.error("Number of pages must be greater than 0");
       return;
@@ -145,8 +150,6 @@ function AddBook() {
       toast.error(err?.response?.data?.message);
     }
   };
-
-  console.log(selectedFiles);
 
   return (
     <>

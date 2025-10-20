@@ -32,7 +32,7 @@ function OrderHistory() {
   };
   const orders: OrderFull[] = [
     {
-      _id: "1",
+      id: "1",
       orderCode: "ORD12345",
       user: "user1",
       fullname: "John Doe",
@@ -167,7 +167,7 @@ function OrderHistory() {
                               </span>
                             </>
                           ) : (
-                            <span className="font-medium">
+                            <span className="font-medium text-[#C62028]">
                               {item.price.toLocaleString("vi-VN")} ₫
                             </span>
                           )}
@@ -180,7 +180,7 @@ function OrderHistory() {
 
               <div className="py-[15px]">
                 <div className="flex justify-between items-center flex-wrap gap-[10px]">
-                  <h5 className="  font-medium">
+                  <h5 className="font-medium">
                     Total: {order.total.toLocaleString("vi-VN")}₫
                   </h5>
 

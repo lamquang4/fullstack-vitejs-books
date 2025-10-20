@@ -1,60 +1,44 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import useGetProvinces from "../../../hooks/useGetProvincesVN";
-import useGetAdmin from "../../../hooks/admin/useGetAdmin";
-import useUpdateAdmin from "../../../hooks/admin/useUpdateAdmin";
 import { validateEmail } from "../../../utils/validateEmail";
-import { validatePhone } from "../../../utils/validatePhone";
+import useGetUser from "../../../hooks/admin/useGetUser";
+import useUpdateUser from "../../../hooks/admin/useUpdateUser";
 
 function EditAdmin() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { provinces } = useGetProvinces();
-  const { admin, isLoading, mutate } = useGetAdmin(id as string);
-  const { updateAdmin, isLoading: isLoadingUpdate } = useUpdateAdmin(
+  const { user, isLoading, mutate } = useGetUser(id as string);
+  const { updateUser, isLoading: isLoadingUpdate } = useUpdateUser(
     id as string
   );
 
   const [data, setData] = useState({
     email: "",
     password: "",
-    phone: "",
     fullname: "",
-    speaddress: "",
-    city: "",
-    ward: "",
     role: "",
     status: "",
   });
 
-  const selectedProvince = useMemo(
-    () => provinces?.find((p) => p.province === data.city),
-    [provinces, data.city]
-  );
-
   useEffect(() => {
     if (isLoading) return;
 
-    if (!admin) {
+    if (!user) {
       toast.error("Admin not found");
       navigate("/admin/admins");
       return;
     }
 
     setData({
-      fullname: admin.address?.fullname || "",
-      email: admin.email || "",
+      fullname: user.fullname || "",
+      email: user.email || "",
       password: "",
-      role: admin.role?.toString() || "",
-      phone: admin.address?.phone || "",
-      speaddress: admin.address?.speaddress || "",
-      city: admin.address?.city || "",
-      ward: admin.address?.ward || "",
-      status: admin.status?.toString() || "",
+      role: user.role?.toString() || "",
+      status: user.status?.toString() || "",
     });
-  }, [isLoading, admin, navigate]);
+  }, [isLoading, user, navigate]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -73,28 +57,18 @@ function EditAdmin() {
       mutate(undefined, true);
       return;
     }
-    if (!validatePhone(data.phone)) {
-      toast.error("Invalid phone");
-      mutate(undefined, true);
-      return;
-    }
+
     if (data.password.trim().length < 6 && data.password) {
       toast.error("Password must be at least 6 characters long");
       return;
     }
     try {
-      await updateAdmin({
-        email: data.email,
-        password: data.password,
+      await updateUser({
+        fullname: data.fullname.trim(),
+        email: data.email.trim(),
+        password: data.password.trim(),
         role: Number(data.role),
         status: Number(data.status),
-        address: {
-          fullname: data.fullname,
-          phone: data.phone,
-          speaddress: data.speaddress,
-          city: data.city,
-          ward: data.ward,
-        },
       });
 
       setData((prev) => ({
@@ -115,7 +89,21 @@ function EditAdmin() {
 
         <div className="flex gap-[25px] w-full flex-col">
           <div className="md:p-[25px] p-[15px] bg-white rounded-md flex flex-col gap-[20px] w-full">
-            <h5 className="font-bold text-[#74767d]">Account information</h5>
+            <h5 className="font-bold text-[#74767d]">General information</h5>
+
+            <div className="flex flex-col gap-1">
+              <label htmlFor="" className="text-[0.9rem] font-medium">
+                Fullname
+              </label>
+              <input
+                type="text"
+                name="fullname"
+                value={data.fullname}
+                onChange={handleChange}
+                required
+                className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
+              />
+            </div>
 
             <div className="flex flex-col gap-1">
               <label htmlFor="" className="text-[0.9rem] font-medium">
@@ -144,7 +132,7 @@ function EditAdmin() {
                   className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
                 >
                   <option value="">Select role</option>
-                  <option value="0">System admin</option>
+                  <option value="0">System user</option>
                 </select>
               </div>
 
@@ -177,102 +165,6 @@ function EditAdmin() {
                 onChange={handleChange}
                 className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
               />
-            </div>
-          </div>
-
-          <div className="md:p-[25px] p-[15px] bg-white rounded-md flex flex-col gap-[20px] w-full">
-            <h5 className="font-bold text-[#74767d]">Contact information</h5>
-
-            <div className="flex flex-wrap md:flex-nowrap gap-[15px]">
-              <div className="flex flex-col gap-1 w-full">
-                <label htmlFor="" className="text-[0.9rem] font-medium">
-                  Fullname
-                </label>
-                <input
-                  type="text"
-                  name="fullname"
-                  value={data.fullname}
-                  onChange={handleChange}
-                  required
-                  className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
-                />
-              </div>
-              <div className="flex flex-col gap-1 w-full">
-                <label htmlFor="" className="text-[0.9rem] font-medium">
-                  Phone
-                </label>
-                <input
-                  type="number"
-                  name="phone"
-                  inputMode="numeric"
-                  value={data.phone}
-                  onChange={handleChange}
-                  required
-                  className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
-                />
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <label htmlFor="" className="text-[0.9rem] font-medium">
-                Specific address
-              </label>
-              <input
-                type="text"
-                name="speaddress"
-                value={data.speaddress}
-                onChange={handleChange}
-                required
-                className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
-              />
-            </div>
-
-            <div className="flex flex-wrap md:flex-nowrap gap-[15px]">
-              <div className="flex flex-col gap-1 w-full">
-                <label htmlFor="" className="text-[0.9rem] font-medium">
-                  Province/city
-                </label>
-                <select
-                  name="city"
-                  value={data.city}
-                  onChange={(e) =>
-                    setData((prev) => ({
-                      ...prev,
-                      city: e.target.value,
-                      ward: "",
-                    }))
-                  }
-                  required
-                  className="border border-gray-300 p-[6px_10px] w-full outline-none focus:border-gray-400"
-                >
-                  <option value="">Select province/city</option>
-                  {provinces?.map((province) => (
-                    <option key={province.id} value={province.province}>
-                      {province.province}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="flex flex-col gap-1 w-full">
-                <label htmlFor="" className="text-[0.9rem] font-medium">
-                  Ward/Commune
-                </label>
-                <select
-                  name="ward"
-                  value={data.ward}
-                  onChange={handleChange}
-                  required
-                  className="border border-gray-300 p-[6px_10px] w-full outline-none focus:border-gray-400"
-                >
-                  <option value="">Select ward/commune</option>
-                  {selectedProvince?.wards.map((ward, idx) => (
-                    <option key={idx} value={ward.name}>
-                      {ward.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
             </div>
           </div>
         </div>

@@ -3,7 +3,9 @@ import SideBarMenu from "../SideMenuBar";
 import AddressModal from "./AddressModal";
 import AddressInfo from "./AddressInfo";
 import BreadCrumb from "../BreadCrumb";
+import useGetProvinces from "../../../hooks/useGetProvincesVN";
 function Address() {
+  const { provinces } = useGetProvinces();
   const [addressId, setAddressId] = useState<string>("");
   const [openAddressModal, setOpenAddressModal] = useState<boolean>(false);
 
@@ -43,6 +45,7 @@ function Address() {
             {!addressId && (
               <AddressModal
                 addressId=""
+                provinces={provinces}
                 toggleMenu={toggleAddressModal}
                 isOpen={openAddressModal}
               />

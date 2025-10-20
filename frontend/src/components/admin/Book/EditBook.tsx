@@ -141,6 +141,11 @@ function EditBook() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (data.discount > data.price) {
+      toast.error("Discount cannot be greater than price");
+      return;
+    }
+
     if (data.price <= 0) {
       toast.error("Price must be greater than 0");
       return;

@@ -1,10 +1,10 @@
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import useSWR from "swr";
-import type { Admin } from "../../types/type";
+import type { User } from "../../types/type";
 
 interface ResponseType {
-  admins: Admin[];
+  admins: User[];
   totalPages: number;
   total: number;
 }

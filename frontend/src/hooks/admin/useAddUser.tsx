@@ -1,15 +1,15 @@
 import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import type { Admin } from "../../types/type";
+import type { User } from "../../types/type";
 
-export default function useAddAdmin() {
+export default function useAddUser() {
   const [isLoading, setIsLoading] = useState(false);
-  const addAdmin = async (data: Admin) => {
+  const addUser = async (data: User) => {
     const loadingToast = toast.loading("Adding...");
     setIsLoading(true);
     try {
-      const url = `${import.meta.env.VITE_BACKEND_URL}/api/user/admin`;
+      const url = `${import.meta.env.VITE_BACKEND_URL}/api/user`;
       await axios.post(url, data);
       toast.dismiss(loadingToast);
       toast.success("Added successfully");
@@ -22,5 +22,5 @@ export default function useAddAdmin() {
     }
   };
 
-  return { addAdmin, isLoading };
+  return { addUser, isLoading };
 }

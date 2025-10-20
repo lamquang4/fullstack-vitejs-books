@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import useGetCustomer from "../../../hooks/admin/useGetCustomer";
-import useUpdateCustomer from "../../../hooks/admin/useUpdateCustomer";
+
 import { validateEmail } from "../../../utils/validateEmail";
+import useGetUser from "../../../hooks/admin/useGetUser";
+import useUpdateUser from "../../../hooks/admin/useUpdateUser";
 
 function EditCustomer() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { customer, isLoading, mutate } = useGetCustomer(id as string);
-  const { updateCustomer, isLoading: isLoadingUpdate } = useUpdateCustomer(
+  const { user, isLoading, mutate } = useGetUser(id as string);
+  const { updateUser, isLoading: isLoadingUpdate } = useUpdateUser(
     id as string
   );
 
   const [data, setData] = useState({
+    fullname: "",
     email: "",
     password: "",
     status: "",
@@ -23,19 +25,19 @@ function EditCustomer() {
   useEffect(() => {
     if (isLoading) return;
 
-    if (!customer) {
+    if (!user) {
       toast.error("Customer not found");
       navigate("/admin/customers");
+      return;
     }
 
-    if (customer) {
-      setData({
-        email: customer.email || "",
-        password: "",
-        status: customer.status?.toString() || "",
-      });
-    }
-  }, [isLoading, customer, navigate]);
+    setData({
+      fullname: user.fullname || "",
+      email: user.email || "",
+      password: "",
+      status: user.status?.toString() || "",
+    });
+  }, [isLoading, user, navigate]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -61,9 +63,10 @@ function EditCustomer() {
       return;
     }
     try {
-      await updateCustomer({
-        email: data.email,
-        password: data.password,
+      await updateUser({
+        fullname: data.fullname.trim(),
+        email: data.email.trim(),
+        password: data.password.trim(),
         status: Number(data.status),
       });
 
@@ -78,8 +81,6 @@ function EditCustomer() {
     }
   };
 
-  console.log(customer);
-
   return (
     <div className="py-[30px] sm:px-[25px] px-[15px] bg-[#F1F4F9] h-full">
       <form className="flex flex-col gap-7 w-full" onSubmit={handleSubmit}>
@@ -91,12 +92,25 @@ function EditCustomer() {
 
             <div className="flex flex-col gap-1">
               <label htmlFor="" className="text-[0.9rem] font-medium">
+                Fullname
+              </label>
+              <input
+                type="text"
+                name="fullname"
+                value={data.fullname}
+                onChange={handleChange}
+                required
+                className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
+              />
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label htmlFor="" className="text-[0.9rem] font-medium">
                 Email
               </label>
               <input
                 type="email"
                 name="email"
-                inputMode="numeric"
                 value={data.email}
                 onChange={handleChange}
                 required

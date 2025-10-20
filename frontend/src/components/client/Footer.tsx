@@ -12,7 +12,7 @@ function Footer() {
               <Image
                 source={"/assets/logo.png"}
                 alt={"logo"}
-                className={"md:w-[100px] w-[80px]"}
+                className={"w-[100px]"}
                 loading="eager"
               />
             </Link>
@@ -22,7 +22,7 @@ function Footer() {
             <ul>
               <li>
                 <p className="relative font-bold text-black text-[0.95rem] uppercase mb-3 pb-1.5 after:content-[''] after:absolute after:bottom-0 after:left-0 after:bg-black after:w-[60px] after:h-[1.5px]">
-                  Chính sách
+                  Policies
                 </p>
               </li>
 
@@ -31,16 +31,16 @@ function Footer() {
                   to="/"
                   className="inline-block max-w-max text-gray-500 font-medium text-[0.9rem] hover:text-black"
                 >
-                  Trang chủ
+                  Home
                 </Link>
               </li>
 
               <li className="py-[8px]">
                 <Link
-                  to="/collection/all"
+                  to="/all"
                   className="inline-block max-w-max text-gray-500 font-medium text-[0.9rem] hover:text-black"
                 >
-                  Sản phẩm
+                  All books
                 </Link>
               </li>
             </ul>
@@ -50,35 +50,7 @@ function Footer() {
             <ul>
               <li>
                 <p className="relative font-bold text-black text-[0.95rem] uppercase mb-3 pb-1.5 after:content-[''] after:absolute after:bottom-0 after:left-0 after:bg-black after:w-[60px] after:h-[1.5px]">
-                  Chính sách
-                </p>
-              </li>
-
-              <li className="py-[8px]">
-                <Link
-                  to="/"
-                  className="inline-block max-w-max text-gray-500 font-medium text-[0.9rem] hover:text-black"
-                >
-                  Trang chủ
-                </Link>
-              </li>
-
-              <li className="py-[8px]">
-                <Link
-                  to="/collection/all"
-                  className="inline-block max-w-max text-gray-500 font-medium text-[0.9rem] hover:text-black"
-                >
-                  Sản phẩm
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <ul>
-              <li>
-                <p className="relative font-bold text-black text-[0.95rem] uppercase mb-3 pb-1.5 after:content-[''] after:absolute after:bottom-0 after:left-0 after:bg-black after:w-[60px] after:h-[1.5px]">
-                  Theo dõi
+                  Follow us
                 </p>
               </li>
 

@@ -56,7 +56,7 @@ function Header() {
               <Image
                 source={"/assets/logo.png"}
                 alt={"logo"}
-                className={"md:w-[100px] w-[80px]"}
+                className={"w-[100px]"}
                 loading="eager"
               />
             </Link>

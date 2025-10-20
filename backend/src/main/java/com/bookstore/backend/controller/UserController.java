@@ -1,6 +1,5 @@
 package com.bookstore.backend.controller;
-import com.bookstore.backend.dto.AdminDTO;
-import com.bookstore.backend.dto.CustomerDTO;
+import com.bookstore.backend.dto.UserDTO;
 import com.bookstore.backend.entities.User;
 import com.bookstore.backend.service.UserService;
 import org.springframework.data.domain.Page;
@@ -20,45 +19,30 @@ public class UserController {
     }
 
     // customer
-@GetMapping("/customer")
-public ResponseEntity<?> getAllCustomers(  @RequestParam(defaultValue = "1") int page,
-        @RequestParam(defaultValue = "12") int limit,
-        @RequestParam(required = false) String q,
-        @RequestParam(required = false) Integer status) {
-    Page<CustomerDTO> customers = userService.getAllCustomers(page, limit, q, status);
-    return ResponseEntity.ok(Map.of(
-        "customers", customers.getContent(),
-        "totalPages", customers.getTotalPages(),
-        "total", customers.getTotalElements()
-    ));
-}
-
-    @GetMapping("/customer/{id}")
-    public ResponseEntity<User> getCustomerById(@PathVariable String id) {
-        return userService.getCustomerById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+  @GetMapping("/customer")
+    public ResponseEntity<?> getAllCustomers(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "12") int limit,
+            @RequestParam(required = false) String q,
+            @RequestParam(required = false) Integer status
+    ) {
+        Page<UserDTO> customers = userService.getAllCustomers(page, limit, q, status);
+        return ResponseEntity.ok(Map.of(
+                "customers", customers.getContent(),
+                "totalPages", customers.getTotalPages(),
+                "total", customers.getTotalElements()
+        ));
     }
-
-        @PostMapping("/customer")
-    public User createCustomer(@RequestBody User user) {
-        return userService.createCustomer(user);
-    }
-
-@PutMapping("/customer/{id}")
-public ResponseEntity<User> updateCustomer(@PathVariable String id, @RequestBody User user) {
-    User updated = userService.updateCustomer(id, user);
-    if (updated != null) return ResponseEntity.ok(updated);
-    return ResponseEntity.notFound().build();
-}
 
 // admin
  @GetMapping("/admin")
-    public ResponseEntity<?> getAllAdmins(@RequestParam(defaultValue = "1") int page,
-                                          @RequestParam(defaultValue = "12") int limit,
-                                          @RequestParam(required = false) String q,
-                                          @RequestParam(required = false) Integer status) {
-        Page<AdminDTO> admins = userService.getAllAdmins(page, limit, q, status);
+    public ResponseEntity<?> getAllAdmins(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "12") int limit,
+            @RequestParam(required = false) String q,
+            @RequestParam(required = false) Integer status
+    ) {
+        Page<UserDTO> admins = userService.getAllAdmins(page, limit, q, status);
         return ResponseEntity.ok(Map.of(
                 "admins", admins.getContent(),
                 "totalPages", admins.getTotalPages(),
@@ -66,24 +50,28 @@ public ResponseEntity<User> updateCustomer(@PathVariable String id, @RequestBody
         ));
     }
 
-    @GetMapping("/admin/{id}")
-    public ResponseEntity<AdminDTO> getAdminById(@PathVariable String id) {
-        return userService.getAdminById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/{id}")
+public ResponseEntity<UserDTO> getUserById(@PathVariable String id) {
+    return userService.getUserById(id)
+            .map(userDTO -> ResponseEntity.ok(userDTO))
+            .orElseGet(() -> ResponseEntity.notFound().build());
+}
+
+      @PostMapping
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO dto) {
+        UserDTO created = userService.createUser(dto);
+        return ResponseEntity.ok(created);
     }
 
-    @PostMapping("/admin")
-    public AdminDTO createAdmin(@RequestBody AdminDTO adminDTO) {
-        return userService.createAdmin(adminDTO);
+        @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable String id, @RequestBody UserDTO dto) {
+        UserDTO updated = userService.updateUser(id, dto);
+        if (updated == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updated);
     }
-
-    @PutMapping("/admin/{id}")
-    public ResponseEntity<AdminDTO> updateAdmin(@PathVariable String id, @RequestBody AdminDTO adminDTO) {
-        AdminDTO updated = userService.updateAdmin(id, adminDTO);
-        if (updated != null) return ResponseEntity.ok(updated);
-        return ResponseEntity.notFound().build();
-    }
+   
 
     @PatchMapping("/status/{id}")
     public ResponseEntity<?> updateUserStatus(
