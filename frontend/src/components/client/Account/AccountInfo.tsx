@@ -1,10 +1,7 @@
+import useCurrentUser from "../../../hooks/useGetCurrentUser";
+
 function AccountInfo() {
-  const user = {
-    fullname: "Nguyen Van A",
-    email: "nguyenvana@example.com",
-    phone: "0987654321",
-    birthday: "1998-05-20",
-  };
+  const { user } = useCurrentUser("client");
   return (
     <div className="w-full flex-1 px-[15px] bg-white">
       <div className="space-y-[20px]">
@@ -16,13 +13,29 @@ function AccountInfo() {
               htmlFor=""
               className="block text-left text-[0.9rem] font-medium"
             >
+              Fullname:
+            </label>
+            <input
+              type="text"
+              name="fullname"
+              className="w-full  rounded-sm p-[6px_10px] text-[0.9rem] border border-gray-300  focus:outline-0"
+              value={user?.fullname || ""}
+              readOnly
+            />
+          </div>
+
+          <div className="space-y-[5px]">
+            <label
+              htmlFor=""
+              className="block text-left text-[0.9rem] font-medium"
+            >
               Email:
             </label>
             <input
               type="text"
               name="email"
               className="w-full  rounded-sm p-[6px_10px] text-[0.9rem] border border-gray-300  focus:outline-0"
-              value={user.email || ""}
+              value={user?.email || ""}
               readOnly
             />
           </div>

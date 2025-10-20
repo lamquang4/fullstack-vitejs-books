@@ -41,24 +41,38 @@ function BookSlider({ title, books }: Props) {
                   <SwiperSlide key={book.id}>
                     <div className="space-y-[20px] rounded-sm">
                       <div className="relative group">
-                        <Link to={`/book/${book.slug}`}>
+                        <Link
+                          to={`/book/${book.slug}`}
+                          className="border border-gray-200 shadow-md"
+                        >
                           {book.images.length > 0 && (
-                            <>
-                              <div className="w-full h-[300px] flex items-center justify-center bg-gray-50 overflow-hidden">
+                            <div className="w-full aspect-[6/7] flex items-center justify-center bg-gray-50 overflow-hidden rounded-md">
+                              <Image
+                                source={`${import.meta.env.VITE_BACKEND_URL}${
+                                  book.images[0].image
+                                }`}
+                                alt={book.title}
+                                className="w-full h-full object-contain z-1 relative"
+                                loading="lazy"
+                              />
+
+                              {book.images[1].image && (
                                 <Image
                                   source={`${import.meta.env.VITE_BACKEND_URL}${
-                                    book.images[0].image
+                                    book.images[1].image
                                   }`}
                                   alt={book.title}
-                                  className="w-full h-full object-contain"
+                                  className={
+                                    "w-full h-full object-contain absolute top-0 left-0 opacity-0 z-2 transition-opacity duration-300 group-hover:opacity-100"
+                                  }
                                   loading="lazy"
                                 />
-                              </div>
-                            </>
+                              )}
+                            </div>
                           )}
                         </Link>
 
-                        <div className="flex gap-2 flex-col absolute top-0 right-0 z-[3] font-semibold text-center  ">
+                        <div className="flex gap-2 flex-col absolute top-2 right-2 z-3 font-semibold text-center  ">
                           {book.discount > 0 && (
                             <p className="text-white p-1.5 bg-[#C62028] rounded-sm">
                               -{Math.floor((book.discount / book.price) * 100)}%

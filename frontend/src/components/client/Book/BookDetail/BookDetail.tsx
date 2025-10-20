@@ -8,14 +8,12 @@ import { HiOutlineMinusSmall } from "react-icons/hi2";
 import { HiOutlinePlusSmall } from "react-icons/hi2";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { useNavigate } from "react-router-dom";
 
 type Props = {
   book: Book;
 };
 
 function BookDetail({ book }: Props) {
-  const navigate = useNavigate();
   const [quantity, setQuantity] = useState<number>(1);
   const [mainImage, setMainImage] = useState<string>("");
   const [openViewer, setOpenViewer] = useState<boolean>(false);

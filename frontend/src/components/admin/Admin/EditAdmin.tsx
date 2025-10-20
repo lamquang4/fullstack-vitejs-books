@@ -4,11 +4,13 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { validateEmail } from "../../../utils/validateEmail";
 import useGetUser from "../../../hooks/admin/useGetUser";
 import useUpdateUser from "../../../hooks/admin/useUpdateUser";
+import useCurrentUser from "../../../hooks/useGetCurrentUser";
 
 function EditAdmin() {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const { user: admin } = useCurrentUser("admin");
   const { user, isLoading, mutate } = useGetUser(id as string);
   const { updateUser, isLoading: isLoadingUpdate } = useUpdateUser(
     id as string
@@ -62,6 +64,12 @@ function EditAdmin() {
       toast.error("Password must be at least 6 characters long");
       return;
     }
+
+    if (user?.id === admin?.id) {
+      toast.error("You cannot block yourself");
+      return;
+    }
+
     try {
       await updateUser({
         fullname: data.fullname.trim(),

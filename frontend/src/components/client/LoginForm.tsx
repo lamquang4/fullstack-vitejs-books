@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import Overplay from "./Overplay";
 import Loading from "../Loading";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { HiOutlineEyeOff, HiOutlineEye } from "react-icons/hi";
+import useLogin from "../../hooks/useLogin";
+import toast from "react-hot-toast";
 function LoginForm() {
-  const navigate = useNavigate();
+  const { handleLogin, isLoading } = useLogin();
 
   const [data, setData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -22,6 +24,17 @@ function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    try {
+      await handleLogin(data.email, data.password);
+
+      setData({
+        email: "",
+        password: "",
+      });
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message);
+    }
   };
   return (
     <>
@@ -100,12 +113,12 @@ function LoginForm() {
         </div>
       </section>
 
-      {/*
+      {isLoading && (
         <Overplay IndexForZ={50}>
           <Loading height={0} size={55} color="white" thickness={8} />
-          <h4 className="text-white">Vui lòng chờ trong giây lát...</h4>
+          <h4 className="text-white">Please wait a moment...</h4>
         </Overplay>
-      */}
+      )}
     </>
   );
 }

@@ -1,5 +1,7 @@
+import useCurrentUser from "../../hooks/useGetCurrentUser";
+
 function Account() {
-  const user = 0;
+  const { user } = useCurrentUser("admin");
   return (
     <div className="py-[30px] sm:px-[25px] px-[15px] bg-[#F1F4F9] h-full">
       <form className="flex flex-col gap-7 w-full">
@@ -16,7 +18,7 @@ function Account() {
               <input
                 type="text"
                 name="fullname"
-                value={"Quang lam"}
+                value={user?.fullname}
                 readOnly
                 className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
               />
@@ -29,7 +31,7 @@ function Account() {
               <input
                 type="text"
                 name="email"
-                value={"quang@gmail.com"}
+                value={user?.email}
                 readOnly
                 className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
               />
@@ -42,7 +44,13 @@ function Account() {
               <input
                 type="text"
                 name="role"
-                value={user === 0 ? "System admin" : "Sales manager"}
+                value={
+                  user?.role === 0
+                    ? "System admin"
+                    : user?.role === 1
+                    ? "Sales manager"
+                    : ""
+                }
                 readOnly
                 className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
               />

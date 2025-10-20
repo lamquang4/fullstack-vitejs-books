@@ -12,7 +12,7 @@ export default function useAddUser() {
       const url = `${import.meta.env.VITE_BACKEND_URL}/api/user`;
       await axios.post(url, data);
       toast.dismiss(loadingToast);
-      toast.success("Added successfully");
+      toast.success("Register account successfully");
     } catch (err) {
       console.error("Error:", err);
       throw err;

@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import useGetAdmins from "../../../hooks/admin/useGetAdmins";
 import useDeleteUser from "../../../hooks/admin/useDeleteUser";
 import useUpdateStatusUser from "../../../hooks/admin/useUpdateStatusUser";
+import useCurrentUser from "../../../hooks/useGetCurrentUser";
 
 function Admin() {
   const array = [
@@ -20,6 +21,7 @@ function Admin() {
     { name: "Blocked", value: 0 },
   ];
 
+  const { user } = useCurrentUser("admin");
   const {
     admins,
     mutate,
@@ -48,6 +50,11 @@ function Admin() {
 
   const handleUpdateStatus = async (id: string, status: number) => {
     if (!id && !status) {
+      return;
+    }
+
+    if (id === user?.id) {
+      toast.error("You cannot block yourself");
       return;
     }
 

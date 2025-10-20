@@ -1,9 +1,14 @@
 import { useState } from "react";
 import { HiOutlineEye, HiOutlineEyeOff } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
+import useAddUser from "../../hooks/admin/useAddUser";
+import toast from "react-hot-toast";
+import { validateEmail } from "../../utils/validateEmail";
 
 function RegisterForm() {
   const navigate = useNavigate();
+
+  const { addUser, isLoading } = useAddUser();
 
   const [data, setData] = useState({
     fullname: "",
@@ -28,6 +33,31 @@ function RegisterForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateEmail(data.email)) {
+      toast.error("Invalid email");
+      return;
+    }
+    if (data.password.trim().length < 6) {
+      toast.error("Password must be at least 6 characters long");
+      return;
+    }
+    try {
+      await addUser({
+        fullname: data.fullname.trim(),
+        email: data.email.toLowerCase().trim(),
+        password: data.password.trim(),
+      });
+
+      setData({
+        fullname: "",
+        email: "",
+        password: "",
+      });
+
+      navigate("/login");
+    } catch (err: any) {
+      toast.error(err?.response?.data?.msg);
+    }
   };
 
   return (
@@ -107,6 +137,7 @@ function RegisterForm() {
                 </div>
 
                 <button
+                  disabled={isLoading}
                   type="submit"
                   className="w-full bg-[#C62028] text-white focus:outline-none font-semibold rounded-sm text-[0.9rem] px-5 py-2.5 text-center"
                 >

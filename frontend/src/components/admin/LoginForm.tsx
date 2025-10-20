@@ -2,7 +2,12 @@ import Image from "../Image";
 import { useState } from "react";
 
 import { HiOutlineEyeOff, HiOutlineEye } from "react-icons/hi";
+import useLogin from "../../hooks/useLogin";
+import toast from "react-hot-toast";
+import Overplay from "./Overplay";
+import Loading from "../Loading";
 function LoginForm() {
+  const { handleLogin, isLoading } = useLogin();
   const [data, setData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -19,6 +24,17 @@ function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    try {
+      await handleLogin(data.email, data.password);
+
+      setData({
+        email: "",
+        password: "",
+      });
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message);
+    }
   };
 
   return (
@@ -43,7 +59,7 @@ function LoginForm() {
                       name="email"
                       value={data.email}
                       onChange={handleChange}
-                      className="text-[0.9rem] block w-full px-3 py-2 outline-none border border-gray-300 focus:border-[#0AB39C] focus:text-[#0AB39C]"
+                      className="text-[0.9rem] block w-full px-3 py-2 outline-none border border-gray-300 focus:border-[#C62028] focus:text-[#C62028]"
                       placeholder="Enter email"
                       required
                     />
@@ -64,7 +80,7 @@ function LoginForm() {
                         value={data.password}
                         onChange={handleChange}
                         placeholder="Enter password"
-                        className="text-[0.9rem] block w-full px-3 pr-12 py-2 outline-none border border-gray-300 focus:border-[#0AB39C] focus:text-[#0AB39C]"
+                        className="text-[0.9rem] block w-full px-3 pr-12 py-2 outline-none border border-gray-300 focus:border-[#C62028] focus:text-[#C62028]"
                         required
                       />
 
@@ -84,7 +100,7 @@ function LoginForm() {
 
                   <button
                     type="submit"
-                    className="w-full bg-[#0AB39C] text-[0.9rem] text-white focus:outline-none font-semibold rounded-sm px-5 py-2.5 text-center mt-6"
+                    className="w-full bg-[#C62028] text-[0.9rem] text-white focus:outline-none font-semibold rounded-sm px-5 py-2.5 text-center mt-6"
                   >
                     Login
                   </button>
@@ -103,6 +119,13 @@ function LoginForm() {
           </div>
         </div>
       </section>
+
+      {isLoading && (
+        <Overplay>
+          <Loading height={0} size={55} color="white" thickness={8} />
+          <h4 className="text-white">Please wait a moment...</h4>
+        </Overplay>
+      )}
     </>
   );
 }

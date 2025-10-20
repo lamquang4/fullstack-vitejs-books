@@ -3,13 +3,16 @@ import Image from "../Image";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
+import useLogout from "../../hooks/useLogout";
+import useCurrentUser from "../../hooks/useGetCurrentUser";
 
 type Props = {
   menuOpen: boolean;
   toggleMenu: () => void;
 };
 function ProfileMenu({ menuOpen, toggleMenu }: Props) {
-  const user = true;
+  const { user } = useCurrentUser("admin");
+  const { handleLogout } = useLogout();
   return (
     <>
       {user && (
@@ -27,13 +30,13 @@ function ProfileMenu({ menuOpen, toggleMenu }: Props) {
                 loading="eager"
               />
             </div>
-            <p>Quanglam</p>
+            <p>{user.fullname}</p>
           </div>
 
           {menuOpen && (
             <div className="w-[185px] absolute top-full right-0 overflow-hidden z-20 duration-400 ease-in-out bg-white shadow-md rounded-md border border-gray-200 ">
               <p className="border-b p-2.5 border-gray-300 max-w-[210px] overflow-hidden text-ellipsis whitespace-nowrap text-center">
-                Hello, Quanglam
+                Hello, {user.fullname}
               </p>
 
               <Link
@@ -46,7 +49,10 @@ function ProfileMenu({ menuOpen, toggleMenu }: Props) {
                 </div>
               </Link>
 
-              <button className="w-full block hover:bg-gray-100 px-3 py-3.5">
+              <button
+                className="w-full block hover:bg-gray-100 px-3 py-3.5"
+                onClick={() => handleLogout("admin")}
+              >
                 <div className="flex items-center gap-[8px] text-[#C62028] font-medium">
                   <RiLogoutBoxLine size={18} />
                   <p>Logout</p>

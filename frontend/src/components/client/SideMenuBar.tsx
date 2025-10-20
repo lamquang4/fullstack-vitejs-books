@@ -1,8 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
+import useLogout from "../../hooks/useLogout";
+import useCurrentUser from "../../hooks/useGetCurrentUser";
 
 function SideMenuBar() {
   const location = useLocation();
   const pathname = location.pathname;
+  const { user } = useCurrentUser("client");
+  const { handleLogout } = useLogout();
   return (
     <div className="w-full max-w-full lg:max-w-[300px] self-start lg:sticky lg:top-[5rem] bg-white ">
       <div className="text-[0.9rem] font-medium">
@@ -24,7 +28,7 @@ function SideMenuBar() {
 
           <div>
             <h5 className="font-medium">Your account</h5>
-            <p className="font-normal">Quang lam</p>
+            <p className="font-normal">{user?.fullname}</p>
           </div>
         </div>
 
@@ -111,6 +115,7 @@ function SideMenuBar() {
 
         <button
           type="button"
+          onClick={() => handleLogout("client")}
           className=" py-3 px-3.5 text-left text-[#C62028] font-medium hover:bg-gray-100 w-full"
         >
           <div className="flex items-center gap-5">

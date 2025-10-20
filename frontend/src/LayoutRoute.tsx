@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/client/LoginPage";
 import RegisterPage from "./pages/client/RegisterPage";
 import HomePage from "./pages/client/HomePage";
-import ResetPasswordPage from "./pages/client/ResetPasswordPage";
 import AccountPage from "./pages/client/AccountPage";
 import AddressPage from "./pages/client/AddressPage";
 import OrderPage from "./pages/client/OrderPage";
@@ -30,50 +29,332 @@ import BookPage from "./pages/admin/BookPage";
 import AddBookPage from "./pages/admin/AddBookPage";
 import EditBookPage from "./pages/admin/EditBookPage";
 import BookCategoryPage from "./pages/client/BookCategoryPage";
+import PrivateRoute from "./components/PrivateRoute";
+import PublicRoute from "./components/PublicRoute";
 function LayoutRoute() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/reset" element={<ResetPasswordPage />} />
-      <Route path="/account" element={<AccountPage />} />
-      <Route path="/address" element={<AddressPage />} />
-      <Route path="/order" element={<OrderPage />} />
-      <Route path="/order/:code" element={<OrderDetailPage />} />
+      <Route
+        path="/login"
+        element={
+          <PublicRoute type="client" redirectPath="/">
+            <LoginPage />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <PublicRoute type="client" redirectPath="/">
+            <RegisterPage />
+          </PublicRoute>
+        }
+      />
+
+      <Route
+        path="/account"
+        element={
+          <PrivateRoute type="client" allowedRoles={[3]} redirectPath="/">
+            <AccountPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/address"
+        element={
+          <PrivateRoute type="client" allowedRoles={[3]} redirectPath="/">
+            <AddressPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/order"
+        element={
+          <PrivateRoute type="client" allowedRoles={[3]} redirectPath="/">
+            <OrderPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/order/:code"
+        element={
+          <PrivateRoute type="client" allowedRoles={[3]} redirectPath="/">
+            <OrderDetailPage />
+          </PrivateRoute>
+        }
+      />
       <Route path="/book/:slug" element={<BookDetailPage />} />
       <Route path="/books/:slug" element={<BookCategoryPage />} />
       <Route path="/sale" element={<BookSalePage />} />
 
-      <Route path="/admin/login" element={<LoginAdminPage />} />
-      <Route path="/admin/account" element={<AccountAdminPage />} />
+      <Route
+        path="/admin/login"
+        element={
+          <PublicRoute type="admin" redirectPath="/admin/account">
+            <LoginAdminPage />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/admin/account"
+        element={
+          <PrivateRoute
+            type="admin"
+            allowedRoles={[0, 1, 2]}
+            redirectPath="/admin/login"
+          >
+            <AccountAdminPage />
+          </PrivateRoute>
+        }
+      />
 
-      <Route path="/admin/authors" element={<AuthorPage />} />
-      <Route path="/admin/add-author" element={<AddAuthorPage />} />
-      <Route path="/admin/edit-author/:id" element={<EditAuthorPage />} />
+      <Route
+        path="/admin/authors"
+        element={
+          <PrivateRoute
+            type="admin"
+            allowedRoles={[0, 1, 2]}
+            redirectPath="/admin/login"
+          >
+            <AuthorPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/add-author"
+        element={
+          <PrivateRoute
+            type="admin"
+            allowedRoles={[0, 1, 2]}
+            redirectPath="/admin/login"
+          >
+            <AddAuthorPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/edit-author/:id"
+        element={
+          <PrivateRoute
+            type="admin"
+            allowedRoles={[0, 1, 2]}
+            redirectPath="/admin/login"
+          >
+            <EditAuthorPage />
+          </PrivateRoute>
+        }
+      />
 
-      <Route path="/admin/publishers" element={<PublisherPage />} />
-      <Route path="/admin/add-publisher" element={<AddPublisherPage />} />
-      <Route path="/admin/edit-publisher/:id" element={<EditPublisherPage />} />
+      <Route
+        path="/admin/publishers"
+        element={
+          <PrivateRoute
+            type="admin"
+            allowedRoles={[0, 1, 2]}
+            redirectPath="/admin/login"
+          >
+            <PublisherPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/add-publisher"
+        element={
+          <PrivateRoute
+            type="admin"
+            allowedRoles={[0, 1, 2]}
+            redirectPath="/admin/login"
+          >
+            <AddPublisherPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/edit-publisher/:id"
+        element={
+          <PrivateRoute
+            type="admin"
+            allowedRoles={[0, 1, 2]}
+            redirectPath="/admin/login"
+          >
+            <EditPublisherPage />
+          </PrivateRoute>
+        }
+      />
 
-      <Route path="/admin/categories" element={<CategoryPage />} />
-      <Route path="/admin/add-category" element={<AddCategoryPage />} />
-      <Route path="/admin/edit-category/:id" element={<EditCategoryPage />} />
+      <Route
+        path="/admin/categories"
+        element={
+          <PrivateRoute
+            type="admin"
+            allowedRoles={[0, 1, 2]}
+            redirectPath="/admin/login"
+          >
+            <CategoryPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/add-category"
+        element={
+          <PrivateRoute
+            type="admin"
+            allowedRoles={[0, 1, 2]}
+            redirectPath="/admin/login"
+          >
+            <AddCategoryPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/edit-category/:id"
+        element={
+          <PrivateRoute
+            type="admin"
+            allowedRoles={[0, 1, 2]}
+            redirectPath="/admin/login"
+          >
+            <EditCategoryPage />
+          </PrivateRoute>
+        }
+      />
 
-      <Route path="/admin/admins" element={<AdminPage />} />
-      <Route path="/admin/add-admin" element={<AddAdminPage />} />
-      <Route path="/admin/edit-admin/:id" element={<EditAdminPage />} />
+      <Route
+        path="/admin/admins"
+        element={
+          <PrivateRoute
+            type="admin"
+            allowedRoles={[0]}
+            redirectPath="/admin/login"
+          >
+            <AdminPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/add-admin"
+        element={
+          <PrivateRoute
+            type="admin"
+            allowedRoles={[0]}
+            redirectPath="/admin/login"
+          >
+            <AddAdminPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/edit-admin/:id"
+        element={
+          <PrivateRoute
+            type="admin"
+            allowedRoles={[0]}
+            redirectPath="/admin/login"
+          >
+            <EditAdminPage />
+          </PrivateRoute>
+        }
+      />
 
-      <Route path="/admin/customers" element={<CustomerPage />} />
-      <Route path="/admin/add-customer" element={<AddCustomerPage />} />
-      <Route path="/admin/edit-customer/:id" element={<EditCustomerPage />} />
+      <Route
+        path="/admin/customers"
+        element={
+          <PrivateRoute
+            type="admin"
+            allowedRoles={[0]}
+            redirectPath="/admin/login"
+          >
+            <CustomerPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/add-customer"
+        element={
+          <PrivateRoute
+            type="admin"
+            allowedRoles={[0]}
+            redirectPath="/admin/login"
+          >
+            <AddCustomerPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/edit-customer/:id"
+        element={
+          <PrivateRoute
+            type="admin"
+            allowedRoles={[0]}
+            redirectPath="/admin/login"
+          >
+            <EditCustomerPage />
+          </PrivateRoute>
+        }
+      />
 
-      <Route path="/admin/books" element={<BookPage />} />
-      <Route path="/admin/add-book" element={<AddBookPage />} />
-      <Route path="/admin/edit-book/:id" element={<EditBookPage />} />
+      <Route
+        path="/admin/books"
+        element={
+          <PrivateRoute
+            type="admin"
+            allowedRoles={[0, 1, 2]}
+            redirectPath="/admin/login"
+          >
+            <BookPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/add-book"
+        element={
+          <PrivateRoute
+            type="admin"
+            allowedRoles={[0, 1, 2]}
+            redirectPath="/admin/login"
+          >
+            <AddBookPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/edit-book/:id"
+        element={
+          <PrivateRoute
+            type="admin"
+            allowedRoles={[0, 1, 2]}
+            redirectPath="/admin/login"
+          >
+            <EditBookPage />
+          </PrivateRoute>
+        }
+      />
 
-      <Route path="/admin/orders" element={<OrderPage />} />
-      <Route path="/admin/order" element={<OrderDetailPage />} />
+      <Route
+        path="/admin/orders"
+        element={
+          <PrivateRoute
+            type="admin"
+            allowedRoles={[0, 1, 2]}
+            redirectPath="/admin/login"
+          >
+            <OrderPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/order"
+        element={
+          <PrivateRoute
+            type="admin"
+            allowedRoles={[0, 1, 2]}
+            redirectPath="/admin/login"
+          >
+            <OrderDetailPage />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   );
 }
