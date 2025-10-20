@@ -1,6 +1,8 @@
 package com.bookstore.backend.repository;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.bookstore.backend.entities.Author;
 import com.bookstore.backend.entities.Book;
@@ -28,5 +30,40 @@ Page<Book> findByDiscountGreaterThanAndStatus(int i, int status, Pageable pageab
 Page<Book> findByDiscountGreaterThanAndStatusAndTitleContainingIgnoreCase(
     int discount, int status, String title, Pageable pageable
 );
+
+// status = 1
+    @Query("SELECT b FROM Book b " +
+           "WHERE (:status IS NULL OR b.status = :status) AND (" +
+           "LOWER(b.title) LIKE LOWER(CONCAT('%', :q, '%')) OR " +
+           "LOWER(b.author.fullname) LIKE LOWER(CONCAT('%', :q, '%')) OR " +
+           "LOWER(b.publisher.name) LIKE LOWER(CONCAT('%', :q, '%')) OR " +
+           "LOWER(b.category.name) LIKE LOWER(CONCAT('%', :q, '%'))" +
+           ")")
+    Page<Book> searchByTitleAuthorPublisherCategory(@Param("q") String q,
+                                                    @Param("status") Integer status,
+                                                    Pageable pageable);
+    // Category
+     @Query("SELECT b FROM Book b " +
+           "WHERE b.category.slug = :slug AND b.status = :status AND (" +
+           "LOWER(b.title) LIKE LOWER(CONCAT('%', :q, '%')) OR " +
+           "LOWER(b.author.fullname) LIKE LOWER(CONCAT('%', :q, '%')) OR " +
+           "LOWER(b.publisher.name) LIKE LOWER(CONCAT('%', :q, '%')) OR " +
+           "LOWER(b.category.name) LIKE LOWER(CONCAT('%', :q, '%'))" +
+           ")")
+    Page<Book> searchByCategoryAndTitleAuthorPublisherCategory(@Param("slug") String slug,
+                                                               @Param("q") String q,
+                                                               @Param("status") Integer status,
+                                                       Pageable pageable);
+    // Discount
+    @Query("SELECT b FROM Book b " +
+           "WHERE b.discount > 0 AND b.status = :status AND (" +
+           "LOWER(b.title) LIKE LOWER(CONCAT('%', :q, '%')) OR " +
+           "LOWER(b.author.fullname) LIKE LOWER(CONCAT('%', :q, '%')) OR " +
+           "LOWER(b.publisher.name) LIKE LOWER(CONCAT('%', :q, '%')) OR " +
+           "LOWER(b.category.name) LIKE LOWER(CONCAT('%', :q, '%'))" +
+           ")")
+    Page<Book> searchDiscountedActiveCategory(@Param("q") String q,
+                                              @Param("status") Integer status,
+                                              Pageable pageable);
 
 }

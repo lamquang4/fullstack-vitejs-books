@@ -14,8 +14,8 @@ function SearchDesktop() {
 
     const isBooksPage =
       location.pathname === "/books/all" ||
-      "/sale" ||
-      matchPath("/books/:slug", location.pathname);
+      location.pathname === "/sale" ||
+      matchPath("/books/:slug", location.pathname) !== null;
 
     let target = "";
 

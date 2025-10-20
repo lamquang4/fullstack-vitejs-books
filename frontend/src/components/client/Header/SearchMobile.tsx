@@ -18,11 +18,11 @@ function SearchMobile({ toggleSearch, openSearch }: Props) {
 
     const isBooksPage =
       location.pathname === "/books/all" ||
-      "/sale" ||
-      matchPath("/books/:slug", location.pathname);
+      location.pathname === "/sale" ||
+      matchPath("/books/:slug", location.pathname) !== null;
 
     let target = "";
-    
+
     if (location.pathname === "/sale") {
       target = `/sale?q=${encodeURIComponent(query)}`;
     } else if (isBooksPage) {

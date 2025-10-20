@@ -1,4 +1,3 @@
-"use client";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -70,9 +69,7 @@ function BookSlider({ title, books }: Props) {
                       <div className="space-y-[6px]">
                         <h5 className="font-medium capitalize">{book.title}</h5>
 
-                        <p className="font-medium">
-                          {book.category.name} / {book.author.fullname}
-                        </p>
+                        <p className="font-medium">{book.category.name}</p>
 
                         {book.discount > 0 ? (
                           <div className="flex gap-[12px]  ">

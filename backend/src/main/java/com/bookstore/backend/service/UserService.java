@@ -130,7 +130,6 @@ public Optional<UserDTO> getUserById(String id) {
     return dto;
 }
 
-
   public UserDTO updateUser(String id, UserDTO userDTO) {
     return userRepository.findById(id).map(user -> {
         if (!ValidationUtils.validateEmail(userDTO.getEmail())) {

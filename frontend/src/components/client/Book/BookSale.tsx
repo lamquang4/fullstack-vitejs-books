@@ -1,10 +1,8 @@
-import { useParams } from "react-router-dom";
 import Pagination from "../Pagination";
 import BookList from "./BookList";
 import useGetActiveDiscountBooks from "../../../hooks/client/useGetActiveDiscountBooks";
 
 function BookSale() {
-  const { slug } = useParams();
   const { books, isLoading, totalItems, totalPages, currentPage } =
     useGetActiveDiscountBooks();
 
@@ -13,7 +11,7 @@ function BookSale() {
       <div className="mx-auto max-w-[1350px] w-full">
         <BookList
           books={books}
-          category={slug}
+          category={"Sale"}
           isLoading={isLoading}
           total={totalItems}
         />

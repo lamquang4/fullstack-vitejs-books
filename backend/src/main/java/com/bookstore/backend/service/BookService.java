@@ -44,272 +44,118 @@ public class BookService {
         this.cartItemRepository = cartItemRepository;
     }
 
-  public Page<BookDTO> getAllBooks(int page, int limit, String q, Integer status) {
-    Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
-    Page<Book> bookPage;
+    private BookDTO convertToDTO(Book book) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    if (q != null && !q.isEmpty() && status != null) {
-        bookPage = bookRepository.findByTitleContainingIgnoreCaseAndStatus(q, status, pageable);
-    } else if (q != null && !q.isEmpty()) {
-        bookPage = bookRepository.findByTitleContainingIgnoreCase(q, pageable);
+    BookDTO dto = new BookDTO();
+    dto.setId(book.getId());
+    dto.setTitle(book.getTitle());
+    dto.setPrice(book.getPrice());
+    dto.setDiscount(book.getDiscount());
+    dto.setSlug(book.getSlug());
+    dto.setStock(book.getStock());
+    dto.setStatus(book.getStatus());
+
+    if (book.getAuthor() != null) {
+        dto.setAuthor(new AuthorDTO(
+                book.getAuthor().getId(),
+                book.getAuthor().getFullname(),
+                book.getAuthor().getSlug()
+        ));
+    }
+
+    if (book.getPublisher() != null) {
+        dto.setPublisher(new PublisherDTO(
+                book.getPublisher().getId(),
+                book.getPublisher().getName(),
+                book.getPublisher().getSlug()
+        ));
+    }
+
+    if (book.getCategory() != null) {
+        dto.setCategory(new CategoryDTO(
+                book.getCategory().getId(),
+                book.getCategory().getName(),
+                book.getCategory().getSlug()
+        ));
+    }
+
+    if (book.getImages() != null && !book.getImages().isEmpty()) {
+        List<ImageBookDTO> imageDTOs = book.getImages().stream()
+                .sorted(Comparator.comparing(img -> img.getCreatedAt()))
+                .map(img -> new ImageBookDTO(
+                        img.getId(),
+                        img.getImage(),
+                        img.getCreatedAt() != null ? img.getCreatedAt().format(formatter) : null
+                ))
+                .collect(Collectors.toList());
+        dto.setImages(imageDTOs);
+    } else {
+        dto.setImages(Collections.emptyList());
+    }
+
+    return dto;
+}
+
+public Page<BookDTO> getAllBooks(int page, int limit, String q, Integer status) {
+    Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
+
+    Page<Book> bookPage;
+    if (q != null && !q.isEmpty()) {
+        bookPage = bookRepository.searchByTitleAuthorPublisherCategory(q, status, pageable);
     } else if (status != null) {
         bookPage = bookRepository.findByStatus(status, pageable);
     } else {
         bookPage = bookRepository.findAll(pageable);
     }
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-    return bookPage.map(book -> {
-        BookDTO dto = new BookDTO();
-        dto.setId(book.getId());
-        dto.setTitle(book.getTitle());
-        dto.setPrice(book.getPrice());
-        dto.setDiscount(book.getDiscount());
-        dto.setSlug(book.getSlug());
-        dto.setStock(book.getStock());
-        dto.setStatus(book.getStatus());
-
-        if (book.getAuthor() != null) {
-            dto.setAuthor(new AuthorDTO(
-                    book.getAuthor().getId(),
-                    book.getAuthor().getFullname(),
-                    book.getAuthor().getSlug()
-            ));
-        }
-
-        if (book.getPublisher() != null) {
-            dto.setPublisher(new PublisherDTO(
-                    book.getPublisher().getId(),
-                    book.getPublisher().getName(),
-                    book.getPublisher().getSlug()
-            ));
-        }
-
-        if (book.getCategory() != null) {
-            dto.setCategory(new CategoryDTO(
-                    book.getCategory().getId(),
-                    book.getCategory().getName(),
-                    book.getCategory().getSlug()
-            ));
-        }
-
-        if (book.getImages() != null && !book.getImages().isEmpty()) {
-           List<ImageBookDTO> imageDTOs = book.getImages().stream()
-    .sorted(Comparator.comparing(img -> img.getCreatedAt())) 
-    .map(img -> new ImageBookDTO(
-        img.getId(),
-        img.getImage(),
-        img.getCreatedAt() != null ? img.getCreatedAt().format(formatter) : null
-    ))
-    .collect(Collectors.toList());
-            dto.setImages(imageDTOs);
-        } else {
-            dto.setImages(Collections.emptyList());
-        }
-
-        return dto;
-    });
+    return bookPage.map(this::convertToDTO);
 }
 
 public Page<BookDTO> getAllActiveBooks(int page, String q) {
-   int limit = 12;
-   int status = 1;
+    int limit = 12;
+    int status = 1;
     Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
-    Page<Book> bookPage;
 
+    Page<Book> bookPage;
     if (q != null && !q.isEmpty()) {
-        bookPage = bookRepository.findByTitleContainingIgnoreCaseAndStatus(q, status, pageable);
+        bookPage = bookRepository.searchByTitleAuthorPublisherCategory(q, status, pageable);
     } else {
         bookPage = bookRepository.findByStatus(status, pageable);
     }
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-    return bookPage.map(book -> {
-        BookDTO dto = new BookDTO();
-        dto.setId(book.getId());
-        dto.setTitle(book.getTitle());
-        dto.setPrice(book.getPrice());
-        dto.setDiscount(book.getDiscount());
-        dto.setSlug(book.getSlug());
-        dto.setStock(book.getStock());
-        dto.setStatus(book.getStatus());
-
-        if (book.getAuthor() != null) {
-            dto.setAuthor(new AuthorDTO(
-                    book.getAuthor().getId(),
-                    book.getAuthor().getFullname(),
-                    book.getAuthor().getSlug()
-            ));
-        }
-
-        if (book.getPublisher() != null) {
-            dto.setPublisher(new PublisherDTO(
-                    book.getPublisher().getId(),
-                    book.getPublisher().getName(),
-                    book.getPublisher().getSlug()
-            ));
-        }
-
-        if (book.getCategory() != null) {
-            dto.setCategory(new CategoryDTO(
-                    book.getCategory().getId(),
-                    book.getCategory().getName(),
-                    book.getCategory().getSlug()
-            ));
-        }
-
-        if (book.getImages() != null && !book.getImages().isEmpty()) {
-         List<ImageBookDTO> imageDTOs = book.getImages().stream()
-    .sorted(Comparator.comparing(img -> img.getCreatedAt())) 
-    .map(img -> new ImageBookDTO(
-        img.getId(),
-        img.getImage(),
-        img.getCreatedAt() != null ? img.getCreatedAt().format(formatter) : null
-    ))
-    .collect(Collectors.toList());
-            dto.setImages(imageDTOs);
-        } else {
-            dto.setImages(Collections.emptyList());
-        }
-
-        return dto;
-    });
+    return bookPage.map(this::convertToDTO);
 }
 
 public Page<BookDTO> getDiscountedActiveBooks(int page, int limit, String q) {
+    int status = 1;
     Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
-    int status = 1; // chỉ lấy sách active
-    Page<Book> bookPage;
 
+    Page<Book> bookPage;
     if (q != null && !q.isEmpty()) {
-        bookPage = bookRepository.findByDiscountGreaterThanAndStatusAndTitleContainingIgnoreCase(0, status, q, pageable);
+        bookPage = bookRepository.searchDiscountedActiveCategory(q, status, pageable);
     } else {
         bookPage = bookRepository.findByDiscountGreaterThanAndStatus(0, status, pageable);
     }
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-    return bookPage.map(book -> {
-        BookDTO dto = new BookDTO();
-        dto.setId(book.getId());
-        dto.setTitle(book.getTitle());
-        dto.setPrice(book.getPrice());
-        dto.setDiscount(book.getDiscount());
-        dto.setSlug(book.getSlug());
-        dto.setStock(book.getStock());
-        dto.setStatus(book.getStatus());
-
-        if (book.getAuthor() != null) {
-            dto.setAuthor(new AuthorDTO(
-                book.getAuthor().getId(),
-                book.getAuthor().getFullname(),
-                book.getAuthor().getSlug()
-            ));
-        }
-
-        if (book.getPublisher() != null) {
-            dto.setPublisher(new PublisherDTO(
-                book.getPublisher().getId(),
-                book.getPublisher().getName(),
-                book.getPublisher().getSlug()
-            ));
-        }
-
-        if (book.getCategory() != null) {
-            dto.setCategory(new CategoryDTO(
-                book.getCategory().getId(),
-                book.getCategory().getName(),
-                book.getCategory().getSlug()
-            ));
-        }
-
-        if (book.getImages() != null && !book.getImages().isEmpty()) {
-            List<ImageBookDTO> imageDTOs = book.getImages().stream()
-                .sorted(Comparator.comparing(img -> img.getCreatedAt()))
-                .map(img -> new ImageBookDTO(
-                    img.getId(),
-                    img.getImage(),
-                    img.getCreatedAt() != null ? img.getCreatedAt().format(formatter) : null
-                ))
-                .collect(Collectors.toList());
-            dto.setImages(imageDTOs);
-        } else {
-            dto.setImages(Collections.emptyList());
-        }
-
-        return dto;
-    });
+    return bookPage.map(this::convertToDTO);
 }
 
-
-public Page<BookDTO> getActiveBooksByCategory(String categorySlug, int page, String q) {
-   int limit = 12;
-   
+public Page<BookDTO> getActiveBooksByCategory(String slug, int page, String q) {
+    int limit = 12;
+    int status = 1;
     Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
-    Page<Book> bookPage;
-int status = 1;
 
+    Page<Book> bookPage;
     if (q != null && !q.isEmpty()) {
-        bookPage = bookRepository.findByTitleContainingIgnoreCaseAndCategory_SlugAndStatus(q, categorySlug, status, pageable);
+        bookPage = bookRepository.searchByCategoryAndTitleAuthorPublisherCategory(slug, q, status, pageable);
     } else {
-        bookPage = bookRepository.findByCategory_SlugAndStatus(categorySlug, status, pageable);
+        bookPage = bookRepository.findByCategory_SlugAndStatus(slug, status, pageable);
     }
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-    return bookPage.map(book -> {
-        BookDTO dto = new BookDTO();
-        dto.setId(book.getId());
-        dto.setTitle(book.getTitle());
-        dto.setPrice(book.getPrice());
-        dto.setDiscount(book.getDiscount());
-        dto.setSlug(book.getSlug());
-        dto.setStock(book.getStock());
-        dto.setStatus(book.getStatus());
-
-        if (book.getAuthor() != null) {
-            dto.setAuthor(new AuthorDTO(
-                    book.getAuthor().getId(),
-                    book.getAuthor().getFullname(),
-                    book.getAuthor().getSlug()
-            ));
-        }
-
-        if (book.getPublisher() != null) {
-            dto.setPublisher(new PublisherDTO(
-                    book.getPublisher().getId(),
-                    book.getPublisher().getName(),
-                    book.getPublisher().getSlug()
-            ));
-        }
-
-        if (book.getCategory() != null) {
-            dto.setCategory(new CategoryDTO(
-                    book.getCategory().getId(),
-                    book.getCategory().getName(),
-                    book.getCategory().getSlug()
-            ));
-        }
-
-        if (book.getImages() != null && !book.getImages().isEmpty()) {
-      List<ImageBookDTO> imageDTOs = book.getImages().stream()
-    .sorted(Comparator.comparing(img -> img.getCreatedAt())) 
-    .map(img -> new ImageBookDTO(
-        img.getId(),
-        img.getImage(),
-        img.getCreatedAt() != null ? img.getCreatedAt().format(formatter) : null
-    ))
-    .collect(Collectors.toList());
-            dto.setImages(imageDTOs);
-        } else {
-            dto.setImages(Collections.emptyList());
-        }
-
-        return dto;
-    });
+    return bookPage.map(this::convertToDTO);
 }
+ 
 
 public BookDetailDTO getBookBySlug(String slug) {
     Book book = bookRepository.findBySlug(slug)
