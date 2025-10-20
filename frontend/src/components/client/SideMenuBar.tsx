@@ -31,7 +31,9 @@ function SideMenuBar() {
         <Link
           to="/account"
           className={` py-3 px-3.5 ${
-            pathname === "/account" ? "bg-gray-100" : "hover:bg-gray-100"
+            pathname === "/account"
+              ? "bg-gray-100 border-l-4 border-[#C62028]"
+              : "hover:bg-gray-100"
           }`}
         >
           <div className="flex items-center gap-5">
@@ -55,7 +57,9 @@ function SideMenuBar() {
         <Link
           to="/order"
           className={` py-3 px-3.5  ${
-            pathname === "/order" ? "bg-gray-100" : "hover:bg-gray-100"
+            pathname === "/order"
+              ? "bg-gray-100 border-l-4 border-[#C62028]"
+              : "hover:bg-gray-100"
           }`}
         >
           <div className="flex items-center gap-5">
@@ -80,7 +84,9 @@ function SideMenuBar() {
         <Link
           to="/address"
           className={`py-3 px-3.5  ${
-            pathname === "/address" ? "bg-gray-100" : "hover:bg-gray-100"
+            pathname === "/address"
+              ? "bg-gray-100 border-l-4 border-[#C62028]"
+              : "hover:bg-gray-100"
           }`}
         >
           <div className="flex items-center gap-5">

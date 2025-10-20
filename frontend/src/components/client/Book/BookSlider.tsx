@@ -15,7 +15,7 @@ function BookSlider({ title, books }: Props) {
   return (
     <>
       {books.length > 0 && (
-        <section className="mb-[40px] px-[15px]">
+        <section className="mb-[40px] px-[15px] text-black">
           <div className="mx-auto max-w-[1350px] w-full">
             <h2 className="mb-[20px]">{title}</h2>
             <Swiper

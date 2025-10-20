@@ -6,6 +6,8 @@ import toast from "react-hot-toast";
 import { GrNext, GrPrevious } from "react-icons/gr";
 import { HiOutlineMinusSmall } from "react-icons/hi2";
 import { HiOutlinePlusSmall } from "react-icons/hi2";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
 
 type Props = {
   book: Book;
@@ -17,6 +19,19 @@ function BookDetail({ book }: Props) {
   const [openViewer, setOpenViewer] = useState<boolean>(false);
   const [viewerImage, setViewerImage] = useState<string>("");
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1024);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsLargeScreen(window.innerWidth >= 1024);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     if (book?.images?.length > 0) {
@@ -57,98 +72,105 @@ function BookDetail({ book }: Props) {
     setQuantity((prev) => (prev > 1 ? prev - 1 : prev));
   };
   return (
-    <section className="w-full mb-[40px]">
+    <section className="w-full mb-[40px] px-[15px]">
       <div className="mx-auto w-full max-w-[1350px]">
         <div className="flex flex-col lg:flex-row gap-x-[15px] gap-y-[30px] w-full">
           <div
-            className="flex flex-col md:flex-col-reverse xl:flex-row flex-wrap lg:sticky lg:top-[100px]"
             id="div1"
+            className="flex lg:flex-row flex-col-reverse gap-3 lg:sticky lg:top-[100px] flex-1"
           >
-            <div className="md:order-2 relative bg-white">
-              <div className="relative group flex justify-center">
-                {mainImage && (
-                  <div
-                    className="cursor-pointer"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      e.preventDefault();
-                      handleOpenViewer(
-                        `${import.meta.env.VITE_BACKEND_URL}${mainImage}`
-                      );
-                    }}
-                  >
-                    <button
-                      type="button"
-                      onClick={handleNextImage}
-                      className="absolute border border-gray-200 right-1.5 top-1/2 w-11 h-11 bg-white rounded-full flex justify-center items-center -translate-y-1/2 z-10 p-2 xl:opacity-0 xl:group-hover:opacity-100 transition duration-300 hover:bg-black hover:text-white"
-                    >
-                      <GrNext size={18} />
-                    </button>
-
-                    <div className="w-[600px] h-[600px] overflow-hidden">
-                      <Image
-                        source={`${
-                          import.meta.env.VITE_BACKEND_URL
-                        }${mainImage}`}
-                        alt=""
-                        className="w-full h-full object-contain "
-                        loading="eager"
-                      />
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={handlePrevImage}
-                      className="absolute left-1.5 top-1/2 w-11 h-11 border border-gray-200 bg-white rounded-full flex justify-center items-center -translate-y-1/2 z-10 p-2 xl:opacity-0 xl:group-hover:opacity-100 transition duration-300 hover:bg-black hover:text-white"
-                    >
-                      <GrPrevious size={18} />
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="md:order-1">
-              <div className="max-h-[600px] w-full flex flex-row xl:flex-col gap-[15px] overflow-x-auto overflow-y-auto justify-center">
+            <div className="mx-auto lg:max-w-[90px] w-full">
+              <Swiper
+                slidesPerView="auto"
+                spaceBetween={10}
+                className="lg:max-h-[600px] w-full"
+                direction={isLargeScreen ? "vertical" : "horizontal"}
+              >
                 {book?.images.map((image, index) => (
-                  <div
+                  <SwiperSlide
                     key={index}
-                    className={`shrink-0 border overflow-hidden cursor-pointer w-[70px] h-[90px] flex items-center justify-center ${
-                      `${import.meta.env.VITE_BACKEND_URL}${mainImage}` ===
-                      `${import.meta.env.VITE_BACKEND_URL}${image.image}`
-                        ? "border-gray-600"
-                        : "border-gray-300"
-                    }`}
+                    className="!w-[70px] !h-[90px] cursor-pointer flex-shrink-0"
                     onMouseEnter={() => {
                       setMainImage(image.image);
                       setCurrentImageIndex(index);
                     }}
                   >
-                    <img
-                      src={`${import.meta.env.VITE_BACKEND_URL}${image.image}`}
+                    <div
+                      className={`border flex items-center justify-center w-full h-full ${
+                        `${import.meta.env.VITE_BACKEND_URL}${mainImage}` ===
+                        `${import.meta.env.VITE_BACKEND_URL}${image.image}`
+                          ? "border-gray-600"
+                          : "border-gray-300"
+                      }`}
+                    >
+                      <Image
+                        source={`${import.meta.env.VITE_BACKEND_URL}${
+                          image.image
+                        }`}
+                        alt=""
+                        className="w-full h-full object-contain"
+                        loading="eager"
+                      />
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+
+            <div className="group flex justify-center w-full relative">
+              {mainImage && (
+                <div
+                  className="cursor-pointer group"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    handleOpenViewer(
+                      `${import.meta.env.VITE_BACKEND_URL}${mainImage}`
+                    );
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={handleNextImage}
+                    className="absolute border border-gray-200 right-1.5 top-1/2 w-10 h-10 bg-white rounded-full flex justify-center items-center -translate-y-1/2 z-10 p-2 lg:opacity-0 lg:group-hover:opacity-100 transition duration-300 hover:bg-black hover:text-white"
+                  >
+                    <GrNext size={18} />
+                  </button>
+
+                  <div className="w-full h-[400px] sm:h-[600px] overflow-hidden">
+                    <Image
+                      source={`${import.meta.env.VITE_BACKEND_URL}${mainImage}`}
                       alt=""
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain "
                       loading="eager"
                     />
                   </div>
-                ))}
-              </div>
+
+                  <button
+                    type="button"
+                    onClick={handlePrevImage}
+                    className="absolute left-1.5 top-1/2 w-10 h-10 border border-gray-200 bg-white rounded-full flex justify-center items-center -translate-y-1/2 z-10 p-2 lg:opacity-0 lg:group-hover:opacity-100 transition duration-300 hover:bg-black hover:text-white"
+                  >
+                    <GrPrevious size={18} />
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="relative flex-1 min-w-0 px-[15px]" id="div2">
-            <div className="space-y-[10px]">
+          <div className="relative flex-1" id="div2">
+            <div className="space-y-[10px] ">
               <h2>{book?.title}</h2>
 
-              <div className="flex justify-between items-center gap-[15px]">
-                <p className="font-medium">
+              <div className="flex justify-between items-center gap-[15px] text-black">
+                <p>
                   Publisher:{" "}
-                  <span className="font-semibold">{book.publisher.name}</span>
+                  <span className="font-medium">{book.publisher.name}</span>
                 </p>
 
-                <p className="font-medium">
+                <p>
                   Author:{" "}
-                  <span className="font-semibold">{book.author.fullname}</span>
+                  <span className="font-medium">{book.author.fullname}</span>
                 </p>
               </div>
 
@@ -159,7 +181,7 @@ function BookDetail({ book }: Props) {
                       {book?.price.toLocaleString("vi-VN")}₫
                     </del>
 
-                    <h3 className="text-[#c00] font-medium">
+                    <h3 className="text-[#C62028] font-medium">
                       {(book?.price - book?.discount).toLocaleString("vi-VN")}₫
                     </h3>
 
@@ -168,7 +190,7 @@ function BookDetail({ book }: Props) {
                     </p>
                   </>
                 ) : (
-                  <h3 className="font-medium">
+                  <h3 className="font-medium text-[#C62028]">
                     {book?.price.toLocaleString("vi-VN")}₫
                   </h3>
                 )}
@@ -176,7 +198,7 @@ function BookDetail({ book }: Props) {
 
               <div className="space-y-[15px]">
                 <div className="w-full flex items-center gap-[15px]">
-                  <h5 className="font-medium">Quantity:</h5>
+                  <h5 className="font-medium ">Quantity:</h5>
                   <div className="relative flex justify-between items-center max-w-[8rem] border border-gray-300 rounded-sm">
                     <button
                       type="button"
@@ -190,7 +212,7 @@ function BookDetail({ book }: Props) {
                       type="number"
                       name="quantity"
                       readOnly
-                      className="h-11 text-center text-black w-11 outline-none placeholder:text-[1.2rem] font-semibold"
+                      className="h-11 text-center text-black w-11 outline-none placeholder:text-[1.2rem] font-medium"
                       placeholder="1"
                       min={1}
                       max={book?.stock! > 15 ? 15 : book?.stock!}
@@ -211,15 +233,57 @@ function BookDetail({ book }: Props) {
 
                 <button
                   type="submit"
-                  className="px-[10px] py-[10px] w-full uppercase text-[0.9rem] font-medium border bg-[#C62028] text-white"
+                  className="p-[10px] w-full uppercase text-[0.9rem] font-semibold border bg-[#C62028] text-white"
                 >
                   Add to cart
                 </button>
 
-                <div>
-                  <h4>Description</h4>
+                <div className="text-black space-y-[15px]">
+                  <h4>Details</h4>
 
-                  <hr className="border my-[15px]" />
+                  <div className="divide-y divide-gray-200 text-[0.9rem]">
+                    <div className="grid grid-cols-2 gap-2 py-2">
+                      <span>Publication date</span>
+                      <span className="font-medium">
+                        {new Date(book.publicationDate).toLocaleDateString(
+                          "vi-VN"
+                        )}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 py-2">
+                      <span>Author</span>
+                      <span className="font-medium">
+                        {book.author.fullname}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 py-2">
+                      <span>Publisher</span>
+                      <span className="font-medium">{book.publisher.name}</span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 py-2">
+                      <span>Weight (gr)</span>
+                      <span className="font-medium">{book.weight}</span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 py-2">
+                      <span>Packaging size (cm)</span>
+                      <span className="font-medium">
+                        {book.length} x {book.width} x {book.thickness}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 py-2">
+                      <span>Number of pages</span>
+                      <span className="font-medium">{book.numberOfPages}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="text-black space-y-[15px]">
+                  <h4>Description</h4>
 
                   <div
                     className="main-prose"

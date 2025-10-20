@@ -19,7 +19,7 @@ function OrderInfo({ order, isLoading }: Props) {
     { label: "Delivered Successfully", icon: <LuStar size={24} /> },
   ];
   return (
-    <div className="w-full flex-1 border border-gray-300">
+    <div className="w-full flex-1 border border-gray-300 text-black">
       {isLoading ? (
         <Loading height={70} size={50} color="black" thickness={3} />
       ) : (

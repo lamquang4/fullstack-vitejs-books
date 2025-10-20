@@ -15,7 +15,7 @@ function MainBanner() {
   ];
   return (
     <>
-      <section className="mb-[40px]">
+      <section className="mb-[40px] text-black">
         <div className="w-full max-w-[1350px] mx-auto">
           <Swiper
             modules={[Autoplay, Pagination]}

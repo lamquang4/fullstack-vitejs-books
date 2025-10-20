@@ -564,7 +564,7 @@ function EditBook() {
 
                 <div className="flex flex-col gap-1 w-full">
                   <label htmlFor="" className="text-[0.9rem] font-medium">
-                    Weight (kg)
+                    Weight (gr)
                   </label>
                   <input
                     type="number"

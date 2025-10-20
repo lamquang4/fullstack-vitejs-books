@@ -49,14 +49,14 @@ function Header() {
   }, []);
   return (
     <>
-      <header className="w-full bg-white sticky top-0 border-b border-gray-200 z-[15]">
+      <header className="w-full bg-white sticky top-0 border-b border-gray-200 z-[15] text-black">
         <div className=" py-[20px] px-[15px] relative">
           <div className="w-full max-w-[1350px] mx-auto flex justify-between items-center">
             <Link to={"/"}>
               <Image
                 source={"/assets/logo.png"}
                 alt={"logo"}
-                className={"w-[100px]"}
+                className={"md:w-[100px] w-[80px]"}
                 loading="eager"
               />
             </Link>

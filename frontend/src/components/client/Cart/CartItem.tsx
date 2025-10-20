@@ -41,8 +41,8 @@ function CartItem({ cart }: Props) {
   };
 
   return (
-    <section className="my-[40px] px-[15px]">
-      <div className="max-w-[1230px] mx-auto">
+    <section className="my-[40px] px-[15px] text-black">
+      <div className="max-w-[1350px] mx-auto">
         <h2 className="mb-[20px]">Cart ({totalQuantity})</h2>
         {cart?.productsInCart && cart.productsInCart.length > 0 ? (
           <form onSubmit={handleSubmit}>

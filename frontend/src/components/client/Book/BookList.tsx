@@ -52,7 +52,7 @@ function BookList({ category, books, isLoading, total }: Props) {
   return (
     <>
       {!isLoading && category && (
-        <h2 className="mb-[20px]">
+        <h2 className="mb-[20px] text-black">
           {category} ({total})
         </h2>
       )}
@@ -87,7 +87,7 @@ function BookList({ category, books, isLoading, total }: Props) {
                     <Link to={`/book/${book.slug}`}>
                       {book.images.length > 0 && (
                         <>
-                          <div className="w-full h-[300px] flex items-center justify-center bg-gray-50 overflow-hidden">
+                          <div className="w-full flex items-center justify-center bg-gray-50 overflow-hidden">
                             <Image
                               source={`${import.meta.env.VITE_BACKEND_URL}${
                                 book.images[0].image

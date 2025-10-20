@@ -43,14 +43,14 @@ function CheckoutForm() {
   const isLoading = false;
 
   return (
-    <section className="my-[40px] px-[15px]">
-      <div className="mx-auto max-w-[1230px] w-full">
+    <section className="my-[40px] px-[15px] text-black">
+      <div className="mx-auto max-w-[1350px] w-full">
         <Link href={"/"}>
           <Image
-            Src={"/assets/other/logo.png"}
-            Alt={"logo"}
-            ClassName={"w-[80px]"}
-            loadingType="eager"
+            source={"/assets/logo.png"}
+            alt={"logo"}
+            className={"md:w-[100px] w-[80px]"}
+            loading="eager"
           />
         </Link>
 

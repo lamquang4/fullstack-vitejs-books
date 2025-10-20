@@ -16,13 +16,13 @@ function SuggestionProduct({ search }: Props) {
     <>
       <div className="p-2.5">
         <p className="font-medium text-balance">
-          Kết quả tìm kiếm cho <span className="text-red-600">{search}</span>
+          Kết quả tìm kiếm cho <span className="text-[#C62028]">{search}</span>
         </p>
       </div>
 
       <div className="overflow-y-auto max-h-96 flex flex-col">
         {isLoading ? (
-          <Loading height={25} size={35} color={"#c00"} thickness={3} />
+          <Loading height={25} size={35} color={"#C62028"} thickness={3} />
         ) : products.length > 0 ? (
           products.map((product) => (
             <div className="flex w-full" key={product._id}>
@@ -45,7 +45,7 @@ function SuggestionProduct({ search }: Props) {
                           {product.price.toLocaleString("vi-VN")}₫
                         </del>
 
-                        <p className="font-medium text-[#c00]">
+                        <p className="font-medium text-[#C62028]">
                           {(product.price - product.discount).toLocaleString(
                             "vi-VN"
                           )}

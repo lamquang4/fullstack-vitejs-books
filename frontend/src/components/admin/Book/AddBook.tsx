@@ -60,7 +60,7 @@ function AddBook() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (data.numberOfPages <= 0) {
       toast.error("Number of pages must be greater than 0");
       return;
@@ -412,7 +412,7 @@ function AddBook() {
 
                 <div className="flex flex-col gap-1 w-full">
                   <label htmlFor="" className="text-[0.9rem] font-medium">
-                    Weight (kg)
+                    Weight (gr)
                   </label>
                   <input
                     type="number"

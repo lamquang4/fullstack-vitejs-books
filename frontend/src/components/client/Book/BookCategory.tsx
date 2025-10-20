@@ -7,12 +7,13 @@ function BookCategory() {
   const { slug } = useParams();
   const { books, isLoading, totalItems, totalPages, currentPage } =
     useGetBooksByCategory(slug as string);
+
   return (
-    <section className="my-[40px]  px-[15px]">
-      <div className="mx-auto max-w-[1230px] w-full">
+    <section className="my-[40px] px-[15px]">
+      <div className="mx-auto max-w-[1350px] w-full">
         <BookList
           books={books}
-          category={"hehe"}
+          category={slug}
           isLoading={isLoading}
           total={totalItems}
         />
