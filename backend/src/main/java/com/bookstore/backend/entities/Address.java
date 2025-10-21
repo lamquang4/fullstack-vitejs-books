@@ -1,6 +1,5 @@
 package com.bookstore.backend.entities;
 import java.time.LocalDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -47,7 +46,6 @@ private String id;
     @JoinColumn(name = "userId", nullable = false)
   private User user;
 
-  
     @Builder.Default
 @Column(nullable = false)
 private LocalDateTime createdAt = LocalDateTime.now();

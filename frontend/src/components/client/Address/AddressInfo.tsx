@@ -1,41 +1,38 @@
 import toast from "react-hot-toast";
 import Loading from "../../Loading";
 import Image from "../../Image";
+import useGetAddresses from "../../../hooks/client/useGetAddresses";
+import useDeleteAddress from "../../../hooks/client/useDeleteAddress";
 
 type Props = {
   toggleAddressModal: () => void;
   setAddressId: (value: string) => void;
+  userId: string;
 };
 
-function AddressInfo({ toggleAddressModal, setAddressId }: Props) {
-  const addresses = [
-    {
-      _id: "1",
-      fullname: "Nguyen Van A",
-      phone: "0987654321",
-      speaddress: "123 Nguyen Trai Street",
-      ward: "Ward 5",
-      city: "Ho Chi Minh City",
-    },
-    {
-      _id: "2",
-      fullname: "Tran Thi B",
-      phone: "0912345678",
-      speaddress: "45 Le Loi Street",
-      ward: "Ben Thanh Ward",
-      city: "Ho Chi Minh City",
-    },
-    {
-      _id: "3",
-      fullname: "Le Van C",
-      phone: "0909123456",
-      speaddress: "12 Nguyen Hue Boulevard",
-      ward: "District 1",
-      city: "Ho Chi Minh City",
-    },
-  ];
+function AddressInfo({ toggleAddressModal, setAddressId, userId }: Props) {
+  const { addresses, mutate, isLoading } = useGetAddresses(userId);
+  const { deleteAddress, isLoading: isLoadingDeleteAddress } =
+    useDeleteAddress();
 
-  const isLoading = false;
+  const handleDelete = async (id: string) => {
+    if (!id) {
+      return;
+    }
+
+    if (addresses.length === 1) {
+      toast.error("You need to keep at least one address for your account");
+      return;
+    }
+
+    try {
+      await deleteAddress(id);
+      mutate();
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message);
+      mutate();
+    }
+  };
   return (
     <div className="w-full max-w-full flex-1 px-[15px]">
       <div className="space-y-[20px]">
@@ -55,24 +52,24 @@ function AddressInfo({ toggleAddressModal, setAddressId }: Props) {
           ) : addresses.length > 0 ? (
             addresses.map((address) => (
               <div
-                key={address._id}
+                key={address.id}
                 className="border-t border-gray-300 py-[20px]"
               >
                 <div className="flex justify-between flex-wrap gap-y-[8px]">
                   <div className="flex flex-col gap-[8px]">
-                    <p className="font-medium">
+                    <p>
                       Fullname:{" "}
-                      <span className="font-normal">{address.fullname}</span>
+                      <span className="font-medium">{address.fullname}</span>
                     </p>
 
-                    <p className="font-medium">
+                    <p>
                       Phone:{" "}
-                      <span className="font-normal">{address.phone}</span>
+                      <span className="font-medium">{address.phone}</span>
                     </p>
 
-                    <p className="font-medium">
+                    <p>
                       Address:{" "}
-                      <span className="font-normal">
+                      <span className="font-medium">
                         {address.speaddress}, {address.city}, {address.ward}
                       </span>
                     </p>
@@ -82,12 +79,18 @@ function AddressInfo({ toggleAddressModal, setAddressId }: Props) {
                     <button
                       className="border-0 p-1 outline-0 text-[0.9rem] text-blue-500 font-medium"
                       type="button"
+                      onClick={() => {
+                        toggleAddressModal();
+                        setAddressId(address.id || "");
+                      }}
                     >
                       Edit
                     </button>
                     <button
                       className="border-0 p-1 outline-0 text-[0.9rem] text-red-500 font-medium"
                       type="button"
+                      disabled={isLoadingDeleteAddress}
+                      onClick={() => handleDelete(address.id || "")}
                     >
                       Delete
                     </button>

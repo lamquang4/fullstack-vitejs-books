@@ -95,6 +95,7 @@ function LoginForm() {
                 </div>
 
                 <button
+                  disabled={isLoading}
                   type="submit"
                   className="w-full bg-[#C62028] text-white focus:outline-none font-semibold rounded-sm text-[0.9rem] px-5 py-2.5 text-center"
                 >

@@ -3,9 +3,10 @@ import SideBarMenu from "../SideMenuBar";
 import AddressModal from "./AddressModal";
 import AddressInfo from "./AddressInfo";
 import BreadCrumb from "../BreadCrumb";
-import useGetProvinces from "../../../hooks/useGetProvincesVN";
+import useCurrentUser from "../../../hooks/useGetCurrentUser";
+
 function Address() {
-  const { provinces } = useGetProvinces();
+  const { user } = useCurrentUser("client");
   const [addressId, setAddressId] = useState<string>("");
   const [openAddressModal, setOpenAddressModal] = useState<boolean>(false);
 
@@ -36,20 +37,19 @@ function Address() {
             <AddressInfo
               toggleAddressModal={toggleAddressModal}
               setAddressId={setAddressId}
+              userId={user?.id || ""}
             />
           </div>
         </div>
 
         {openAddressModal && (
           <>
-            {!addressId && (
-              <AddressModal
-                addressId=""
-                provinces={provinces}
-                toggleMenu={toggleAddressModal}
-                isOpen={openAddressModal}
-              />
-            )}
+            <AddressModal
+              addressId={addressId}
+              userId={user?.id || ""}
+              toggleMenu={toggleAddressModal}
+              isOpen={openAddressModal}
+            />
           </>
         )}
       </section>

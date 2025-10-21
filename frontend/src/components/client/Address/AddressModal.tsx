@@ -1,17 +1,28 @@
-"use client";
 import { HiMiniXMark } from "react-icons/hi2";
 import Overplay from "../Overplay";
 import { memo, useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
-import type { Province } from "../../../types/type";
+import useGetAddress from "../../../hooks/client/useGetAddress";
+import useGetProvinces from "../../../hooks/useGetProvincesVN";
+import useGetAddresses from "../../../hooks/client/useGetAddresses";
+import useAddAddress from "../../../hooks/client/useAddAddress";
+import useUpdateAddress from "../../../hooks/client/useUpdateAddress";
+import { validatePhone } from "../../../utils/validatePhone";
 
 type Props = {
   isOpen: boolean;
   toggleMenu: () => void;
   addressId: string;
-  provinces?: Province[];
+  userId: string;
 };
-function AddressModal({ isOpen, toggleMenu, addressId, provinces }: Props) {
+function AddressModal({ isOpen, toggleMenu, addressId, userId }: Props) {
+  const { provinces } = useGetProvinces();
+  const { address, mutate, isLoading } = useGetAddress(addressId, userId);
+  const { addresses, mutate: mutateAddresses } = useGetAddresses(userId);
+  const { addAddress, isLoading: isLoadingAddAddress } = useAddAddress();
+  const { updateAddress, isLoading: isLoadingUpdateAddress } =
+    useUpdateAddress(addressId);
+
   const [data, setData] = useState({
     fullname: "",
     phone: "",
@@ -24,6 +35,18 @@ function AddressModal({ isOpen, toggleMenu, addressId, provinces }: Props) {
     () => provinces?.find((p) => p.province === data.city),
     [provinces, data.city]
   );
+
+  useEffect(() => {
+    if (address && !isLoading) {
+      setData({
+        fullname: address?.fullname || "",
+        phone: address?.phone || "",
+        speaddress: address?.speaddress || "",
+        city: address?.city || "",
+        ward: address?.ward || "",
+      });
+    }
+  }, [address, isLoading]);
 
   useEffect(() => {
     if (isOpen) {
@@ -46,6 +69,51 @@ function AddressModal({ isOpen, toggleMenu, addressId, provinces }: Props) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validatePhone(data.phone)) {
+      toast.error("Invalid phone number");
+      mutate();
+      return;
+    }
+
+    if (addresses.length === 5 && !addressId) {
+      toast.error("You can only save up to 5 addresses for your account");
+      mutate();
+      return;
+    }
+
+    try {
+      const payload = {
+        fullname: data.fullname.trim(),
+        phone: data.phone.trim(),
+        speaddress: data.speaddress.trim(),
+        city: data.city,
+        ward: data.ward,
+        userId: userId,
+      };
+
+      if (userId) {
+        if (addressId) {
+          await updateAddress(payload);
+        } else {
+          await addAddress(payload);
+
+          setData({
+            fullname: "",
+            phone: "",
+            speaddress: "",
+            city: "",
+            ward: "",
+          });
+        }
+      }
+
+      mutateAddresses();
+      mutate();
+    } catch (err: any) {
+      toast.error(err?.response?.data?.msg);
+      mutate();
+    }
   };
 
   return (
@@ -182,7 +250,9 @@ function AddressModal({ isOpen, toggleMenu, addressId, provinces }: Props) {
                   type="submit"
                   className="px-[14px] py-[6px] bg-red-600 text-white text-[0.9rem] font-medium text-center rounded-sm hover:bg-red-700"
                 >
-                  Save
+                  {isLoadingAddAddress || isLoadingUpdateAddress
+                    ? "saving..."
+                    : "Save"}
                 </button>
               </div>
             </form>

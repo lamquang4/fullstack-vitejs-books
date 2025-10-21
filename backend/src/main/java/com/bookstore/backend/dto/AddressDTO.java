@@ -15,5 +15,6 @@ public class AddressDTO {
     private String speaddress;
     private String ward;
     private String city;
+    private String userId;
 }
 
