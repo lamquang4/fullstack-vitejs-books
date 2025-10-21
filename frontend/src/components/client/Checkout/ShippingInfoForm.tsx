@@ -6,33 +6,38 @@ type Props = {
     fullname: string;
     phone: string;
     speaddress: string;
+    city: string;
+    ward: string;
   };
+  setData: React.Dispatch<
+    React.SetStateAction<{
+      fullname: string;
+      phone: string;
+      speaddress: string;
+      city: string;
+      ward: string;
+    }>
+  >;
   addresses: Address[];
-  provinces: Province[];
-  provinceName: string;
-  ward: string;
   handleChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
   handleGetAddress: (address: Address | null) => void;
-  setProvinceName: (value: string) => void;
-  setWard: (value: string) => void;
+  provinces: Province[];
 };
 
 function ShippingInfoForm({
   data,
+  setData,
   addresses,
-  provinces,
-  provinceName,
-  ward,
   handleChange,
   handleGetAddress,
-  setProvinceName,
-  setWard,
+  provinces,
 }: Props) {
-  const selectedProvince = useMemo(() => {
-    return provinces?.find((province) => province.province === provinceName);
-  }, [provinces, provinceName]);
+  const selectedProvince = useMemo(
+    () => provinces?.find((p) => p.province === data.city),
+    [provinces, data.city]
+  );
 
   return (
     <div className="space-y-[15px]">
@@ -48,15 +53,15 @@ function ShippingInfoForm({
             if (value === "") {
               handleGetAddress(null);
             } else {
-              const selected = addresses.find((addr) => addr._id === value);
+              const selected = addresses.find((addr) => addr.id === value);
               if (selected) handleGetAddress(selected);
             }
           }}
-          className="w-full rounded-md text-[0.9rem] border border-gray-200 px-2.5 py-2 outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+          className="w-full rounded-md text-[0.9rem] border border-gray-200 px-2.5 py-2 outline-none focus:z-10 focus:border-[#C62028] focus:ring-[#C62028]"
         >
           <option value="">Select saved address</option>
           {addresses.map((address, index) => (
-            <option value={address._id} key={index}>
+            <option value={address.id} key={index}>
               {address.speaddress}, {address.city}, {address.ward}
             </option>
           ))}
@@ -73,7 +78,7 @@ function ShippingInfoForm({
           value={data.fullname}
           onChange={handleChange}
           required
-          className="w-full rounded-md border border-gray-200 px-2.5 py-2 text-[0.9rem] outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+          className="w-full rounded-md border border-gray-200 px-2.5 py-2 text-[0.9rem] outline-none focus:z-10 focus:border-[#C62028] focus:ring-[#C62028]"
           placeholder="Họ và tên"
         />
       </div>
@@ -89,7 +94,7 @@ function ShippingInfoForm({
           value={data.phone}
           onChange={handleChange}
           required
-          className="w-full rounded-md border border-gray-200 px-2.5 py-2 text-[0.9rem] outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+          className="w-full rounded-md border border-gray-200 px-2.5 py-2 text-[0.9rem] outline-none focus:z-10 focus:border-[#C62028] focus:ring-[#C62028]"
           placeholder="Số điện thoại"
         />
       </div>
@@ -104,7 +109,7 @@ function ShippingInfoForm({
           value={data.speaddress}
           onChange={handleChange}
           required
-          className="w-full rounded-md border border-gray-200 px-2.5 py-2 text-[0.9rem] outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+          className="w-full rounded-md border border-gray-200 px-2.5 py-2 text-[0.9rem] outline-none focus:z-10 focus:border-[#C62028] focus:ring-[#C62028]"
           placeholder="Địa chỉ cụ thể"
         />
       </div>
@@ -117,12 +122,15 @@ function ShippingInfoForm({
           <select
             name="city"
             required
-            value={provinceName}
-            onChange={(e) => {
-              setProvinceName(e.target.value);
-              setWard("");
-            }}
-            className="w-full rounded-md text-[0.9rem] border border-gray-200 px-2.5 py-2 outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+            value={data.city}
+            onChange={(e) =>
+              setData((prev) => ({
+                ...prev,
+                city: e.target.value,
+                ward: "",
+              }))
+            }
+            className="w-full rounded-md text-[0.9rem] border border-gray-200 px-2.5 py-2 outline-none focus:z-10 focus:border-[#C62028] focus:ring-[#C62028]"
           >
             <option value="">Select province/city</option>
             {provinces?.map((province) => (
@@ -141,9 +149,9 @@ function ShippingInfoForm({
             name="ward"
             required
             disabled={!selectedProvince}
-            value={ward}
-            onChange={(e) => setWard(e.target.value)}
-            className="w-full rounded-md text-[0.9rem] border border-gray-200 px-2.5 py-2 text-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+            value={data.ward}
+            onChange={handleChange}
+            className="w-full rounded-md text-[0.9rem] border border-gray-200 px-2.5 py-2 text-sm outline-none focus:z-10 focus:border-[#C62028] focus:ring-[#C62028]"
           >
             <option value="">Select ward/Commune</option>
             {selectedProvince?.wards.map((ward, idx) => (

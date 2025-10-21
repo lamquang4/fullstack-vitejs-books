@@ -2,11 +2,16 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Image from "../../Image";
 import Loading from "../../Loading";
 import { CiCalendar } from "react-icons/ci";
+import useGetOrders from "../../../hooks/client/useGetOrders";
+import useCurrentUser from "../../../hooks/useGetCurrentUser";
+import Pagination from "../Pagination";
 
 function OrderHistory() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const isLoading = false;
+  const { user } = useCurrentUser("client");
+  const { orders, isLoading, totalItems, totalPages, currentPage } =
+    useGetOrders(user?.id || "");
   const array = [
     { status: "", name: "All" },
     { status: 0, name: "Pending Confirmation" },
@@ -53,7 +58,7 @@ function OrderHistory() {
           <Loading height={60} size={50} color="black" thickness={3} />
         ) : orders.length > 0 ? (
           orders.map((order) => (
-            <div className="border border-gray-300 px-[15px]" key={order._id}>
+            <div className="border border-gray-300 px-[15px]" key={order.id}>
               <div className="space-y-[10px] py-[15px] border-b border-gray-300">
                 <div className="flex justify-between flex-wrap gap-[10px]">
                   <h5 className="font-semibold">Order {order.orderCode}</h5>
@@ -99,25 +104,27 @@ function OrderHistory() {
                 </div>
               </div>
 
-              {order.productsBuy.map((item, index) => (
+              {order.items.map((item, index) => (
                 <div
                   key={index}
                   className="relative py-[15px] border-b border-gray-300 w-full"
                 >
                   <Link to={`/order/${order.orderCode}`}>
                     <div className="flex items-center gap-[10px] w-full">
-                      <div className="w-full max-w-[120px]">
+                      <div className="w-[120px] h-[120px] overflow-hidden">
                         <Image
-                          source={item.images[0]}
-                          alt={item.name}
-                          className={"w-full object-cover"}
+                          source={`${import.meta.env.VITE_BACKEND_URL}${
+                            item.images[0]
+                          }`}
+                          alt={item.title}
+                          className={"w-full h-full object-contain"}
                           loading="lazy"
                         />
                       </div>
 
                       <div className="space-y-[15px]">
                         <div className="flex gap-[10px] flex-wrap">
-                          <h5 className="font-medium">{item.name}</h5>
+                          <h5 className="font-medium">{item.title}</h5>
                           <span>x{item.quantity}</span>
                         </div>
 
@@ -152,7 +159,7 @@ function OrderHistory() {
 
                   <Link
                     to={`/order/${order.orderCode}`}
-                    className="text-white text-[0.9rem] font-medium px-[10px] py-[6px] bg-[#ee4d2d] hover:text-white"
+                    className="text-white text-[0.9rem] font-medium px-[10px] py-[6px] bg-[#C62028]"
                   >
                     View Details
                   </Link>
@@ -175,13 +182,11 @@ function OrderHistory() {
           </div>
         )}
 
-        {/*
-    <Pagination
+        <Pagination
           totalPages={totalPages}
           currentPage={currentPage}
           totalItems={totalItems}
         />
-    */}
       </div>
     </div>
   );

@@ -1,25 +1,32 @@
-"use client";
-import Image from "../Image";
-import { useParams, useRouter } from "next/navigation";
-import useGetOrder from "@/hooks/useGetOrder";
+import Image from "../../Image";
 import { LuArchive, LuCheck, LuStar, LuTruck } from "react-icons/lu";
 import { RiArrowLeftSLine } from "react-icons/ri";
 import { TbCancel } from "react-icons/tb";
-import Loading from "../Loading";
-import Link from "next/link";
-import { useEffect, useMemo } from "react";
+import Loading from "../../Loading";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import useGetOrder from "../../../hooks/admin/useGetOrder";
 
 function OrderDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
-
+  const { order, isLoading } = useGetOrder(id as string);
   const steps = [
-    { label: "Đơn đã đặt", icon: <LuArchive size={24} /> },
-    { label: "Đã xác nhận", icon: <LuCheck size={24} /> },
-    { label: "Đang giao", icon: <LuTruck size={24} /> },
-    { label: "Đơn hoàn thành", icon: <LuStar size={24} /> },
+    { label: "Pending Confirmation", icon: <LuArchive size={24} /> },
+    { label: "Confirmed", icon: <LuCheck size={24} /> },
+    { label: "Delivering", icon: <LuTruck size={24} /> },
+    { label: "Delivered Successfully", icon: <LuStar size={24} /> },
   ];
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    if (!order) {
+      toast.error("Order not found");
+      navigate("/admin/orders");
+    }
+  }, [isLoading, order, navigate]);
   return (
     <>
       <section className="my-[30px]">
@@ -58,7 +65,7 @@ function OrderDetail() {
                     </span>
                   </div>
 
-                  <Link to={"/admin/order"} className="text-center">
+                  <Link to={"/admin/orders"} className="text-center">
                     <span className="flex items-center font-semibold text-gray-600">
                       <RiArrowLeftSLine size={20} /> Back
                     </span>
@@ -144,19 +151,23 @@ function OrderDetail() {
                       </tr>
                     </thead>
                     <tbody>
-                      {order?.productsBuy.map((item, index) => (
+                      {order?.items.map((item, index) => (
                         <tr key={index}>
                           <td className="p-[20px]  ">
                             <div className="flex items-center gap-[10px]">
-                              <Image
-                                source={item.images[0]}
-                                alt={""}
-                                className={"w-[75px]"}
-                                loading="eager"
-                              />
+                              <div className="w-[75px] h-[75px] overflow-hidden">
+                                <Image
+                                  source={`${import.meta.env.VITE_BACKEND_URL}${
+                                    item.images[0]
+                                  }`}
+                                  alt={""}
+                                  className={"w-full h-full object-contain"}
+                                  loading="eager"
+                                />
+                              </div>
 
                               <div className="space-y-[10px] font-medium">
-                                <p>{item.name}</p>
+                                <p>{item.title}</p>
                               </div>
                             </div>
                           </td>

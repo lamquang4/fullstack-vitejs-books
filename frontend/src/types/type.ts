@@ -61,7 +61,7 @@ export interface Address {
   user?: string;
 }
 
-export interface OrderFull {
+export interface Order {
   id: string;
   orderCode: string;
   userId: string;
@@ -70,18 +70,22 @@ export interface OrderFull {
   speaddress: string;
   city: string;
   ward: string;
+  userFullname: string;
   paymethod: string;
-  productsBuy: {
-    _id: string;
-    name: string;
-    images: string[];
-    quantity: number;
-    price: number;
-    discount: number;
-  }[];
+  items: ProductBuy[];
   status: number;
   total: number;
   createdAt: string;
+}
+
+export interface ProductBuy {
+  id: string;
+  bookId: string;
+  title: string;
+  images: string[];
+  quantity: number;
+  price: number;
+  discount: number;
 }
 
 export interface OrderAdd {
@@ -91,14 +95,12 @@ export interface OrderAdd {
   city: string;
   ward: string;
   paymethod: string;
-  coupon?: string;
-  productsBuy: {
-    id: string;
+  items: {
+    bookId: string;
     quantity: number;
     price: number;
-    discount?: number;
+    discount: number;
   }[];
-  total: number;
 }
 
 export interface ProductInCart {

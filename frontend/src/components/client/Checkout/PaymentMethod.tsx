@@ -15,11 +15,6 @@ function PaymentMethod({ paymethod, setPaymethod }: Props) {
       name: "Pay with MOMO",
       value: "momo",
     },
-    {
-      image: "/assets/vnpay.png",
-      name: "Pay with VNPAY",
-      value: "vnpay",
-    },
   ];
 
   return (
@@ -36,9 +31,9 @@ function PaymentMethod({ paymethod, setPaymethod }: Props) {
               checked={paymethod === method.value}
               onChange={() => setPaymethod(method.value)}
             />
-            <span className="peer-checked:border-[#197FB6] absolute right-4 top-1/2 box-content block h-2.5 w-2.5 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
+            <span className="peer-checked:border-[#C62028] absolute right-4 top-1/2 box-content block h-2.5 w-2.5 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
             <label
-              className="peer-checked:border-1 peer-checked:border-[#197FB6] items-center gap-[10px] peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4"
+              className="peer-checked:border-[#C62028] font-medium  items-center gap-[10px] peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border-2 border-gray-300 p-4"
               htmlFor={`paymethod-${method.value}`}
             >
               <Image
@@ -47,7 +42,7 @@ function PaymentMethod({ paymethod, setPaymethod }: Props) {
                 loading="eager"
                 alt=""
               />
-              <span className="font-medium">{method.name}</span>
+              <span>{method.name}</span>
             </label>
           </div>
         ))}

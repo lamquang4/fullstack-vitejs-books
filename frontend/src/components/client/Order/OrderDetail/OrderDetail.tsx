@@ -1,23 +1,40 @@
 import BreadCrumb from "../../BreadCrumb";
 import OrderInfo from "./OrderInfo";
 import SideBarMenu from "../../SideMenuBar";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import useCurrentUser from "../../../../hooks/useGetCurrentUser";
+import useGetOrder from "../../../../hooks/client/useGetOrder";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
 function OrderDetail() {
+  const navigate = useNavigate();
   const { code } = useParams();
+  const { user } = useCurrentUser("client");
+  const { order, isLoading } = useGetOrder(user?.id!, code as string);
 
   const array = [
     {
-      name: "Trang chủ",
+      name: "Home",
       href: "/",
     },
     {
-      name: "Đơn hàng",
+      name: "Order",
       href: "/order",
     },
     {
       name: `Order ${code}`,
     },
   ];
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    if (!order) {
+      toast.error("Order not found");
+      navigate("/order");
+    }
+  }, [isLoading, order, navigate]);
+
   return (
     <>
       <BreadCrumb items={array} />
@@ -27,7 +44,7 @@ function OrderDetail() {
           <div className="flex justify-center flex-wrap gap-5">
             <SideBarMenu />
 
-            <OrderInfo order={{}} isLoading={isLoading} />
+            <OrderInfo order={order} isLoading={isLoading} />
           </div>
         </div>
       </section>

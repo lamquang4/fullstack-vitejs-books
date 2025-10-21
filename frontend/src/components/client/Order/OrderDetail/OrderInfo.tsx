@@ -3,11 +3,11 @@ import Loading from "../../../Loading";
 import { LuArchive, LuCheck, LuStar, LuTruck } from "react-icons/lu";
 import { RiArrowLeftSLine } from "react-icons/ri";
 import { TbCancel } from "react-icons/tb";
-import type { OrderFull } from "../../../../types/type";
 import { Link } from "react-router-dom";
+import type { Order } from "../../../../types/type";
 
 type Props = {
-  order: OrderFull;
+  order: Order;
   isLoading: boolean;
 };
 
@@ -130,19 +130,23 @@ function OrderInfo({ order, isLoading }: Props) {
                 </tr>
               </thead>
               <tbody>
-                {order?.productsBuy.map((item, index) => (
+                {order?.items.map((item, index) => (
                   <tr key={index}>
                     <td className="p-[20px]  ">
                       <div className="flex items-center gap-[10px]">
-                        <Image
-                          source={item.images[0]}
-                          alt={""}
-                          className={"w-[75px]"}
-                          loading="eager"
-                        />
+                        <div className="w-[75px] h-[75px] overflow-hidden">
+                          <Image
+                            source={`${import.meta.env.VITE_BACKEND_URL}${
+                              item.images[0]
+                            }`}
+                            alt={""}
+                            className={"w-full h-full object-contain"}
+                            loading="eager"
+                          />
+                        </div>
 
                         <div className="space-y-[10px] font-medium">
-                          <p>{item.name}</p>
+                          <p>{item.title}</p>
                         </div>
                       </div>
                     </td>

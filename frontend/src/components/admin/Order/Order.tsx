@@ -4,82 +4,45 @@ import Pagination from "../Pagination";
 import FilterDropDownMenu from "../FilterDropDownMenu";
 import InputSearch from "../InputSearch";
 import Loading from "../../Loading";
-import {
-  Link,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { Link } from "react-router-dom";
+import useGetOrders from "../../../hooks/admin/useGetOrders";
+import useUpdateStatusOrder from "../../../hooks/admin/useUpdateStatusOrder";
 
 function Order() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const {
+    orders,
+    mutate,
+    isLoading,
+    totalItems,
+    totalPages,
+    limit,
+    currentPage,
+  } = useGetOrders();
+  const { updateStatusOrder, isLoading: isLoadingUpdate } =
+    useUpdateStatusOrder();
+
+  const handleUpdateStatus = async (id: string, status: number) => {
+    if (!id && !status) {
+      return;
+    }
+    await updateStatusOrder(id, status);
+    mutate();
+  };
+
   const array = [
     { name: "All", value: null },
     { name: "Pending Payment", value: -1 },
-    { name: "Waiting for Confirmation", value: 0 },
+    { name: "Pending Confirmation", value: 0 },
     { name: "Confirmed", value: 1 },
-    { name: "Shipping", value: 2 },
+    { name: "Delivering", value: 2 },
     { name: "Delivered Successfully", value: 3 },
     { name: "Cancelled", value: 4 },
   ];
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-
-    const start = formData.get("start") as string;
-    const end = formData.get("end") as string;
-
-    const params = new URLSearchParams(searchParams.toString());
-
-    if (start) params.set("start", start);
-    else params.delete("start");
-
-    if (end) params.set("end", end);
-    else params.delete("end");
-
-    navigate(`${location.pathname}?${params.toString()}`);
-  };
   return (
     <>
       <div className="py-[1.3rem] px-[1.2rem] bg-[#f1f4f9] space-y-[20px]">
-        <h2 className=" text-[#74767d]">Order</h2>
-
-        <div>
-          <form onSubmit={handleSubmit}>
-            <div className="flex gap-[15px] flex-wrap">
-              <div className="relative flex gap-1.5 items-center">
-                <label htmlFor="" className="text-[0.9rem]   font-medium">
-                  From:
-                </label>
-                <input
-                  name="start"
-                  type="date"
-                  className="bg-gray-50 border border-gray-300 text-[0.9rem] p-[6px_10px] outline-none focus:border-gray-400  "
-                />
-              </div>
-
-              <div className="relative flex gap-1.5 items-center">
-                <label htmlFor="" className="text-[0.9rem]   font-medium">
-                  To:
-                </label>
-                <input
-                  name="end"
-                  type="date"
-                  className="bg-gray-50 border border-gray-300 text-[0.9rem] p-[6px_10px] outline-none focus:border-gray-400  "
-                />
-              </div>
-
-              <button className="p-[6px_10px] text-[0.9rem] bg-[#22BAA0] text-white">
-                Search
-              </button>
-            </div>
-          </form>
-        </div>
+        <h2 className=" text-[#74767d]">Order ({totalItems})</h2>
       </div>
 
       <div className=" bg-white  w-full overflow-auto">
@@ -117,11 +80,11 @@ function Order() {
               </tr>
             ) : orders.length > 0 ? (
               orders.map((order) => (
-                <tr key={order._id} className="hover:bg-[#f2f3f8]">
+                <tr key={order.id} className="hover:bg-[#f2f3f8]">
                   <td className="p-[1rem] font-semibold">{order.orderCode}</td>
                   <td className="p-[1rem]  ">{order.fullname}</td>
-                  <th className="p-[1rem]  ">Quanglam</th>
-                  <td className="p-[1rem]  ">{order.paymethod}</td>
+                  <th className="p-[1rem]  ">{order.userFullname}</th>
+                  <td className="p-[1rem] uppercase">{order.paymethod}</td>
                   <td className="p-[1rem]  ">
                     {order.total!.toLocaleString("vi-VN")}₫
                   </td>
@@ -138,6 +101,10 @@ function Order() {
                   <td className="p-[1rem]">
                     <select
                       name="status"
+                      disabled={isLoadingUpdate}
+                      onChange={(e) =>
+                        handleUpdateStatus(order.id, parseInt(e.target.value))
+                      }
                       value={order.status}
                       className="border border-gray-300 p-[6px_10px] text-[0.9rem] outline-none focus:border-gray-400  "
                     >
@@ -146,7 +113,7 @@ function Order() {
                       )}
                       {order.status === 0 && (
                         <>
-                          <option value="0">Waiting for Confirmation</option>
+                          <option value="0">Pending Confirmation</option>
                           <option value="1">Confirmed</option>
                           <option value="4">Cancelled</option>
                         </>
@@ -154,13 +121,13 @@ function Order() {
                       {order.status === 1 && (
                         <>
                           <option value="1">Confirmed</option>
-                          <option value="2">Shipping</option>
+                          <option value="2">Delivering</option>
                           <option value="4">Cancelled</option>
                         </>
                       )}
                       {order.status === 2 && (
                         <>
-                          <option value="2">Shipping</option>
+                          <option value="2">Delivering</option>
                           <option value="3">Delivered Successfully</option>
                           <option value="4">Cancelled</option>
                         </>
@@ -175,7 +142,7 @@ function Order() {
                   </td>
                   <td className="p-[1rem]  ">
                     <div className="flex items-center gap-[15px]">
-                      <Link to={`/admin/order/${order._id}`}>
+                      <Link to={`/admin/order/${order.id}`}>
                         <LiaExternalLinkAltSolid
                           size={23}
                           className="text-[#076ffe]"

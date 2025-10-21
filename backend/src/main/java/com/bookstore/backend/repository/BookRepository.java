@@ -6,7 +6,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.bookstore.backend.entities.Author;
 import com.bookstore.backend.entities.Book;
+import com.bookstore.backend.entities.Order;
 import com.bookstore.backend.entities.Publisher;
+import jakarta.persistence.LockModeType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 @Repository
@@ -42,7 +44,7 @@ Page<Book> findByDiscountGreaterThanAndStatusAndTitleContainingIgnoreCase(
     Page<Book> searchByTitleAuthorPublisherCategory(@Param("q") String q,
                                                     @Param("status") Integer status,
                                                     Pageable pageable);
-    // Category
+    // category
      @Query("SELECT b FROM Book b " +
            "WHERE b.category.slug = :slug AND b.status = :status AND (" +
            "LOWER(b.title) LIKE LOWER(CONCAT('%', :q, '%')) OR " +
@@ -65,5 +67,4 @@ Page<Book> findByDiscountGreaterThanAndStatusAndTitleContainingIgnoreCase(
     Page<Book> searchDiscountedActiveCategory(@Param("q") String q,
                                               @Param("status") Integer status,
                                               Pageable pageable);
-
 }

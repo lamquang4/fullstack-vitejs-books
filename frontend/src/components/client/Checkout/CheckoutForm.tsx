@@ -1,5 +1,3 @@
-"use client";
-import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "../../Image";
 import Loading from "../../Loading";
@@ -7,30 +5,72 @@ import Overplay from "./../Overplay";
 import ProductBuyList from "./ProductBuyList";
 import ShippingInfoForm from "./ShippingInfoForm";
 import PaymentMethod from "./PaymentMethod";
+import useCurrentUser from "../../../hooks/useGetCurrentUser";
+import useGetCart from "../../../hooks/client/useGetCart";
+import { Link, useNavigate } from "react-router-dom";
+import useGetAddresses from "../../../hooks/client/useGetAddresses";
+import type { Address } from "../../../types/type";
+import useGetProvinces from "../../../hooks/useGetProvincesVN";
+import { MdOutlineKeyboardBackspace } from "react-icons/md";
+import toast from "react-hot-toast";
+import useAddOrder from "../../../hooks/client/useAddOrder";
 
 function CheckoutForm() {
+  const navigate = useNavigate();
+  const { provinces } = useGetProvinces();
+  const { user } = useCurrentUser("client");
+  const {
+    cart,
+    isLoading: isLoadingCart,
+    mutate: mutateCart,
+  } = useGetCart(user?.id || "");
+  const { addresses } = useGetAddresses(user?.id || "");
+  const { addOrder, isLoading: isLoadingAdd } = useAddOrder(user?.id || "");
+
   const [data, setData] = useState({
     fullname: "",
     phone: "",
     speaddress: "",
+    city: "",
+    ward: "",
   });
-  const [provinceName, setProvinceName] = useState<string>("");
-  const [ward, setWard] = useState<string>("");
-  const [menuOpen, setMenuOpen] = useState<boolean>(false);
-  const [couponCode, setCouponCode] = useState<string>("");
   const [paymethod, setPaymethod] = useState<string>("");
   const [isOrdering, setIsOrdering] = useState<boolean>(false);
 
+  // lấy những sản phẩm không đủ số lượng mua (số lượng mua > số lượng tồn kho)
+  const outOfStockItems = useMemo(() => {
+    if (!cart?.items) return [];
+    return cart.items.filter((item) => item.quantity > item.stock);
+  }, [cart?.items]);
+
+  useEffect(() => {
+    if (isOrdering) return;
+
+    if (!cart || cart.items.length === 0) {
+      toast.error("There’s nothing in your cart");
+      navigate("/cart");
+      return;
+    }
+
+    if (outOfStockItems.length > 0) {
+      toast.error(
+        "Some products do not have enough stock for the quantity you want to purchase"
+      );
+      navigate("/cart");
+      return;
+    }
+  }, [cart, navigate, isLoadingCart]);
+
   const totalPrice = useMemo(() => {
     return (
-      cart?.productsInCart.reduce((sum, item) => {
+      cart?.items.reduce((sum, item) => {
         const finalPrice =
           item.discount > 0 ? item.price - item.discount : item.price;
 
-        return sum + finalPrice * item.variant.quantity;
+        return sum + finalPrice * item.quantity;
       }, 0) || 0
     );
-  }, [cart?.productsInCart]);
+  }, [cart?.items]);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -40,16 +80,70 @@ function CheckoutForm() {
     []
   );
 
-  const isLoading = false;
+  const handleGetAddress = useCallback((address: Address | null) => {
+    if (address) {
+      setData({
+        fullname: address.fullname,
+        phone: address.phone,
+        speaddress: address.speaddress,
+        city: address.city,
+        ward: address.ward,
+      });
+    } else {
+      setData({ fullname: "", phone: "", speaddress: "", city: "", ward: "" });
+    }
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!paymethod) {
+      toast.error("Please select a payment method");
+      return;
+    }
+
+    const items = cart?.items.map((item) => {
+      return {
+        bookId: item.bookId,
+        quantity: item.quantity,
+        price: item.price,
+        discount: item.discount,
+      };
+    });
+
+    if (paymethod === "cod") {
+      try {
+        await addOrder({
+          fullname: data.fullname,
+          phone: data.phone,
+          speaddress: data.speaddress,
+          city: data.city,
+          ward: data.ward,
+          paymethod: paymethod,
+          items: items!,
+        });
+
+        setIsOrdering(true);
+
+        navigate("/");
+
+        mutateCart({ items: [] }, false);
+      } catch (err: any) {
+        toast.error(err?.response?.data?.msg);
+      }
+    } else if (paymethod === "momo") {
+      return;
+    }
+  };
 
   return (
     <section className="my-[40px] px-[15px] text-black">
       <div className="mx-auto max-w-[1350px] w-full">
-        <Link href={"/"}>
+        <Link to={"/"}>
           <Image
             source={"/assets/logo.png"}
             alt={"logo"}
-            className={"md:w-[100px] w-[80px]"}
+            className={"w-[100px]"}
             loading="eager"
           />
         </Link>
@@ -62,10 +156,7 @@ function CheckoutForm() {
               <div className="space-y-[30px]">
                 <ShippingInfoForm
                   data={data}
-                  provinceName={provinceName}
-                  setProvinceName={setProvinceName}
-                  ward={ward}
-                  setWard={setWard}
+                  setData={setData}
                   handleGetAddress={handleGetAddress}
                   handleChange={handleChange}
                   addresses={addresses ?? []}
@@ -78,51 +169,45 @@ function CheckoutForm() {
                 />
 
                 <div className="flex justify-between items-center">
-                  <button
-                    disabled={isLoadingAddOrder}
-                    className="text-[0.9rem] rounded-md bg-[#197FB6] px-4 py-2 font-medium text-white"
-                  >
-                    Đặt hàng
+                  <button className="text-[0.9rem] rounded-md bg-[#C62028] px-4 py-2 font-medium text-white">
+                    Place order
                   </button>
 
                   <Link
-                    href={"/cart"}
-                    className="text-[0.95rem] rounded-md bg-transparent py-2 font-medium text-[#338dbc] hover:text-blue-400"
+                    to={"/cart"}
+                    className="text-[0.95rem] rounded-md bg-transparent px-4 py-2 font-medium text-[#C62028] border border-[#C62028]"
                   >
-                    Giỏ hàng
+                    <div className="flex gap-[5px] items-center">
+                      <MdOutlineKeyboardBackspace size={25} /> Cart
+                    </div>
                   </Link>
                 </div>
               </div>
             </div>
 
             <div className="order-first lg:order-last space-y-[15px] lg:sticky lg:top-0 lg:self-start">
-              <ProductBuyList productsInCart={cart?.productsInCart ?? []} />
+              <ProductBuyList productsInCart={cart?.items ?? []} />
 
               <hr className="border-gray-300" />
 
-              <CouponApply
-                toggleOpen={toggleOpen}
-                setCouponCode={setCouponCode}
-                handleApplyCoupon={handleApplyCoupon}
-                coupon={coupon!}
-                isLoadingCoupon={isLoadingCoupon}
-              />
+              <div className="flex items-center justify-between font-medium ">
+                <h5>Shipping fee:</h5>
+                <h5>Free ship</h5>
+              </div>
 
-              <hr className="border-gray-300" />
-
-              <div className="flex items-center justify-between  ">
-                <h4>Total</h4>
-                <h4>{totalPrice.toLocaleString("vi-VN")}₫</h4>
+              <div className="flex items-center justify-between font-semibold">
+                <h5>Total price:</h5>
+                <h5>{totalPrice.toLocaleString("vi-VN")}₫</h5>
               </div>
             </div>
           </div>
         </form>
       </div>
 
-      {isLoading && (
+      {isLoadingCart && (
         <Overplay IndexForZ={50}>
           <Loading height={0} size={55} color="white" thickness={8} />
-          <h4 className="text-white">Vui lòng chờ trong giây lát...</h4>
+          <h4 className="text-white">Please wait a moment...</h4>
         </Overplay>
       )}
     </section>

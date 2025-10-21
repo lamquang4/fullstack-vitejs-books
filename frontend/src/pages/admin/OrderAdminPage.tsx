@@ -1,7 +1,7 @@
 import LayoutPage from "../../components/admin/LayoutPage";
 import Order from "../../components/admin/Order/Order";
 
-function OrderPage() {
+function OrderAdminPage() {
   return (
     <LayoutPage>
       <Order />
@@ -9,4 +9,4 @@ function OrderPage() {
   );
 }
 
-export default OrderPage;
+export default OrderAdminPage;

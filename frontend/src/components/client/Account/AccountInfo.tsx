@@ -2,6 +2,7 @@ import useCurrentUser from "../../../hooks/useGetCurrentUser";
 
 function AccountInfo() {
   const { user } = useCurrentUser("client");
+
   return (
     <div className="w-full flex-1 px-[15px] bg-white">
       <div className="space-y-[20px]">

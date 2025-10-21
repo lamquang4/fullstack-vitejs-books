@@ -15,7 +15,7 @@ public class BookDTO {
     private String slug;
     private int stock;
     private int status;
-private String createdAt;
+    private String createdAt;
     private AuthorDTO author;
     private PublisherDTO publisher;
     private CategoryDTO category;

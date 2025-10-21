@@ -36,7 +36,7 @@ function MenuSide({ menuOpen, toggleMenu }: Props) {
         {
           icon: <RiShoppingBag4Line size={20} />,
           label: "Orders",
-          path: "/admin/order",
+          path: "/admin/orders",
         },
       ],
     },

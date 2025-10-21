@@ -172,9 +172,9 @@ function BookDetail({ book }: Props) {
                   <button
                     type="button"
                     onClick={handleNextImage}
-                    className="absolute border border-gray-200 right-1.5 top-1/2 w-10 h-10 bg-white rounded-full flex justify-center items-center -translate-y-1/2 z-10 p-2 lg:opacity-0 lg:group-hover:opacity-100 transition duration-300 hover:bg-black hover:text-white"
+                    className="absolute border right-1.5 top-1/2 w-10 h-10 bg-white rounded-full flex justify-center items-center -translate-y-1/2 z-10 p-2 lg:opacity-0 lg:group-hover:opacity-100 transition duration-300 hover:bg-[#C62028] hover:text-white"
                   >
-                    <GrNext size={18} />
+                    <GrNext size={20} />
                   </button>
 
                   <div className="w-full h-[400px] sm:h-[500px] md:h-[600px] overflow-hidden">
@@ -189,9 +189,9 @@ function BookDetail({ book }: Props) {
                   <button
                     type="button"
                     onClick={handlePrevImage}
-                    className="absolute left-1.5 top-1/2 w-10 h-10 border border-gray-200 bg-white rounded-full flex justify-center items-center -translate-y-1/2 z-10 p-2 lg:opacity-0 lg:group-hover:opacity-100 transition duration-300 hover:bg-black hover:text-white"
+                    className="absolute left-1.5 top-1/2 w-10 h-10 border bg-white rounded-full flex justify-center items-center -translate-y-1/2 z-10 p-2 lg:opacity-0 lg:group-hover:opacity-100 transition duration-300 hover:bg-[#C62028] hover:text-white"
                   >
-                    <GrPrevious size={18} />
+                    <GrPrevious size={20} />
                   </button>
                 </div>
               )}

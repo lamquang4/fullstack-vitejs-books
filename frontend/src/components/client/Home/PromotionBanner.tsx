@@ -10,7 +10,7 @@ function PromotionBanner({ banner }: Props) {
         <section className="mb-[40px] px-[15px] text-black">
           <div className="mx-auto max-w-[1350px] w-full">
             <div className="flex flex-col gap-[20px] sm:gap-[30px]">
-              <Link to="/collection/nam">
+              <Link to="/books/all">
                 <div className="relative">
                   <Image
                     source={banner}

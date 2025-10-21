@@ -32,6 +32,9 @@ import BookCategoryPage from "./pages/client/BookCategoryPage";
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 import CartPage from "./pages/client/CartPage";
+import CheckoutPage from "./pages/client/CheckoutPage";
+import OrderAdminPage from "./pages/admin/OrderAdminPage";
+import OrderDetailAdminPage from "./pages/admin/OrderDetailAdminPage";
 function LayoutRoute() {
   return (
     <Routes>
@@ -90,6 +93,14 @@ function LayoutRoute() {
       <Route path="/sale" element={<BookSalePage />} />
 
       <Route path="/cart" element={<CartPage />} />
+      <Route
+        path="/checkout"
+        element={
+          <PrivateRoute type="client" allowedRoles={[3]} redirectPath="/">
+            <CheckoutPage />
+          </PrivateRoute>
+        }
+      />
 
       <Route
         path="/admin/login"
@@ -342,19 +353,19 @@ function LayoutRoute() {
             allowedRoles={[0, 1, 2]}
             redirectPath="/admin/login"
           >
-            <OrderPage />
+            <OrderAdminPage />
           </PrivateRoute>
         }
       />
       <Route
-        path="/admin/order"
+        path="/admin/order/:id"
         element={
           <PrivateRoute
             type="admin"
             allowedRoles={[0, 1, 2]}
             redirectPath="/admin/login"
           >
-            <OrderDetailPage />
+            <OrderDetailAdminPage />
           </PrivateRoute>
         }
       />
