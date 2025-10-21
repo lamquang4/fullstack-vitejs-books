@@ -31,6 +31,7 @@ import EditBookPage from "./pages/admin/EditBookPage";
 import BookCategoryPage from "./pages/client/BookCategoryPage";
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
+import CartPage from "./pages/client/CartPage";
 function LayoutRoute() {
   return (
     <Routes>
@@ -87,6 +88,8 @@ function LayoutRoute() {
       <Route path="/book/:slug" element={<BookDetailPage />} />
       <Route path="/books/:slug" element={<BookCategoryPage />} />
       <Route path="/sale" element={<BookSalePage />} />
+
+      <Route path="/cart" element={<CartPage />} />
 
       <Route
         path="/admin/login"

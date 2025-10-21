@@ -2,7 +2,6 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Image from "../../Image";
 import Loading from "../../Loading";
 import { CiCalendar } from "react-icons/ci";
-import type { OrderFull } from "../../../types/type";
 
 function OrderHistory() {
   const [searchParams] = useSearchParams();
@@ -30,40 +29,7 @@ function OrderHistory() {
     params.set("page", "1");
     navigate(`?${params.toString()}`);
   };
-  const orders: OrderFull[] = [
-    {
-      id: "1",
-      orderCode: "ORD12345",
-      user: "user1",
-      fullname: "John Doe",
-      phone: "0987654321",
-      speaddress: "123 Green Street",
-      city: "Ho Chi Minh City",
-      ward: "District 1",
-      paymethod: "Credit Card",
-      productsBuy: [
-        {
-          _id: "i1",
-          name: "book 1",
-          images: ["/assets/products/book1.jpg"],
-          quantity: 2,
-          price: 150000,
-          discount: 20000,
-        },
-        {
-          _id: "i2",
-          name: "book 2",
-          images: ["/assets/products/book2.jpg"],
-          quantity: 1,
-          price: 250000,
-          discount: 0,
-        },
-      ],
-      status: 2,
-      total: 530000,
-      createdAt: "2025-10-10T09:00:00Z",
-    },
-  ];
+
   return (
     <div className="w-full max-w-full flex-1 sm:px-[15px] px-[10px]">
       <div className="flex justify-between items-center mb-[20px]">
@@ -84,7 +50,7 @@ function OrderHistory() {
 
       <div className="flex gap-5 flex-col">
         {isLoading ? (
-          <Loading height={70} size={50} color="black" thickness={3} />
+          <Loading height={60} size={50} color="black" thickness={3} />
         ) : orders.length > 0 ? (
           orders.map((order) => (
             <div className="border border-gray-300 px-[15px]" key={order._id}>
@@ -195,7 +161,7 @@ function OrderHistory() {
             </div>
           ))
         ) : (
-          <div className="flex justify-center items-center h-[70vh]">
+          <div className="flex justify-center items-center h-[60vh]">
             <div className="flex flex-col justify-center items-center gap-[15px]">
               <Image
                 source={"/assets/empty-order.png"}
@@ -204,7 +170,7 @@ function OrderHistory() {
                 loading="eager"
               />
 
-              <h4 className="text-gray-600">No orders found</h4>
+              <h4>No orders found</h4>
             </div>
           </div>
         )}

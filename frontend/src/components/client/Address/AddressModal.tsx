@@ -4,7 +4,6 @@ import { memo, useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import useGetAddress from "../../../hooks/client/useGetAddress";
 import useGetProvinces from "../../../hooks/useGetProvincesVN";
-import useGetAddresses from "../../../hooks/client/useGetAddresses";
 import useAddAddress from "../../../hooks/client/useAddAddress";
 import useUpdateAddress from "../../../hooks/client/useUpdateAddress";
 import { validatePhone } from "../../../utils/validatePhone";
@@ -12,13 +11,14 @@ import { validatePhone } from "../../../utils/validatePhone";
 type Props = {
   isOpen: boolean;
   toggleMenu: () => void;
+  mutateAddresses: () => void;
   addressId: string;
+  addressesLength: number;
   userId: string;
 };
-function AddressModal({ isOpen, toggleMenu, addressId, userId }: Props) {
+function AddressModal({ isOpen, toggleMenu, mutateAddresses, addressesLength, addressId, userId }: Props) {
   const { provinces } = useGetProvinces();
   const { address, mutate, isLoading } = useGetAddress(addressId, userId);
-  const { addresses, mutate: mutateAddresses } = useGetAddresses(userId);
   const { addAddress, isLoading: isLoadingAddAddress } = useAddAddress();
   const { updateAddress, isLoading: isLoadingUpdateAddress } =
     useUpdateAddress(addressId);
@@ -76,7 +76,7 @@ function AddressModal({ isOpen, toggleMenu, addressId, userId }: Props) {
       return;
     }
 
-    if (addresses.length === 5 && !addressId) {
+    if (addressesLength === 5 && !addressId) {
       toast.error("You can only save up to 5 addresses for your account");
       mutate();
       return;

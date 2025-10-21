@@ -8,12 +8,20 @@ import { HiOutlineMinusSmall } from "react-icons/hi2";
 import { HiOutlinePlusSmall } from "react-icons/hi2";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import { useAddItemToCart } from "../../../../hooks/client/useAddItemToCart";
+import useCurrentUser from "../../../../hooks/useGetCurrentUser";
+import useGetCart from "../../../../hooks/client/useGetCart";
 
 type Props = {
   book: Book;
 };
 
 function BookDetail({ book }: Props) {
+  const max = 15;
+  const { user } = useCurrentUser("client");
+  const { addItem, isLoading: isLoadingAddItem } = useAddItemToCart();
+  const { cart, mutate } = useGetCart(user?.id || "");
+
   const [quantity, setQuantity] = useState<number>(1);
   const [mainImage, setMainImage] = useState<string>("");
   const [openViewer, setOpenViewer] = useState<boolean>(false);
@@ -64,22 +72,54 @@ function BookDetail({ book }: Props) {
   };
 
   const HandleIncrement = () => {
-    const maxQuantity = book?.stock! > 15 ? 15 : book?.stock!;
+    const maxQuantity = book?.stock! > max ? max : book?.stock!;
     setQuantity((prev) => (prev < maxQuantity ? prev + 1 : prev));
   };
 
   const HandleDecrement = () => {
     setQuantity((prev) => (prev > 1 ? prev - 1 : prev));
   };
+
+  const handleAddItemToCart = async () => {
+    if (book.stock <= 0) {
+      return;
+    }
+
+    if (!user?.id) {
+      toast.error("You must be logged in to purchase books");
+      return;
+    }
+
+    const existingItem = cart?.items?.find(
+      (item: any) => item.bookId === book.id
+    );
+
+    const currentQuantity = existingItem ? existingItem.quantity : 0;
+    const newQuantity = currentQuantity + quantity;
+
+    const maxQuantity = Math.min(book.stock, max);
+
+    if (newQuantity > maxQuantity) {
+      toast(`You can only add up to ${maxQuantity} items of this book.`);
+      return;
+    }
+
+    try {
+      await addItem(user.id, book?.id, quantity);
+      mutate();
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message);
+    }
+  };
   return (
-    <section className="w-full mb-[40px]">
+    <section className="w-full mb-[40px] px-[15px]">
       <div className="mx-auto w-full max-w-[1350px]">
         <div className="flex flex-col lg:flex-row gap-x-[15px] gap-y-[30px] w-full">
           <div
             id="div1"
             className="flex lg:flex-row flex-col-reverse gap-3 lg:sticky lg:top-[100px] flex-1"
           >
-            <div className="mx-auto lg:max-w-[70px] w-full lg:px-0 px-[15px]">
+            <div className="mx-auto lg:max-w-[70px] w-full">
               <Swiper
                 slidesPerView="auto"
                 spaceBetween={10}
@@ -137,7 +177,7 @@ function BookDetail({ book }: Props) {
                     <GrNext size={18} />
                   </button>
 
-                  <div className="w-full h-[400px] sm:h-[600px] overflow-hidden">
+                  <div className="w-full h-[400px] sm:h-[500px] md:h-[600px] overflow-hidden">
                     <Image
                       source={`${import.meta.env.VITE_BACKEND_URL}${mainImage}`}
                       alt=""
@@ -158,7 +198,7 @@ function BookDetail({ book }: Props) {
             </div>
           </div>
 
-          <div className="relative flex-1 px-[15px]" id="div2">
+          <div className="relative flex-1" id="div2">
             <div className="space-y-[10px] ">
               <h2>{book?.title}</h2>
 
@@ -204,14 +244,14 @@ function BookDetail({ book }: Props) {
                         className="h-11 text-center text-black w-11 outline-none placeholder:text-[1.2rem] font-medium"
                         placeholder="1"
                         min={1}
-                        max={book?.stock! > 15 ? 15 : book?.stock!}
+                        max={book?.stock! > max ? max : book?.stock!}
                         value={quantity}
                       />
                       <button
                         type="button"
                         onClick={HandleIncrement}
                         disabled={
-                          quantity >= (book?.stock! > 15 ? 15 : book?.stock!)
+                          quantity >= (book?.stock! > max ? max : book?.stock!)
                         }
                         className=" p-3 h-11 outline-none"
                       >
@@ -229,7 +269,9 @@ function BookDetail({ book }: Props) {
                 )}
 
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={handleAddItemToCart}
+                  disabled={isLoadingAddItem}
                   className="p-[10px] w-full uppercase text-[0.9rem] font-semibold border bg-[#C62028] text-white"
                 >
                   Add to cart

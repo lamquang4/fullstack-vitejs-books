@@ -32,7 +32,7 @@ public class Cart {
 private String id;
 
 @ManyToOne
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "userId", nullable = false, unique = true)
     private User user;
 
     @Builder.Default

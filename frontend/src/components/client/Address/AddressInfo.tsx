@@ -1,17 +1,25 @@
 import toast from "react-hot-toast";
 import Loading from "../../Loading";
 import Image from "../../Image";
-import useGetAddresses from "../../../hooks/client/useGetAddresses";
 import useDeleteAddress from "../../../hooks/client/useDeleteAddress";
+import type { Address } from "../../../types/type";
 
 type Props = {
   toggleAddressModal: () => void;
   setAddressId: (value: string) => void;
+  addresses: Address[];
+  isLoading: boolean;
+  mutate: () => void;
   userId: string;
 };
 
-function AddressInfo({ toggleAddressModal, setAddressId, userId }: Props) {
-  const { addresses, mutate, isLoading } = useGetAddresses(userId);
+function AddressInfo({
+  toggleAddressModal,
+  setAddressId,
+  addresses,
+  isLoading,
+  mutate,
+}: Props) {
   const { deleteAddress, isLoading: isLoadingDeleteAddress } =
     useDeleteAddress();
 
@@ -48,7 +56,7 @@ function AddressInfo({ toggleAddressModal, setAddressId, userId }: Props) {
 
         <div>
           {isLoading ? (
-            <Loading height={70} size={50} color="black" thickness={3} />
+            <Loading height={60} size={50} color="black" thickness={3} />
           ) : addresses.length > 0 ? (
             addresses.map((address) => (
               <div
@@ -99,7 +107,7 @@ function AddressInfo({ toggleAddressModal, setAddressId, userId }: Props) {
               </div>
             ))
           ) : (
-            <div className="flex justify-center items-center h-[70vh]">
+            <div className="flex justify-center items-center h-[60vh]">
               <div className="flex flex-col justify-center items-center gap-[15px]">
                 <Image
                   source={"/assets/address.png"}
@@ -108,7 +116,7 @@ function AddressInfo({ toggleAddressModal, setAddressId, userId }: Props) {
                   loading="eager"
                 />
 
-                <h4 className="text-gray-600">No addresses found</h4>
+                <h4>No addresses found</h4>
               </div>
             </div>
           )}

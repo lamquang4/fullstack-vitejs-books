@@ -67,10 +67,10 @@ function BookList({ category, books, isLoading, total }: Props) {
       </div>
 
       {isLoading ? (
-        <Loading height={70} size={50} color="black" thickness={2} />
+        <Loading height={60} size={50} color="black" thickness={2} />
       ) : books.length > 0 ? (
         <div
-          className={`grid grid-cols-2 gap-x-[12px] gap-y-[35px] lg:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 ${
+          className={`grid grid-cols-2 gap-x-[10px] gap-y-[35px] lg:grid-cols-3 2xl:grid-cols-4 sm:grid-cols-2 ${
             books.length <= 0 ? "h-[50vh]" : ""
           }`}
         >
@@ -84,7 +84,11 @@ function BookList({ category, books, isLoading, total }: Props) {
                       className="border border-gray-200 shadow-md"
                     >
                       {book.images.length > 0 && (
-                        <div className="w-full aspect-[6/7] flex items-center justify-center bg-gray-50 overflow-hidden rounded-md">
+                        <div
+                          className="w-full 
+             aspect-[2/3] sm:aspect-[5/6] 
+      overflow-hidden rounded-md"
+                        >
                           <Image
                             source={`${import.meta.env.VITE_BACKEND_URL}${
                               book.images[0].image
@@ -151,11 +155,11 @@ function BookList({ category, books, isLoading, total }: Props) {
             <Image
               source={"/assets/notfound1.png"}
               alt={""}
-              className={"w-[150px]"}
+              className={"w-[140px]"}
               loading="eager"
             />
 
-            <h4 className="text-gray-600">No books found</h4>
+            <h4>No books found</h4>
           </div>
         </div>
       )}

@@ -21,9 +21,9 @@ Optional<Book> findBySlug(String slug);
 
     Page<Book> findByTitleContainingIgnoreCaseAndStatus(String title, Integer status, Pageable pageable);
 
-Page<Book> findByCategory_SlugAndStatus(String slug, Integer status, Pageable pageable);
+Page<Book> findByCategorySlugAndStatus(String slug, Integer status, Pageable pageable);
 
-Page<Book> findByTitleContainingIgnoreCaseAndCategory_SlugAndStatus(String title, String slug, Integer status, Pageable pageable);
+Page<Book> findByTitleContainingIgnoreCaseAndCategorySlugAndStatus(String title, String slug, Integer status, Pageable pageable);
 
 // lấy sách có discount > 0
 Page<Book> findByDiscountGreaterThanAndStatus(int i, int status, Pageable pageable);

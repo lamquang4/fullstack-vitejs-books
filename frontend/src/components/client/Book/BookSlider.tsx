@@ -18,7 +18,7 @@ function BookSlider({ title, books }: Props) {
           <div className="mx-auto max-w-[1350px] w-full">
             <h2 className="mb-[20px]">{title}</h2>
             <Swiper
-              spaceBetween={12}
+              spaceBetween={10}
               modules={[FreeMode]}
               freeMode={true}
               breakpoints={{
@@ -46,7 +46,11 @@ function BookSlider({ title, books }: Props) {
                           className="border border-gray-200 shadow-md"
                         >
                           {book.images.length > 0 && (
-                            <div className="w-full aspect-[6/7] flex items-center justify-center bg-gray-50 overflow-hidden rounded-md">
+                            <div
+                              className="w-full 
+             aspect-[2/3] sm:aspect-[5/6] 
+      overflow-hidden rounded-md"
+                            >
                               <Image
                                 source={`${import.meta.env.VITE_BACKEND_URL}${
                                   book.images[0].image

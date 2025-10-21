@@ -1,9 +1,7 @@
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 export default function useLogout() {
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogout = async (type: "admin" | "client") => {
@@ -11,10 +9,10 @@ export default function useLogout() {
     try {
       if (type === "admin") {
         Cookies.remove("token-admin");
-        navigate("/admin/login");
+        window.location.href = "/admin/login";
       } else if (type === "client") {
         Cookies.remove("token-client");
-        navigate("/login");
+        window.location.href = "/login";
       }
     } catch (err) {
       console.error("Logout error:", err);

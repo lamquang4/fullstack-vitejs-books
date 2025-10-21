@@ -9,14 +9,26 @@ import { AiOutlineMenu } from "react-icons/ai";
 import SearchMobile from "./SearchMobile";
 import MenuMobile from "./MenuMobile";
 import Overplay from "../Overplay";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import useGetCategories from "../../../hooks/client/useGetCategories";
+import useCurrentUser from "../../../hooks/useGetCurrentUser";
+import useGetCart from "../../../hooks/client/useGetCart";
 function Header() {
+  const { user } = useCurrentUser("client");
+  const { cart } = useGetCart(user?.id || "");
   const { categories } = useGetCategories();
 
   const [openSearch, setOpenSearch] = useState<boolean>(false);
   const [menuMobileOpen, setMenuMobileOpen] = useState<boolean>(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState<boolean>(false);
+
+  const totalQuantity = useMemo(() => {
+    return (
+      cart?.items.reduce((sum, item) => {
+        return sum + (item?.quantity || 0);
+      }, 0) || 0
+    );
+  }, [cart?.items]);
 
   const toggleSearch = useCallback(() => {
     setOpenSearch((prev) => !prev);
@@ -106,7 +118,7 @@ function Header() {
     bg-[#C62028] text-white text-[0.7rem] font-medium leading-none 
     rounded-full w-[20px] h-[20px]"
                 >
-                  0
+                  {totalQuantity}
                 </small>
               </Link>
             </div>
@@ -138,7 +150,7 @@ function Header() {
     bg-[#C62028] text-white text-[0.7rem] font-medium leading-none 
     rounded-full w-[20px] h-[20px]"
                 >
-                  0
+                  {totalQuantity}
                 </small>
               </Link>
 

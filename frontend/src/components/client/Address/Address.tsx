@@ -4,9 +4,11 @@ import AddressModal from "./AddressModal";
 import AddressInfo from "./AddressInfo";
 import BreadCrumb from "../BreadCrumb";
 import useCurrentUser from "../../../hooks/useGetCurrentUser";
+import useGetAddresses from "../../../hooks/client/useGetAddresses";
 
 function Address() {
   const { user } = useCurrentUser("client");
+  const { addresses, mutate, isLoading } = useGetAddresses(user?.id || "");
   const [addressId, setAddressId] = useState<string>("");
   const [openAddressModal, setOpenAddressModal] = useState<boolean>(false);
 
@@ -36,6 +38,9 @@ function Address() {
 
             <AddressInfo
               toggleAddressModal={toggleAddressModal}
+              addresses={addresses}
+              mutate={mutate}
+              isLoading={isLoading}
               setAddressId={setAddressId}
               userId={user?.id || ""}
             />
@@ -43,14 +48,14 @@ function Address() {
         </div>
 
         {openAddressModal && (
-          <>
-            <AddressModal
-              addressId={addressId}
-              userId={user?.id || ""}
-              toggleMenu={toggleAddressModal}
-              isOpen={openAddressModal}
-            />
-          </>
+          <AddressModal
+            addressId={addressId}
+            mutateAddresses={mutate}
+            addressesLength={addresses.length}
+            userId={user?.id || ""}
+            toggleMenu={toggleAddressModal}
+            isOpen={openAddressModal}
+          />
         )}
       </section>
     </>

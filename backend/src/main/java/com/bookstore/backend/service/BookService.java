@@ -150,7 +150,7 @@ public Page<BookDTO> getActiveBooksByCategory(String slug, int page, String q) {
     if (q != null && !q.isEmpty()) {
         bookPage = bookRepository.searchByCategoryAndTitleAuthorPublisherCategory(slug, q, status, pageable);
     } else {
-        bookPage = bookRepository.findByCategory_SlugAndStatus(slug, status, pageable);
+        bookPage = bookRepository.findByCategorySlugAndStatus(slug, status, pageable);
     }
 
     return bookPage.map(this::convertToDTO);

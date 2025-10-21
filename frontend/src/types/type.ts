@@ -103,6 +103,8 @@ export interface OrderAdd {
 
 export interface ProductInCart {
   id: string;
+  bookId: string;
+  title: string;
   images: string[];
   name: string;
   price: number;
@@ -115,7 +117,7 @@ export interface ProductInCart {
 export interface Cart {
   id?: string;
   user?: string;
-  productsInCart: ProductInCart[];
+  items: ProductInCart[];
 }
 
 export type Ward = {

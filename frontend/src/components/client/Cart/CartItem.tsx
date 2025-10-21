@@ -5,36 +5,68 @@ import { HiOutlinePlusSmall } from "react-icons/hi2";
 import toast from "react-hot-toast";
 import type { Cart } from "../../../types/type";
 import { Link } from "react-router-dom";
+import { useRemoveItemCart } from "../../../hooks/client/useRemoveItemCart";
+import { useChangeQuantityItemCart } from "../../../hooks/client/useChangeQuantityItemcart";
 
 type Props = {
   cart: Cart;
+  mutate: () => void;
 };
 
-function CartItem({ cart }: Props) {
+function CartItem({ cart, mutate }: Props) {
+  const max = 15;
+  const { removeItem, isLoading: isLoadingRemove } = useRemoveItemCart();
+  const { changeQuantity, isLoading: isLoadingChangeQuantity } =
+    useChangeQuantityItemCart();
   const totalQuantity = useMemo(() => {
     return (
-      cart?.productsInCart.reduce((sum, item) => {
+      cart?.items.reduce((sum, item) => {
         return sum + (item?.quantity || 0);
       }, 0) || 0
     );
-  }, [cart?.productsInCart]);
+  }, [cart?.items]);
 
   const totalPrice = useMemo(() => {
     return (
-      cart?.productsInCart.reduce((sum, item) => {
+      cart?.items.reduce((sum, item) => {
         const finalPrice =
           item.discount > 0 ? item.price - item.discount : item.price;
 
         return sum + finalPrice * item.quantity;
       }, 0) || 0
     );
-  }, [cart?.productsInCart]);
+  }, [cart?.items]);
 
   // lấy những sản phẩm không đủ số lượng mua (số lượng mua > số lượng tồn kho)
   const outOfStockItems = useMemo(() => {
-    if (!cart?.productsInCart) return [];
-    return cart.productsInCart.filter((item) => item.quantity > item.stock);
-  }, [cart?.productsInCart]);
+    if (!cart?.items) return [];
+    return cart.items.filter((item) => item.quantity > item.stock);
+  }, [cart?.items]);
+
+  const handleChangeQuantity = async (id: string, quantity: number) => {
+    await changeQuantity(id, quantity);
+    mutate();
+  };
+
+  const handleIncrement = (
+    id: string,
+    currentQuantity: number,
+    stock: number
+  ) => {
+    if (currentQuantity >= (stock > max ? max : stock)) return;
+    // id ở đây là id bảng cartitem
+    handleChangeQuantity(id, currentQuantity + 1);
+  };
+
+  const handleDecrement = (id: string, currentQuantity: number) => {
+    if (currentQuantity <= 1) return;
+    handleChangeQuantity(id, currentQuantity - 1);
+  };
+
+  const handleRemoveItem = async (id: string) => {
+    await removeItem(id);
+    mutate();
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,19 +76,21 @@ function CartItem({ cart }: Props) {
     <section className="my-[40px] px-[15px] text-black">
       <div className="max-w-[1350px] mx-auto">
         <h2 className="mb-[20px]">Cart ({totalQuantity})</h2>
-        {cart?.productsInCart && cart.productsInCart.length > 0 ? (
+        {cart?.items && cart.items.length > 0 ? (
           <form onSubmit={handleSubmit}>
             <div className="flex gap-8 w-full lg:flex-row flex-col">
               <div className="flex flex-col gap-8 bg-white basis-[70%]">
-                {cart?.productsInCart.map((item) => (
-                  <div className="w-full relative space-y-4" key={item._id}>
-                    <div className="flex gap-4 w-full">
-                      <Link to={`/product/${item.slug}`}>
-                        <div className="w-full max-w-[250px] shrink-0">
+                {cart?.items.map((item) => (
+                  <div className="w-full relative space-y-4" key={item.id}>
+                    <div className="flex gap-4 w-full sm:flex-row flex-col">
+                      <Link to={`/book/${item.slug}`} className="mx-auto">
+                        <div className="w-[150px] h-[150px] overflow-hidden">
                           <Image
-                            source={item.images[0]}
+                            source={`${import.meta.env.VITE_BACKEND_URL}${
+                              item.images[0]
+                            }`}
                             alt={item.name}
-                            className={"w-full"}
+                            className="w-full h-full object-contain"
                             loading="eager"
                           />
                         </div>
@@ -65,27 +99,37 @@ function CartItem({ cart }: Props) {
                       <div className="flex flex-col gap-4 w-full">
                         <div className="flex justify-between gap-4">
                           <div className="flex flex-col gap-2">
-                            <h5 className=" ">{item.name}</h5>
+                            <h5 className="font-medium">{item.title}</h5>
 
                             {item.discount > 0 ? (
-                              <p className="font-medium text-[#c00]">
-                                Discount:{" "}
-                                {(item.price - item.discount).toLocaleString(
-                                  "vi-VN"
-                                )}
-                                ₫
-                              </p>
+                              <div className="flex gap-[12px]">
+                                <del className="text-[#707072] text-[1rem]">
+                                  {item.price.toLocaleString("vi-VN")}₫
+                                </del>
+
+                                <h5 className="font-semibold text-[#C62028]">
+                                  {(item.price - item.discount).toLocaleString(
+                                    "vi-VN"
+                                  )}
+                                  ₫
+                                </h5>
+                              </div>
                             ) : (
-                              <p className="font-medium  ">
-                                Price: {item.price.toLocaleString("vi-VN")}₫
-                              </p>
+                              <h5 className="font-semibold text-[#C62028]">
+                                {item.price.toLocaleString("vi-VN")}₫
+                              </h5>
                             )}
                           </div>
 
-                          <button type="button" className="mb-auto">
+                          <button
+                            type="button"
+                            disabled={isLoadingRemove}
+                            onClick={() => handleRemoveItem(item.id)}
+                            className="mb-auto"
+                          >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
-                              className="w-5 h-5 cursor-pointer fill-black hover:fill-red-600 inline-block"
+                              className="w-5 h-5 cursor-pointer fill-black hover:fill-[#C62028] inline-block"
                               viewBox="0 0 24 24"
                             >
                               <path
@@ -104,6 +148,12 @@ function CartItem({ cart }: Props) {
                           <div className="flex items-center gap-1">
                             <button
                               type="button"
+                              onClick={() =>
+                                handleDecrement(item.id, item.quantity)
+                              }
+                              disabled={
+                                item.quantity <= 1 || isLoadingChangeQuantity
+                              }
                               name="button-1"
                               className="flex items-center justify-center w-7 h-7 outline-none bg-[#F7F7F7] border-gray-300 border"
                             >
@@ -115,14 +165,25 @@ function CartItem({ cart }: Props) {
                             <button
                               type="button"
                               name="button-1"
+                              onClick={() =>
+                                handleIncrement(
+                                  item.id,
+                                  item.quantity,
+                                  item.stock
+                                )
+                              }
+                              disabled={
+                                item.quantity >=
+                                  (item.stock < max ? item.stock : max) ||
+                                isLoadingChangeQuantity
+                              }
                               className="flex items-center justify-center w-7 h-7 outline-none bg-[#F7F7F7] border-gray-300 border"
                             >
                               <HiOutlinePlusSmall size={20} />
                             </button>
                           </div>
 
-                          <h5 className="font-medium">
-                            Subtotal:{" "}
+                          <h5 className="font-semibold text-[#C62028]">
                             {item.discount > 0
                               ? (
                                   (item.price - item.discount) *
@@ -138,7 +199,7 @@ function CartItem({ cart }: Props) {
 
                     {item.stock < item.quantity && (
                       <div>
-                        <p className="text-red-500 font-semibold">
+                        <p className="text-[#C62028] font-semibold">
                           The product is currently out of sufficient stock.
                           Please reduce the quantity or remove the item from
                           your cart.
@@ -150,9 +211,11 @@ function CartItem({ cart }: Props) {
               </div>
 
               <div className="bg-[#F7F7F7] rounded-sm px-4 py-6 h-auto basis-[30%]">
-                <div className="uppercase flex justify-between items-center font-semibold">
-                  <h5>Total</h5>
-                  <h5>{totalPrice.toLocaleString("vi-VN")}₫</h5>
+                <div className="uppercase flex justify-between items-center">
+                  <h4>Total</h4>
+                  <h4 className="text-[#C62028]">
+                    {totalPrice.toLocaleString("vi-VN")}₫
+                  </h4>
                 </div>
 
                 <hr className="border-gray-300 my-[20px]" />
@@ -160,14 +223,14 @@ function CartItem({ cart }: Props) {
                 <div className="space-y-[20px]">
                   <button
                     type="submit"
-                    className="text-[0.9rem] px-4 py-2.5 w-full font-semibold tracking-wide bg-slate-900 hover:bg-slate-700 text-white rounded-md"
+                    className="text-[0.9rem] px-4 py-2.5 w-full font-semibold tracking-wide bg-[#C62028] text-white rounded-md"
                   >
                     Checkout
                   </button>
 
                   <Link
-                    className="text-[0.9rem] px-4 py-2.5 w-full font-semibold tracking-wide bg-transparent hover:bg-gray-200 text-slate-900 border border-gray-300 rounded-md text-center"
-                    to={"/collection/all"}
+                    className="text-[0.9rem] px-4 py-2.5 w-full tracking-wide bg-transparent hover:bg-gray-200 text-slate-900 border border-gray-300 rounded-md text-center font-semibold"
+                    to={"/books/all"}
                   >
                     Continue Shopping
                   </Link>
@@ -185,11 +248,11 @@ function CartItem({ cart }: Props) {
                 loading="eager"
               />
 
-              <h4 className="text-gray-600">There’s nothing in your cart</h4>
+              <h4>There’s nothing in your cart</h4>
 
               <Link
-                to={"/collection/all"}
-                className="text-[0.9rem] border border-black rounded-md font-medium px-3 py-2 hover:bg-black hover:text-white"
+                to={"/books/all"}
+                className="text-[0.9rem] border-2 uppercase border-[#C62028] rounded-md font-semibold px-3 py-2 hover:bg-[#C62028] text-[#C62028] hover:text-white"
               >
                 Shop now
               </Link>

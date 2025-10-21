@@ -119,24 +119,24 @@ function Book() {
               books.map((book) => {
                 return (
                   <tr key={book.id} className="hover:bg-[#f2f3f8]">
-                    <td className="p-[1rem]">
+                    <td className="p-[1rem] font-semibold">
                       <div className="flex gap-[10px] items-center">
-                        <div className="relative group">
+                        <div className="relative group w-[80px] h-[80px] overflow-hidden">
                           {book.images?.[0]?.image && (
                             <Image
                               source={`${import.meta.env.VITE_BACKEND_URL}${
                                 book.images[0].image
                               }`}
                               alt={book.title}
-                              className={"w-[80px] z-1 relative"}
+                              className={
+                                "w-full h-full object-contain z-1 relative"
+                              }
                               loading="lazy"
                             />
                           )}
                         </div>
 
-                        <p className="text-[0.9rem] font-medium  text-[#444]">
-                          {book.title}
-                        </p>
+                        <p>{book.title}</p>
                       </div>
                     </td>
 

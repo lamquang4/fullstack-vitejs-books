@@ -1,18 +1,18 @@
 import Loading from "../../Loading";
 import CartItem from "./CartItem";
-import ProductSlider from "../Book/BookSlider";
+import useGetCart from "../../../hooks/client/useGetCart";
+import useCurrentUser from "../../../hooks/useGetCurrentUser";
 
 function Cart() {
-  const isLoading = false;
+  const { user } = useCurrentUser("client");
+  const { cart, isLoading, mutate } = useGetCart(user?.id || "");
   return (
     <>
       {isLoading ? (
-        <Loading height={70} size={50} color="black" thickness={2} />
+        <Loading height={60} size={50} color="black" thickness={2} />
       ) : (
         <>
-          <CartItem cart={cart!} />
-
-          <ProductSlider products={[]} title={"Best seller"} />
+          <CartItem cart={cart!} mutate={mutate} />
         </>
       )}
     </>
