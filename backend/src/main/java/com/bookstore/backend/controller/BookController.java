@@ -84,6 +84,14 @@ public ResponseEntity<?> getActiveBooksByCategory(
     ));
 }
 
+    @GetMapping("/bestseller")
+    public ResponseEntity<?> getTopBestsellerBooks() {
+        List<BookDTO> books = bookService.getActiveBooksByTotalSold();
+        return ResponseEntity.ok(Map.of(
+            "books", books
+        ));
+    }
+
 @GetMapping("/slug/{slug}")
 public ResponseEntity<BookDetailDTO> getBookBySlug(@PathVariable String slug) {
     BookDetailDTO bookDetail = bookService.getBookBySlug(slug);

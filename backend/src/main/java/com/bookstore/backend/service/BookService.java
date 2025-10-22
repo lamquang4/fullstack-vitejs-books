@@ -213,6 +213,16 @@ if (q != null && !q.isEmpty()) {
 
     return bookPage.map(this::convertToDTO);
 }
+
+// lấy sách bestseller
+public List<BookDTO> getActiveBooksByTotalSold() {
+    int status = 1;
+    int limit = 12;
+    Pageable top = PageRequest.of(0, limit);
+    List<Book> books = bookRepository.findTopBooksByTotalSold(status, top);
+    return books.stream().map(this::convertToDTO).collect(Collectors.toList());
+}
+
  
 // lấy sách theo slug
 public BookDetailDTO getBookBySlug(String slug) {

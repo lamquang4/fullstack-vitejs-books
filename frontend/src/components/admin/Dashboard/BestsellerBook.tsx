@@ -1,94 +1,19 @@
-import { VscTrash } from "react-icons/vsc";
 import { LiaEdit } from "react-icons/lia";
-import { IoMdAddCircle } from "react-icons/io";
-import { FaRegEyeSlash } from "react-icons/fa";
-import Image from "../../Image";
-import Pagination from "../Pagination";
-import FilterDropDownMenu from "../FilterDropDownMenu";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
-import Loading from "../../Loading";
-import InputSearch from "../InputSearch";
-import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-import useGetBooks from "../../../hooks/admin/useGetBooks";
-import useDeleteBook from "../../../hooks/admin/useDeleteBook";
-import useUpdateStatusBook from "../../../hooks/admin/useUpdateStatusBook";
-function Book() {
-  const array = [
-    {
-      name: "All",
-      value: null,
-    },
-    {
-      name: "Show",
-      value: 1,
-    },
-    {
-      name: "Hidden",
-      value: 0,
-    },
-  ];
-
-  const {
-    books,
-    mutate,
-    isLoading,
-    totalPages,
-    totalItems,
-    currentPage,
-    limit,
-  } = useGetBooks();
-  const { deleteBook, isLoading: isLoadingDelete } = useDeleteBook();
-  const { updateStatusBook, isLoading: isLoadingUpdate } =
-    useUpdateStatusBook();
-
-  const handleDelete = async (id: string) => {
-    if (!id) {
-      return;
-    }
-    try {
-      await deleteBook(id);
-      mutate();
-    } catch (err: any) {
-      toast.error(err?.response?.data?.message);
-      mutate();
-    }
-  };
-
-  const handleUpdateStatus = async (id: string, status: number) => {
-    if (!id && !status) {
-      return;
-    }
-
-    try {
-      await updateStatusBook(id, status);
-      mutate();
-    } catch (err: any) {
-      toast.error(err?.response?.data?.message);
-      mutate();
-    }
-  };
-
+import Loading from "../../Loading";
+import Image from "../../Image";
+import useGetBestsellerBooks from "../../../hooks/useGetBestSellerBooks";
+function BestsellerBook() {
+  const { books, isLoading } = useGetBestsellerBooks();
   return (
     <>
       <div className="py-[1.3rem] px-[1.2rem] bg-[#f1f4f9]">
         <div className="flex justify-between items-center">
-          <h2 className=" text-[#74767d]">Book ({totalItems})</h2>
-
-          <Link
-            to={"/admin/add-book"}
-            className="bg-[#C62028] border-0 cursor-pointer text-[0.9rem] font-medium w-[90px] !flex p-[10px_12px] items-center justify-center gap-[5px] text-white"
-          >
-            <IoMdAddCircle size={22} /> Add
-          </Link>
+          <h2 className=" text-[#74767d]">Top bestseller</h2>
         </div>
       </div>
 
       <div className=" bg-white w-full overflow-auto">
-        <div className="p-[1.2rem]">
-          <InputSearch />
-        </div>
-
         <table className="w-[350%] border-collapse sm:w-[220%] xl:w-full text-[0.9rem]">
           <thead>
             <tr className="bg-[#E9EDF2] text-left">
@@ -98,13 +23,7 @@ function Book() {
               <th className="p-[1rem]  ">Author</th>
               <th className="p-[1rem]  ">Publisher</th>
               <th className="p-[1rem]  ">Category</th>
-              <th className="p-[1rem]   relative">
-                <FilterDropDownMenu
-                  title="Status"
-                  array={array}
-                  paramName="status"
-                />
-              </th>
+
               <th className="p-[1rem]  ">Action</th>
             </tr>
           </thead>
@@ -182,36 +101,9 @@ function Book() {
 
                     <td className="p-[1rem]  ">
                       <div className="flex items-center gap-[15px]">
-                        <button
-                          disabled={isLoadingUpdate}
-                          onClick={() =>
-                            handleUpdateStatus(
-                              book.id || "",
-                              book.status === 1 ? 0 : 1
-                            )
-                          }
-                        >
-                          {book.status === 1 ? (
-                            <FaRegEyeSlash
-                              size={22}
-                              className="text-[#74767d]"
-                            />
-                          ) : (
-                            <MdOutlineRemoveRedEye
-                              size={22}
-                              className="text-[#74767d]"
-                            />
-                          )}
-                        </button>
                         <Link to={`/admin/edit-book/${book.id}`}>
                           <LiaEdit size={22} className="text-[#076ffe]" />
                         </Link>
-                        <button
-                          disabled={isLoadingDelete}
-                          onClick={() => handleDelete(book.id!)}
-                        >
-                          <VscTrash size={22} className="text-[#d9534f]" />
-                        </button>
                       </div>
                     </td>
                   </tr>
@@ -234,15 +126,8 @@ function Book() {
           </tbody>
         </table>
       </div>
-
-      <Pagination
-        totalPages={totalPages}
-        currentPage={currentPage}
-        limit={limit}
-        totalItems={totalItems}
-      />
     </>
   );
 }
 
-export default Book;
+export default BestsellerBook;

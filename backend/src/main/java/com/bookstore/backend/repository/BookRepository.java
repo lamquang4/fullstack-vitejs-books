@@ -1,4 +1,5 @@
 package com.bookstore.backend.repository;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -66,6 +67,14 @@ Page<Book> findByDiscountGreaterThanAndStatusAndTitleContainingIgnoreCase(
                                               @Param("status") Integer status,
                                               Pageable pageable);
 
+// Bestseller
+@Query("SELECT b FROM Book b " +
+       "LEFT JOIN OrderDetail od ON od.book = b " +
+       "LEFT JOIN od.order o " +
+       "WHERE b.status = :status " +
+       "GROUP BY b " +
+       "ORDER BY SUM(CASE WHEN o.status = 3 THEN od.quantity ELSE 0 END) DESC")
+List<Book> findTopBooksByTotalSold(@Param("status") int status, Pageable pageable);
 
     @Query("SELECT b FROM Book b WHERE b.status = :status")
     Page<Book> findByStatus(@Param("status") int status, Pageable pageable);

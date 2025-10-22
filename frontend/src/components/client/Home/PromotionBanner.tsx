@@ -1,30 +1,37 @@
 import { Link } from "react-router-dom";
 import Image from "../../Image";
+
 type Props = {
-  banner: string;
+  banner: {
+    mobile: string;
+    desktop: string;
+  };
 };
+
 function PromotionBanner({ banner }: Props) {
+  // Kiểm tra banner có tồn tại
+  if (!banner || !banner.desktop) return null;
+
   return (
-    <>
-      {banner.length > 0 && (
-        <section className="mb-[40px] px-[15px] text-black">
-          <div className="mx-auto max-w-[1200px] w-full">
-            <div className="flex flex-col gap-[20px] sm:gap-[30px]">
-              <Link to="/books/all">
-                <div className="relative">
-                  <Image
-                    source={banner}
-                    alt="banner"
-                    className="w-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-              </Link>
+    <section className="mb-[40px]">
+      <div className="mx-auto max-w-[1200px] w-full">
+        <div className="flex flex-col gap-[20px] sm:gap-[30px]">
+          <Link to="/books/all">
+            <div className="relative">
+              <picture>
+                <source srcSet={banner.mobile} media="(max-width: 768px)" />
+                <Image
+                  source={banner.desktop}
+                  alt="banner"
+                  className="w-full object-cover"
+                  loading="lazy"
+                />
+              </picture>
             </div>
-          </div>
-        </section>
-      )}
-    </>
+          </Link>
+        </div>
+      </div>
+    </section>
   );
 }
 

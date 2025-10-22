@@ -5,12 +5,14 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Image from "../../Image";
 function MainBanner() {
-  const banners1 = [
+  const banners = [
     {
-      image: "/assets/banner/mainbanner3.png",
+      mobile: "/assets/banner/mainbanner1-mobile.png",
+      desktop: "/assets/banner/mainbanner1.png",
     },
     {
-      image: "/assets/banner/mainbanner2.jpg",
+      mobile: "/assets/banner/mainbanner2-mobile.png",
+      desktop: "/assets/banner/mainbanner2.png",
     },
   ];
   return (
@@ -23,15 +25,20 @@ function MainBanner() {
             autoplay={{ delay: 5000 }}
             loop={true}
             speed={1000}
+            grabCursor={true}
             className="w-full"
           >
-            {banners1.map((banner1, index) => (
+            {banners.map((banner, index) => (
               <SwiperSlide key={index}>
                 <div className="relative block w-full">
                   <div className="w-full">
                     <picture>
+                      <source
+                        srcSet={banner.mobile}
+                        media="(max-width: 768px)"
+                      />
                       <Image
-                        source={banner1.image}
+                        source={banner.desktop}
                         alt={"banner"}
                         className={"w-full object-center"}
                         loading="eager"

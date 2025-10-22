@@ -1,8 +1,9 @@
+import BestsellerBook from "./BestsellerBook";
 
 function Dashboard() {
   return (
     <>
-
+      <BestsellerBook />
     </>
   );
 }

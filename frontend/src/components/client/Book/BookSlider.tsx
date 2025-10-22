@@ -21,6 +21,7 @@ function BookSlider({ title, books }: Props) {
               spaceBetween={10}
               modules={[FreeMode]}
               freeMode={true}
+              grabCursor={true}
               breakpoints={{
                 0: {
                   slidesPerView: 2,

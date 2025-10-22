@@ -50,9 +50,9 @@ function BookList({ category, books, isLoading, total }: Props) {
 
   return (
     <>
-      <div className="flex justify-between items-center flex-wrap mb-[35px]">
+      <div className="flex justify-between items-center flex-wrap mb-[30px]">
         {!isLoading && (category || search) && (
-          <h2 className="mb-[20px] text-black capitalize">
+          <h2 className=" text-black capitalize">
             {search ? search : category} ({total})
           </h2>
         )}
