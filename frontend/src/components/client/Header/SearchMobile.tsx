@@ -1,5 +1,6 @@
 import { memo, useEffect, useState } from "react";
 import { matchPath, useLocation, useNavigate } from "react-router-dom";
+import Suggestion from "../Suggestion";
 
 type Props = {
   toggleSearch: () => void;
@@ -10,6 +11,7 @@ function SearchMobile({ toggleSearch, openSearch }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
   const [search, setSearch] = useState<string>("");
+  const [focused, setFocused] = useState<boolean>(false);
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -68,6 +70,12 @@ function SearchMobile({ toggleSearch, openSearch }: Props) {
               className="w-full rounded outline-none text-[0.9rem]"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              onFocus={() => setFocused(true)}
+              onBlur={() => {
+                setTimeout(() => {
+                  setFocused(false);
+                }, 200);
+              }}
             />
           </form>
 
@@ -87,6 +95,12 @@ function SearchMobile({ toggleSearch, openSearch }: Props) {
             </svg>
           </button>
         </div>
+
+        {focused && search && (
+          <div className="fixed left-1/2 translate-x-[-50%] z-12 w-full bg-white shadow-lg border-gray-300 border">
+            <Suggestion search={search} />
+          </div>
+        )}
       </div>
     </div>
   );

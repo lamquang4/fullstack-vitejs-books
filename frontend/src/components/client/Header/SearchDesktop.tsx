@@ -1,12 +1,13 @@
 import { memo, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { useNavigate, useLocation, matchPath } from "react-router-dom";
+import Suggestion from "../Suggestion";
 
 function SearchDesktop() {
   const navigate = useNavigate();
   const location = useLocation();
   const [search, setSearch] = useState<string>("");
-
+  const [focused, setFocused] = useState<boolean>(false);
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const query = search.trim();
@@ -43,6 +44,12 @@ function SearchDesktop() {
           autoComplete="off"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          onFocus={() => setFocused(true)}
+          onBlur={() => {
+            setTimeout(() => {
+              setFocused(false);
+            }, 200);
+          }}
         />
         <button
           className="absolute top-1/2 right-[7px] transform -translate-y-1/2 flex items-center"
@@ -51,6 +58,12 @@ function SearchDesktop() {
           <CiSearch size={20} />
         </button>
       </form>
+
+      {focused && search && (
+        <div className="fixed right-12 z-12 w-96 max-w-[calc(100%-30px)] bg-white shadow-lg border-gray-300 border">
+          <Suggestion search={search} />
+        </div>
+      )}
     </div>
   );
 }
