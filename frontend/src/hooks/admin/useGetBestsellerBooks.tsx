@@ -1,6 +1,6 @@
 import axios from "axios";
 import useSWR from "swr";
-import type { Book } from "../types/type";
+import type { Book } from "../../types/type";
 
 interface ResponseType {
   books: Book[];

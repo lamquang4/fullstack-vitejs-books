@@ -1,5 +1,4 @@
 package com.bookstore.backend.repository;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,7 +14,7 @@ public interface BookRepository extends JpaRepository<Book, String> {
  boolean existsByAuthor(Author author);
   boolean existsByPublisher(Publisher publisher);
 Optional<Book> findByTitle(String title);
-Optional<Book> findBySlug(String slug);
+Optional<Book> findBySlugAndStatus(String slug, int status);
  Page<Book> findByTitleContainingIgnoreCase(String title, Pageable pageable);
 
     Page<Book> findByStatus(Integer status, Pageable pageable);
@@ -67,14 +66,6 @@ Page<Book> findByDiscountGreaterThanAndStatusAndTitleContainingIgnoreCase(
                                               @Param("status") Integer status,
                                               Pageable pageable);
 
-// Bestseller
-@Query("SELECT b FROM Book b " +
-       "LEFT JOIN OrderDetail od ON od.book = b " +
-       "LEFT JOIN od.order o " +
-       "WHERE b.status = :status " +
-       "GROUP BY b " +
-       "ORDER BY SUM(CASE WHEN o.status = 3 THEN od.quantity ELSE 0 END) DESC")
-List<Book> findTopBooksByTotalSold(@Param("status") int status, Pageable pageable);
 
     @Query("SELECT b FROM Book b WHERE b.status = :status")
     Page<Book> findByStatus(@Param("status") int status, Pageable pageable);
@@ -100,16 +91,19 @@ List<Book> findTopBooksByTotalSold(@Param("status") int status, Pageable pageabl
        @Query("SELECT b FROM Book b WHERE b.status = :status AND b.category.slug = :slug ORDER BY (b.price - b.discount) DESC")
        Page<Book> findByCategorySlugAndStatusOrderByEffectivePriceDesc(@Param("slug") String slug, @Param("status") int status, Pageable pageable);
 
-       @Query("""
+       // bestseller
+@Query("""
     SELECT b 
     FROM Book b
     LEFT JOIN OrderDetail od ON od.book = b
     LEFT JOIN od.order o
-    WHERE b.status = :status AND (o.status = 3 OR o.id IS NULL)
+    WHERE (:status IS NULL OR b.status = :status)
+      AND (o.status = 3 OR o.id IS NULL)
     GROUP BY b
     ORDER BY SUM(COALESCE(od.quantity, 0)) DESC
 """)
-Page<Book> findByStatusOrderByTotalSold(@Param("status") int status, Pageable pageable);
+Page<Book> findByStatusOrderByTotalSold(@Param("status") Integer status, Pageable pageable);
+
 
 @Query("""
     SELECT b 

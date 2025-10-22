@@ -84,13 +84,18 @@ public ResponseEntity<?> getActiveBooksByCategory(
     ));
 }
 
-    @GetMapping("/bestseller")
-    public ResponseEntity<?> getTopBestsellerBooks() {
-        List<BookDTO> books = bookService.getActiveBooksByTotalSold();
-        return ResponseEntity.ok(Map.of(
-            "books", books
-        ));
-    }
+@GetMapping("/bestseller")
+public ResponseEntity<?> getAllBooksByTotalSold() {
+    List<BookDTO> bestsellerBooks = bookService.getAllBooksByTotalSold();
+    return ResponseEntity.ok(Map.of("books", bestsellerBooks));
+}
+
+@GetMapping("/active/bestseller")
+public ResponseEntity<?> getActiveBooksByTotalSold() {
+    List<BookDTO> bestsellerBooks = bookService.getActiveBooksByTotalSold();
+    return ResponseEntity.ok(Map.of("books", bestsellerBooks));
+}
+
 
 @GetMapping("/slug/{slug}")
 public ResponseEntity<BookDetailDTO> getBookBySlug(@PathVariable String slug) {

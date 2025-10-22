@@ -2,7 +2,8 @@ import { LiaEdit } from "react-icons/lia";
 import { Link } from "react-router-dom";
 import Loading from "../../Loading";
 import Image from "../../Image";
-import useGetBestsellerBooks from "../../../hooks/useGetBestSellerBooks";
+import useGetBestsellerBooks from "../../../hooks/admin/useGetBestsellerBooks";
+
 function BestsellerBook() {
   const { books, isLoading } = useGetBestsellerBooks();
   return (

@@ -214,20 +214,29 @@ if (q != null && !q.isEmpty()) {
     return bookPage.map(this::convertToDTO);
 }
 
-// lấy sách bestseller
+// lấy tất cả sách bestseller
+public List<BookDTO> getAllBooksByTotalSold() {
+    Integer status = null;
+    int limit = 12;
+    Pageable top = PageRequest.of(0, limit);
+    List<Book> books = bookRepository.findByStatusOrderByTotalSold(status, top).getContent();
+    return books.stream().map(this::convertToDTO).collect(Collectors.toList());
+}
+
+
+// lấy sách có status là 1 và bestseller 
 public List<BookDTO> getActiveBooksByTotalSold() {
     int status = 1;
     int limit = 12;
     Pageable top = PageRequest.of(0, limit);
-    List<Book> books = bookRepository.findTopBooksByTotalSold(status, top);
+    List<Book> books = bookRepository.findByStatusOrderByTotalSold(status, top).getContent();
     return books.stream().map(this::convertToDTO).collect(Collectors.toList());
 }
 
- 
-// lấy sách theo slug
+// lấy sách theo slug có status là 1
 public BookDetailDTO getBookBySlug(String slug) {
-    Book book = bookRepository.findBySlug(slug)
-            .orElseThrow(() -> new EntityNotFoundException("Book not found with slug: " + slug));
+    Book book = bookRepository.findBySlugAndStatus(slug, 1)
+            .orElseThrow(() -> new EntityNotFoundException("Book not found"));
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
