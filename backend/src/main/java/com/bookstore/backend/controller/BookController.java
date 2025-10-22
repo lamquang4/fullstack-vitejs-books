@@ -40,9 +40,10 @@ public class BookController {
      @GetMapping("/active")
     public ResponseEntity<?> getAllActiveBooks(
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(required = false) String q
+            @RequestParam(required = false) String q,
+             @RequestParam(required = false) String sort
     ) {
-        Page<BookDTO> bookPage = bookService.getAllActiveBooks(page, q);
+        Page<BookDTO> bookPage = bookService.getAllActiveBooks(page, q, sort);
 
         return ResponseEntity.ok(Map.of(
                 "books", bookPage.getContent(),
@@ -55,10 +56,10 @@ public class BookController {
     @GetMapping("/active/discount")
 public ResponseEntity<?> getDiscountedActiveBooks(
         @RequestParam(defaultValue = "1") int page,
-        @RequestParam(defaultValue = "12") int limit,
-        @RequestParam(required = false) String q
+        @RequestParam(required = false) String q,
+         @RequestParam(required = false) String sort
 ) {
-    Page<BookDTO> bookPage = bookService.getDiscountedActiveBooks(page, limit, q);
+    Page<BookDTO> bookPage = bookService.getDiscountedActiveBooks(page, q, sort);
 
     return ResponseEntity.ok(Map.of(
         "books", bookPage.getContent(),
@@ -71,9 +72,10 @@ public ResponseEntity<?> getDiscountedActiveBooks(
 public ResponseEntity<?> getActiveBooksByCategory(
         @PathVariable("slug") String slug,
         @RequestParam(defaultValue = "1") int page,
-        @RequestParam(required = false) String q
+        @RequestParam(required = false) String q,
+         @RequestParam(required = false) String sort
 ) {
-    Page<BookDTO> bookPage = bookService.getActiveBooksByCategory(slug, page, q);
+    Page<BookDTO> bookPage = bookService.getActiveBooksByCategory(slug, page, q, sort);
 
     return ResponseEntity.ok(Map.of(
             "books", bookPage.getContent(),

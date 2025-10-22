@@ -29,6 +29,10 @@ function BookList({ category, books, isLoading, total }: Props) {
       name: "Price (high-low)",
       sort: "price-desc",
     },
+    {
+      name: "Bestseller",
+      sort: "bestseller",
+    },
   ];
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

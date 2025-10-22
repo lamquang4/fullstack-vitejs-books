@@ -17,10 +17,12 @@ export default function useGetActiveDiscountBooks() {
 
   const page = parseInt(searchParams.get("page") || "1", 10);
   const q = searchParams.get("q");
+  const sort = searchParams.get("sort");
 
   const query = new URLSearchParams();
   if (page) query.set("page", page.toString());
   if (q) query.set("q", q || "");
+  if (sort) query.set("sort", sort || "");
 
   const url = `${
     import.meta.env.VITE_BACKEND_URL

@@ -283,6 +283,13 @@ function BookDetail({ book }: Props) {
 
                   <div className="divide-y divide-gray-200 text-[0.9rem]">
                     <div className="grid grid-cols-2 gap-2 py-2">
+                      <span>Category</span>
+                      <span className="font-medium">
+                        {book.category.name}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 py-2">
                       <span>Publication date</span>
                       <span className="font-medium">
                         {new Date(book.publicationDate).toLocaleDateString(

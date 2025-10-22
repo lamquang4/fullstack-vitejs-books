@@ -119,47 +119,97 @@ public Page<BookDTO> getAllBooks(int page, int limit, String q, Integer status) 
 
 
 // lây sách có status = 1
-public Page<BookDTO> getAllActiveBooks(int page, String q) {
+public Page<BookDTO> getAllActiveBooks(int page, String q, String sort) {
     int limit = 12;
     int status = 1;
-    Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
+    Pageable pageable = PageRequest.of(page - 1, limit);
 
     Page<Book> bookPage;
-    if (q != null && !q.isEmpty()) {
-        bookPage = bookRepository.searchByTitleAuthorPublisherCategory(q, status, pageable);
-    } else {
+if (q != null && !q.isEmpty()) {
+    bookPage = bookRepository.searchByTitleAuthorPublisherCategory(q, status, pageable);
+} else {
+    if (sort == null || sort.isEmpty()) {
         bookPage = bookRepository.findByStatus(status, pageable);
+    } else {
+        switch (sort) {
+            case "price-asc":
+                bookPage = bookRepository.findByStatusOrderByEffectivePriceAsc(status, pageable);
+                break;
+            case "price-desc":
+                bookPage = bookRepository.findByStatusOrderByEffectivePriceDesc(status, pageable);
+                break;
+            case "bestseller":
+                bookPage = bookRepository.findByStatusOrderByTotalSold(status, pageable);
+                break;
+            default:
+                bookPage = bookRepository.findByStatus(status, pageable);
+        }
     }
+}
 
     return bookPage.map(this::convertToDTO);
 }
 
 // lây sách có status = 1 và giảm giá 
-public Page<BookDTO> getDiscountedActiveBooks(int page, int limit, String q) {
+public Page<BookDTO> getDiscountedActiveBooks(int page, String q, String sort) {
+    int limit = 12;
     int status = 1;
-    Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
+    Pageable pageable = PageRequest.of(page - 1, limit);
 
     Page<Book> bookPage;
-    if (q != null && !q.isEmpty()) {
-        bookPage = bookRepository.searchDiscountedActiveCategory(q, status, pageable);
+if (q != null && !q.isEmpty()) {
+    bookPage = bookRepository.searchDiscountedActiveCategory(q, status, pageable);
+} else {
+    if (sort == null || sort.isEmpty()) {
+        bookPage = bookRepository.findDiscounted(status, pageable);
     } else {
-        bookPage = bookRepository.findByDiscountGreaterThanAndStatus(0, status, pageable);
+        switch (sort) {
+            case "price-asc":
+                bookPage = bookRepository.findDiscountedOrderByEffectivePriceAsc(status, pageable);
+                break;
+            case "price-desc":
+                bookPage = bookRepository.findDiscountedOrderByEffectivePriceDesc(status, pageable);
+                break;
+            case "bestseller":
+                bookPage = bookRepository.findDiscountedOrderByTotalSold(status, pageable);
+                break;
+            default:
+                bookPage = bookRepository.findDiscounted(status, pageable);
+        }
     }
+}
 
     return bookPage.map(this::convertToDTO);
 }
 
-public Page<BookDTO> getActiveBooksByCategory(String slug, int page, String q) {
+// lấy sách có status = 1 theo category
+public Page<BookDTO> getActiveBooksByCategory(String slug, int page, String q, String sort) {
     int limit = 12;
     int status = 1;
-    Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
+    Pageable pageable = PageRequest.of(page - 1, limit);
 
     Page<Book> bookPage;
-    if (q != null && !q.isEmpty()) {
-        bookPage = bookRepository.searchByCategoryAndTitleAuthorPublisherCategory(slug, q, status, pageable);
-    } else {
+if (q != null && !q.isEmpty()) {
+    bookPage = bookRepository.searchByCategoryAndTitleAuthorPublisherCategory(slug, q, status, pageable);
+} else {
+    if (sort == null || sort.isEmpty()) {
         bookPage = bookRepository.findByCategorySlugAndStatus(slug, status, pageable);
+    } else {
+        switch (sort) {
+            case "price-asc":
+                bookPage = bookRepository.findByCategorySlugAndStatusOrderByEffectivePriceAsc(slug, status, pageable);
+                break;
+            case "price-desc":
+                bookPage = bookRepository.findByCategorySlugAndStatusOrderByEffectivePriceDesc(slug, status, pageable);
+                break;
+            case "bestseller":
+                bookPage = bookRepository.findByCategorySlugAndStatusOrderByTotalSold(slug, status, pageable);
+                break;
+            default:
+                bookPage = bookRepository.findByCategorySlugAndStatus(slug, status, pageable);
+        }
     }
+}
 
     return bookPage.map(this::convertToDTO);
 }

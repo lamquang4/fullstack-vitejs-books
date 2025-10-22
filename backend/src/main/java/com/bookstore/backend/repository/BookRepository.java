@@ -65,4 +65,63 @@ Page<Book> findByDiscountGreaterThanAndStatusAndTitleContainingIgnoreCase(
     Page<Book> searchDiscountedActiveCategory(@Param("q") String q,
                                               @Param("status") Integer status,
                                               Pageable pageable);
+
+
+    @Query("SELECT b FROM Book b WHERE b.status = :status")
+    Page<Book> findByStatus(@Param("status") int status, Pageable pageable);
+
+    @Query("SELECT b FROM Book b WHERE b.status = :status ORDER BY (b.price - b.discount) ASC")
+    Page<Book> findByStatusOrderByEffectivePriceAsc(@Param("status") int status, Pageable pageable);
+
+    @Query("SELECT b FROM Book b WHERE b.status = :status ORDER BY (b.price - b.discount) DESC")
+    Page<Book> findByStatusOrderByEffectivePriceDesc(@Param("status") int status, Pageable pageable);
+
+    @Query("SELECT b FROM Book b WHERE b.status = :status AND b.discount > 0")
+    Page<Book> findDiscounted(@Param("status") int status, Pageable pageable);
+
+    @Query("SELECT b FROM Book b WHERE b.status = :status AND b.discount > 0 ORDER BY (b.price - b.discount) ASC")
+    Page<Book> findDiscountedOrderByEffectivePriceAsc(@Param("status") int status, Pageable pageable);
+
+    @Query("SELECT b FROM Book b WHERE b.status = :status AND b.discount > 0 ORDER BY (b.price - b.discount) DESC")
+    Page<Book> findDiscountedOrderByEffectivePriceDesc(@Param("status") int status, Pageable pageable);
+
+       @Query("SELECT b FROM Book b WHERE b.status = :status AND b.category.slug = :slug ORDER BY (b.price - b.discount) ASC")
+       Page<Book> findByCategorySlugAndStatusOrderByEffectivePriceAsc(@Param("slug") String slug, @Param("status") int status, Pageable pageable);
+
+       @Query("SELECT b FROM Book b WHERE b.status = :status AND b.category.slug = :slug ORDER BY (b.price - b.discount) DESC")
+       Page<Book> findByCategorySlugAndStatusOrderByEffectivePriceDesc(@Param("slug") String slug, @Param("status") int status, Pageable pageable);
+
+       @Query("""
+    SELECT b 
+    FROM Book b
+    LEFT JOIN OrderDetail od ON od.book = b
+    LEFT JOIN od.order o
+    WHERE b.status = :status AND (o.status = 3 OR o.id IS NULL)
+    GROUP BY b
+    ORDER BY SUM(COALESCE(od.quantity, 0)) DESC
+""")
+Page<Book> findByStatusOrderByTotalSold(@Param("status") int status, Pageable pageable);
+
+@Query("""
+    SELECT b 
+    FROM Book b
+    LEFT JOIN OrderDetail od ON od.book = b
+    LEFT JOIN od.order o
+    WHERE b.status = :status AND b.discount > 0 AND (o.status = 3 OR o.id IS NULL)
+    GROUP BY b
+    ORDER BY SUM(COALESCE(od.quantity, 0)) DESC
+""")
+Page<Book> findDiscountedOrderByTotalSold(@Param("status") int status, Pageable pageable);
+
+@Query("""
+    SELECT b
+    FROM Book b
+    LEFT JOIN OrderDetail od ON od.book = b
+    LEFT JOIN od.order o
+    WHERE b.status = :status AND b.category.slug = :slug AND (o.status = 3 OR o.id IS NULL)
+    GROUP BY b
+    ORDER BY SUM(COALESCE(od.quantity, 0)) DESC
+""")
+Page<Book> findByCategorySlugAndStatusOrderByTotalSold(@Param("slug") String slug, @Param("status") int status, Pageable pageable);
+
 }
