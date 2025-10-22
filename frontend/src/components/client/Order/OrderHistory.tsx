@@ -19,6 +19,7 @@ function OrderHistory() {
     { status: 2, name: "Delivering" },
     { status: 3, name: "Delivered Successfully" },
     { status: 4, name: "Cancelled" },
+    { status: 5, name: "Returned order" },
   ];
 
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

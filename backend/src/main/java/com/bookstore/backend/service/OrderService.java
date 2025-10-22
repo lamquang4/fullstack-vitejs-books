@@ -43,6 +43,7 @@ public class OrderService {
         this.cartRepository = cartRepository;
     }
 
+    // tạo order code
     private String generateOrderCode() {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         Random random = new Random();
@@ -103,6 +104,8 @@ public class OrderService {
     }
 
 // order cho admin
+
+// lấy tất cả orders
 public Page<OrderDTO> getAllOrders(int page, int limit, String orderCode, Integer status) {
     Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
     Page<Order> orderPage;
@@ -120,25 +123,27 @@ public Page<OrderDTO> getAllOrders(int page, int limit, String orderCode, Intege
     return orderPage.map(this::convertToDTO);
 }
 
+// lấy 1 order theo id
 public OrderDTO getOrderById(String id) {
     Order order = orderRepository.findById(id)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
     return convertToDTO(order);
 }
 
+// cập nhật status của order
 public OrderDTO updateOrderStatus(String orderId, Integer status) {
     Order order = orderRepository.findById(orderId)
             .orElseThrow(() -> new RuntimeException("Order not found"));
 
-if (status == 4 && order.getStatus() != 4) {
-    if (order.getItems() != null) {
-        for (OrderDetail detail : order.getItems()) {
-            Book book = detail.getBook();
-            book.setStock(book.getStock() + detail.getQuantity());
-            bookRepository.save(book);
+        if ((status == 4 || status == 5) && order.getStatus() != 4 && order.getStatus() != 5) {
+            if (order.getItems() != null) {
+                for (OrderDetail detail : order.getItems()) {
+                    Book book = detail.getBook();
+                    book.setStock(book.getStock() + detail.getQuantity());
+                    bookRepository.save(book);
+                }
+            }
         }
-    }
-}
 
     order.setStatus(status);
     Order updatedOrder = orderRepository.save(order);
@@ -146,6 +151,8 @@ if (status == 4 && order.getStatus() != 4) {
 }
 
 // order cho customer
+
+// tạo đơn hàng mặc định status = 0
 public OrderDTO createOrder(OrderDTO orderDTO, String userId) {
     User user = userRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("User not found"));
@@ -209,25 +216,28 @@ public OrderDTO createOrder(OrderDTO orderDTO, String userId) {
     Order savedOrder = orderRepository.save(order);
 
     // xóa giỏ hàng
-Cart cart = cartRepository.findByUserId(userId)
-        .orElse(null);
-if (cart != null) {
-    cartRepository.delete(cart);
+    Cart cart = cartRepository.findByUserId(userId)
+            .orElse(null);
+    if (cart != null) {
+        cartRepository.delete(cart);
+    }
+
+        return convertToDTO(savedOrder);
 }
 
-    return convertToDTO(savedOrder);
-}
-
-    public OrderDTO getOrderByUserAndCode(String userId, String orderCode) {
+// láy order của customer theo user id và order code
+public OrderDTO getOrderByUserAndCode(String userId, String orderCode) {
     Order order = orderRepository.findByUserIdAndOrderCode(userId, orderCode)
             .orElseThrow(() -> new RuntimeException("Order not found"));
     return convertToDTO(order);
 }
 
+// lấy các orders theo user id và lọc theo status
 public Page<OrderDTO> getOrdersByUserAndStatus(String userId, int page, int limit, Integer status) {
     Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
     Page<Order> orderPage;
 
+    // không lấy order có status = -1
     if (status != null && status >= 0) {
         orderPage = orderRepository.findByUserIdAndStatus(userId, status, pageable);
     } else {

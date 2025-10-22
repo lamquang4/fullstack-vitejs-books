@@ -7,7 +7,10 @@ import Loading from "../../Loading";
 import { Link } from "react-router-dom";
 import useGetOrders from "../../../hooks/admin/useGetOrders";
 import useUpdateStatusOrder from "../../../hooks/admin/useUpdateStatusOrder";
-
+import { RiTruckLine } from "react-icons/ri";
+import { LuClock } from "react-icons/lu";
+import { TbCancel, TbPackageImport } from "react-icons/tb";
+import StaticCard from "../StaticCard";
 function Order() {
   const {
     orders,
@@ -21,6 +24,10 @@ function Order() {
   const { updateStatusOrder, isLoading: isLoadingUpdate } =
     useUpdateStatusOrder();
 
+  const totalStatus0 = orders.filter((order) => order.status === 0).length;
+  const totalStatus3 = orders.filter((order) => order.status === 3).length;
+  const totalStatus4 = orders.filter((order) => order.status === 4).length;
+  const totalStatus5 = orders.filter((order) => order.status === 5).length;
   const handleUpdateStatus = async (id: string, status: number) => {
     if (!id && !status) {
       return;
@@ -37,12 +44,40 @@ function Order() {
     { name: "Delivering", value: 2 },
     { name: "Delivered Successfully", value: 3 },
     { name: "Cancelled", value: 4 },
+    { name: "Returned order", value: 5 },
+  ];
+
+  const array1 = [
+    {
+      title: "Pending confirmation",
+      number: totalStatus0,
+      icon1: <LuClock size={25} />,
+    },
+    {
+      title: "Delivered orders",
+      number: totalStatus3,
+      icon1: <RiTruckLine size={25} />,
+    },
+    {
+      title: "Cancelled orders",
+      number: totalStatus4,
+      icon1: <TbCancel size={25} />,
+    },
+    {
+      title: "Returned order",
+      number: totalStatus5,
+      icon1: <TbPackageImport size={25}/>,
+    },
   ];
 
   return (
     <>
       <div className="py-[1.3rem] px-[1.2rem] bg-[#f1f4f9] space-y-[20px]">
-        <h2 className=" text-[#74767d]">Order ({totalItems})</h2>
+        <h2 className=" text-[#74767d]">Order</h2>
+
+        <div>
+          <StaticCard array={array1} />
+        </div>
       </div>
 
       <div className=" bg-white  w-full overflow-auto">
@@ -134,7 +169,10 @@ function Order() {
                         </>
                       )}
                       {order.status === 3 && (
-                        <option value="3">Delivered Successfully</option>
+                        <>
+                          <option value="3">Delivered Successfully</option>
+                          <option value="5">Delivered Successfully</option>
+                        </>
                       )}
                       {order.status === 4 && (
                         <option value="4">Cancelled</option>

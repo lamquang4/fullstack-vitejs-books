@@ -24,6 +24,7 @@ public class AuthService {
         this.jwtUtils = jwtUtils;
     }
 
+    // đăng nhập
     public LoginResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Email or password is incorrect"));
@@ -48,6 +49,7 @@ public class AuthService {
                 .build();
     }
 
+    // lấy thông tin tài khoản từ token
         public Map<String, Object> getUserFromToken(String token) {
         return jwtUtils.getUserFromToken(token);
     }

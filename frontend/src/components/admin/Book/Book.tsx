@@ -161,7 +161,12 @@ function Book() {
                       )}
                     </td>
 
-                    <td className="p-[1rem]  ">{book.stock}</td>
+                    <td className="p-[1rem]  ">
+                      <div className="flex flex-col gap-1.5">
+                        <p>In stock: {book.stock}</p>
+                        <p>Sold: {book.totalSold}</p>
+                      </div>
+                    </td>
 
                     <td className="p-[1rem]  ">{book.author.fullname}</td>
                     <td className="p-[1rem]  ">{book.publisher.name}</td>

@@ -19,6 +19,6 @@ public class BookDTO {
     private AuthorDTO author;
     private PublisherDTO publisher;
     private CategoryDTO category;
-
+    private long totalSold;
     private List<ImageBookDTO> images;
 }

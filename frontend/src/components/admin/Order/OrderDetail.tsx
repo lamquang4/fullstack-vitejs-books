@@ -72,7 +72,19 @@ function OrderDetail() {
                   </Link>
                 </div>
 
-                {order?.status !== 4 ? (
+                {order?.status === 4 ? (
+                  <div className="relative flex items-center justify-center py-[20px] px-[20px] border-b border-gray-300">
+                    <span className="font-semibold text-center text-red-500 flex items-center gap-2">
+                      <TbCancel size={25} /> Order Cancelled
+                    </span>
+                  </div>
+                ) : order?.status === 5 ? (
+                  <div className="relative flex items-center justify-center py-[20px] px-[20px] border-b border-gray-300">
+                    <span className="font-semibold text-center text-red-500 flex items-center gap-2">
+                      <TbCancel size={25} /> Order Returned
+                    </span>
+                  </div>
+                ) : (
                   <div className="relative gap-y-5 grid grid-cols-2 md:grid-cols-4 py-[20px] px-[20px] border-b border-gray-300">
                     {steps.map((step, index) => {
                       const isActive = (order?.status ?? -1) >= index;
@@ -92,7 +104,7 @@ function OrderDetail() {
                           </div>
                           <span
                             className={`font-medium text-center ${
-                              isActive ? " text-green-500" : " "
+                              isActive ? " text-green-500" : ""
                             }`}
                           >
                             {step.label}
@@ -100,12 +112,6 @@ function OrderDetail() {
                         </div>
                       );
                     })}
-                  </div>
-                ) : (
-                  <div className="relative flex items-center justify-center py-[20px] px-[20px]   border-b border-gray-300">
-                    <span className="font-semibold text-center text-red-500 flex items-center gap-2">
-                      <TbCancel size={25} /> Order Cancelled
-                    </span>
                   </div>
                 )}
 

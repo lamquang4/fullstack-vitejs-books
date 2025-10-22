@@ -35,6 +35,7 @@ import CartPage from "./pages/client/CartPage";
 import CheckoutPage from "./pages/client/CheckoutPage";
 import OrderAdminPage from "./pages/admin/OrderAdminPage";
 import OrderDetailAdminPage from "./pages/admin/OrderDetailAdminPage";
+import DashboardPage from "./pages/admin/DashboardPage";
 function LayoutRoute() {
   return (
     <Routes>
@@ -102,6 +103,18 @@ function LayoutRoute() {
         }
       />
 
+      <Route
+        path="/admin/dashboard"
+        element={
+          <PrivateRoute
+            type="admin"
+            allowedRoles={[0, 1, 2]}
+            redirectPath="/admin/dashboard"
+          >
+            <DashboardPage />
+          </PrivateRoute>
+        }
+      />
       <Route
         path="/admin/login"
         element={

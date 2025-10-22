@@ -44,6 +44,7 @@ export interface Book {
   category: Category;
   author: Author;
   publisher: Publisher;
+  totalSold?: number;
 }
 
 export interface ImageBook {

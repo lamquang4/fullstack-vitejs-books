@@ -44,7 +44,7 @@ public class BookService {
         this.cartItemRepository = cartItemRepository;
     }
 
-    private BookDTO convertToDTO(Book book) {
+private BookDTO convertToDTO(Book book) {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     BookDTO dto = new BookDTO();
@@ -94,9 +94,14 @@ public class BookService {
         dto.setImages(Collections.emptyList());
     }
 
+    Long totalSold = orderDetailRepository.findTotalSoldByBook(book.getId());
+    dto.setTotalSold(totalSold != null ? totalSold : 0L);
+
     return dto;
 }
 
+
+// lấy tất cả sách
 public Page<BookDTO> getAllBooks(int page, int limit, String q, Integer status) {
     Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
 
@@ -112,6 +117,8 @@ public Page<BookDTO> getAllBooks(int page, int limit, String q, Integer status) 
     return bookPage.map(this::convertToDTO);
 }
 
+
+// lây sách có status = 1
 public Page<BookDTO> getAllActiveBooks(int page, String q) {
     int limit = 12;
     int status = 1;
@@ -127,6 +134,7 @@ public Page<BookDTO> getAllActiveBooks(int page, String q) {
     return bookPage.map(this::convertToDTO);
 }
 
+// lây sách có status = 1 và giảm giá 
 public Page<BookDTO> getDiscountedActiveBooks(int page, int limit, String q) {
     int status = 1;
     Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
@@ -156,7 +164,7 @@ public Page<BookDTO> getActiveBooksByCategory(String slug, int page, String q) {
     return bookPage.map(this::convertToDTO);
 }
  
-
+// lấy sách theo slug
 public BookDetailDTO getBookBySlug(String slug) {
     Book book = bookRepository.findBySlug(slug)
             .orElseThrow(() -> new EntityNotFoundException("Book not found with slug: " + slug));
@@ -224,7 +232,7 @@ public BookDetailDTO getBookBySlug(String slug) {
     );
 }
 
-
+// lấy sách theo id
 public BookDetailDTO getBookById(String id) {
     Book book = bookRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Book not found with ID: " + id));
@@ -292,6 +300,7 @@ List<ImageBookDTO> imageDTOs = (book.getImages() != null && !book.getImages().is
     );
 }
 
+// tạo sách
 @Transactional
 public Book createBook(Book book, List<MultipartFile> files) {
     String slug = SlugUtil.toSlug(book.getTitle());
@@ -354,7 +363,7 @@ public Book createBook(Book book, List<MultipartFile> files) {
     return savedBook;
 }
 
-
+// cập nhật sách
 @Transactional
 public Book updateBook(String id, Book updatedBookData, List<MultipartFile> files) {
     Book existingBook = bookRepository.findById(id)
@@ -430,7 +439,8 @@ public Book updateBook(String id, Book updatedBookData, List<MultipartFile> file
     return updatedBook;
 }
 
-    public Book updateBookStatus(String id, Integer status) {
+// cập nhật status sách
+public Book updateBookStatus(String id, Integer status) {
         return bookRepository.findById(id)
                 .map(book -> {
                     book.setStatus(status);
@@ -439,6 +449,7 @@ public Book updateBook(String id, Book updatedBookData, List<MultipartFile> file
                 .orElseThrow(() -> new EntityNotFoundException("Book not found"));
     }
 
+    // xóa sách
 public void deleteBook(String id) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Not found book"));
@@ -466,6 +477,8 @@ public void deleteBook(String id) {
     }
 
 // image book
+
+// cập nhật hình của sách
 @Transactional
 public void updateImagesBook(List<MultipartFile> files, List<String> oldImageIds) {
     if (files == null || oldImageIds == null || files.isEmpty() || oldImageIds.isEmpty()) {
@@ -496,7 +509,7 @@ public void updateImagesBook(List<MultipartFile> files, List<String> oldImageIds
     }
 }
 
-
+// xóa hình của sách
  @Transactional
     public void deleteImageBook(String imageId) {
         ImageBook image = imageBookRepository.findById(imageId)

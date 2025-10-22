@@ -22,6 +22,7 @@ public class AuthorService {
        this.bookRepository = bookRepository;
     }
 
+    // lấy tất cả các authors
 public Page<Author> getAuthors(int page, int limit, String q) {
     Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
     if (q != null && !q.isEmpty()) {
@@ -30,10 +31,12 @@ public Page<Author> getAuthors(int page, int limit, String q) {
     return authorRepository.findAll(pageable);
 }
 
+// lấy 1 author theo id
  public Optional<Author> getAuthorById(String id) {
         return authorRepository.findById(id);
     }
 
+    // tạo author
     public Author createAuthor(Author author) {
          if (authorRepository.findByFullname(author.getFullname()).isPresent()) {
         throw new IllegalArgumentException("Author fullname already exists");
@@ -42,6 +45,7 @@ public Page<Author> getAuthors(int page, int limit, String q) {
         return authorRepository.save(author);
     }
 
+    // cập nhật author
     public Author updateAuthor(String id, Author author) {
     return authorRepository.findById(id)
                 .map(existingAuthor -> {
@@ -59,6 +63,7 @@ public Page<Author> getAuthors(int page, int limit, String q) {
                 .orElse(null);
     }
 
+    // xóa author
     public void deleteAuthor(String id) {
         Author author = authorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Not found author"));

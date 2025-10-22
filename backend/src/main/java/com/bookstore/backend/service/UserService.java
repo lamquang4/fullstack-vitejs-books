@@ -34,7 +34,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // customer
+    // lấy tất cả users có role = 3 là customer
 public Page<UserDTO> getAllCustomers(int page, int limit, String q, Integer status) {
     Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
     List<Integer> roles = List.of(3);
@@ -64,7 +64,7 @@ public Page<UserDTO> getAllCustomers(int page, int limit, String q, Integer stat
     return new PageImpl<>(dtos, pageable, customersPage.getTotalElements());
 }
 
-    // admin
+    // lấy tất cả user có role là 0,1,2 là admin hoặc nhân viên
 public Page<UserDTO> getAllAdmins(int page, int limit, String q, Integer status) {
     Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
     List<Integer> roles = List.of(0, 1, 2);
@@ -94,6 +94,7 @@ public Page<UserDTO> getAllAdmins(int page, int limit, String q, Integer status)
     return new PageImpl<>(dtos, pageable, adminsPage.getTotalElements());
 }
 
+// lấy 1 user theo id
 public Optional<UserDTO> getUserById(String id) {
     return userRepository.findById(id)
             .map(user -> UserDTO.builder()
@@ -106,6 +107,7 @@ public Optional<UserDTO> getUserById(String id) {
             );
 }
 
+// tạo user
   public UserDTO createUser(UserDTO dto) {
     if (!ValidationUtils.validateEmail(dto.getEmail())) {
         throw new IllegalArgumentException("Invalid email");
@@ -130,6 +132,7 @@ public Optional<UserDTO> getUserById(String id) {
     return dto;
 }
 
+// cập nhật user
   public UserDTO updateUser(String id, UserDTO userDTO) {
     return userRepository.findById(id).map(user -> {
         if (!ValidationUtils.validateEmail(userDTO.getEmail())) {
@@ -159,7 +162,7 @@ public Optional<UserDTO> getUserById(String id) {
     }).orElse(null);
 }
 
-// cập nhật status
+// cập nhật status của user
     public User updateUserStatus(String id, Integer status) {
         return userRepository.findById(id)
                 .map(user -> {

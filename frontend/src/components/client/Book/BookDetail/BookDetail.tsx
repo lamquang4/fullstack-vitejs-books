@@ -82,6 +82,7 @@ function BookDetail({ book }: Props) {
 
   const handleAddItemToCart = async () => {
     if (book.stock === 0) {
+      toast.error(`Book is out of stock`);
       return;
     }
 

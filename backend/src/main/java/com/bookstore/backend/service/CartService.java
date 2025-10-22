@@ -32,6 +32,7 @@ private final UserRepository userRepository;
         this.userRepository = userRepository;
     }
 
+    // lấy giỏ hàng của customer dựa vào user id
 public CartDTO getCartByUserId(String userId) {
     Cart cart = cartRepository.findByUserId(userId)
             .orElseThrow(() -> new RuntimeException("Cart not found"));
@@ -62,6 +63,7 @@ public CartDTO getCartByUserId(String userId) {
             .build();
 }
 
+// thêm sản phẩm vào giỏ hàng
  @Transactional
 public void addItemToCart(String userId, String bookId, int quantity) {
     User user = userRepository.findById(userId)
@@ -114,6 +116,7 @@ public void addItemToCart(String userId, String bookId, int quantity) {
     }
 }
 
+// cập nhật số lượng mua sản phẩm trong cart item
 @Transactional
 public void updateCartItemQuantity(String cartItemId, int quantity) {
     CartItem item = cartItemRepository.findById(cartItemId)
@@ -138,7 +141,7 @@ public void updateCartItemQuantity(String cartItemId, int quantity) {
     cartItemRepository.save(item);
 }
 
-
+// xóa sản phẩm cart item khỏi cart
 @Transactional
 public void removeItemFromCart(String cartItemId) {
     CartItem item = cartItemRepository.findById(cartItemId)

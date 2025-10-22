@@ -51,6 +51,7 @@ public class BookController {
         ));
     }
 
+
     @GetMapping("/active/discount")
 public ResponseEntity<?> getDiscountedActiveBooks(
         @RequestParam(defaultValue = "1") int page,

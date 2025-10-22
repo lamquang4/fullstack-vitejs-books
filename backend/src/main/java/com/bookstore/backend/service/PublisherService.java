@@ -22,6 +22,7 @@ public class PublisherService {
                this.bookRepository = bookRepository;
     }
 
+    // lấy tất cả publishers
 public Page<Publisher> getPublishers(int page, int limit, String q) {
     Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
     if (q != null && !q.isEmpty()) {
@@ -30,10 +31,12 @@ public Page<Publisher> getPublishers(int page, int limit, String q) {
     return publisherRepository.findAll(pageable);
 }
 
+// lấy 1 publisher theo id
     public Optional<Publisher> getPublisherById(String id) {
         return publisherRepository.findById(id);
     }
 
+    // tạo publisher
     public Publisher createPublisher(Publisher publisher) {
          if (publisherRepository.findByName(publisher.getName()).isPresent()) {
         throw new IllegalArgumentException("Publisher name already exists");
@@ -42,6 +45,7 @@ public Page<Publisher> getPublishers(int page, int limit, String q) {
         return publisherRepository.save(publisher);
     }
 
+    // cập nhật publisher
     public Publisher updatePublisher(String id, Publisher publisher) {
         return publisherRepository.findById(id)
                 .map(existingPublisher -> {
@@ -57,6 +61,7 @@ public Page<Publisher> getPublishers(int page, int limit, String q) {
                 .orElse(null);
     }
 
+    // xóa publisher
     public void deletePublisher(String id) {
         Publisher publisher = publisherRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Not found publisher"));

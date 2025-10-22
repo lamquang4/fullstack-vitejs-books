@@ -18,6 +18,7 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
+    // lấy tất cả categories
 public Page<Category> getCategories(int page, int limit, String q) {
     Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
     if (q != null && !q.isEmpty()) {
@@ -26,10 +27,12 @@ public Page<Category> getCategories(int page, int limit, String q) {
     return categoryRepository.findAll(pageable);
 }
 
+// lấy 1 category theo id
     public Optional<Category> getCategoryById(String id) {
         return categoryRepository.findById(id);
     }
 
+    // tạo category
     public Category createCategory(Category category) {
     if (categoryRepository.findByName(category.getName()).isPresent()) {
         throw new IllegalArgumentException("Category name already exists");
@@ -38,6 +41,7 @@ public Page<Category> getCategories(int page, int limit, String q) {
         return categoryRepository.save(category);
     }
 
+    // cập nhật category
     public Category updateCategory(String id, Category category) {
         return categoryRepository.findById(id)
                 .map(existingCategory -> {
@@ -53,6 +57,7 @@ public Page<Category> getCategories(int page, int limit, String q) {
                 .orElse(null);
     }
 
+    // xóa category
     public void deleteCategory(String id) {
         categoryRepository.deleteById(id);
     }
