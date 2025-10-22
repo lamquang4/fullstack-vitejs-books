@@ -179,8 +179,8 @@ public Optional<UserDTO> getUserById(String id) {
         }
 
         // xóa tất cả address và cart trước
-        addressRepository.deleteByUser(user);
-        cartRepository.deleteByUser(user);
+        addressRepository.deleteByUserId(user.getId());
+        cartRepository.deleteByUserId(user.getId());
         userRepository.deleteById(id);
     }
 }

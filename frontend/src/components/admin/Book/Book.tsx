@@ -50,7 +50,7 @@ function Book() {
       await deleteBook(id);
       mutate();
     } catch (err: any) {
-      toast.error(err?.response?.data?.msg);
+      toast.error(err?.response?.data?.message);
       mutate();
     }
   };
@@ -64,7 +64,7 @@ function Book() {
       await updateStatusBook(id, status);
       mutate();
     } catch (err: any) {
-      toast.error(err?.response?.data?.msg);
+      toast.error(err?.response?.data?.message);
       mutate();
     }
   };

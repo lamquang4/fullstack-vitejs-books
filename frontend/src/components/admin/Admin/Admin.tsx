@@ -39,11 +39,17 @@ function Admin() {
     if (!id) {
       return;
     }
+
+    if (id === user?.id) {
+      toast.error("You cannot delete yourself");
+      return;
+    }
+
     try {
       await deleteUser(id);
       mutate();
     } catch (err: any) {
-      toast.error(err?.response?.data?.msg);
+      toast.error(err?.response?.data?.message);
       mutate();
     }
   };
@@ -62,7 +68,7 @@ function Admin() {
       await updateStatusUser(id, status);
       mutate();
     } catch (err: any) {
-      toast.error(err?.response?.data?.msg);
+      toast.error(err?.response?.data?.message);
       mutate();
     }
   };

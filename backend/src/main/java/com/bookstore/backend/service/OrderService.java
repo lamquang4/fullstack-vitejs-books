@@ -2,10 +2,12 @@ package com.bookstore.backend.service;
 import com.bookstore.backend.dto.OrderDTO;
 import com.bookstore.backend.dto.OrderDetailDTO;
 import com.bookstore.backend.entities.Book;
+import com.bookstore.backend.entities.Cart;
 import com.bookstore.backend.entities.Order;
 import com.bookstore.backend.entities.OrderDetail;
 import com.bookstore.backend.entities.User;
 import com.bookstore.backend.repository.BookRepository;
+import com.bookstore.backend.repository.CartRepository;
 import com.bookstore.backend.repository.OrderRepository;
 import com.bookstore.backend.repository.UserRepository;
 import org.springframework.data.domain.Page;
@@ -31,13 +33,14 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
-
+ private final CartRepository cartRepository;
     public OrderService(OrderRepository orderRepository,
                         UserRepository userRepository,
-                        BookRepository bookRepository) {
+                        BookRepository bookRepository, CartRepository cartRepository) {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
+        this.cartRepository = cartRepository;
     }
 
     private String generateOrderCode() {
@@ -123,7 +126,7 @@ public OrderDTO getOrderById(String id) {
     return convertToDTO(order);
 }
 
-    public OrderDTO updateOrderStatus(String orderId, Integer status) {
+public OrderDTO updateOrderStatus(String orderId, Integer status) {
     Order order = orderRepository.findById(orderId)
             .orElseThrow(() -> new RuntimeException("Order not found"));
 
@@ -204,6 +207,14 @@ public OrderDTO createOrder(OrderDTO orderDTO, String userId) {
     }
 
     Order savedOrder = orderRepository.save(order);
+
+    // xóa giỏ hàng
+Cart cart = cartRepository.findByUserId(userId)
+        .orElse(null);
+if (cart != null) {
+    cartRepository.delete(cart);
+}
+
     return convertToDTO(savedOrder);
 }
 

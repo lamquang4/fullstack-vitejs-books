@@ -29,7 +29,7 @@ function Author() {
       await deleteAuthor(id);
       mutate();
     } catch (err: any) {
-      toast.error(err?.response?.data?.msg);
+      toast.error(err?.response?.data?.message);
       mutate();
     }
   };

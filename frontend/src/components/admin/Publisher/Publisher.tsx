@@ -29,7 +29,7 @@ function Category() {
       await deletePublisher(id);
       mutate();
     } catch (err: any) {
-      toast.error(err?.response?.data?.msg);
+      toast.error(err?.response?.data?.message);
       mutate();
     }
   };

@@ -439,7 +439,7 @@ public Book updateBook(String id, Book updatedBookData, List<MultipartFile> file
                 .orElseThrow(() -> new EntityNotFoundException("Book not found"));
     }
 
-    public void deleteBook(String id) {
+public void deleteBook(String id) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Not found book"));
 
