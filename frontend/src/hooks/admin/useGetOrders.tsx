@@ -7,6 +7,7 @@ interface ResponseType {
   orders: Order[];
   totalPages: number;
   total: number;
+  totalByStatus: { [status: number]: number };
 }
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
@@ -43,6 +44,7 @@ export default function useGetOrders() {
     orders: data?.orders ?? [],
     totalPages: data?.totalPages || 1,
     totalItems: data?.total || 0,
+    totalByStatus: data?.totalByStatus,
     currentPage: page,
     limit,
     isLoading,

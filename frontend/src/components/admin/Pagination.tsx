@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { useNavigate, useSearchParams } from "react-router-dom";
 interface Props {
@@ -141,4 +142,4 @@ function Pagination({ totalPages, currentPage, limit, totalItems }: Props) {
   );
 }
 
-export default Pagination;
+export default memo(Pagination);

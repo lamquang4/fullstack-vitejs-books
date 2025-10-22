@@ -1,6 +1,9 @@
 package com.bookstore.backend.controller;
 import com.bookstore.backend.dto.OrderDTO;
 import com.bookstore.backend.service.OrderService;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -27,10 +30,14 @@ public ResponseEntity<?> getOrders(
 ) {
     Page<OrderDTO> orderPage = orderService.getAllOrders(page, limit, q, status);
 
+    List<Integer> statuses = Arrays.asList(0, 3, 4, 5);
+    Map<Integer, Long> totalByStatus = orderService.getOrderCountByStatus(statuses);
+
     return ResponseEntity.ok(Map.of(
         "orders", orderPage.getContent(),
         "totalPages", orderPage.getTotalPages(),
-        "total", orderPage.getTotalElements()
+        "total", orderPage.getTotalElements(),
+        "totalByStatus", totalByStatus
     ));
 }
 

@@ -14,6 +14,7 @@ import StaticCard from "../StaticCard";
 function Order() {
   const {
     orders,
+    totalByStatus,
     mutate,
     isLoading,
     totalItems,
@@ -24,10 +25,6 @@ function Order() {
   const { updateStatusOrder, isLoading: isLoadingUpdate } =
     useUpdateStatusOrder();
 
-  const totalStatus0 = orders.filter((order) => order.status === 0).length;
-  const totalStatus3 = orders.filter((order) => order.status === 3).length;
-  const totalStatus4 = orders.filter((order) => order.status === 4).length;
-  const totalStatus5 = orders.filter((order) => order.status === 5).length;
   const handleUpdateStatus = async (id: string, status: number) => {
     if (!id && !status) {
       return;
@@ -50,22 +47,22 @@ function Order() {
   const array1 = [
     {
       title: "Pending confirmation",
-      number: totalStatus0,
+      number: totalByStatus?.["0"] || 0,
       icon1: <LuClock size={25} />,
     },
     {
       title: "Delivered orders",
-      number: totalStatus3,
+      number: totalByStatus?.["3"] || 0,
       icon1: <RiTruckLine size={25} />,
     },
     {
       title: "Cancelled orders",
-      number: totalStatus4,
+      number: totalByStatus?.["4"] || 0,
       icon1: <TbCancel size={25} />,
     },
     {
       title: "Returned order",
-      number: totalStatus5,
+      number: totalByStatus?.["5"] || 0,
       icon1: <TbPackageImport size={25} />,
     },
   ];

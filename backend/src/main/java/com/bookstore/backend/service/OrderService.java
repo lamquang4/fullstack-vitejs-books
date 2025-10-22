@@ -14,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.stream.Collectors;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,6 +28,7 @@ import org.springframework.http.HttpStatus;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 
 @Service
 public class OrderService {
@@ -122,6 +125,23 @@ public Page<OrderDTO> getAllOrders(int page, int limit, String orderCode, Intege
 
     return orderPage.map(this::convertToDTO);
 }
+
+// đếm số lượng order có status đó
+public Map<Integer, Long> getOrderCountByStatus(List<Integer> statuses) {
+    List<Object[]> results = orderRepository.countOrdersByStatus(statuses);
+    Map<Integer, Long> map = new HashMap<>();
+    for (Object[] row : results) {
+        Integer status = (Integer) row[0];
+        Long total = (Long) row[1];
+        map.put(status, total);
+    }
+    
+    for (Integer s : statuses) {
+        map.putIfAbsent(s, 0L);
+    }
+    return map;
+}
+
 
 // lấy 1 order theo id
 public OrderDTO getOrderById(String id) {

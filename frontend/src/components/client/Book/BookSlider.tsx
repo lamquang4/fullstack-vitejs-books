@@ -46,11 +46,7 @@ function BookSlider({ title, books }: Props) {
                           className="border border-gray-200"
                         >
                           {book.images.length > 0 && (
-                            <div
-                              className="w-full 
-             aspect-[2/3] sm:aspect-[5/6] 
-      overflow-hidden rounded-md"
-                            >
+                            <div className="w-full aspect-[2/3] sm:aspect-[5/6] overflow-hidden rounded-md">
                               <Image
                                 source={`${import.meta.env.VITE_BACKEND_URL}${
                                   book.images[0].image

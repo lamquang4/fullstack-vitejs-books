@@ -7,10 +7,10 @@ import Image from "../../Image";
 function MainBanner() {
   const banners1 = [
     {
-      image: "/assets/banner/mainbanner5.png",
+      image: "/assets/banner/mainbanner3.png",
     },
     {
-      image: "/assets/banner/mainbanner6.png",
+      image: "/assets/banner/mainbanner2.jpg",
     },
   ];
   return (
