@@ -33,6 +33,12 @@ function EditAdmin() {
       return;
     }
 
+    if (user.role === 3) {
+      toast.error("Admin not found");
+      navigate("/admin/admins");
+      return;
+    }
+
     setData({
       fullname: user.fullname || "",
       email: user.email || "",

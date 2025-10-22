@@ -31,6 +31,12 @@ function EditCustomer() {
       return;
     }
 
+    if (user.role !== 3) {
+      toast.error("Customer not found");
+      navigate("/admin/customers");
+      return;
+    }
+
     setData({
       fullname: user.fullname || "",
       email: user.email || "",

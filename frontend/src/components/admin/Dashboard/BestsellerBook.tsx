@@ -93,14 +93,6 @@ function BestsellerBook() {
                     <td className="p-[1rem]  ">{book.category.name}</td>
 
                     <td className="p-[1rem]  ">
-                      {book.status === 1
-                        ? "Show"
-                        : book.status === 0
-                        ? "Hidden"
-                        : ""}
-                    </td>
-
-                    <td className="p-[1rem]  ">
                       <div className="flex items-center gap-[15px]">
                         <Link to={`/admin/edit-book/${book.id}`}>
                           <LiaEdit size={22} className="text-[#076ffe]" />
