@@ -16,7 +16,7 @@ function Order() {
       <BreadCrumb items={array} />
 
       <section className="mb-[40px]">
-        <div className="w-full max-w-[1350px] mx-auto relative">
+        <div className="w-full max-w-[1200px] mx-auto relative">
           <div className="flex justify-center flex-wrap gap-5">
             <SideBarMenu />
 

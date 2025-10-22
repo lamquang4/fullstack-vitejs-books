@@ -53,10 +53,11 @@ function Order() {
         <table className="w-[350%] border-collapse sm:w-[220%] xl:w-full text-[0.9rem]">
           <thead>
             <tr className="bg-[#E9EDF2] text-left">
-              <th className="p-[1rem]  ">Order Code</th>
+              <th className="p-[1rem]  ">Order code</th>
 
-              <th className="p-[1rem]  ">Order recipient</th>
-              <th className="p-[1rem]  ">Account</th>
+              <th className="p-[1rem]  ">Customer</th>
+              <th className="p-[1rem]  ">Account email</th>
+
               <th className="p-[1rem]  ">Payment method</th>
 
               <th className="p-[1rem]  ">Total</th>
@@ -83,7 +84,7 @@ function Order() {
                 <tr key={order.id} className="hover:bg-[#f2f3f8]">
                   <td className="p-[1rem] font-semibold">{order.orderCode}</td>
                   <td className="p-[1rem]  ">{order.fullname}</td>
-                  <th className="p-[1rem]  ">{order.userFullname}</th>
+                  <td className="p-[1rem]  ">{order.accountEmail}</td>
                   <td className="p-[1rem] uppercase">{order.paymethod}</td>
                   <td className="p-[1rem]  ">
                     {order.total!.toLocaleString("vi-VN")}₫

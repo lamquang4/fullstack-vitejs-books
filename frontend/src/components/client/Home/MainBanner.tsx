@@ -7,16 +7,16 @@ import Image from "../../Image";
 function MainBanner() {
   const banners1 = [
     {
-      image: "/assets/banner/mainbanner2.jpg",
+      image: "/assets/banner/mainbanner5.png",
     },
     {
-      image: "/assets/banner/mainbanner3.png",
+      image: "/assets/banner/mainbanner6.png",
     },
   ];
   return (
     <>
       <section className="mb-[40px] text-black">
-        <div className="w-full max-w-[1350px] mx-auto">
+        <div className="w-full max-w-[1200px] mx-auto">
           <Swiper
             modules={[Autoplay, Pagination]}
             pagination={{ clickable: true, type: "bullets" }}

@@ -78,7 +78,7 @@ function CartItem({ cart, mutate }: Props) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!cart || cart.items.length === 0) {
+    if (cart?.items.length === 0) {
       toast.error("There’s nothing in your cart");
       navigate("/cart");
       return;
@@ -97,7 +97,7 @@ function CartItem({ cart, mutate }: Props) {
 
   return (
     <section className="my-[40px] px-[15px] text-black">
-      <div className="max-w-[1350px] mx-auto">
+      <div className="max-w-[1200px] mx-auto">
         <h2 className="mb-[20px]">Cart ({totalQuantity})</h2>
         {cart?.items && cart.items.length > 0 ? (
           <form onSubmit={handleSubmit}>
@@ -218,7 +218,7 @@ function CartItem({ cart, mutate }: Props) {
 
                     {item.stock < item.quantity && (
                       <div>
-                        <p className="text-[#C62028] font-semibold">
+                        <p className="text-[#C62028] font-semibold text-center">
                           The product is currently out of sufficient stock.
                           Please reduce the quantity or remove the item from
                           your cart.

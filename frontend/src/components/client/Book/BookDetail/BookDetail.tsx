@@ -81,7 +81,7 @@ function BookDetail({ book }: Props) {
   };
 
   const handleAddItemToCart = async () => {
-    if (book.stock <= 0) {
+    if (book.stock === 0) {
       return;
     }
 
@@ -113,11 +113,11 @@ function BookDetail({ book }: Props) {
   };
   return (
     <section className="w-full mb-[40px] px-[15px]">
-      <div className="mx-auto w-full max-w-[1350px]">
+      <div className="mx-auto w-full max-w-[1200px]">
         <div className="flex flex-col lg:flex-row gap-x-[15px] gap-y-[30px] w-full">
           <div
             id="div1"
-            className="flex lg:flex-row flex-col-reverse gap-3 lg:sticky lg:top-[100px] flex-1"
+            className="flex lg:flex-row flex-col-reverse gap-3 lg:sticky lg:top-[100px] flex-1/6"
           >
             <div className="mx-auto lg:max-w-[70px] w-full">
               <Swiper

@@ -21,7 +21,7 @@ public class OrderDTO {
     private String paymethod;
     private Integer status;
     private Double total;
-    private String userFullname;
+    private String accountEmail;
     private LocalDateTime createdAt;
     private List<OrderDetailDTO> items;
 }

@@ -17,4 +17,6 @@ public interface OrderRepository extends JpaRepository<Order, String> {
      Page<Order> findByUserId(String userId, Pageable pageable);
      Page<Order> findByOrderCodeContainingIgnoreCaseAndStatus(String orderCode, Integer status, Pageable pageable);
      Page<Order> findByStatus(Integer status, Pageable pageable);
+
+   
 }

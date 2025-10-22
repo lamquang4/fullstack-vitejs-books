@@ -5,7 +5,7 @@ import { IoLogoYoutube } from "react-icons/io";
 function Footer() {
   return (
     <footer className="bg-gray-50 border-t border-gray-200 px-[15px]">
-      <div className="mx-auto w-full max-w-[1350px]">
+      <div className="mx-auto w-full max-w-[1200px]">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] py-[60px]">
           <div>
             <Link to={"/"}>

@@ -8,7 +8,7 @@ function PromotionBanner({ banner }: Props) {
     <>
       {banner.length > 0 && (
         <section className="mb-[40px] px-[15px] text-black">
-          <div className="mx-auto max-w-[1350px] w-full">
+          <div className="mx-auto max-w-[1200px] w-full">
             <div className="flex flex-col gap-[20px] sm:gap-[30px]">
               <Link to="/books/all">
                 <div className="relative">

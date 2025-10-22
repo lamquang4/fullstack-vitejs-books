@@ -39,7 +39,7 @@ function LoginForm() {
   return (
     <>
       <section className="my-[60px] px-[15px]">
-        <div className="mx-auto w-full max-w-[1350px]">
+        <div className="mx-auto w-full max-w-[1200px]">
           <div className="flex items-center justify-center">
             <div className="max-w-sm w-full">
               <h2 className="uppercase mb-[20px] text-center text-[#C62028]">

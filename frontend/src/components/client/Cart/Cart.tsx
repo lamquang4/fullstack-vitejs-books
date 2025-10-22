@@ -2,10 +2,13 @@ import Loading from "../../Loading";
 import CartItem from "./CartItem";
 import useGetCart from "../../../hooks/client/useGetCart";
 import useCurrentUser from "../../../hooks/useGetCurrentUser";
+import useGetActiveBooks from "../../../hooks/client/useGetActiveBooks";
+import BookSlider from "../Book/BookSlider";
 
 function Cart() {
   const { user } = useCurrentUser("client");
   const { cart, isLoading, mutate } = useGetCart(user?.id || "");
+  const { books } = useGetActiveBooks();
   return (
     <>
       {isLoading ? (
@@ -13,6 +16,7 @@ function Cart() {
       ) : (
         <>
           <CartItem cart={cart!} mutate={mutate} />
+          <BookSlider books={books} title="You may also like" />
         </>
       )}
     </>

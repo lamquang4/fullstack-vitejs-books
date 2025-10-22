@@ -45,8 +45,9 @@ function CheckoutForm() {
 
   useEffect(() => {
     if (isOrdering) return;
+    if (isLoadingCart) return;
 
-    if (!cart || cart.items.length === 0) {
+    if (cart?.items.length === 0) {
       toast.error("There’s nothing in your cart");
       navigate("/cart");
       return;
@@ -138,7 +139,7 @@ function CheckoutForm() {
 
   return (
     <section className="my-[40px] px-[15px] text-black">
-      <div className="mx-auto max-w-[1350px] w-full">
+      <div className="mx-auto max-w-[1200px] w-full">
         <Link to={"/"}>
           <Image
             source={"/assets/logo.png"}

@@ -15,7 +15,7 @@ function Account() {
     <>
       <BreadCrumb items={array} />
       <section className="mb-[40px]">
-        <div className="w-full max-w-[1350px] mx-auto">
+        <div className="w-full max-w-[1200px] mx-auto">
           <div className="flex justify-center flex-wrap gap-5">
             <SideBarMenu />
 

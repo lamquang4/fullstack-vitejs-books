@@ -85,7 +85,7 @@ public class OrderService {
         dto.setStatus(order.getStatus());
         dto.setTotal(order.getTotal());
         dto.setCreatedAt(order.getCreatedAt());
-        dto.setUserFullname(order.getUser() != null ? order.getUser().getFullname() : null);
+        dto.setAccountEmail(order.getUser() != null ? order.getUser().getEmail() : null);
 
         if (order.getItems() != null && !order.getItems().isEmpty()) {
             List<OrderDetailDTO> detailDTOs = order.getItems().stream()
@@ -127,23 +127,20 @@ public OrderDTO getOrderById(String id) {
     Order order = orderRepository.findById(orderId)
             .orElseThrow(() -> new RuntimeException("Order not found"));
 
- if (status == 4 && order.getStatus() == 0) {
-        if (order.getItems() != null) {
-            for (OrderDetail detail : order.getItems()) {
-                Book book = detail.getBook();
-                // trả lại tồn kho
-                book.setStock(book.getStock() + detail.getQuantity());
-                bookRepository.save(book);
-            }
+if (status == 4 && order.getStatus() != 4) {
+    if (order.getItems() != null) {
+        for (OrderDetail detail : order.getItems()) {
+            Book book = detail.getBook();
+            book.setStock(book.getStock() + detail.getQuantity());
+            bookRepository.save(book);
         }
     }
+}
 
     order.setStatus(status);
     Order updatedOrder = orderRepository.save(order);
-
     return convertToDTO(updatedOrder);
 }
-
 
 // order cho customer
 public OrderDTO createOrder(OrderDTO orderDTO, String userId) {

@@ -77,11 +77,11 @@ function BookList({ category, books, isLoading, total }: Props) {
           {books.map((book) => {
             return (
               <div key={book.id}>
-                <div className="space-y-[20px] rounded-sm">
+                <div className="space-y-[15px] rounded-sm">
                   <div className="relative group">
                     <Link
                       to={`/book/${book.slug}`}
-                      className="border border-gray-200 shadow-md"
+                      className="border border-gray-200"
                     >
                       {book.images.length > 0 && (
                         <div
@@ -118,6 +118,12 @@ function BookList({ category, books, isLoading, total }: Props) {
                       {book.discount > 0 && (
                         <p className="text-white p-1.5 bg-[#C62028] rounded-sm">
                           -{Math.floor((book.discount / book.price) * 100)}%
+                        </p>
+                      )}
+
+                      {book.stock === 0 && (
+                        <p className="text-white p-1.5 bg-[#C62028] rounded-sm">
+                          Out of stock
                         </p>
                       )}
                     </div>

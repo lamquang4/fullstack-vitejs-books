@@ -10,7 +10,7 @@ function BookCategory() {
 
   return (
     <section className="my-[40px] px-[15px]">
-      <div className="mx-auto max-w-[1350px] w-full">
+      <div className="mx-auto max-w-[1200px] w-full">
         <BookList
           books={books}
           category={slug}

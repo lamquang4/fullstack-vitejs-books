@@ -70,7 +70,7 @@ export interface Order {
   speaddress: string;
   city: string;
   ward: string;
-  userFullname: string;
+  accountEmail: string;
   paymethod: string;
   items: ProductBuy[];
   status: number;
