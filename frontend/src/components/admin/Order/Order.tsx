@@ -66,7 +66,7 @@ function Order() {
     {
       title: "Returned order",
       number: totalStatus5,
-      icon1: <TbPackageImport size={25}/>,
+      icon1: <TbPackageImport size={25} />,
     },
   ];
 
@@ -171,11 +171,14 @@ function Order() {
                       {order.status === 3 && (
                         <>
                           <option value="3">Delivered Successfully</option>
-                          <option value="5">Delivered Successfully</option>
+                          <option value="5">Returned order</option>
                         </>
                       )}
                       {order.status === 4 && (
                         <option value="4">Cancelled</option>
+                      )}
+                      {order.status === 5 && (
+                        <option value="5">Returned order</option>
                       )}
                     </select>
                   </td>

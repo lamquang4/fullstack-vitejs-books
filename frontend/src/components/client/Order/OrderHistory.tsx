@@ -76,6 +76,8 @@ function OrderHistory() {
                         ? "text-green-600"
                         : order.status === 4
                         ? "text-red-500"
+                        : order.status === 5
+                        ? "text-red-500"
                         : "text-gray-500"
                     }`}
                   >
@@ -89,6 +91,8 @@ function OrderHistory() {
                       ? "Delivered Successfully"
                       : order.status === 4
                       ? "Cancelled"
+                      : order.status === 5
+                      ? "Returned"
                       : ""}
                   </p>
                 </div>
