@@ -42,30 +42,25 @@ function BookSlider({ title, books }: Props) {
                   <SwiperSlide key={book.id}>
                     <div className="space-y-[15px] rounded-sm">
                       <div className="relative group">
-                        <Link
-                          to={`/book/${book.slug}`}
-                          className="border border-gray-200"
-                        >
+                        <Link to={`/book/${book.slug}`}>
                           {book.images.length > 0 && (
-                            <div className="w-full aspect-[2/3] sm:aspect-[5/6] overflow-hidden rounded-md">
+                            <div className=" w-full overflow-hidden pt-[100%]">
                               <Image
                                 source={`${import.meta.env.VITE_BACKEND_URL}${
                                   book.images[0].image
                                 }`}
                                 alt={book.title}
-                                className="w-full h-full object-contain z-1 relative"
+                                className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0"
                                 loading="lazy"
                               />
 
-                              {book.images[1].image && (
+                              {book.images[1]?.image && (
                                 <Image
                                   source={`${import.meta.env.VITE_BACKEND_URL}${
                                     book.images[1].image
                                   }`}
                                   alt={book.title}
-                                  className={
-                                    "w-full h-full object-contain absolute top-0 left-0 opacity-0 z-2 transition-opacity duration-300 group-hover:opacity-100"
-                                  }
+                                  className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                                   loading="lazy"
                                 />
                               )}
@@ -73,20 +68,15 @@ function BookSlider({ title, books }: Props) {
                           )}
                         </Link>
 
-                        <div className="flex gap-2 flex-col absolute top-2 right-2 z-3 font-semibold text-center  ">
-                          {book.discount > 0 && (
-                            <p className="text-white p-1.5 bg-[#C62028] rounded-sm">
+                        {book.discount > 0 && (
+                          <div className="absolute top-0 right-0 z-10 font-semibold text-center">
+                            <p className="text-white text-[0.8rem] px-2 py-1 bg-[#C62028] rounded-sm">
                               -{Math.floor((book.discount / book.price) * 100)}%
                             </p>
-                          )}
-
-                          {book.stock === 0 && (
-                            <p className="text-white p-1.5 bg-[#C62028] rounded-sm">
-                              Out of stock
-                            </p>
-                          )}
-                        </div>
+                          </div>
+                        )}
                       </div>
+
                       <div className="space-y-[6px]">
                         <h5 className="font-medium capitalize">{book.title}</h5>
 

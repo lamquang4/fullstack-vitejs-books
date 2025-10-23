@@ -120,7 +120,7 @@ function BookDetail({ book }: Props) {
             id="div1"
             className="flex lg:flex-row flex-col-reverse gap-3 lg:sticky lg:top-[100px] flex-1/6"
           >
-            <div className="mx-auto lg:max-w-[70px] w-full">
+            <div className="lg:max-w-[70px] w-full">
               <Swiper
                 slidesPerView="auto"
                 spaceBetween={10}
@@ -284,9 +284,7 @@ function BookDetail({ book }: Props) {
                   <div className="divide-y divide-gray-200 text-[0.9rem]">
                     <div className="grid grid-cols-2 gap-2 py-2">
                       <span>Category</span>
-                      <span className="font-medium">
-                        {book.category.name}
-                      </span>
+                      <span className="font-medium">{book.category.name}</span>
                     </div>
 
                     <div className="grid grid-cols-2 gap-2 py-2">
