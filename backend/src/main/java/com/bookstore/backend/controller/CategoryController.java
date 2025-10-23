@@ -4,6 +4,8 @@ import com.bookstore.backend.service.CategoryService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -39,6 +41,12 @@ public class CategoryController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+@GetMapping("/active")
+public ResponseEntity<Map<String, Object>> getActiveCategoriesWithActiveBooks() {
+    List<Category> categories = categoryService.getActiveCategoriesWithActiveBooks();
+    return ResponseEntity.ok(Map.of("categories", categories));
+}
+
     @PostMapping
     public Category createCategory(@RequestBody Category category) {
         return categoryService.createCategory(category);
@@ -51,6 +59,24 @@ public class CategoryController {
             return ResponseEntity.ok(updated);
         }
         return ResponseEntity.notFound().build();
+    }
+
+        @PatchMapping("/status/{id}")
+    public ResponseEntity<?> updateCategoryStatus(
+            @PathVariable String id,
+            @RequestBody Map<String, Integer> body
+    ) {
+        Integer status = body.get("status");
+        if (status == null) {
+            throw new IllegalArgumentException("Status is required");
+        }
+
+        Category updated = categoryService.updateCategoryStatus(id, status);
+
+        return ResponseEntity.ok(Map.of(
+                "id", updated.getId(),
+                "status", updated.getStatus()
+        ));
     }
 
     @DeleteMapping("/{id}")

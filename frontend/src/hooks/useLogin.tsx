@@ -13,26 +13,34 @@ export default function useLogin() {
       const res = await axios.post(url, { email, password });
       const { token, role } = res.data;
 
+      const isAdminPage = window.location.pathname.startsWith("/admin");
+
+      if (!isAdminPage && role >= 0 && role <= 2) {
+        toast.error("You cannot login as admin from client page");
+        return;
+      }
+
+      if (isAdminPage && role === 3) {
+        toast.error("You cannot login as client from admin page");
+        return;
+      }
+
       toast.success("Login successfully");
 
       if (role === 3) {
-        window.location.href = "/";
-
         Cookies.set("token-client", token, {
-          expires: 1, // 1 ngày
+          expires: 1,
           sameSite: "strict",
           secure: import.meta.env.VITE_ENV === "production",
         });
-      } else if (role >= 0 && role <= 2) {
-        window.location.href = "/admin/account";
-
-        Cookies.set("token-admin", token, {
-          expires: 1, // 1 ngày
-          sameSite: "strict",
-          secure: import.meta.env.VITE_ENV === "production",
-        });
-      } else {
         window.location.href = "/";
+      } else if (role >= 0 && role <= 2) {
+        Cookies.set("token-admin", token, {
+          expires: 1,
+          sameSite: "strict",
+          secure: import.meta.env.VITE_ENV === "production",
+        });
+        window.location.href = "/admin/account";
       }
     } catch (err: any) {
       console.error("Login error:", err);

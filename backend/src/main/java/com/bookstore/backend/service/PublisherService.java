@@ -66,10 +66,10 @@ public Page<Publisher> getPublishers(int page, int limit, String q) {
         Publisher publisher = publisherRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Not found publisher"));
 
-        // không cho xóa khi có id publisher ở book
         if (bookRepository.existsByPublisher(publisher)) {
             throw new IllegalStateException("This publisher cannot be deleted as they have books associated with them");
         }
+        
         publisherRepository.deleteById(id);
     }
 }

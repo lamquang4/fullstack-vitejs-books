@@ -28,7 +28,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.Collections; 
 import java.util.Comparator;
-
+import java.util.Arrays;
 @Service
 public class BookService {
 
@@ -58,7 +58,6 @@ private BookDTO convertToDTO(Book book) {
 
     if (book.getAuthor() != null) {
         dto.setAuthor(new AuthorDTO(
-                book.getAuthor().getId(),
                 book.getAuthor().getFullname(),
                 book.getAuthor().getSlug()
         ));
@@ -66,7 +65,6 @@ private BookDTO convertToDTO(Book book) {
 
     if (book.getPublisher() != null) {
         dto.setPublisher(new PublisherDTO(
-                book.getPublisher().getId(),
                 book.getPublisher().getName(),
                 book.getPublisher().getSlug()
         ));
@@ -74,7 +72,6 @@ private BookDTO convertToDTO(Book book) {
 
     if (book.getCategory() != null) {
         dto.setCategory(new CategoryDTO(
-                book.getCategory().getId(),
                 book.getCategory().getName(),
                 book.getCategory().getSlug()
         ));
@@ -216,20 +213,20 @@ if (q != null && !q.isEmpty()) {
 
 // lấy tất cả sách bestseller
 public List<BookDTO> getAllBooksByTotalSold() {
-    Integer status = null;
+ List<Integer> statuses = Arrays.asList(0, 1);
     int limit = 12;
     Pageable top = PageRequest.of(0, limit);
-    List<Book> books = bookRepository.findByStatusOrderByTotalSold(status, top).getContent();
+    List<Book> books = bookRepository.findByStatusInOrderByTotalSold(statuses, top).getContent();
     return books.stream().map(this::convertToDTO).collect(Collectors.toList());
 }
 
 
 // lấy sách có status là 1 và bestseller 
 public List<BookDTO> getActiveBooksByTotalSold() {
-    int status = 1;
+ List<Integer> statuses = Arrays.asList(1);
     int limit = 12;
     Pageable top = PageRequest.of(0, limit);
-    List<Book> books = bookRepository.findByStatusOrderByTotalSold(status, top).getContent();
+List<Book> books = bookRepository.findByStatusInOrderByTotalSold(statuses, top).getContent();
     return books.stream().map(this::convertToDTO).collect(Collectors.toList());
 }
 
@@ -243,7 +240,6 @@ public BookDetailDTO getBookBySlug(String slug) {
     AuthorDTO authorDTO = null;
     if (book.getAuthor() != null) {
         authorDTO = new AuthorDTO(
-                book.getAuthor().getId(),
                 book.getAuthor().getFullname(),
                 book.getAuthor().getSlug()
         );
@@ -252,7 +248,6 @@ public BookDetailDTO getBookBySlug(String slug) {
     PublisherDTO publisherDTO = null;
     if (book.getPublisher() != null) {
         publisherDTO = new PublisherDTO(
-                book.getPublisher().getId(),
                 book.getPublisher().getName(),
                 book.getPublisher().getSlug()
         );
@@ -261,7 +256,6 @@ public BookDetailDTO getBookBySlug(String slug) {
     CategoryDTO categoryDTO = null;
     if (book.getCategory() != null) {
         categoryDTO = new CategoryDTO(
-                book.getCategory().getId(),
                 book.getCategory().getName(),
                 book.getCategory().getSlug()
         );
@@ -311,7 +305,6 @@ public BookDetailDTO getBookById(String id) {
     AuthorDTO authorDTO = null;
     if (book.getAuthor() != null) {
         authorDTO = new AuthorDTO(
-                book.getAuthor().getId(),
                 book.getAuthor().getFullname(),
                 book.getAuthor().getSlug()
         );
@@ -320,7 +313,6 @@ public BookDetailDTO getBookById(String id) {
     PublisherDTO publisherDTO = null;
     if (book.getPublisher() != null) {
         publisherDTO = new PublisherDTO(
-                book.getPublisher().getId(),
                 book.getPublisher().getName(),
                 book.getPublisher().getSlug()
         );
@@ -329,7 +321,6 @@ public BookDetailDTO getBookById(String id) {
     CategoryDTO categoryDTO = null;
     if (book.getCategory() != null) {
         categoryDTO = new CategoryDTO(
-                book.getCategory().getId(),
                 book.getCategory().getName(),
                 book.getCategory().getSlug()
         );
@@ -512,6 +503,11 @@ public Book updateBook(String id, Book updatedBookData, List<MultipartFile> file
 public Book updateBookStatus(String id, Integer status) {
         return bookRepository.findById(id)
                 .map(book -> {
+                if (status == 1) {
+                    if (book.getCategory().getStatus() == 0) {
+                        throw new IllegalStateException("Cannot show book because its category is hidden");
+                    }
+                }
                     book.setStatus(status);
                     return bookRepository.save(book);
                 })
@@ -527,7 +523,7 @@ public void deleteBook(String id) {
         throw new IllegalStateException("This book cannot be deleted because it has been purchased in an order");
     }
 
-        if (cartItemRepository.existsByBook(book)) {
+    if (cartItemRepository.existsByBook(book)) {
         throw new IllegalStateException("This book cannot be deleted because it is in user carts");
     }
 

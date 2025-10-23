@@ -9,7 +9,7 @@ interface ResponseType {
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 export default function useGetCategories() {
-  const url = `${import.meta.env.VITE_BACKEND_URL}/api/category`;
+  const url = `${import.meta.env.VITE_BACKEND_URL}/api/category/active`;
 
   const { data, error, isLoading, mutate } = useSWR<ResponseType>(
     url,

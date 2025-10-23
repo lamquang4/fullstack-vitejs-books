@@ -36,6 +36,7 @@ import CheckoutPage from "./pages/client/CheckoutPage";
 import OrderAdminPage from "./pages/admin/OrderAdminPage";
 import OrderDetailAdminPage from "./pages/admin/OrderDetailAdminPage";
 import DashboardPage from "./pages/admin/DashboardPage";
+import OrderSuccessPage from "./pages/client/OrderSuccessPage";
 function LayoutRoute() {
   return (
     <Routes>
@@ -56,7 +57,6 @@ function LayoutRoute() {
           </PublicRoute>
         }
       />
-
       <Route
         path="/account"
         element={
@@ -92,7 +92,6 @@ function LayoutRoute() {
       <Route path="/book/:slug" element={<BookDetailPage />} />
       <Route path="/books/:slug" element={<BookCategoryPage />} />
       <Route path="/sale" element={<BookSalePage />} />
-
       <Route path="/cart" element={<CartPage />} />
       <Route
         path="/checkout"
@@ -102,7 +101,15 @@ function LayoutRoute() {
           </PrivateRoute>
         }
       />
-
+      <Route
+        path="/order-success"
+        element={
+          <PrivateRoute type="client" allowedRoles={[3]} redirectPath="/">
+            <OrderSuccessPage />
+          </PrivateRoute>
+        }
+      />
+      
       <Route
         path="/admin/dashboard"
         element={
@@ -135,7 +142,6 @@ function LayoutRoute() {
           </PrivateRoute>
         }
       />
-
       <Route
         path="/admin/authors"
         element={
@@ -172,7 +178,6 @@ function LayoutRoute() {
           </PrivateRoute>
         }
       />
-
       <Route
         path="/admin/publishers"
         element={
@@ -209,7 +214,6 @@ function LayoutRoute() {
           </PrivateRoute>
         }
       />
-
       <Route
         path="/admin/categories"
         element={
@@ -246,7 +250,6 @@ function LayoutRoute() {
           </PrivateRoute>
         }
       />
-
       <Route
         path="/admin/admins"
         element={
@@ -283,7 +286,6 @@ function LayoutRoute() {
           </PrivateRoute>
         }
       />
-
       <Route
         path="/admin/customers"
         element={
@@ -320,7 +322,6 @@ function LayoutRoute() {
           </PrivateRoute>
         }
       />
-
       <Route
         path="/admin/books"
         element={
@@ -357,7 +358,6 @@ function LayoutRoute() {
           </PrivateRoute>
         }
       />
-
       <Route
         path="/admin/orders"
         element={

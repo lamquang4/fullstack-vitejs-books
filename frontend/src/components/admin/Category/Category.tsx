@@ -9,6 +9,10 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import useGetCategories from "../../../hooks/admin/useGetCategories";
 import useDeleteCategory from "../../../hooks/admin/useDeleteCategory";
+import FilterDropDownMenu from "../FilterDropDownMenu";
+import useUpdateStatusCategory from "../../../hooks/admin/useUpdateStatusCategory";
+import { FaRegEyeSlash } from "react-icons/fa6";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
 function Category() {
   const {
     categories,
@@ -20,6 +24,23 @@ function Category() {
     limit,
   } = useGetCategories();
   const { deleteCategory, isLoading: isLoadingDelete } = useDeleteCategory();
+  const { updateStatusCategory, isLoading: isLoadingUpdate } =
+    useUpdateStatusCategory();
+
+  const array = [
+    {
+      name: "All",
+      value: null,
+    },
+    {
+      name: "Show",
+      value: 1,
+    },
+    {
+      name: "Hidden",
+      value: 0,
+    },
+  ];
 
   const handleDelete = async (id: string) => {
     if (!id) {
@@ -29,7 +50,21 @@ function Category() {
       await deleteCategory(id);
       mutate();
     } catch (err: any) {
-      toast.error(err?.response?.data?.msg);
+      toast.error(err?.response?.data?.message);
+      mutate();
+    }
+  };
+
+  const handleUpdateStatus = async (id: string, status: number) => {
+    if (!id && !status) {
+      return;
+    }
+
+    try {
+      await updateStatusCategory(id, status);
+      mutate();
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message);
       mutate();
     }
   };
@@ -57,7 +92,13 @@ function Category() {
           <thead>
             <tr className="bg-[#E9EDF2] text-left">
               <th className="p-[1rem]   ">Name</th>
-
+              <th className="p-[1rem]   relative">
+                <FilterDropDownMenu
+                  title="Status"
+                  array={array}
+                  paramName="status"
+                />
+              </th>
               <th className="p-[1rem]  ">Action</th>
             </tr>
           </thead>
@@ -74,7 +115,34 @@ function Category() {
                   <td className="p-[1rem] font-semibold">{category.name}</td>
 
                   <td className="p-[1rem]  ">
+                    {category.status === 1
+                      ? "Show"
+                      : category.status === 0
+                      ? "Hidden"
+                      : ""}
+                  </td>
+
+                  <td className="p-[1rem]  ">
                     <div className="flex items-center gap-[15px]">
+                      <button
+                        disabled={isLoadingUpdate}
+                        onClick={() =>
+                          handleUpdateStatus(
+                            category.id || "",
+                            category.status === 1 ? 0 : 1
+                          )
+                        }
+                      >
+                        {category.status === 1 ? (
+                          <FaRegEyeSlash size={22} className="text-[#74767d]" />
+                        ) : (
+                          <MdOutlineRemoveRedEye
+                            size={22}
+                            className="text-[#74767d]"
+                          />
+                        )}
+                      </button>
+
                       <Link to={`/admin/edit-category/${category.id}`}>
                         <LiaEdit size={22} className="text-[#076ffe]" />
                       </Link>

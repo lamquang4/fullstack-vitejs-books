@@ -11,6 +11,7 @@ export interface Category {
   id?: string;
   name: string;
   slug?: string;
+  status: number;
 }
 
 export interface Author {

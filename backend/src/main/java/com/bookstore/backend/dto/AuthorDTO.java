@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthorDTO {
-    private String id;
     private String fullname;
     private String slug;
 }

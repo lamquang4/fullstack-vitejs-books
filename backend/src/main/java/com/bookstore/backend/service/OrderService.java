@@ -19,7 +19,7 @@ import java.util.Map;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
+import org.springframework.scheduling.annotation.Scheduled;
 import java.util.Random;
 
 import org.springframework.data.domain.Sort;
@@ -106,6 +106,7 @@ public class OrderService {
         return dto;
     }
 
+
 // order cho admin
 
 // lấy tất cả orders
@@ -177,7 +178,9 @@ public OrderDTO createOrder(OrderDTO orderDTO, String userId) {
     User user = userRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("User not found"));
 
-    int status = "cod".equalsIgnoreCase(orderDTO.getPaymethod()) ? 0 : -1;
+    // cod -> status = 0 (đơn đang xử lý)
+    // momo -> status = -1 (đơn tạm chờ thanh toán)
+    int status = "cod".equalsIgnoreCase(orderDTO.getPaymethod()) ? 0 : -1; 
 
     Order order = Order.builder()
             .orderCode(generateOrderCode())
@@ -198,17 +201,17 @@ public OrderDTO createOrder(OrderDTO orderDTO, String userId) {
                     .orElseThrow(() -> new RuntimeException("Book not found"));
 
             // Kiểm tra tồn kho
-            if ("cod".equalsIgnoreCase(orderDTO.getPaymethod()) && d.getQuantity() > book.getStock()) {
+          if (d.getQuantity() > book.getStock()) {
                 throw new RuntimeException(book.getTitle() + " not enough stock");
             }
 
-            // Trừ tồn kho nếu thanh toán COD
-            if (status == 0) {
+            // Nếu thanh toán COD trừ tồn kho, thanh toán Momo không trừ tồn kho
+         if ("cod".equalsIgnoreCase(orderDTO.getPaymethod())) {
                 book.setStock(book.getStock() - d.getQuantity());
                 bookRepository.save(book);
             }
 
-            return OrderDetail.builder()
+           return OrderDetail.builder()
                     .book(book)
                     .order(order)
                     .quantity(d.getQuantity())
@@ -236,8 +239,8 @@ public OrderDTO createOrder(OrderDTO orderDTO, String userId) {
     Order savedOrder = orderRepository.save(order);
 
     // xóa giỏ hàng
-    Cart cart = cartRepository.findByUserId(userId)
-            .orElse(null);
+
+    Cart cart = cartRepository.findByUserId(userId).orElse(null);
     if (cart != null) {
         cartRepository.delete(cart);
     }
@@ -261,9 +264,28 @@ public Page<OrderDTO> getOrdersByUserAndStatus(String userId, int page, int limi
     if (status != null && status >= 0) {
         orderPage = orderRepository.findByUserIdAndStatus(userId, status, pageable);
     } else {
-        orderPage = orderRepository.findByUserId(userId, pageable);
+        orderPage = orderRepository.findByUserIdAndStatusGreaterThanEqual(userId, 0, pageable);
     }
 
     return orderPage.map(this::convertToDTO);
 }
+
+public OrderDTO getOrderByOrderCode(String orderCode) {
+    Order order = orderRepository.findByOrderCode(orderCode)
+        .orElseThrow(() -> new RuntimeException("Order not found"));
+    return convertToDTO(order);
+}
+
+  // Chạy mỗi 30 phút để xóa order status -1 chưa thanh toán quá 90 phút
+    @Scheduled(fixedRate = 30 * 60 * 1000)
+    public void cleanupUnpaidOrders() {
+        LocalDateTime cutoff = LocalDateTime.now().minusMinutes(90);
+
+        // Tìm các đơn có status = -1 (chưa thanh toán) và quá 90 phút
+        List<Order> expiredOrders = orderRepository.findByStatusAndCreatedAtBefore(-1, cutoff);
+
+        if (!expiredOrders.isEmpty()) {
+            orderRepository.deleteAll(expiredOrders);
+        }
+    }
 }

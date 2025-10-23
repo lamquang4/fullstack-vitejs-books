@@ -5,7 +5,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.bookstore.backend.entities.Order;
 import com.bookstore.backend.entities.User;
-
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +17,7 @@ public interface OrderRepository extends JpaRepository<Order, String> {
      Page<Order> findByOrderCodeContainingIgnoreCase(String orderCode, Pageable pageable);
      Optional<Order> findByUserIdAndOrderCode(String userId, String orderCode);
      Page<Order> findByUserIdAndStatus(String userId, Integer status, Pageable pageable);
-     Page<Order> findByUserId(String userId, Pageable pageable);
+    Page<Order> findByUserIdAndStatusGreaterThanEqual(String userId, int status, Pageable pageable);
      Page<Order> findByOrderCodeContainingIgnoreCaseAndStatus(String orderCode, Integer status, Pageable pageable);
      Page<Order> findByStatus(Integer status, Pageable pageable);
 
@@ -26,5 +26,9 @@ public interface OrderRepository extends JpaRepository<Order, String> {
            "WHERE o.status IN :statuses " +
            "GROUP BY o.status")
     List<Object[]> countOrdersByStatus(@Param("statuses") List<Integer> statuses);
+
+       Optional<Order> findByOrderCode(String orderCode);
    
+       // tìm đơn hàng status
+       List<Order> findByStatusAndCreatedAtBefore(Integer status, LocalDateTime createdAt);
 }

@@ -1,30 +1,44 @@
 package com.bookstore.backend.service;
+import com.bookstore.backend.entities.Book;
 import com.bookstore.backend.entities.Category;
+import com.bookstore.backend.repository.BookRepository;
 import com.bookstore.backend.repository.CategoryRepository;
 import com.bookstore.backend.utils.SlugUtil;
+
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
-
-    public CategoryService(CategoryRepository categoryRepository) {
+    private final BookRepository bookRepository;
+    public CategoryService(CategoryRepository categoryRepository, BookRepository bookRepository) {
         this.categoryRepository = categoryRepository;
+        this.bookRepository = bookRepository;
     }
 
     // lấy tất cả categories
-public Page<Category> getCategories(int page, int limit, String q) {
-    Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
-    if (q != null && !q.isEmpty()) {
-        return categoryRepository.findByNameContainingIgnoreCase(q, pageable);
+    public Page<Category> getCategories(int page, int limit, String q) {
+        Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
+        if (q != null && !q.isEmpty()) {
+            return categoryRepository.findByNameContainingIgnoreCase(q, pageable);
+        }
+        return categoryRepository.findAll(pageable);
     }
-    return categoryRepository.findAll(pageable);
+
+    // lấy các category có status = 1 và chứa sản phẩm có status = 1
+    public List<Category> getActiveCategoriesWithActiveBooks() {
+    return categoryRepository.findActiveCategoriesWithActiveBooks();
 }
 
 // lấy 1 category theo id
@@ -52,13 +66,41 @@ public Page<Category> getCategories(int page, int limit, String q) {
 
                     existingCategory.setName(category.getName());
                     existingCategory.setSlug(category.getSlug());
+                    existingCategory.setStatus(category.getStatus());
                     return categoryRepository.save(existingCategory);
                 })
                 .orElse(null);
     }
 
+    // cập nhật status của category
+@Transactional
+public Category updateCategoryStatus(String id, Integer status) {
+    return categoryRepository.findById(id)
+            .map(category -> {
+                category.setStatus(status);
+
+                // Nếu category bị ẩn, ẩn tất cả sách thuộc category
+                if (status == 0) {
+                    List<Book> books = bookRepository.findByCategoryAndStatus(category, 1);
+                    books.forEach(book -> book.setStatus(0));
+                    bookRepository.saveAll(books);
+                }
+
+                return categoryRepository.save(category);
+            })
+            .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+}
+
+
     // xóa category
     public void deleteCategory(String id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Not found category"));
+
+        if (bookRepository.existsByCategory(category)) {
+            throw new IllegalStateException("This category cannot be deleted as they have books associated with them");
+        }
+
         categoryRepository.deleteById(id);
     }
 }

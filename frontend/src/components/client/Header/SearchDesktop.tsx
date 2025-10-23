@@ -37,7 +37,7 @@ function SearchDesktop() {
       <form onSubmit={handleSearch}>
         <input
           type="text"
-          className="px-3 py-1.5 pr-7 w-[145px] border border-gray-300 text-[0.8rem] placeholder:text-[0.8rem] bg-transparent outline-none"
+          className="px-3 py-1.5 pr-7 w-[160px] border border-gray-300 text-[0.8rem] placeholder:text-[0.8rem] bg-transparent outline-none"
           required
           maxLength={50}
           placeholder="Search..."
@@ -52,7 +52,7 @@ function SearchDesktop() {
           }}
         />
         <button
-          className="absolute top-1/2 right-[7px] transform -translate-y-1/2 flex items-center"
+          className="absolute top-1/2 right-2 transform -translate-y-1/2 flex items-center"
           type="submit"
         >
           <CiSearch size={20} />

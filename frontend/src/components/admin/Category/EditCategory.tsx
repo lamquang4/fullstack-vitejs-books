@@ -10,6 +10,7 @@ function EditCategory() {
 
   const [data, setData] = useState({
     name: "",
+    status: "",
   });
 
   const { category, isLoading, mutate } = useGetCategory(id as string);
@@ -28,6 +29,7 @@ function EditCategory() {
     if (category) {
       setData({
         name: category.name || "",
+        status: category.status?.toString() || "",
       });
     }
   }, [isLoading, category, navigate]);
@@ -46,7 +48,10 @@ function EditCategory() {
     e.preventDefault();
 
     try {
-      await updateCategory(data);
+      await updateCategory({
+        name: data.name,
+        status: Number(data.status),
+      });
       mutate();
     } catch (err: any) {
       toast.error(err?.response?.data?.message);
@@ -78,6 +83,23 @@ function EditCategory() {
                   required
                   className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
                 />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label htmlFor="" className="text-[0.9rem] font-medium">
+                  Status
+                </label>
+                <select
+                  name="status"
+                  required
+                  onChange={handleChange}
+                  value={data.status}
+                  className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
+                >
+                  <option value="">Select status</option>
+                  <option value="0">Hidden</option>
+                  <option value="1">Show</option>
+                </select>
               </div>
             </div>
           </div>

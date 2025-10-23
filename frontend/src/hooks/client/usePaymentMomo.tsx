@@ -1,25 +1,23 @@
 import axios from "axios";
 import { useState } from "react";
-import type { OrderAdd } from "../../types/type";
 
-export default function useAddOrder(userId: string) {
+export default function usePaymentMomo() {
   const [isLoading, setIsLoading] = useState(false);
-
-  const addOrder = async (data: OrderAdd) => {
+  const createPaymentMomo = async (orderCode: string) => {
     setIsLoading(true);
     try {
       const url = `${
         import.meta.env.VITE_BACKEND_URL
-      }/api/order/user/${userId}`;
-      const res = await axios.post(url, data);
+      }/api/payment/momo/qr/${orderCode}`;
+      const res = await axios.post(url);
       return res.data;
     } catch (err) {
-      console.error("Error:", err);
+      console.error("Error", err);
       throw err;
     } finally {
       setIsLoading(false);
     }
   };
 
-  return { addOrder, isLoading };
+  return { createPaymentMomo, isLoading };
 }

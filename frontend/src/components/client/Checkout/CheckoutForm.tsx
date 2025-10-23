@@ -14,6 +14,7 @@ import useGetProvinces from "../../../hooks/useGetProvincesVN";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import toast from "react-hot-toast";
 import useAddOrder from "../../../hooks/client/useAddOrder";
+import usePaymentMomo from "../../../hooks/client/usePaymentMomo";
 
 function CheckoutForm() {
   const navigate = useNavigate();
@@ -26,6 +27,8 @@ function CheckoutForm() {
   } = useGetCart(user?.id || "");
   const { addresses } = useGetAddresses(user?.id || "");
   const { addOrder, isLoading: isLoadingAdd } = useAddOrder(user?.id || "");
+  const { createPaymentMomo, isLoading: isLoadingPaymentMomo } =
+    usePaymentMomo();
 
   const [data, setData] = useState({
     fullname: "",
@@ -35,7 +38,6 @@ function CheckoutForm() {
     ward: "",
   });
   const [paymethod, setPaymethod] = useState<string>("");
-  const [isOrdering, setIsOrdering] = useState<boolean>(false);
 
   // lấy những sản phẩm không đủ số lượng mua (số lượng mua > số lượng tồn kho)
   const outOfStockItems = useMemo(() => {
@@ -44,10 +46,9 @@ function CheckoutForm() {
   }, [cart?.items]);
 
   useEffect(() => {
-    if (isOrdering) return;
     if (isLoadingCart) return;
 
-    if (cart?.items.length === 0) {
+    if (!cart || !cart.items?.length) {
       toast.error("There’s nothing in your cart");
       navigate("/cart");
       return;
@@ -58,9 +59,8 @@ function CheckoutForm() {
         "Some products do not have enough stock for the quantity you want to purchase"
       );
       navigate("/cart");
-      return;
     }
-  }, [cart, navigate, isLoadingCart]);
+  }, [cart, outOfStockItems, navigate, isLoadingCart]);
 
   const totalPrice = useMemo(() => {
     return (
@@ -103,6 +103,18 @@ function CheckoutForm() {
       return;
     }
 
+    if (totalPrice < 10000 && paymethod === "momo") {
+      toast.error("MOMO is only available for orders of 10,000₫ or more");
+      setPaymethod("cod");
+      return;
+    }
+
+    if (cart?.items.length === 0) {
+      toast.error("There’s nothing in your cart");
+      navigate("/cart");
+      return;
+    }
+
     const items = cart?.items.map((item) => {
       return {
         bookId: item.bookId,
@@ -124,16 +136,29 @@ function CheckoutForm() {
           items: items!,
         });
 
-        setIsOrdering(true);
-
-        navigate("/");
+        navigate("/order-success");
 
         mutateCart({ items: [] }, false);
       } catch (err: any) {
         toast.error(err?.response?.data?.msg);
       }
     } else if (paymethod === "momo") {
-      return;
+      try {
+        const res = await addOrder({
+          fullname: data.fullname,
+          phone: data.phone,
+          speaddress: data.speaddress,
+          city: data.city,
+          ward: data.ward,
+          paymethod: paymethod,
+          items: items!,
+        });
+
+        const momoResponse = await createPaymentMomo(res.orderCode);
+        window.location.href = momoResponse.payUrl;
+      } catch (err: any) {
+        toast.error(err?.response?.data?.msg);
+      }
     }
   };
 
@@ -205,7 +230,7 @@ function CheckoutForm() {
         </form>
       </div>
 
-      {isLoadingCart && (
+      {(isLoadingCart || isLoadingAdd || isLoadingPaymentMomo) && (
         <Overplay IndexForZ={50}>
           <Loading height={0} size={55} color="white" thickness={8} />
           <h4 className="text-white">Please wait a moment...</h4>

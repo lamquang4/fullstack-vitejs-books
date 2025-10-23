@@ -57,7 +57,7 @@ function ShippingInfoForm({
               if (selected) handleGetAddress(selected);
             }
           }}
-          className="w-full rounded-md text-[0.9rem] border border-gray-200 px-2.5 py-2 outline-none focus:z-10 focus:border-[#C62028] focus:ring-[#C62028]"
+          className="w-full rounded-md text-[0.9rem] border border-gray-200 px-2.5 py-2 outline-none focus:z-10 focus:border-[#197FB6] focus:ring-[#197FB6]"
         >
           <option value="">Select saved address</option>
           {addresses.map((address, index) => (
@@ -78,7 +78,7 @@ function ShippingInfoForm({
           value={data.fullname}
           onChange={handleChange}
           required
-          className="w-full rounded-md border border-gray-200 px-2.5 py-2 text-[0.9rem] outline-none focus:z-10 focus:border-[#C62028] focus:ring-[#C62028]"
+          className="w-full rounded-md border border-gray-200 px-2.5 py-2 text-[0.9rem] outline-none focus:z-10 focus:border-[#197FB6] focus:ring-[#197FB6]"
           placeholder="Họ và tên"
         />
       </div>
@@ -94,7 +94,7 @@ function ShippingInfoForm({
           value={data.phone}
           onChange={handleChange}
           required
-          className="w-full rounded-md border border-gray-200 px-2.5 py-2 text-[0.9rem] outline-none focus:z-10 focus:border-[#C62028] focus:ring-[#C62028]"
+          className="w-full rounded-md border border-gray-200 px-2.5 py-2 text-[0.9rem] outline-none focus:z-10 focus:border-[#197FB6] focus:ring-[#197FB6]"
           placeholder="Số điện thoại"
         />
       </div>
@@ -109,7 +109,7 @@ function ShippingInfoForm({
           value={data.speaddress}
           onChange={handleChange}
           required
-          className="w-full rounded-md border border-gray-200 px-2.5 py-2 text-[0.9rem] outline-none focus:z-10 focus:border-[#C62028] focus:ring-[#C62028]"
+          className="w-full rounded-md border border-gray-200 px-2.5 py-2 text-[0.9rem] outline-none focus:z-10 focus:border-[#197FB6] focus:ring-[#197FB6]"
           placeholder="Địa chỉ cụ thể"
         />
       </div>
@@ -130,7 +130,7 @@ function ShippingInfoForm({
                 ward: "",
               }))
             }
-            className="w-full rounded-md text-[0.9rem] border border-gray-200 px-2.5 py-2 outline-none focus:z-10 focus:border-[#C62028] focus:ring-[#C62028]"
+            className="w-full rounded-md text-[0.9rem] border border-gray-200 px-2.5 py-2 outline-none focus:z-10 focus:border-[#197FB6] focus:ring-[#197FB6]"
           >
             <option value="">Select province/city</option>
             {provinces?.map((province) => (
@@ -151,7 +151,7 @@ function ShippingInfoForm({
             disabled={!selectedProvince}
             value={data.ward}
             onChange={handleChange}
-            className="w-full rounded-md text-[0.9rem] border border-gray-200 px-2.5 py-2 text-sm outline-none focus:z-10 focus:border-[#C62028] focus:ring-[#C62028]"
+            className="w-full rounded-md text-[0.9rem] border border-gray-200 px-2.5 py-2 text-sm outline-none focus:z-10 focus:border-[#197FB6] focus:ring-[#197FB6]"
           >
             <option value="">Select ward/Commune</option>
             {selectedProvince?.wards.map((ward, idx) => (

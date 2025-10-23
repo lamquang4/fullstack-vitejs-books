@@ -32,6 +32,9 @@ private String id;
     @Column(nullable = false, unique = true, length = 50)
     private String slug;
 
+        @Column(nullable = false)
+    private Integer status;
+
     @Builder.Default
 @Column(nullable = false)
 private LocalDateTime createdAt = LocalDateTime.now();
