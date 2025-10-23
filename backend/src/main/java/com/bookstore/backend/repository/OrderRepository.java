@@ -31,4 +31,20 @@ public interface OrderRepository extends JpaRepository<Order, String> {
    
        // tìm đơn hàng status
        List<Order> findByStatusAndCreatedAtBefore(Integer status, LocalDateTime createdAt);
+
+       @Query("SELECT SUM(o.total) FROM Order o WHERE o.status = :status")
+    Double sumTotalByStatus(@Param("status") Integer status);
+
+    @Query("SELECT SUM(o.total) FROM Order o WHERE o.status = :status AND o.createdAt BETWEEN :start AND :end")
+    Double sumTotalByStatusAndCreatedAtBetween(@Param("status") Integer status,
+                                               @Param("start") LocalDateTime start,
+                                               @Param("end") LocalDateTime end);
+
+    @Query("SELECT SUM(od.quantity) FROM OrderDetail od WHERE od.order.status = :status")
+    Long sumQuantityByStatus(@Param("status") Integer status);
+
+    @Query("SELECT SUM(od.quantity) FROM OrderDetail od WHERE od.order.status = :status AND od.order.createdAt BETWEEN :start AND :end")
+    Long sumQuantityByStatusAndCreatedAtBetween(@Param("status") Integer status,
+                                                @Param("start") LocalDateTime start,
+                                                @Param("end") LocalDateTime end);
 }

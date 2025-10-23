@@ -13,6 +13,8 @@ import com.bookstore.backend.entities.Category;
 public interface CategoryRepository extends JpaRepository<Category, String> {
 Optional<Category> findByName(String name);
 Page<Category> findByNameContainingIgnoreCase(String q, Pageable pageable);
+Page<Category> findByStatus(Integer status, Pageable pageable);
+Page<Category> findByNameContainingIgnoreCaseAndStatus(String q, Integer status, Pageable pageable);
 
     @Query("""
            SELECT DISTINCT c

@@ -20,12 +20,13 @@ public class CategoryController {
     }
 
  @GetMapping
- public ResponseEntity<?> getCategories(
+ public ResponseEntity<?> getAllCategories(
         @RequestParam(defaultValue = "1") int page,
         @RequestParam(defaultValue = "12") int limit,
-        @RequestParam(required = false) String q
+        @RequestParam(required = false) String q,
+        @RequestParam(required = false) Integer status
 ) {
-    Page<Category> categoryPage = categoryService.getCategories(page, limit, q);
+    Page<Category> categoryPage = categoryService.getAllCategories(page, limit, q, status);
 
     return ResponseEntity.ok(Map.of(
         "categories", categoryPage.getContent(),

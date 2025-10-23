@@ -1,10 +1,20 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Image from "../Image";
+import { useEffect } from "react";
 function OrderResult() {
   const location = useLocation();
+  const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
 
   const result = searchParams.get("result");
+
+  useEffect(() => {
+    if (!result) {
+      navigate("/", { replace: true });
+    }
+  }, [result, navigate]);
+
+  if (!result) return null;
   return (
     <section className="my-[40px] px-[15px]">
       <div className="mx-auto max-w-[1200px] w-full">
@@ -31,7 +41,7 @@ function OrderResult() {
               <Image
                 source={"/assets/order-fail.png"}
                 alt={""}
-                className={"w-[100px]"}
+                className={"w-[120px]"}
                 loading="eager"
               />
               <h4 className="uppercase text-center">Order Failed</h4>

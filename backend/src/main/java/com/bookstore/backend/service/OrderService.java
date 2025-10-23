@@ -25,6 +25,7 @@ import java.util.Random;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
@@ -178,8 +179,8 @@ public OrderDTO createOrder(OrderDTO orderDTO, String userId) {
     User user = userRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("User not found"));
 
-    // cod -> status = 0 (đơn đang xử lý)
-    // momo -> status = -1 (đơn tạm chờ thanh toán)
+    // cod -> status = 0 (chờ xác nhận)
+    // momo -> status = -1 (chờ thanh toán)
     int status = "cod".equalsIgnoreCase(orderDTO.getPaymethod()) ? 0 : -1; 
 
     Order order = Order.builder()
@@ -275,6 +276,34 @@ public OrderDTO getOrderByOrderCode(String orderCode) {
         .orElseThrow(() -> new RuntimeException("Order not found"));
     return convertToDTO(order);
 }
+
+    // Tổng doanh thu của tất cả orders có status = 3
+    public double getTotalRevenue() {
+        Double total = orderRepository.sumTotalByStatus(3);
+        return total != null ? total : 0.0;
+    }
+
+     // Doanh thu của orders có status = 3 trong ngày
+    public double getTodayRevenue() {
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime endOfDay = LocalDate.now().atTime(23, 59, 59);
+        Double total = orderRepository.sumTotalByStatusAndCreatedAtBetween(3, startOfDay, endOfDay);
+        return total != null ? total : 0.0;
+    }
+
+     // Tổng số lượng sản phẩm đã bán của orders có status = 3
+    public long getTotalSoldQuantity() {
+        Long totalQty = orderRepository.sumQuantityByStatus(3);
+        return totalQty != null ? totalQty : 0L;
+    }
+
+     // Tổng số lượng sản phẩm đã bán của orders có status = 3 trong ngày
+    public long getTodaySoldQuantity() {
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime endOfDay = LocalDate.now().atTime(23, 59, 59);
+        Long totalQty = orderRepository.sumQuantityByStatusAndCreatedAtBetween(3, startOfDay, endOfDay);
+        return totalQty != null ? totalQty : 0L;
+    }
 
   // Chạy mỗi 30 phút để xóa order status -1 chưa thanh toán quá 90 phút
     @Scheduled(fixedRate = 30 * 60 * 1000)

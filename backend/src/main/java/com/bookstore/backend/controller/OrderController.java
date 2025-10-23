@@ -41,7 +41,6 @@ public ResponseEntity<?> getOrders(
     ));
 }
 
-
 @GetMapping("/{id}")
 public ResponseEntity<OrderDTO> getOrderById(@PathVariable String id) {
     OrderDTO orderDTO = orderService.getOrderById(id);
@@ -56,7 +55,6 @@ public ResponseEntity<OrderDTO> updateOrderStatus(
     OrderDTO updatedOrder = orderService.updateOrderStatus(orderId, status);
     return ResponseEntity.ok(updatedOrder);
 }
-
 
     // order cho customer
     @PostMapping("/user/{userId}")
@@ -92,4 +90,21 @@ public ResponseEntity<?> getOrdersByUser(
         "total", orderPage.getTotalElements()
     ));
 }
+
+    @GetMapping("/statistics") 
+    public ResponseEntity<Map<String, Object>> getOrderStats() {
+        double totalRevenue = orderService.getTotalRevenue();
+        double todayRevenue = orderService.getTodayRevenue();
+        long totalSoldQuantity = orderService.getTotalSoldQuantity();
+        long todaySoldQuantity = orderService.getTodaySoldQuantity();
+
+        Map<String, Object> stats = Map.of(
+                "totalRevenue", totalRevenue,
+                "todayRevenue", todayRevenue,
+                "totalSoldQuantity", totalSoldQuantity,
+                "todaySoldQuantity", todaySoldQuantity
+        );
+
+        return ResponseEntity.ok(stats);
+    }
 }

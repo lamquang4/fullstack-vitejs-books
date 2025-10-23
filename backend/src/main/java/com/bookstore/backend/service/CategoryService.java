@@ -28,11 +28,15 @@ public class CategoryService {
     }
 
     // lấy tất cả categories
-    public Page<Category> getCategories(int page, int limit, String q) {
+    public Page<Category> getAllCategories(int page, int limit, String q, Integer status) {
         Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
-        if (q != null && !q.isEmpty()) {
-            return categoryRepository.findByNameContainingIgnoreCase(q, pageable);
-        }
+        if (q != null && !q.isEmpty() && status != null) {
+        return categoryRepository.findByNameContainingIgnoreCaseAndStatus(q, status, pageable);
+    } else if (q != null && !q.isEmpty()) {
+        return categoryRepository.findByNameContainingIgnoreCase(q, pageable);
+    } else if (status != null) {
+        return categoryRepository.findByStatus(status, pageable);
+    }
         return categoryRepository.findAll(pageable);
     }
 
