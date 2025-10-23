@@ -38,19 +38,6 @@ function Suggestion({ search }: Props) {
                       className="w-full h-full object-contain z-1 relative"
                       loading="lazy"
                     />
-
-                    {book.images[1].image && (
-                      <Image
-                        source={`${import.meta.env.VITE_BACKEND_URL}${
-                          book.images[1].image
-                        }`}
-                        alt={book.title}
-                        className={
-                          "w-full h-full object-contain absolute top-0 left-0 opacity-0 z-2 transition-opacity duration-300 group-hover:opacity-100"
-                        }
-                        loading="lazy"
-                      />
-                    )}
                   </div>
 
                   <div className="flex flex-col gap-1.5">
