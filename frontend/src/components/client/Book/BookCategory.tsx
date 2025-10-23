@@ -15,7 +15,8 @@ function BookCategory() {
       href: "/",
     },
     {
-      name: slug === "all" ? "All categories" : books[0]?.category?.name ?? "",
+      name:
+        slug === "all" ? "All categories" : books[0]?.category?.name ?? slug,
     },
   ];
   return (

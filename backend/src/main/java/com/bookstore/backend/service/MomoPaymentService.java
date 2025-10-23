@@ -126,12 +126,13 @@ private final BookRepository bookRepository;
             return true;
 
         } else {
-            // Hết hàng → Hoàn tiền và cập nhật status = 4 (Hoàn tiền do lỗi tồn kho)
+            // Hết hàng → Hoàn tiền và xóa đơn hàng
             payload.put("amount", order.getTotal().intValue());
             refundPayment(payload);
 
-            order.setStatus(4);
-            orderRepository.save(order);
+            // Xóa order
+            orderRepository.delete(order);
+
             return false;
         }
     }

@@ -36,7 +36,8 @@ import CheckoutPage from "./pages/client/CheckoutPage";
 import OrderAdminPage from "./pages/admin/OrderAdminPage";
 import OrderDetailAdminPage from "./pages/admin/OrderDetailAdminPage";
 import DashboardPage from "./pages/admin/DashboardPage";
-import OrderSuccessPage from "./pages/client/OrderSuccessPage";
+import OrderResultPage from "./pages/client/OrderResultPage";
+
 function LayoutRoute() {
   return (
     <Routes>
@@ -102,14 +103,14 @@ function LayoutRoute() {
         }
       />
       <Route
-        path="/order-success"
+        path="/order-result"
         element={
           <PrivateRoute type="client" allowedRoles={[3]} redirectPath="/">
-            <OrderSuccessPage />
+            <OrderResultPage />
           </PrivateRoute>
         }
       />
-      
+
       <Route
         path="/admin/dashboard"
         element={

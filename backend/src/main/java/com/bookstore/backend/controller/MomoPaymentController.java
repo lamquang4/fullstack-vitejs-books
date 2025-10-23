@@ -51,9 +51,13 @@ public ResponseEntity<Void> handleRedirect(
         payload.put("transId", transId != null ? transId : "");
         payload.put("message", message != null ? message : "");
 
-        momoPaymentService.handleSuccessfulPayment(payload);
+        boolean success = momoPaymentService.handleSuccessfulPayment(payload);
 
-        redirectUrl = frontendUrl + "/order-success?orderCode=" + orderId;
+        if (success) {
+            redirectUrl = frontendUrl + "/order-result?result=successfully&&orderCode=" + orderId;
+        } else {
+            redirectUrl = frontendUrl + "/order-result?result=fail";
+        }
     } else {
         redirectUrl = frontendUrl + "/";
     }
@@ -62,5 +66,6 @@ public ResponseEntity<Void> handleRedirect(
             .header("Location", redirectUrl)
             .build();
 }
+
 
 }
