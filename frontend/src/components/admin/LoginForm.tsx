@@ -59,7 +59,7 @@ function LoginForm() {
                       name="email"
                       value={data.email}
                       onChange={handleChange}
-                      className="text-[0.9rem] block w-full px-3 py-2 outline-none border border-gray-300 focus:border-[#C62028] focus:text-[#C62028]"
+                      className="text-[0.9rem] block w-full px-3 py-2 outline-none border border-gray-300"
                       placeholder="Enter email"
                       required
                     />
@@ -80,7 +80,7 @@ function LoginForm() {
                         value={data.password}
                         onChange={handleChange}
                         placeholder="Enter password"
-                        className="text-[0.9rem] block w-full px-3 pr-12 py-2 outline-none border border-gray-300 focus:border-[#C62028] focus:text-[#C62028]"
+                        className="text-[0.9rem] block w-full px-3 pr-12 py-2 outline-none border border-gray-300"
                         required
                       />
 

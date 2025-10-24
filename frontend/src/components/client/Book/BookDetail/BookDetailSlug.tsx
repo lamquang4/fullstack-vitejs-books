@@ -5,12 +5,14 @@ import BreadCrumb from "../../BreadCrumb";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 import Loading from "../../../Loading";
+import useGetActiveBooks from "../../../../hooks/client/useGetActiveBooks";
+import BookSlider from "../BookSlider";
 
 function BookDetailSlug() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { book, isLoading } = useGetBookDetail(slug as string);
-
+  const { books } = useGetActiveBooks();
   useEffect(() => {
     if (isLoading) return;
 
@@ -44,6 +46,7 @@ function BookDetailSlug() {
           <BreadCrumb items={array} />
 
           {book && <BookDetail book={book} />}
+          <BookSlider books={books} title="You may also like" />
         </>
       )}
     </>

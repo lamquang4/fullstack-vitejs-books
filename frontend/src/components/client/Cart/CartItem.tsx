@@ -101,131 +101,138 @@ function CartItem({ cart, mutate }: Props) {
         <h2 className="mb-[20px]">Cart ({totalQuantity})</h2>
         {cart?.items && cart.items.length > 0 ? (
           <form onSubmit={handleSubmit}>
-            <div className="flex gap-8 w-full lg:flex-row flex-col">
+            <div className="flex w-full gap-4 lg:flex-row flex-col">
               <div className="space-y-8 py-6 bg-white basis-[60%] h-full">
                 {cart?.items.map((item) => (
-                  <div className="w-full relative space-y-4" key={item.id}>
-                    <div className="flex gap-4 w-full sm:flex-row flex-col">
-                      <Link to={`/book/${item.slug}`} className="mx-auto">
-                        <div className="w-[150px] h-[150px] overflow-hidden">
-                          <Image
-                            source={`${import.meta.env.VITE_BACKEND_URL}${
-                              item.images[0]
-                            }`}
-                            alt={item.name}
-                            className="w-full h-full object-contain"
-                            loading="eager"
-                          />
-                        </div>
-                      </Link>
+                  <>
+                    <div
+                      className="w-full relative space-y-[20px]"
+                      key={item.id}
+                    >
+                      <div className="flex gap-[10px] w-full sm:flex-row flex-col">
+                        <Link to={`/book/${item.slug}`} className="mx-auto">
+                          <div className="w-[200px] h-[200px] overflow-hidden">
+                            <Image
+                              source={`${import.meta.env.VITE_BACKEND_URL}${
+                                item.images[0]
+                              }`}
+                              alt={item.name}
+                              className="w-full h-full object-contain"
+                              loading="eager"
+                            />
+                          </div>
+                        </Link>
 
-                      <div className="flex flex-col gap-4 w-full">
-                        <div className="flex justify-between gap-4">
-                          <div className="flex flex-col gap-2">
-                            <h5 className="font-medium">{item.title}</h5>
+                        <div className="flex flex-col gap-4 w-full">
+                          <div className="flex justify-between gap-[15px]">
+                            <div className="flex flex-col gap-2">
+                              <h5 className="font-semibold">{item.title}</h5>
 
-                            {item.discount > 0 ? (
-                              <div className="flex gap-[12px]">
-                                <del className="text-[#707072] text-[1rem]">
-                                  {item.price.toLocaleString("vi-VN")}₫
-                                </del>
+                              {item.discount > 0 ? (
+                                <div className="flex gap-[12px]">
+                                  <del className="text-[#707072] text-[1rem]">
+                                    {item.price.toLocaleString("vi-VN")}₫
+                                  </del>
 
+                                  <h5 className="font-medium text-[#C62028]">
+                                    {(
+                                      item.price - item.discount
+                                    ).toLocaleString("vi-VN")}
+                                    ₫
+                                  </h5>
+                                </div>
+                              ) : (
                                 <h5 className="font-medium text-[#C62028]">
-                                  {(item.price - item.discount).toLocaleString(
-                                    "vi-VN"
-                                  )}
-                                  ₫
+                                  {item.price.toLocaleString("vi-VN")}₫
                                 </h5>
-                              </div>
-                            ) : (
-                              <h5 className="font-medium text-[#C62028]">
-                                {item.price.toLocaleString("vi-VN")}₫
+                              )}
+                            </div>
+
+                            <button
+                              type="button"
+                              disabled={isLoadingRemove}
+                              onClick={() => handleRemoveItem(item.id)}
+                              className="mb-auto"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-5 h-5 cursor-pointer fill-black hover:fill-[#C62028] inline-block"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
+                                  data-original="#000000"
+                                ></path>
+                                <path
+                                  d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Zm4 0v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z"
+                                  data-original="#000000"
+                                ></path>
+                              </svg>
+                            </button>
+                          </div>
+
+                          <div className="flex-wrap justify-between flex gap-4 mt-auto">
+                            <div className="flex items-center gap-1">
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  handleDecrement(item.id, item.quantity)
+                                }
+                                disabled={
+                                  item.quantity <= 1 || isLoadingChangeQuantity
+                                }
+                                name="button-1"
+                                className="flex items-center justify-center w-7 h-7 outline-none bg-[#F7F7F7] border-gray-300 border"
+                              >
+                                <HiOutlineMinusSmall size={20} />
+                              </button>
+                              <h5 className="flex items-center justify-center w-7 h-7">
+                                {item.quantity}
                               </h5>
-                            )}
-                          </div>
+                              <button
+                                type="button"
+                                name="button-1"
+                                onClick={() =>
+                                  handleIncrement(
+                                    item.id,
+                                    item.quantity,
+                                    item.stock
+                                  )
+                                }
+                                disabled={isLoadingChangeQuantity}
+                                className="flex items-center justify-center w-7 h-7 outline-none bg-[#F7F7F7] border-gray-300 border"
+                              >
+                                <HiOutlinePlusSmall size={20} />
+                              </button>
+                            </div>
 
-                          <button
-                            type="button"
-                            disabled={isLoadingRemove}
-                            onClick={() => handleRemoveItem(item.id)}
-                            className="mb-auto"
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="w-5 h-5 cursor-pointer fill-black hover:fill-[#C62028] inline-block"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
-                                data-original="#000000"
-                              ></path>
-                              <path
-                                d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Zm4 0v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z"
-                                data-original="#000000"
-                              ></path>
-                            </svg>
-                          </button>
-                        </div>
-
-                        <div className="flex-wrap justify-between flex gap-4 mt-auto">
-                          <div className="flex items-center gap-1">
-                            <button
-                              type="button"
-                              onClick={() =>
-                                handleDecrement(item.id, item.quantity)
-                              }
-                              disabled={
-                                item.quantity <= 1 || isLoadingChangeQuantity
-                              }
-                              name="button-1"
-                              className="flex items-center justify-center w-7 h-7 outline-none bg-[#F7F7F7] border-gray-300 border"
-                            >
-                              <HiOutlineMinusSmall size={20} />
-                            </button>
-                            <h5 className="flex items-center justify-center w-7 h-7">
-                              {item.quantity}
+                            <h5 className="font-medium text-[#C62028]">
+                              {item.discount > 0
+                                ? (
+                                    (item.price - item.discount) *
+                                    item.quantity
+                                  ).toLocaleString("vi-VN") + "₫"
+                                : (item.price * item.quantity).toLocaleString(
+                                    "vi-VN"
+                                  ) + "₫"}
                             </h5>
-                            <button
-                              type="button"
-                              name="button-1"
-                              onClick={() =>
-                                handleIncrement(
-                                  item.id,
-                                  item.quantity,
-                                  item.stock
-                                )
-                              }
-                              disabled={isLoadingChangeQuantity}
-                              className="flex items-center justify-center w-7 h-7 outline-none bg-[#F7F7F7] border-gray-300 border"
-                            >
-                              <HiOutlinePlusSmall size={20} />
-                            </button>
                           </div>
-
-                          <h5 className="font-medium text-[#C62028]">
-                            {item.discount > 0
-                              ? (
-                                  (item.price - item.discount) *
-                                  item.quantity
-                                ).toLocaleString("vi-VN") + "₫"
-                              : (item.price * item.quantity).toLocaleString(
-                                  "vi-VN"
-                                ) + "₫"}
-                          </h5>
                         </div>
                       </div>
+
+                      {item.stock < item.quantity && (
+                        <div>
+                          <p className="text-[#C62028] font-semibold text-center">
+                            The product is currently out of sufficient stock.
+                            Please reduce the quantity or remove the item from
+                            your cart.
+                          </p>
+                        </div>
+                      )}
                     </div>
 
-                    {item.stock < item.quantity && (
-                      <div>
-                        <p className="text-[#C62028] font-semibold text-center">
-                          The product is currently out of sufficient stock.
-                          Please reduce the quantity or remove the item from
-                          your cart.
-                        </p>
-                      </div>
-                    )}
-                  </div>
+                    <hr className="border-gray-300" />
+                  </>
                 ))}
               </div>
 

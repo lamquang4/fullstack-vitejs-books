@@ -80,8 +80,6 @@ function BookSlider({ title, books }: Props) {
                       <div className="space-y-[6px]">
                         <h5 className="font-medium capitalize">{book.title}</h5>
 
-                        <p className="font-medium">{book.category.name}</p>
-
                         {book.discount > 0 ? (
                           <div className="flex gap-[12px]  ">
                             <del className="text-[#707072] text-[1rem]">
@@ -100,6 +98,8 @@ function BookSlider({ title, books }: Props) {
                             {book.price.toLocaleString("vi-VN")}₫
                           </h5>
                         )}
+
+                        <p className="font-medium">{book.category.name}</p>
                       </div>
                     </div>
                   </SwiperSlide>

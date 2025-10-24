@@ -58,6 +58,7 @@ private BookDTO convertToDTO(Book book) {
 
     if (book.getAuthor() != null) {
         dto.setAuthor(new AuthorDTO(
+            book.getAuthor().getId(),
                 book.getAuthor().getFullname(),
                 book.getAuthor().getSlug()
         ));
@@ -65,6 +66,7 @@ private BookDTO convertToDTO(Book book) {
 
     if (book.getPublisher() != null) {
         dto.setPublisher(new PublisherDTO(
+             book.getPublisher().getId(),
                 book.getPublisher().getName(),
                 book.getPublisher().getSlug()
         ));
@@ -72,6 +74,7 @@ private BookDTO convertToDTO(Book book) {
 
     if (book.getCategory() != null) {
         dto.setCategory(new CategoryDTO(
+            book.getCategory().getId(),
                 book.getCategory().getName(),
                 book.getCategory().getSlug()
         ));
@@ -240,6 +243,7 @@ public BookDetailDTO getBookBySlug(String slug) {
     AuthorDTO authorDTO = null;
     if (book.getAuthor() != null) {
         authorDTO = new AuthorDTO(
+            book.getAuthor().getId(),
                 book.getAuthor().getFullname(),
                 book.getAuthor().getSlug()
         );
@@ -248,6 +252,7 @@ public BookDetailDTO getBookBySlug(String slug) {
     PublisherDTO publisherDTO = null;
     if (book.getPublisher() != null) {
         publisherDTO = new PublisherDTO(
+            book.getPublisher().getId(),
                 book.getPublisher().getName(),
                 book.getPublisher().getSlug()
         );
@@ -256,6 +261,7 @@ public BookDetailDTO getBookBySlug(String slug) {
     CategoryDTO categoryDTO = null;
     if (book.getCategory() != null) {
         categoryDTO = new CategoryDTO(
+             book.getCategory().getId(),
                 book.getCategory().getName(),
                 book.getCategory().getSlug()
         );
@@ -305,6 +311,7 @@ public BookDetailDTO getBookById(String id) {
     AuthorDTO authorDTO = null;
     if (book.getAuthor() != null) {
         authorDTO = new AuthorDTO(
+            book.getAuthor().getId(),
                 book.getAuthor().getFullname(),
                 book.getAuthor().getSlug()
         );
@@ -313,6 +320,7 @@ public BookDetailDTO getBookById(String id) {
     PublisherDTO publisherDTO = null;
     if (book.getPublisher() != null) {
         publisherDTO = new PublisherDTO(
+            book.getPublisher().getId(),
                 book.getPublisher().getName(),
                 book.getPublisher().getSlug()
         );
@@ -321,6 +329,7 @@ public BookDetailDTO getBookById(String id) {
     CategoryDTO categoryDTO = null;
     if (book.getCategory() != null) {
         categoryDTO = new CategoryDTO(
+             book.getCategory().getId(),
                 book.getCategory().getName(),
                 book.getCategory().getSlug()
         );

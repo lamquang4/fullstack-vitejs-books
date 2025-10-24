@@ -90,7 +90,7 @@ function Footer() {
         </div>
 
         <div className="text-center py-[15px]">
-          <p className="font-medium text-gray-500">© Aura Vietnam 2025</p>
+          <p className="font-medium text-gray-500">© Fahasa Vietnam 2025</p>
         </div>
       </div>
     </footer>
