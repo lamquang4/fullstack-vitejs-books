@@ -105,6 +105,17 @@ export interface OrderAdd {
   }[];
 }
 
+export interface Payment {
+  id?: string;
+  orderId: string;
+  orderCode: string;
+  paymethod: string;
+  amount: number;
+  transactionId: string;
+  status: number;
+  createdAt: string;
+}
+
 export interface ProductInCart {
   id: string;
   bookId: string;

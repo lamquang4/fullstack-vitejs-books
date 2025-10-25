@@ -23,7 +23,7 @@ public class AuthorController {
         @RequestParam(defaultValue = "12") int limit,
         @RequestParam(required = false) String q
 ) {
-    Page<Author> authorPage = authorService.getAuthors(page, limit, q);
+    Page<Author> authorPage = authorService.getAllAuthors(page, limit, q);
 
     return ResponseEntity.ok(Map.of(
         "authors", authorPage.getContent(),
@@ -34,9 +34,8 @@ public class AuthorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Author> getAuthorById(@PathVariable String id) {
-        return authorService.getAuthorById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Author author = authorService.getAuthorById(id);
+        return ResponseEntity.ok(author);
     }
 
     @PostMapping

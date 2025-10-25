@@ -70,7 +70,7 @@ function Order() {
   return (
     <>
       <div className="py-[1.3rem] px-[1.2rem] bg-[#f1f4f9] space-y-[20px]">
-        <h2 className=" text-[#74767d]">Order</h2>
+        <h2 className=" text-[#74767d]">Orders</h2>
 
         <div>
           <StaticCard array={array1} />

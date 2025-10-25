@@ -1,7 +1,6 @@
 package com.bookstore.backend.controller;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -11,27 +10,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.bookstore.backend.dto.MomoPaymentResponse;
+import com.bookstore.backend.dto.MomoResponse;
 import com.bookstore.backend.dto.OrderDTO;
-import com.bookstore.backend.service.MomoPaymentService;
+import com.bookstore.backend.service.MomoService;
 import com.bookstore.backend.service.OrderService;
 import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/payment/momo")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
-public class MomoPaymentController {
+public class MomoController {
 
     @Value("${frontend.url}")
     private String frontendUrl;
 
-    private final MomoPaymentService momoPaymentService;
+    private final MomoService momoService;
     private final OrderService orderService;
 
 @PostMapping("/qr/{orderCode}")
-public ResponseEntity<MomoPaymentResponse> payWithMomo(@PathVariable String orderCode) throws Exception {
+public ResponseEntity<MomoResponse> payWithMomo(@PathVariable String orderCode) throws Exception {
     OrderDTO orderDTO = orderService.getOrderByOrderCode(orderCode);
-    MomoPaymentResponse response = momoPaymentService.createPayment(orderDTO);
+    MomoResponse response = momoService.createPayment(orderDTO);
     return ResponseEntity.ok(response);
 }
 
@@ -51,7 +50,7 @@ public ResponseEntity<Void> handleRedirect(
         payload.put("transId", transId != null ? transId : "");
         payload.put("message", message != null ? message : "");
 
-        boolean success = momoPaymentService.handleSuccessfulPayment(payload);
+        boolean success = momoService.handleSuccessfulPayment(payload);
 
         if (success) {
             redirectUrl = frontendUrl + "/order-result?result=successfully&&orderCode=" + orderId;
@@ -66,6 +65,4 @@ public ResponseEntity<Void> handleRedirect(
             .header("Location", redirectUrl)
             .build();
 }
-
-
 }

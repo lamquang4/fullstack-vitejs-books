@@ -5,10 +5,9 @@ import com.bookstore.backend.entities.User;
 import com.bookstore.backend.repository.AddressRepository;
 import com.bookstore.backend.repository.UserRepository;
 import com.bookstore.backend.utils.ValidationUtils;
-
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AddressService {
@@ -26,8 +25,9 @@ public List<Address> getAddressesByUserId(String userId) {
 }
 
 // lấy 1 address của customer dựa vào id
-public Optional<Address> getAddressByIdAndUserId(String id, String userId) {
-    return addressRepository.findByIdAndUserId(id, userId);
+public Address getAddressByIdAndUserId(String id, String userId) {
+    return addressRepository.findByIdAndUserId(id, userId)
+            .orElseThrow(() -> new EntityNotFoundException("Address not found"));
 }
 
 // tạo address
@@ -35,9 +35,8 @@ public Optional<Address> getAddressByIdAndUserId(String id, String userId) {
         if (!ValidationUtils.validatePhone(dto.getPhone())) {
             throw new IllegalArgumentException("Invalid phone number");
         }
-
         User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         Address address = Address.builder()
                 .fullname(dto.getFullname())
@@ -67,17 +66,21 @@ public Address updateAddress(String id, AddressDTO dto) {
 
                     if (dto.getUserId() != null) {
                         User user = userRepository.findById(dto.getUserId())
-                                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                                .orElseThrow(() -> new EntityNotFoundException("User not found"));
                         existingAddress.setUser(user);
                     }
 
                     return addressRepository.save(existingAddress);
                 })
-                .orElseThrow(() -> new IllegalArgumentException("Address not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Address not found"));
     }
 
     // xóa address
     public void deleteAddress(String id) {
+        if (!addressRepository.existsById(id)) {
+            throw new EntityNotFoundException("Address not found");
+        }
+        
         addressRepository.deleteById(id);
     }
 }

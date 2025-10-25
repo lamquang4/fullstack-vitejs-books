@@ -113,7 +113,7 @@ public Optional<UserDTO> getUserById(String id) {
         throw new IllegalArgumentException("Invalid email");
     }
 
-                if (userRepository.findByEmail(dto.getFullname()).isPresent()) {
+    if (userRepository.findByEmail(dto.getFullname()).isPresent()) {
         throw new IllegalArgumentException("Email already exists");
     }
 
@@ -139,9 +139,9 @@ public Optional<UserDTO> getUserById(String id) {
             throw new IllegalArgumentException("Invalid email");
         }
 
-              if (userRepository.findByEmail(userDTO.getFullname()).isPresent()) {
+        if (userRepository.findByEmail(userDTO.getFullname()).isPresent()) {
         throw new IllegalArgumentException("Emailalready exists");
-    }
+        }
 
         user.setEmail(userDTO.getEmail());
         if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {

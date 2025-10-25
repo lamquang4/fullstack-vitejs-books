@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MomoPaymentRequest {
+public class MomoRequest {
     private String partnerCode;
     private String accessKey;
     private String requestId;

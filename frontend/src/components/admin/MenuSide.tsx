@@ -14,6 +14,7 @@ import { FaRegCircleUser } from "react-icons/fa6";
 import { RiShoppingBag4Line } from "react-icons/ri";
 import { Link, useLocation } from "react-router-dom";
 import { GrBook } from "react-icons/gr";
+import { AiOutlineCreditCard } from "react-icons/ai";
 type Props = {
   menuOpen: boolean;
   toggleMenu: () => void;
@@ -46,6 +47,11 @@ function MenuSide({ menuOpen, toggleMenu }: Props) {
           icon: <RiShoppingBag4Line size={20} />,
           label: "Orders",
           path: "/admin/orders",
+        },
+        {
+          icon: <AiOutlineCreditCard size={20} />,
+          label: "Payments",
+          path: "/admin/payments",
         },
       ],
     },

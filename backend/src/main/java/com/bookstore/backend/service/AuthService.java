@@ -1,10 +1,7 @@
 package com.bookstore.backend.service;
 import org.springframework.stereotype.Service;
-
 import java.util.Map;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import com.bookstore.backend.dto.LoginRequest;
 import com.bookstore.backend.dto.LoginResponse;
 import com.bookstore.backend.entities.User;
@@ -29,9 +26,9 @@ public class AuthService {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Email or password is incorrect"));
 
-  if (user.getStatus() == 0) {
+       if (user.getStatus() == 0) {
         throw new IllegalArgumentException("Account has been blocked");
-    }
+       }
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("Email or password is incorrect");

@@ -9,7 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Sort;
-import java.util.Optional;
 
 @Service
 public class AuthorService {
@@ -23,7 +22,7 @@ public class AuthorService {
     }
 
     // lấy tất cả các authors
-public Page<Author> getAuthors(int page, int limit, String q) {
+public Page<Author> getAllAuthors(int page, int limit, String q) {
     Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
     if (q != null && !q.isEmpty()) {
         return authorRepository.findByFullnameContainingIgnoreCase(q, pageable);
@@ -32,13 +31,14 @@ public Page<Author> getAuthors(int page, int limit, String q) {
 }
 
 // lấy 1 author theo id
- public Optional<Author> getAuthorById(String id) {
-        return authorRepository.findById(id);
-    }
+public Author getAuthorById(String id) {
+    return authorRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Author not found"));
+}
 
     // tạo author
     public Author createAuthor(Author author) {
-         if (authorRepository.findByFullname(author.getFullname()).isPresent()) {
+    if (authorRepository.findByFullname(author.getFullname()).isPresent()) {
         throw new IllegalArgumentException("Author fullname already exists");
     }
          author.setSlug(SlugUtil.toSlug(author.getFullname()));

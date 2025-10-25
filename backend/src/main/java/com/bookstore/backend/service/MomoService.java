@@ -1,24 +1,27 @@
 package com.bookstore.backend.service;
-import org.springframework.beans.factory.annotation.Value;
-import org.apache.commons.codec.binary.Hex;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.UUID;
-import com.bookstore.backend.dto.MomoPaymentRequest;
-import com.bookstore.backend.dto.MomoPaymentResponse;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import org.apache.commons.codec.binary.Hex;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import com.bookstore.backend.dto.MomoRequest;
+import com.bookstore.backend.dto.MomoResponse;
 import com.bookstore.backend.dto.OrderDTO;
 import com.bookstore.backend.entities.Book;
 import com.bookstore.backend.entities.Order;
 import com.bookstore.backend.entities.OrderDetail;
+import com.bookstore.backend.entities.Payment;
 import com.bookstore.backend.repository.BookRepository;
 import com.bookstore.backend.repository.OrderRepository;
-import jakarta.transaction.Transactional;
+import com.bookstore.backend.repository.PaymentRepository;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 @Service
-public class MomoPaymentService {
+public class MomoService {
 
     @Value("${momo.partnercode}")
     private String partnerCode;
@@ -43,14 +46,16 @@ public class MomoPaymentService {
 
     private final OrderRepository orderRepository;
 private final BookRepository bookRepository;
-    public MomoPaymentService(OrderRepository orderRepository, BookRepository bookRepository) {
-        this.orderRepository = orderRepository;
-        this.bookRepository = bookRepository;
-    }
+ private final PaymentRepository paymentRepository;
+private final RestTemplate restTemplate = new RestTemplate();
+   
+public MomoService(OrderRepository orderRepository, BookRepository bookRepository, PaymentRepository paymentRepository) {
+    this.orderRepository = orderRepository;
+    this.bookRepository = bookRepository;
+    this.paymentRepository = paymentRepository;
+}
 
-    private final RestTemplate restTemplate = new RestTemplate();
-
- public MomoPaymentResponse createPayment(OrderDTO orderDTO) throws Exception {
+ public MomoResponse createPayment(OrderDTO orderDTO) throws Exception {
         String requestId = UUID.randomUUID().toString();
         String orderId = orderDTO.getOrderCode();
         String amount = String.valueOf(orderDTO.getTotal().intValue());
@@ -72,7 +77,7 @@ private final BookRepository bookRepository;
         // Tạo chữ ký HMAC SHA256
         String signature = HmacSHA256(rawSignature, secretKey);
 
-        MomoPaymentRequest request = MomoPaymentRequest.builder()
+        MomoRequest request = MomoRequest.builder()
                 .partnerCode(partnerCode)
                 .accessKey(accessKey)
                 .requestId(requestId)
@@ -87,8 +92,8 @@ private final BookRepository bookRepository;
                 .signature(signature)
                 .build();
 
-        MomoPaymentResponse response = restTemplate.postForObject(
-                momoUrl, request, MomoPaymentResponse.class
+        MomoResponse response = restTemplate.postForObject(
+                momoUrl, request, MomoResponse.class
         );
 
         return response;
@@ -99,7 +104,7 @@ private final BookRepository bookRepository;
         String orderId = (String) payload.get("orderId"); // orderCode
 
         Order order = orderRepository.findByOrderCode(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Order not found"));
 
         if (order.getStatus() != -1) return true;
 
@@ -123,10 +128,19 @@ private final BookRepository bookRepository;
             }
             order.setStatus(0);
             orderRepository.save(order);
+           
+         paymentRepository.save(Payment.builder()
+                    .order(order)
+                    .paymethod("momo")
+                    .amount(order.getTotal())
+                    .transactionId(String.valueOf(payload.get("transId")))
+                    .status(1)
+                    .build());
+           
             return true;
 
         } else {
-            // Hết hàng → Hoàn tiền và xóa đơn hàng
+            // Hết hàng → hoàn tiền và xóa đơn hàng
             payload.put("amount", order.getTotal().intValue());
             refundPayment(payload);
 
@@ -140,11 +154,11 @@ private final BookRepository bookRepository;
     public void refundPayment(Map<String, Object> payload) throws Exception {
         String transId = String.valueOf(payload.get("transId"));
         String amount = String.valueOf(payload.get("amount"));
-       String originalOrderId = String.valueOf(payload.get("orderId"));
+        String originalOrderId = String.valueOf(payload.get("orderId"));
 
         String refundOrderId = originalOrderId + "_REFUND_" + System.currentTimeMillis();
-    String requestId = UUID.randomUUID().toString();
-    String description = "Refund due to insufficient stock for one or more items in your order";
+        String requestId = UUID.randomUUID().toString();
+        String description = "Refund due to insufficient stock for one or more items in your order";
 
         String rawSignature = "accessKey=" + accessKey +
                 "&amount=" + amount +
@@ -171,10 +185,9 @@ private final BookRepository bookRepository;
         Map<String, Object> response = restTemplate.postForObject(refundUrl, requestBody, Map.class);
 
         if (response != null && !"0".equals(String.valueOf(response.get("resultCode")))) {
-            throw new RuntimeException("Refund failed: " + response);
+            throw new IllegalStateException("Refund failed: " + response);
         }
     }
-
 
     private String HmacSHA256(String data, String key) throws Exception {
         Mac sha256_HMAC = Mac.getInstance("HmacSHA256");

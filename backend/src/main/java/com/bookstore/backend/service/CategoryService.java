@@ -4,10 +4,8 @@ import com.bookstore.backend.entities.Category;
 import com.bookstore.backend.repository.BookRepository;
 import com.bookstore.backend.repository.CategoryRepository;
 import com.bookstore.backend.utils.SlugUtil;
-
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
-
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

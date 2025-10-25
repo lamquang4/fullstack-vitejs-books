@@ -23,7 +23,7 @@ public class PublisherController {
         @RequestParam(defaultValue = "12") int limit,
         @RequestParam(required = false) String q
 ) {
-    Page<Publisher> publisherPage = publisherService.getPublishers(page, limit, q);
+    Page<Publisher> publisherPage = publisherService.getAllPublishers(page, limit, q);
 
     return ResponseEntity.ok(Map.of(
         "publishers", publisherPage.getContent(),

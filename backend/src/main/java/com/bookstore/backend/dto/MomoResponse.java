@@ -7,10 +7,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MomoPaymentResponse {
+public class MomoResponse {
     private String payUrl;
-    private String requestId;
+    private String deeplink;
+    private String qrCodeUrl;
     private String orderId;
-    private String errorCode;
+    private int resultCode;
     private String message;
 }

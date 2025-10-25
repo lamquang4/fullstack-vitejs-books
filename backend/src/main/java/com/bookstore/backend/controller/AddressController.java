@@ -29,9 +29,8 @@ public ResponseEntity<Address> getAddressByIdAndUserId(
         @PathVariable String userId,
         @PathVariable String id) {
 
-    return addressService.getAddressByIdAndUserId(id, userId)
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
+    Address address = addressService.getAddressByIdAndUserId(id, userId);
+    return ResponseEntity.ok(address);
 }
 
    @PostMapping

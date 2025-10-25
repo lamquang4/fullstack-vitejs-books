@@ -63,7 +63,7 @@ function Customer() {
     <>
       <div className="py-[1.3rem] px-[1.2rem] bg-[#f1f4f9]">
         <div className="flex justify-between items-center">
-          <h2 className=" text-[#74767d]">Customer ({totalItems})</h2>
+          <h2 className=" text-[#74767d]">Customers ({totalItems})</h2>
 
           <Link
             to={"/admin/add-customer"}

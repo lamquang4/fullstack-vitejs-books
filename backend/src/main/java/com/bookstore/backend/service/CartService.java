@@ -15,8 +15,11 @@ import com.bookstore.backend.repository.BookRepository;
 import com.bookstore.backend.repository.CartItemRepository;
 import com.bookstore.backend.repository.CartRepository;
 import com.bookstore.backend.repository.UserRepository;
+
+import jakarta.persistence.EntityNotFoundException;
+
 import java.util.Comparator;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CartService {
@@ -35,7 +38,7 @@ private final UserRepository userRepository;
     // lấy giỏ hàng của customer dựa vào user id
 public CartDTO getCartByUserId(String userId) {
     Cart cart = cartRepository.findByUserId(userId)
-            .orElseThrow(() -> new RuntimeException("Cart not found"));
+            .orElseThrow(() -> new EntityNotFoundException("Cart not found"));
 
     List<CartItemDTO> itemDTOs = cart.getItems().stream().map(item -> CartItemDTO.builder()
             .id(item.getId())
@@ -67,12 +70,12 @@ public CartDTO getCartByUserId(String userId) {
  @Transactional
 public void addItemToCart(String userId, String bookId, int quantity) {
     User user = userRepository.findById(userId)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+            .orElseThrow(() -> new EntityNotFoundException("User not found"));
     Book book = bookRepository.findById(bookId)
-            .orElseThrow(() -> new RuntimeException("Book not found"));
+            .orElseThrow(() -> new EntityNotFoundException("Book not found"));
 
     if (quantity <= 0) {
-        throw new RuntimeException("Quantity must be greater than 0");
+       throw new IllegalArgumentException("Quantity must be greater than 0");
     }
 
     Cart cart = cartRepository.findByUserId(userId)
@@ -92,8 +95,8 @@ public void addItemToCart(String userId, String bookId, int quantity) {
 
         // Nếu vượt quá tồn kho, giới hạn bằng tồn kho
     if (newQuantity > book.getStock()) {
-    throw new RuntimeException("Not enough stock available");
-}
+        throw new IllegalStateException("Not enough stock available");
+    }
 
         // Nếu vượt quá max, giới hạn bằng max
         if (newQuantity > max) {
@@ -120,7 +123,7 @@ public void addItemToCart(String userId, String bookId, int quantity) {
 @Transactional
 public void updateCartItemQuantity(String cartItemId, int quantity) {
     CartItem item = cartItemRepository.findById(cartItemId)
-            .orElseThrow(() -> new RuntimeException("Cart item not found"));
+            .orElseThrow(() -> new EntityNotFoundException("Cart item not found"));
 
     Book book = item.getBook();
 
@@ -145,7 +148,7 @@ public void updateCartItemQuantity(String cartItemId, int quantity) {
 @Transactional
 public void removeItemFromCart(String cartItemId) {
     CartItem item = cartItemRepository.findById(cartItemId)
-            .orElseThrow(() -> new RuntimeException("Item not found in cart"));
+            .orElseThrow(() -> new EntityNotFoundException("Item not found in cart"));
     cartItemRepository.delete(item);
 }
 

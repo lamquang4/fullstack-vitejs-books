@@ -23,7 +23,7 @@ public class PublisherService {
     }
 
     // lấy tất cả publishers
-public Page<Publisher> getPublishers(int page, int limit, String q) {
+public Page<Publisher> getAllPublishers(int page, int limit, String q) {
     Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
     if (q != null && !q.isEmpty()) {
         return publisherRepository.findByNameContainingIgnoreCase(q, pageable);
@@ -58,7 +58,7 @@ public Page<Publisher> getPublishers(int page, int limit, String q) {
                     existingPublisher.setSlug(publisher.getSlug());
                     return publisherRepository.save(existingPublisher);
                 })
-                .orElse(null);
+                .orElseThrow(() -> new EntityNotFoundException("Publisher not found"));
     }
 
     // xóa publisher

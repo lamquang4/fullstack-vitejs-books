@@ -37,6 +37,7 @@ import OrderAdminPage from "./pages/admin/OrderAdminPage";
 import OrderDetailAdminPage from "./pages/admin/OrderDetailAdminPage";
 import DashboardPage from "./pages/admin/DashboardPage";
 import OrderResultPage from "./pages/client/OrderResultPage";
+import PaymentPage from "./pages/admin/PaymentPage";
 
 function LayoutRoute() {
   return (
@@ -380,6 +381,18 @@ function LayoutRoute() {
             redirectPath="/admin/login"
           >
             <OrderDetailAdminPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/payments"
+        element={
+          <PrivateRoute
+            type="admin"
+            allowedRoles={[0, 1, 2]}
+            redirectPath="/admin/login"
+          >
+            <PaymentPage />
           </PrivateRoute>
         }
       />
