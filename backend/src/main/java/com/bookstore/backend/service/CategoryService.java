@@ -69,6 +69,14 @@ public class CategoryService {
                     existingCategory.setName(category.getName());
                     existingCategory.setSlug(category.getSlug());
                     existingCategory.setStatus(category.getStatus());
+
+                    // Nếu category bị ẩn, ẩn tất cả sách thuộc category
+                    if (existingCategory.getStatus() == 0) {
+                    List<Book> books = bookRepository.findByCategoryAndStatus(existingCategory, 1);
+                    books.forEach(book -> book.setStatus(0));
+                    bookRepository.saveAll(books);
+                    }
+
                     return categoryRepository.save(existingCategory);
                 })
                 .orElse(null);
