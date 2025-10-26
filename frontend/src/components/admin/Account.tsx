@@ -48,7 +48,7 @@ function Account() {
                   user?.role === 0
                     ? "System admin"
                     : user?.role === 1
-                    ? "Sales manager"
+                    ? "Salesperson"
                     : ""
                 }
                 readOnly

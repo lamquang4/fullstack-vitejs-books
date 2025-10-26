@@ -147,7 +147,7 @@ function EditAdmin() {
                 >
                   <option value="">Select role</option>
                   <option value="0">System admin</option>
-                  <option value="1">Sales manager</option>
+                  <option value="1">Salesperson</option>
                 </select>
               </div>
 
