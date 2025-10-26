@@ -438,6 +438,12 @@ public Book updateBook(String id, Book updatedBookData, List<MultipartFile> file
     Book existingBook = bookRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Book not found"));
 
+if (updatedBookData.getStatus() != null && updatedBookData.getStatus() == 1) {
+    if (existingBook.getCategory() != null && existingBook.getCategory().getStatus() == 0) {
+        throw new IllegalStateException("Cannot show book because its category is hidden");
+    }
+}
+
     existingBook.setTitle(updatedBookData.getTitle());
     existingBook.setPrice(updatedBookData.getPrice());
     existingBook.setDiscount(updatedBookData.getDiscount());
