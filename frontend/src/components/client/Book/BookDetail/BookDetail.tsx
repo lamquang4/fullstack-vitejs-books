@@ -138,8 +138,7 @@ function BookDetail({ book }: Props) {
                   >
                     <div
                       className={`border flex items-center justify-center w-full h-full ${
-                        `${import.meta.env.VITE_BACKEND_URL}${mainImage}` ===
-                        `${import.meta.env.VITE_BACKEND_URL}${image.image}`
+                        currentImageIndex === index
                           ? "border-gray-600"
                           : "border-gray-300"
                       }`}
