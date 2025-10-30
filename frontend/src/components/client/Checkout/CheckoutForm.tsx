@@ -38,6 +38,7 @@ function CheckoutForm() {
     ward: "",
   });
   const [paymethod, setPaymethod] = useState<string>("");
+  const [isOrderPlaced, setIsOrderPlaced] = useState<boolean>(false);
 
   // lấy những sản phẩm không đủ số lượng mua (số lượng mua > số lượng tồn kho)
   const outOfStockItems = useMemo(() => {
@@ -46,7 +47,7 @@ function CheckoutForm() {
   }, [cart?.items]);
 
   useEffect(() => {
-    if (isLoadingCart) return;
+    if (isLoadingCart || isOrderPlaced) return;
 
     if (!cart || !cart.items?.length) {
       toast.error("There’s nothing in your cart");
@@ -136,7 +137,8 @@ function CheckoutForm() {
           items: items!,
         });
 
-        navigate("/order-success");
+        setIsOrderPlaced(true);
+        navigate("/order-result?result=successfully");
 
         mutateCart({ items: [] }, false);
       } catch (err: any) {
@@ -154,6 +156,7 @@ function CheckoutForm() {
           items: items!,
         });
 
+        setIsOrderPlaced(true);
         const momoResponse = await createPaymentMomo(res.orderCode);
         window.location.href = momoResponse.payUrl;
       } catch (err: any) {
