@@ -635,7 +635,7 @@ public void deleteBook(String id) {
        List<ImageBook> images = imageBookRepository.findByBook(book);
     imageBookRepository.deleteAll(images);
 
-    File bookDir = new File(UPLOAD_DIR + book.getSlug());
+    File bookDir = new File(UPLOAD_DIR + book.getId());
     if (bookDir.exists() && bookDir.isDirectory()) {
         for (File file : bookDir.listFiles()) {
             file.delete(); 
