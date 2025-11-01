@@ -1,13 +1,11 @@
 import { Link } from "react-router-dom";
 import Image from "../Image";
-import { FaInstagram, FaFacebookSquare } from "react-icons/fa";
-import { IoLogoYoutube } from "react-icons/io";
 function Footer() {
   return (
     <footer className="bg-gray-50 border-t border-gray-200 px-[15px]">
       <div className="mx-auto w-full max-w-[1200px]">
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] py-[60px]">
-          <div>
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-4 py-8">
+          <div className="col-span-full lg:col-span-1  space-y-4">
             <Link to={"/"}>
               <Image
                 source={"/assets/logo.png"}
@@ -16,80 +14,131 @@ function Footer() {
                 loading="eager"
               />
             </Link>
+            <p className=" text-gray-500">
+              Fahasa.com nhận đặt hàng trực tuyến và giao hàng tận nơi. KHÔNG hỗ
+              trợ đặt mua và nhận hàng trực tiếp tại văn phòng cũng như tất cả
+              Hệ Thống Fahasa trên toàn quốc.
+            </p>
           </div>
 
-          <div>
-            <ul>
+          <div className="lg:mx-auto text-left space-y-4">
+            <h5 className="relative font-bold text-black uppercase">
+              Các trang
+            </h5>
+            <ul className="transition-all duration-500 text-[0.9rem] space-y-4">
               <li>
-                <p className="relative font-bold text-black text-[0.95rem] uppercase mb-3 pb-1.5 after:content-[''] after:absolute after:bottom-0 after:left-0 after:bg-black after:w-[60px] after:h-[1.5px]">
-                  Policies
-                </p>
-              </li>
-
-              <li className="py-[8px]">
                 <Link
                   to="/"
-                  className="inline-block max-w-max text-gray-500 font-medium text-[0.9rem] hover:text-black"
+                  className=" text-gray-500 font-medium text-[0.9rem] hover:text-black"
                 >
-                  Home
+                  Trang chủ
                 </Link>
               </li>
 
-              <li className="py-[8px]">
+              <li>
                 <Link
-                  to="/books/all"
-                  className="inline-block max-w-max text-gray-500 font-medium text-[0.9rem] hover:text-black"
+                  to={"/books/all"}
+                  className=" text-gray-500 font-medium text-[0.9rem] hover:text-black"
                 >
-                  All books
+                  Tất cả sách
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to={"/sale"}
+                  className=" text-gray-500 font-medium text-[0.9rem] hover:text-black"
+                >
+                  Giảm giá
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to={"/cart"}
+                  className=" text-gray-500 font-medium text-[0.9rem] hover:text-black"
+                >
+                  Giỏ hàng
                 </Link>
               </li>
             </ul>
           </div>
 
-          <div>
-            <ul>
+          <div className="lg:mx-auto text-left space-y-4">
+            <h5 className="relative font-bold text-black uppercase">DỊCH VỤ</h5>
+            <ul className="transition-all duration-500 text-[0.9rem] space-y-4">
               <li>
-                <p className="relative font-bold text-black text-[0.95rem] uppercase mb-3 pb-1.5 after:content-[''] after:absolute after:bottom-0 after:left-0 after:bg-black after:w-[60px] after:h-[1.5px]">
-                  Follow us
-                </p>
+                <Link
+                  to="/"
+                  className=" text-gray-500 font-medium text-[0.9rem] hover:text-black"
+                >
+                  Điều khoản sử dụng
+                </Link>
               </li>
 
               <li>
-                <ul className="flex justify-start items-center gap-3">
-                  <li className="py-[8px]">
-                    <Link
-                      className="inline-block max-w-max text-gray-500 font-medium text-[0.9rem]"
-                      to={"/"}
-                      title="Instagram"
-                    >
-                      <FaInstagram size={25} />
-                    </Link>
-                  </li>
-                  <li className="py-[8px]">
-                    <Link
-                      className="inline-block max-w-max text-gray-500 font-medium text-[0.9rem]"
-                      to={"/"}
-                      title="Facebook"
-                    >
-                      <FaFacebookSquare size={25} />
-                    </Link>
-                  </li>
-                  <li className="py-[8px]">
-                    <Link
-                      className="inline-block max-w-max text-gray-500 font-medium text-[0.9rem]"
-                      to={"/"}
-                      title="Youtube"
-                    >
-                      <IoLogoYoutube size={25} />
-                    </Link>
-                  </li>
-                </ul>
+                <Link
+                  to={"/"}
+                  className=" text-gray-500 font-medium text-[0.9rem] hover:text-black"
+                >
+                  Chính sách bảo mật thông tin cá nhân
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to={"/"}
+                  className=" text-gray-500 font-medium text-[0.9rem] hover:text-black"
+                >
+                  Chính sách bảo mật thanh toán
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to={"/"}
+                  className=" text-gray-500 font-medium text-[0.9rem] hover:text-black"
+                >
+                  Giới thiệu Fahasa
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div className="lg:mx-auto text-left space-y-4">
+            <h5 className="relative font-bold text-black uppercase">Hỗ trợ</h5>
+            <ul className="transition-all duration-500 text-[0.9rem] space-y-4">
+              <li>
+                <Link
+                  to="/"
+                  className=" text-gray-500 font-medium text-[0.9rem] hover:text-black"
+                >
+                  Chính sách đổi - trả - hoàn tiền
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to={"/"}
+                  className=" text-gray-500 font-medium text-[0.9rem] hover:text-black"
+                >
+                  Chính sách bảo hành - bồi hoàn
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to={"/"}
+                  className=" text-gray-500 font-medium text-[0.9rem] hover:text-black"
+                >
+                  Chính sách vận chuyển
+                </Link>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="text-center py-[15px]">
+        <div className="py-4 border-t border-gray-200 text-center">
           <p className="font-medium text-gray-500">© Fahasa Vietnam 2025</p>
         </div>
       </div>

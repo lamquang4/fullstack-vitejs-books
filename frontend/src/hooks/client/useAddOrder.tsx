@@ -14,7 +14,7 @@ export default function useAddOrder(userId: string) {
       const res = await axios.post(url, data);
       return res.data;
     } catch (err) {
-      console.error("Error:", err);
+      console.error("Lỗi:", err);
       throw err;
     } finally {
       setIsLoading(false);

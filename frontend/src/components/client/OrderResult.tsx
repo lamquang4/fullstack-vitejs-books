@@ -27,13 +27,13 @@ function OrderResult() {
                 className={"w-[100px]"}
                 loading="eager"
               />
-              <h4 className="uppercase text-center">
-                Order Placed Successfully
-              </h4>
-              <p className="font-medium">Thank you for shopping with us.</p>
+              <h4 className="uppercase text-center">Đặt hàng thành công</h4>
               <p className="font-medium">
-                We have received your order details and will contact you as soon
-                as possible.
+                Cảm ơn Quý khách đã mua hàng tại shop của chúng tôi
+              </p>
+              <p className="font-medium">
+                Chúng tôi đã nhận được thông tin đơn hàng của bạn và sẽ liên hệ
+                với bạn trong thời gian sớm nhất
               </p>
             </div>
           ) : result === "fail" ? (
@@ -44,13 +44,13 @@ function OrderResult() {
                 className={"w-[120px]"}
                 loading="eager"
               />
-              <h4 className="uppercase text-center">Order Failed</h4>
+              <h4 className="uppercase text-center">Đặt hàng thất bại</h4>
               <p className="font-medium">
-                Unfortunately, we could not complete your order.
+                Rất tiếc, chúng tôi không thể xử lý đơn hàng của bạn
               </p>
               <p className="font-medium">
-                ne or more items in your order are out of stock. Your payment
-                has been refunded.
+                Một hoặc nhiều sản phẩm trong đơn hàng đã hết hàng. Số tiền bạn
+                đã thanh toán đã được hoàn lại.
               </p>
             </div>
           ) : (

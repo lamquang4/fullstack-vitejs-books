@@ -16,9 +16,9 @@ import useCurrentUser from "../../../hooks/useGetCurrentUser";
 
 function Admin() {
   const array = [
-    { name: "All", value: null },
-    { name: "Normal", value: 1 },
-    { name: "Blocked", value: 0 },
+    { name: "Tất cả", value: null },
+    { name: "Bình thường", value: 1 },
+    { name: "Bị khóa", value: 0 },
   ];
 
   const { user } = useCurrentUser("admin");
@@ -41,7 +41,7 @@ function Admin() {
     }
 
     if (id === user?.id) {
-      toast.error("You cannot delete yourself");
+      toast.error("Bạn không thể xóa chính tài khoản của mình");
       return;
     }
 
@@ -60,7 +60,7 @@ function Admin() {
     }
 
     if (id === user?.id) {
-      toast.error("You cannot block yourself");
+      toast.error("Bạn không thể khóa chính tài khoản của mình");
       return;
     }
 
@@ -77,13 +77,13 @@ function Admin() {
     <>
       <div className="py-[1.3rem] px-[1.2rem] bg-[#f1f4f9]">
         <div className="flex justify-between items-center">
-          <h2 className=" text-[#74767d]">Administrators ({totalItems})</h2>
+          <h2 className=" text-[#74767d]">Quản trị viên ({totalItems})</h2>
 
           <Link
             to={"/admin/add-admin"}
             className="bg-[#C62028] border-0 cursor-pointer text-[0.9rem] font-medium w-[90px] !flex p-[10px_12px] items-center justify-center gap-[5px] text-white"
           >
-            <IoMdAddCircle size={22} /> Add
+            <IoMdAddCircle size={22} /> Thêm
           </Link>
         </div>
       </div>
@@ -96,19 +96,19 @@ function Admin() {
         <table className="w-[350%] badmin.address-collapse sm:w-[220%] xl:w-full text-[0.9rem]">
           <thead>
             <tr className="bg-[#E9EDF2] text-left">
-              <th className="p-[1rem]">Fullname</th>
+              <th className="p-[1rem]">Họ tên</th>
 
               <th className="p-[1rem]">Email</th>
 
-              <th className="p-[1rem]  ">Role</th>
+              <th className="p-[1rem]  ">Chức vụ</th>
               <th className="p-[1rem]  ">
                 <FilterDropDownMenu
-                  title="Status"
+                  title="Tình trạng"
                   array={array}
                   paramName="status"
                 />
               </th>
-              <th className="p-[1rem]  ">Action</th>
+              <th className="p-[1rem]  ">Hành động</th>
             </tr>
           </thead>
           <tbody>
@@ -128,13 +128,13 @@ function Admin() {
 
                   <td className="p-[1rem]  ">
                     {admin.role === 0
-                      ? "System admin"
+                      ? "Quản trị viên hệ thống"
                       : admin.role === 1
                       ? "Salesperson"
                       : ""}
                   </td>
                   <td className="p-[1rem]  ">
-                    {admin.status === 1 ? "Normal" : "Blocked"}
+                    {admin.status === 1 ? "Bình thường" : "Bị khóa"}
                   </td>
                   <td className="p-[1rem]  ">
                     <div className="flex items-center gap-[15px]">

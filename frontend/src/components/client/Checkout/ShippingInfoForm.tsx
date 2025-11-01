@@ -41,11 +41,11 @@ function ShippingInfoForm({
 
   return (
     <div className="space-y-[15px]">
-      <h4>Shipping information</h4>
+      <h4>Thông tin giao hàng</h4>
 
       <div className="space-y-[5px]">
         <label htmlFor="" className="block text-[0.9rem] font-medium">
-          Saved addresses
+          Địa chỉ lưu trữ
         </label>
         <select
           onChange={(e) => {
@@ -59,7 +59,7 @@ function ShippingInfoForm({
           }}
           className="w-full rounded-md text-[0.9rem] border border-gray-200 px-2.5 py-2 outline-none focus:z-10 focus:border-[#197FB6] focus:ring-[#197FB6]"
         >
-          <option value="">Select saved address</option>
+          <option value="">Chọn địa chỉ lưu trữ</option>
           {addresses.map((address, index) => (
             <option value={address.id} key={index}>
               {address.speaddress}, {address.city}, {address.ward}
@@ -70,7 +70,7 @@ function ShippingInfoForm({
 
       <div className="space-y-[5px]">
         <label htmlFor="" className="block text-[0.9rem] font-medium">
-          Fullname
+          Họ tên
         </label>
         <input
           type="text"
@@ -79,13 +79,13 @@ function ShippingInfoForm({
           onChange={handleChange}
           required
           className="w-full rounded-md border border-gray-200 px-2.5 py-2 text-[0.9rem] outline-none focus:z-10 focus:border-[#197FB6] focus:ring-[#197FB6]"
-          placeholder="Họ và tên"
+          placeholder="Họ tên"
         />
       </div>
 
       <div className="space-y-[5px]">
         <label htmlFor="" className="block text-[0.9rem] font-medium">
-          Phone
+          Số điện thoại
         </label>
         <input
           type="number"
@@ -101,7 +101,7 @@ function ShippingInfoForm({
 
       <div className="space-y-[5px]">
         <label htmlFor="" className="block text-[0.9rem] font-medium">
-          Specific address
+          Địa chỉ cụ thể
         </label>
         <input
           type="text"
@@ -117,7 +117,7 @@ function ShippingInfoForm({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-[14px]">
         <div className="space-y-[5px]">
           <label htmlFor="" className="block text-[0.9rem] font-medium">
-            Province/city
+            Tỉnh/thành phố
           </label>
           <select
             name="city"
@@ -132,7 +132,7 @@ function ShippingInfoForm({
             }
             className="w-full rounded-md text-[0.9rem] border border-gray-200 px-2.5 py-2 outline-none focus:z-10 focus:border-[#197FB6] focus:ring-[#197FB6]"
           >
-            <option value="">Select province/city</option>
+            <option value="">Chọn Tỉnh/thành phố</option>
             {provinces?.map((province) => (
               <option key={province.id} value={province.province}>
                 {province.province}
@@ -143,7 +143,7 @@ function ShippingInfoForm({
 
         <div className="space-y-[5px]">
           <label htmlFor="" className="block text-[0.9rem] font-medium">
-            Ward/commune
+            Phường/xã
           </label>
           <select
             name="ward"
@@ -153,7 +153,7 @@ function ShippingInfoForm({
             onChange={handleChange}
             className="w-full rounded-md text-[0.9rem] border border-gray-200 px-2.5 py-2 text-sm outline-none focus:z-10 focus:border-[#197FB6] focus:ring-[#197FB6]"
           >
-            <option value="">Select ward/Commune</option>
+            <option value="">Chọn Phường/xã</option>
             {selectedProvince?.wards.map((ward, idx) => (
               <option key={idx} value={ward.name}>
                 {ward.name}

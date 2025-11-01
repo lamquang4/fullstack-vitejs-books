@@ -50,14 +50,14 @@ function CheckoutForm() {
     if (isLoadingCart || isOrderPlaced) return;
 
     if (!cart || !cart.items?.length) {
-      toast.error("There’s nothing in your cart");
+      toast.error("Không có gì trong giỏ hết");
       navigate("/cart");
       return;
     }
 
     if (outOfStockItems.length > 0) {
       toast.error(
-        "Some products do not have enough stock for the quantity you want to purchase"
+        "Một số sản phẩm không đủ hàng so với số lượng bạn muốn mua trong giỏ hàng"
       );
       navigate("/cart");
     }
@@ -100,18 +100,18 @@ function CheckoutForm() {
     e.preventDefault();
 
     if (!paymethod) {
-      toast.error("Please select a payment method");
+      toast.error("Vui lòng chọn phương thức thanh toán");
       return;
     }
 
     if (totalPrice < 10000 && paymethod === "momo") {
-      toast.error("MOMO is only available for orders of 10,000₫ or more");
+      ("Tổng giá trị đơn hàng của bạn dưới 10.000đ, nên bạn chỉ có thể chọn hình thức thanh toán khi nhận hàng");
       setPaymethod("cod");
       return;
     }
 
     if (cart?.items.length === 0) {
-      toast.error("There’s nothing in your cart");
+      toast.error("Không có gì trong giỏ hết");
       navigate("/cart");
       return;
     }
@@ -199,7 +199,7 @@ function CheckoutForm() {
 
                 <div className="flex justify-between items-center">
                   <button className="text-[0.9rem] rounded-md bg-[#C62028] px-4 py-2 font-medium text-white">
-                    Place order
+                    Đặt hàng
                   </button>
 
                   <Link
@@ -207,7 +207,7 @@ function CheckoutForm() {
                     className="text-[0.95rem] rounded-md bg-transparent px-4 py-2 font-medium text-[#C62028] border border-[#C62028]"
                   >
                     <div className="flex gap-[5px] items-center">
-                      <MdOutlineKeyboardBackspace size={25} /> Cart
+                      <MdOutlineKeyboardBackspace size={25} /> Giỏ hàng
                     </div>
                   </Link>
                 </div>
@@ -220,12 +220,12 @@ function CheckoutForm() {
               <hr className="border-gray-300" />
 
               <div className="flex items-center justify-between font-medium ">
-                <h5>Shipping fee:</h5>
-                <h5>Free ship</h5>
+                <h5>Phí giao hàng:</h5>
+                <h5>Miễn phí</h5>
               </div>
 
               <div className="flex items-center justify-between font-semibold">
-                <h5>Total price:</h5>
+                <h5>Tổng cộng:</h5>
                 <h5>{totalPrice.toLocaleString("vi-VN")}₫</h5>
               </div>
             </div>
@@ -236,7 +236,7 @@ function CheckoutForm() {
       {(isLoadingCart || isLoadingAdd || isLoadingPaymentMomo) && (
         <Overplay IndexForZ={50}>
           <Loading height={0} size={55} color="white" thickness={8} />
-          <h4 className="text-white">Please wait a moment...</h4>
+          <h4 className="text-white">Vui lòng chờ trong giây lát...</h4>
         </Overplay>
       )}
     </section>

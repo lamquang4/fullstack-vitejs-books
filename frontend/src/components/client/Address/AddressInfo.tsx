@@ -29,7 +29,7 @@ function AddressInfo({
     }
 
     if (addresses.length === 1) {
-      toast.error("You need to keep at least one address for your account");
+      toast.error("Bạn cần giữ lại ít nhất một địa chỉ cho tài khoản của mình");
       return;
     }
 
@@ -44,14 +44,14 @@ function AddressInfo({
   return (
     <div className="w-full max-w-full flex-1 px-[15px]">
       <div className="space-y-[20px]">
-        <h2>Address book</h2>
+        <h2>Sổ địa chỉ</h2>
 
         <button
           onClick={toggleAddressModal}
           type="button"
           className="px-[10px] py-[6px] bg-red-600 text-white text-[0.9rem] font-medium text-center rounded-sm hover:bg-red-700"
         >
-          Add address
+          Thêm địa chỉ
         </button>
 
         <div>
@@ -66,17 +66,17 @@ function AddressInfo({
                 <div className="flex justify-between flex-wrap gap-y-[8px]">
                   <div className="flex flex-col gap-[8px]">
                     <p>
-                      Fullname:{" "}
+                      Họ tên:{" "}
                       <span className="font-medium">{address.fullname}</span>
                     </p>
 
                     <p>
-                      Phone:{" "}
+                      Số điện thoại:{" "}
                       <span className="font-medium">{address.phone}</span>
                     </p>
 
                     <p>
-                      Address:{" "}
+                      Địa chỉ:{" "}
                       <span className="font-medium">
                         {address.speaddress}, {address.city}, {address.ward}
                       </span>
@@ -92,7 +92,7 @@ function AddressInfo({
                         setAddressId(address.id || "");
                       }}
                     >
-                      Edit
+                      Chỉnh sửa
                     </button>
                     <button
                       className="border-0 p-1 outline-0 text-[0.9rem] text-red-500 font-medium"
@@ -100,7 +100,7 @@ function AddressInfo({
                       disabled={isLoadingDeleteAddress}
                       onClick={() => handleDelete(address.id || "")}
                     >
-                      Delete
+                      Xóa
                     </button>
                   </div>
                 </div>
@@ -116,7 +116,7 @@ function AddressInfo({
                   loading="eager"
                 />
 
-                <h4>No addresses found</h4>
+                <h4>Không có địa chỉ nào</h4>
               </div>
             </div>
           )}

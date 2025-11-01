@@ -13,13 +13,13 @@ function OrderHistory() {
   const { orders, isLoading, totalItems, totalPages, currentPage } =
     useGetOrders(user?.id || "");
   const array = [
-    { status: "", name: "All" },
-    { status: 0, name: "Pending Confirmation" },
-    { status: 1, name: "Confirmed" },
-    { status: 2, name: "Delivering" },
-    { status: 3, name: "Delivered Successfully" },
-    { status: 4, name: "Cancelled" },
-    { status: 5, name: "Returned order" },
+    { status: "", name: "Tất cả" },
+    { status: 0, name: "Chờ xác nhận" },
+    { status: 1, name: "Xác nhận" },
+    { status: 2, name: "Đang giao" },
+    { status: 3, name: "Giao thành công" },
+    { status: 4, name: "Đã hủy" },
+    { status: 5, name: "Trả hàng" },
   ];
 
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -39,7 +39,7 @@ function OrderHistory() {
   return (
     <div className="w-full max-w-full flex-1 sm:px-[15px] px-[10px]">
       <div className="flex justify-between items-center mb-[20px]">
-        <h2>Order history</h2>
+        <h2>Đơn hàng</h2>
 
         <select
           onChange={handleStatusChange}
@@ -82,17 +82,17 @@ function OrderHistory() {
                     }`}
                   >
                     {order.status === 0
-                      ? "Pending Confirmation"
+                      ? "Chờ xác nhận"
                       : order.status === 1
-                      ? "Confirmed"
+                      ? "Xác nhận"
                       : order.status === 2
-                      ? "Delivering"
+                      ? "Đang giao"
                       : order.status === 3
-                      ? "Delivered Successfully"
+                      ? "Giao thành công"
                       : order.status === 4
-                      ? "Cancelled"
+                      ? "Đã hủy"
                       : order.status === 5
-                      ? "Returned"
+                      ? "Trả hàng"
                       : ""}
                   </p>
                 </div>
@@ -159,14 +159,14 @@ function OrderHistory() {
               <div className="py-[15px]">
                 <div className="flex justify-between items-center flex-wrap gap-[10px]">
                   <h5 className="font-medium">
-                    Total: {order.total.toLocaleString("vi-VN")}₫
+                    Tổng tiền: {order.total.toLocaleString("vi-VN")}₫
                   </h5>
 
                   <Link
                     to={`/order/${order.orderCode}`}
                     className="text-white text-[0.9rem] font-medium px-[10px] py-[6px] bg-[#C62028]"
                   >
-                    View Details
+                    Xem chi tiết
                   </Link>
                 </div>
               </div>
@@ -182,7 +182,7 @@ function OrderHistory() {
                 loading="eager"
               />
 
-              <h4>No orders found</h4>
+              <h4>Không có đơn hàng nào</h4>
             </div>
           </div>
         )}

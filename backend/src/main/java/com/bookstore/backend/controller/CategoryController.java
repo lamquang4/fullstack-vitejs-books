@@ -19,21 +19,27 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
- @GetMapping
- public ResponseEntity<?> getAllCategories(
-        @RequestParam(defaultValue = "1") int page,
-        @RequestParam(defaultValue = "12") int limit,
-        @RequestParam(required = false) String q,
-        @RequestParam(required = false) Integer status
-) {
-    Page<Category> categoryPage = categoryService.getAllCategories(page, limit, q, status);
+    @GetMapping
+    public ResponseEntity<?> getAllCategories(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "12") int limit,
+            @RequestParam(required = false) String q,
+            @RequestParam(required = false) Integer status
+    ) {
+        Page<Category> categoryPage = categoryService.getAllCategories(page, limit, q, status);
 
-    return ResponseEntity.ok(Map.of(
-        "categories", categoryPage.getContent(),
-        "totalPages", categoryPage.getTotalPages(),
-        "total", categoryPage.getTotalElements()
-    ));
-}
+        return ResponseEntity.ok(Map.of(
+            "categories", categoryPage.getContent(),
+            "totalPages", categoryPage.getTotalPages(),
+            "total", categoryPage.getTotalElements()
+        ));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Category>> getAllCategories1() {
+        List<Category> categories = categoryService.getAllCategories1();
+        return ResponseEntity.ok(categories);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Category> getCategoryById(@PathVariable String id) {
@@ -42,11 +48,11 @@ public class CategoryController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-@GetMapping("/active")
-public ResponseEntity<Map<String, Object>> getActiveCategoriesWithActiveBooks() {
-    List<Category> categories = categoryService.getActiveCategoriesWithActiveBooks();
-    return ResponseEntity.ok(Map.of("categories", categories));
-}
+    @GetMapping("/active")
+    public ResponseEntity<Map<String, Object>> getActiveCategoriesWithActiveBooks() {
+        List<Category> categories = categoryService.getActiveCategoriesWithActiveBooks();
+        return ResponseEntity.ok(Map.of("categories", categories));
+    }
 
     @PostMapping
     public Category createCategory(@RequestBody Category category) {

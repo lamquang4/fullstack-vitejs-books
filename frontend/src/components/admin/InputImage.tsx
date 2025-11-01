@@ -51,7 +51,7 @@ function InputImage({
               />
             </svg>
 
-            <p className="mb-2 font-semibold">Click to upload, drag or drop</p>
+            <p className="mb-2 font-semibold">Bấm để tải, kéo hoặc thả</p>
             <p>PNG, JPG, WEBP</p>
           </div>
         ) : (

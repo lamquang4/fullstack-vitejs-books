@@ -12,9 +12,9 @@ export function useAddItemToCart() {
         import.meta.env.VITE_BACKEND_URL
       }/api/cart?userId=${userId}&bookId=${bookId}&quantity=${quantity}`;
       await axios.post(url);
-      toast.success("Add book to cart successfully");
+      toast.success("Thêm vào giỏ hàng thành công");
     } catch (err: any) {
-      console.error("Error:", err);
+      console.error("Lỗi:", err);
       throw err;
     } finally {
       setIsLoading(false);

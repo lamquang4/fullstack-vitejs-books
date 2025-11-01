@@ -27,7 +27,7 @@ function SideMenuBar() {
           </svg>
 
           <div>
-            <h5 className="font-medium">Your account</h5>
+            <h5 className="font-medium">Tài khoản của</h5>
             <p className="font-normal">{user?.fullname}</p>
           </div>
         </div>
@@ -54,7 +54,7 @@ function SideMenuBar() {
               <circle cx="12" cy="8" r="5"></circle>
               <path d="M20 21a8 8 0 0 0-16 0"></path>
             </svg>
-            <span>My account</span>
+            <span>Thông tin tài khoản</span>
           </div>
         </Link>
 
@@ -81,7 +81,7 @@ function SideMenuBar() {
               <path d="M3.103 6.034h17.794"></path>
               <path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"></path>
             </svg>
-            <span>Order history</span>
+            <span>Đơn hàng</span>
           </div>
         </Link>
 
@@ -109,7 +109,7 @@ function SideMenuBar() {
               <path d="M18 22v-3"></path>
               <circle cx="10" cy="10" r="3"></circle>
             </svg>
-            <span>Address book</span>
+            <span>Sổ địa chỉ</span>
           </div>
         </Link>
 
@@ -135,7 +135,7 @@ function SideMenuBar() {
               <path d="M14 12h.01"></path>
               <path d="M22 20h-3"></path>
             </svg>
-            <span>Logout</span>
+            <span>Đăng xuất</span>
           </div>
         </button>
       </div>

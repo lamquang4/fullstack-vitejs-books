@@ -4,6 +4,8 @@ import com.bookstore.backend.service.PublisherService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -17,20 +19,26 @@ public class PublisherController {
         this.publisherService = publisherService;
     }
 
- @GetMapping
- public ResponseEntity<?> getPublishers(
-        @RequestParam(defaultValue = "1") int page,
-        @RequestParam(defaultValue = "12") int limit,
-        @RequestParam(required = false) String q
-) {
-    Page<Publisher> publisherPage = publisherService.getAllPublishers(page, limit, q);
+    @GetMapping
+    public ResponseEntity<?> getAllPublishers(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "12") int limit,
+            @RequestParam(required = false) String q
+    ) {
+        Page<Publisher> publisherPage = publisherService.getAllPublishers(page, limit, q);
 
-    return ResponseEntity.ok(Map.of(
-        "publishers", publisherPage.getContent(),
-        "totalPages", publisherPage.getTotalPages(),
-        "total", publisherPage.getTotalElements()
-    ));
-}
+        return ResponseEntity.ok(Map.of(
+            "publishers", publisherPage.getContent(),
+            "totalPages", publisherPage.getTotalPages(),
+            "total", publisherPage.getTotalElements()
+        ));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Publisher>> getAllPublishers1() {
+        List<Publisher> publishers = publisherService.getAllPublishers1();
+        return ResponseEntity.ok(publishers);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Publisher> getPublisherById(@PathVariable String id) {

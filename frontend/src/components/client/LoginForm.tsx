@@ -43,7 +43,7 @@ function LoginForm() {
           <div className="flex items-center justify-center">
             <div className="max-w-sm w-full">
               <h2 className="uppercase mb-[20px] text-center text-[#C62028]">
-                Login
+                Đăng nhập
               </h2>
               <form className="space-y-[15px]" onSubmit={handleSubmit}>
                 <div className="space-y-[5px]">
@@ -59,14 +59,14 @@ function LoginForm() {
                     value={data.email}
                     onChange={handleChange}
                     className="text-[0.9rem] block w-full px-3 py-2 border border-gray-200"
-                    placeholder="Enter email"
+                    placeholder="Nhập email"
                     required
                   />
                 </div>
 
                 <div className="space-y-[5px]">
                   <label htmlFor="" className="block text-[0.9rem] font-medium">
-                    Password
+                    Mật khẩu
                   </label>
 
                   <div className="relative">
@@ -75,7 +75,7 @@ function LoginForm() {
                       name="password"
                       value={data.password}
                       onChange={handleChange}
-                      placeholder="Enter password"
+                      placeholder="Nhập mật khẩu"
                       className="text-[0.9rem] block w-full  px-3 pr-12 py-2 border border-gray-200"
                       required
                     />
@@ -99,13 +99,13 @@ function LoginForm() {
                   type="submit"
                   className="w-full bg-[#C62028] text-white focus:outline-none font-semibold rounded-sm text-[0.9rem] px-5 py-2.5 text-center"
                 >
-                  Login
+                  Đăng nhập
                 </button>
 
                 <p className="flex text-black gap-1.5 justify-center font-medium">
-                  Don't have an account yet?
+                  Bạn chưa có tài khoản ư?
                   <Link to="/register" className="text-blue-400 font-medium">
-                    Register
+                    Đăng ký
                   </Link>
                 </p>
               </form>
@@ -117,7 +117,7 @@ function LoginForm() {
       {isLoading && (
         <Overplay IndexForZ={50}>
           <Loading height={0} size={55} color="white" thickness={8} />
-          <h4 className="text-white">Please wait a moment...</h4>
+          <h4 className="text-white">Vui lòng chờ giây lát...</h4>
         </Overplay>
       )}
     </>

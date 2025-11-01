@@ -19,11 +19,11 @@ function Address() {
 
   const array = [
     {
-      name: "Home",
+      name: "Trang chủ",
       href: "/",
     },
     {
-      name: "Address book",
+      name: "Sổ địa chỉ",
     },
   ];
 

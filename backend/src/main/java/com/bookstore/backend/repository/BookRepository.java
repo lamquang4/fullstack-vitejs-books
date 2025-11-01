@@ -96,6 +96,224 @@ Page<Book> findByDiscountGreaterThanAndStatusAndTitleContainingIgnoreCase(
        @Query("SELECT b FROM Book b WHERE b.status = :status AND b.category.slug = :slug ORDER BY (b.price - b.discount) DESC")
        Page<Book> findByCategorySlugAndStatusOrderByEffectivePriceDesc(@Param("slug") String slug, @Param("status") int status, Pageable pageable);
 
+@Query("""
+    SELECT b FROM Book b
+    LEFT JOIN OrderDetail od ON od.book = b
+    LEFT JOIN od.order o
+    WHERE b.status = :status 
+      AND (o.status = 3 OR o.id IS NULL)
+      AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) >= COALESCE(:min, 0))
+      AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) <= COALESCE(:max, 999999999))
+    GROUP BY b
+    ORDER BY SUM(COALESCE(od.quantity, 0)) DESC
+""")
+Page<Book> findByStatusAndPriceRangeOrderByTotalSold(@Param("status") int status,
+                                                     @Param("min") Integer min,
+                                                     @Param("max") Integer max,
+                                                     Pageable pageable);
+
+@Query("""
+    SELECT b FROM Book b
+    WHERE b.status = :status
+      AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) >= COALESCE(:min, 0))
+      AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) <= COALESCE(:max, 999999999))
+""")
+Page<Book> findByStatusAndPriceRange(
+        @Param("status") int status,
+        @Param("min") Integer min,
+        @Param("max") Integer max,
+        Pageable pageable
+);
+
+@Query("""
+    SELECT b FROM Book b
+    WHERE b.status = :status
+      AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) >= COALESCE(:min, 0))
+      AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) <= COALESCE(:max, 999999999))
+    ORDER BY (CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) ASC
+""")
+Page<Book> findByStatusAndPriceRangeOrderByEffectivePriceAsc(
+        @Param("status") int status,
+        @Param("min") Integer min,
+        @Param("max") Integer max,
+        Pageable pageable
+);
+
+@Query("""
+    SELECT b FROM Book b
+    WHERE b.status = :status
+      AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) >= COALESCE(:min, 0))
+      AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) <= COALESCE(:max, 999999999))
+    ORDER BY (CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) DESC
+""")
+Page<Book> findByStatusAndPriceRangeOrderByEffectivePriceDesc(
+        @Param("status") int status,
+        @Param("min") Integer min,
+        @Param("max") Integer max,
+        Pageable pageable
+);
+
+@Query("""
+    SELECT b FROM Book b
+    WHERE b.status = :status
+      AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) >= COALESCE(:min, 0))
+      AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) <= COALESCE(:max, 999999999))
+      AND (
+          LOWER(b.title) LIKE LOWER(CONCAT('%', :q, '%'))
+       OR LOWER(b.author.fullname) LIKE LOWER(CONCAT('%', :q, '%'))
+       OR LOWER(b.publisher.name) LIKE LOWER(CONCAT('%', :q, '%'))
+       OR LOWER(b.category.name) LIKE LOWER(CONCAT('%', :q, '%'))
+      )
+""")
+Page<Book> searchByTitleAuthorPublisherCategoryAndPrice(
+        @Param("q") String q,
+        @Param("status") Integer status,
+        @Param("min") Integer min,
+        @Param("max") Integer max,
+        Pageable pageable
+);
+
+@Query("""
+    SELECT b FROM Book b
+    WHERE b.discount > 0 AND b.status = :status
+      AND ((b.price - b.discount) >= COALESCE(:min, 0))
+      AND ((b.price - b.discount) <= COALESCE(:max, 999999999))
+""")
+Page<Book> findDiscountedAndPriceRange(@Param("status") int status,
+                                       @Param("min") Integer min,
+                                       @Param("max") Integer max,
+                                       Pageable pageable);
+
+@Query("""
+    SELECT b FROM Book b
+    WHERE b.discount > 0 AND b.status = :status
+      AND ((b.price - b.discount) >= COALESCE(:min, 0))
+      AND ((b.price - b.discount) <= COALESCE(:max, 999999999))
+    ORDER BY (b.price - b.discount) ASC
+""")
+Page<Book> findDiscountedAndPriceRangeOrderByEffectivePriceAsc(@Param("status") int status,
+                                                               @Param("min") Integer min,
+                                                               @Param("max") Integer max,
+                                                               Pageable pageable);
+
+@Query("""
+    SELECT b FROM Book b
+    WHERE b.discount > 0 AND b.status = :status
+      AND ((b.price - b.discount) >= COALESCE(:min, 0))
+      AND ((b.price - b.discount) <= COALESCE(:max, 999999999))
+    ORDER BY (b.price - b.discount) DESC
+""")
+Page<Book> findDiscountedAndPriceRangeOrderByEffectivePriceDesc(@Param("status") int status,
+                                                                @Param("min") Integer min,
+                                                                @Param("max") Integer max,
+                                                                Pageable pageable);
+
+@Query("""
+    SELECT b FROM Book b
+    LEFT JOIN OrderDetail od ON od.book = b
+    LEFT JOIN od.order o
+    WHERE b.discount > 0 AND b.status = :status AND (o.status = 3 OR o.id IS NULL)
+      AND ((b.price - b.discount) >= COALESCE(:min, 0))
+      AND ((b.price - b.discount) <= COALESCE(:max, 999999999))
+    GROUP BY b
+    ORDER BY SUM(COALESCE(od.quantity, 0)) DESC
+""")
+Page<Book> findDiscountedAndPriceRangeOrderByTotalSold(@Param("status") int status,
+                                                       @Param("min") Integer min,
+                                                       @Param("max") Integer max,
+                                                       Pageable pageable);
+
+@Query("""
+    SELECT b FROM Book b
+    WHERE b.discount > 0 AND b.status = :status
+      AND ((b.price - b.discount) >= COALESCE(:min, 0))
+      AND ((b.price - b.discount) <= COALESCE(:max, 999999999))
+      AND (
+          LOWER(b.title) LIKE LOWER(CONCAT('%', :q, '%'))
+       OR LOWER(b.author.fullname) LIKE LOWER(CONCAT('%', :q, '%'))
+       OR LOWER(b.publisher.name) LIKE LOWER(CONCAT('%', :q, '%'))
+       OR LOWER(b.category.name) LIKE LOWER(CONCAT('%', :q, '%'))
+      )
+""")
+Page<Book> searchDiscountedActiveCategoryAndPrice(@Param("q") String q,
+                                                  @Param("status") int status,
+                                                  @Param("min") Integer min,
+                                                  @Param("max") Integer max,
+                                                  Pageable pageable);
+
+                                                  @Query("""
+    SELECT b FROM Book b
+    WHERE b.category.slug = :slug AND b.status = :status
+      AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) >= COALESCE(:min, 0))
+      AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) <= COALESCE(:max, 999999999))
+""")
+Page<Book> findByCategorySlugAndStatusAndPriceRange(@Param("slug") String slug,
+                                                    @Param("status") int status,
+                                                    @Param("min") Integer min,
+                                                    @Param("max") Integer max,
+                                                    Pageable pageable);
+
+@Query("""
+    SELECT b FROM Book b
+    WHERE b.category.slug = :slug AND b.status = :status
+      AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) >= COALESCE(:min, 0))
+      AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) <= COALESCE(:max, 999999999))
+    ORDER BY (CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) ASC
+""")
+Page<Book> findByCategorySlugAndStatusAndPriceRangeOrderByEffectivePriceAsc(@Param("slug") String slug,
+                                                                            @Param("status") int status,
+                                                                            @Param("min") Integer min,
+                                                                            @Param("max") Integer max,
+                                                                            Pageable pageable);
+
+@Query("""
+    SELECT b FROM Book b
+    WHERE b.category.slug = :slug AND b.status = :status
+      AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) >= COALESCE(:min, 0))
+      AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) <= COALESCE(:max, 999999999))
+    ORDER BY (CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) DESC
+""")
+Page<Book> findByCategorySlugAndStatusAndPriceRangeOrderByEffectivePriceDesc(@Param("slug") String slug,
+                                                                             @Param("status") int status,
+                                                                             @Param("min") Integer min,
+                                                                             @Param("max") Integer max,
+                                                                             Pageable pageable);
+
+@Query("""
+    SELECT b FROM Book b
+    LEFT JOIN OrderDetail od ON od.book = b
+    LEFT JOIN od.order o
+    WHERE b.category.slug = :slug AND b.status = :status AND (o.status = 3 OR o.id IS NULL)
+      AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) >= COALESCE(:min, 0))
+      AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) <= COALESCE(:max, 999999999))
+    GROUP BY b
+    ORDER BY SUM(COALESCE(od.quantity, 0)) DESC
+""")
+Page<Book> findByCategorySlugAndStatusAndPriceRangeOrderByTotalSold(@Param("slug") String slug,
+                                                                    @Param("status") int status,
+                                                                    @Param("min") Integer min,
+                                                                    @Param("max") Integer max,
+                                                                    Pageable pageable);
+
+@Query("""
+    SELECT b FROM Book b
+    WHERE b.category.slug = :slug AND b.status = :status
+      AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) >= COALESCE(:min, 0))
+      AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) <= COALESCE(:max, 999999999))
+      AND (
+          LOWER(b.title) LIKE LOWER(CONCAT('%', :q, '%'))
+       OR LOWER(b.author.fullname) LIKE LOWER(CONCAT('%', :q, '%'))
+       OR LOWER(b.publisher.name) LIKE LOWER(CONCAT('%', :q, '%'))
+       OR LOWER(b.category.name) LIKE LOWER(CONCAT('%', :q, '%'))
+      )
+""")
+Page<Book> searchByCategoryAndTitleAuthorPublisherCategoryAndPrice(@Param("slug") String slug,
+                                                                   @Param("q") String q,
+                                                                   @Param("status") int status,
+                                                                   @Param("min") Integer min,
+                                                                   @Param("max") Integer max,
+                                                                   Pageable pageable);
+
        // bestseller
 @Query("""
     SELECT b

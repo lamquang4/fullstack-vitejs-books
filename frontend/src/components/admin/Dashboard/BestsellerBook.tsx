@@ -10,7 +10,7 @@ function BestsellerBook() {
     <>
       <div className="py-[1.3rem] px-[1.2rem] bg-[#f1f4f9]">
         <div className="flex justify-between items-center">
-          <h2 className=" text-[#74767d]">Top bestseller</h2>
+          <h2 className=" text-[#74767d]">Top bán chạy</h2>
         </div>
       </div>
 
@@ -18,14 +18,14 @@ function BestsellerBook() {
         <table className="w-[350%] border-collapse sm:w-[220%] xl:w-full text-[0.9rem]">
           <thead>
             <tr className="bg-[#E9EDF2] text-left">
-              <th className="p-[1rem]  ">Name</th>
-              <th className="p-[1rem]  ">Price</th>
-              <th className="p-[1rem]  ">Stock</th>
-              <th className="p-[1rem]  ">Author</th>
-              <th className="p-[1rem]  ">Publisher</th>
-              <th className="p-[1rem]  ">Category</th>
+              <th className="p-[1rem]  ">Tiêu đề</th>
+              <th className="p-[1rem]  ">Giá</th>
+              <th className="p-[1rem]  ">Số lượng</th>
+              <th className="p-[1rem]  ">Tác giả</th>
+              <th className="p-[1rem]  ">Nhà xuất bản</th>
+              <th className="p-[1rem]  ">Danh mục</th>
 
-              <th className="p-[1rem]  ">Action</th>
+              <th className="p-[1rem]  ">Hành động</th>
             </tr>
           </thead>
           <tbody>
@@ -83,8 +83,8 @@ function BestsellerBook() {
 
                     <td className="p-[1rem]  ">
                       <div className="flex flex-col gap-1.5">
-                        <p>In stock: {book.stock}</p>
-                        <p>Sold: {book.totalSold}</p>
+                        <p>Hiện có: {book.stock}</p>
+                        <p>Đã bán: {book.totalSold}</p>
                       </div>
                     </td>
 

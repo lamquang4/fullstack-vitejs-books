@@ -6,15 +6,15 @@ import type { Category } from "../../types/type";
 export default function useAddCategory() {
   const [isLoading, setIsLoading] = useState(false);
   const addCategory = async (data: Category) => {
-    const loadingToast = toast.loading("Adding...");
+    const loadingToast = toast.loading("Đang thêm...");
     setIsLoading(true);
     try {
       const url = `${import.meta.env.VITE_BACKEND_URL}/api/category`;
       await axios.post(url, data);
       toast.dismiss(loadingToast);
-      toast.success("Added successfully");
+      toast.success("Thêm thành công");
     } catch (err) {
-      console.error("Error:", err);
+      console.error("Lỗi:", err);
       throw err;
     } finally {
       toast.dismiss(loadingToast);

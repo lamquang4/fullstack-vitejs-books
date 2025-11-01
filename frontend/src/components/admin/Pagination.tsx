@@ -61,7 +61,7 @@ function Pagination({ totalPages, currentPage, limit, totalItems }: Props) {
       {totalItems > 0 && (
         <div className="flex items-center justify-center bg-white px-[15px] py-3 w-full my-[20px] flex-wrap gap-5 sm:gap-3 text-[0.9rem]">
           <div className="flex gap-2 items-center">
-            Rows per page
+            Số dòng mỗi trang
             <select
               value={limit}
               onChange={handleLimitChange}
@@ -76,7 +76,7 @@ function Pagination({ totalPages, currentPage, limit, totalItems }: Props) {
 
           <div>
             <p>
-              {start}-{end} of {totalItems}
+              {start}-{end} của {totalItems}
             </p>
           </div>
 

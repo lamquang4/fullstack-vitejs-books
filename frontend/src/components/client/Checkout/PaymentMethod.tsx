@@ -7,19 +7,19 @@ function PaymentMethod({ paymethod, setPaymethod }: Props) {
   const paymethods = [
     {
       image: "/assets/cod.png",
-      name: "Cash on delivery",
+      name: "Thanh toán khi nhận hàng",
       value: "cod",
     },
     {
       image: "/assets/momo.png",
-      name: "Pay with MOMO",
+      name: "Thanh toán bằng Momo",
       value: "momo",
     },
   ];
 
   return (
     <div className="space-y-[15px]">
-      <h4>Payment method</h4>
+      <h4>Phương thức thanh toán</h4>
       <div className="grid gap-[20px]">
         {paymethods.map((method, index) => (
           <div className="relative" key={index}>

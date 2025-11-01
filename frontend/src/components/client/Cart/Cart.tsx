@@ -16,7 +16,7 @@ function Cart() {
       ) : (
         <>
           <CartItem cart={cart!} mutate={mutate} />
-          <BookSlider books={books} title="You may also like" />
+          <BookSlider books={books} title="Bạn có thể thích" />
         </>
       )}
     </>

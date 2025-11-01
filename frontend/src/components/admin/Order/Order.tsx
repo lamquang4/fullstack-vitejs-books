@@ -4,7 +4,12 @@ import Pagination from "../Pagination";
 import FilterDropDownMenu from "../FilterDropDownMenu";
 import InputSearch from "../InputSearch";
 import Loading from "../../Loading";
-import { Link } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import useGetOrders from "../../../hooks/admin/useGetOrders";
 import useUpdateStatusOrder from "../../../hooks/admin/useUpdateStatusOrder";
 import { RiTruckLine } from "react-icons/ri";
@@ -12,6 +17,9 @@ import { LuClock } from "react-icons/lu";
 import { TbCancel, TbPackageImport } from "react-icons/tb";
 import StaticCard from "../StaticCard";
 function Order() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
   const {
     orders,
     totalByStatus,
@@ -34,46 +42,98 @@ function Order() {
   };
 
   const array = [
-    { name: "All", value: null },
-    { name: "Pending Payment", value: -1 },
-    { name: "Pending Confirmation", value: 0 },
-    { name: "Confirmed", value: 1 },
-    { name: "Delivering", value: 2 },
-    { name: "Delivered Successfully", value: 3 },
-    { name: "Cancelled", value: 4 },
-    { name: "Returned order", value: 5 },
+    { name: "Tất cả", value: null },
+    { name: "Chờ thanh toán", value: -1 },
+    { name: "Chờ xác nhận", value: 0 },
+    { name: "Xác nhận", value: 1 },
+    { name: "Đang giao", value: 2 },
+    { name: "Giao thành công", value: 3 },
+    { name: "Đã hủy", value: 4 },
+    { name: "Trả hàng", value: 5 },
   ];
 
   const array1 = [
     {
-      title: "Pending confirmation",
+      title: "Chờ xác nhận",
       number: totalByStatus?.["0"] || 0,
       icon1: <LuClock size={25} />,
     },
     {
-      title: "Delivered orders",
+      title: "Giao thành công",
       number: totalByStatus?.["3"] || 0,
       icon1: <RiTruckLine size={25} />,
     },
     {
-      title: "Cancelled orders",
+      title: "Đã hủy",
       number: totalByStatus?.["4"] || 0,
       icon1: <TbCancel size={25} />,
     },
     {
-      title: "Returned order",
+      title: "Trả hàng",
       number: totalByStatus?.["5"] || 0,
       icon1: <TbPackageImport size={25} />,
     },
   ];
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+
+    const start = formData.get("start") as string;
+    const end = formData.get("end") as string;
+
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (start) params.set("start", start);
+    else params.delete("start");
+
+    if (end) params.set("end", end);
+    else params.delete("end");
+
+    navigate(`${location.pathname}?${params.toString()}`);
+  };
+
   return (
     <>
       <div className="py-[1.3rem] px-[1.2rem] bg-[#f1f4f9] space-y-[20px]">
-        <h2 className=" text-[#74767d]">Orders</h2>
+        <h2 className=" text-[#74767d]">Đơn hàng ({totalItems})</h2>
 
         <div>
           <StaticCard array={array1} />
+        </div>
+
+        <div>
+          <form onSubmit={handleSubmit}>
+            <div className="flex gap-[15px] flex-wrap">
+              <div className="relative flex gap-1.5 items-center">
+                <label htmlFor="" className="text-[0.9rem]   font-medium">
+                  Từ:
+                </label>
+                <input
+                  required
+                  name="start"
+                  type="date"
+                  className="bg-gray-50 border border-gray-300 text-[0.9rem] p-[6px_10px] outline-none focus:border-gray-400  "
+                />
+              </div>
+
+              <div className="relative flex gap-1.5 items-center">
+                <label htmlFor="" className="text-[0.9rem]   font-medium">
+                  Đến:
+                </label>
+                <input
+                  required
+                  name="end"
+                  type="date"
+                  className="bg-gray-50 border border-gray-300 text-[0.9rem] p-[6px_10px] outline-none focus:border-gray-400  "
+                />
+              </div>
+
+              <button className="p-[6px_10px] text-[0.9rem] bg-[#22BAA0] text-white">
+                Tìm kiếm
+              </button>
+            </div>
+          </form>
         </div>
       </div>
 
@@ -85,18 +145,18 @@ function Order() {
         <table className="w-[350%] border-collapse sm:w-[220%] xl:w-full text-[0.9rem]">
           <thead>
             <tr className="bg-[#E9EDF2] text-left">
-              <th className="p-[1rem]  ">Order code</th>
+              <th className="p-[1rem]  ">Mã đơn</th>
 
-              <th className="p-[1rem]  ">Customer</th>
-              <th className="p-[1rem]  ">Account email</th>
+              <th className="p-[1rem]  ">Người đặt</th>
+              <th className="p-[1rem]  ">Tài khoản</th>
 
-              <th className="p-[1rem]  ">Payment method</th>
+              <th className="p-[1rem]  ">Thanh toán</th>
 
-              <th className="p-[1rem]  ">Total</th>
-              <th className="p-[1rem]  ">Created date</th>
+              <th className="p-[1rem]  ">Tổng tiền</th>
+              <th className="p-[1rem]  ">Ngày tạo</th>
               <th className="p-[1rem]   relative">
                 <FilterDropDownMenu
-                  title="Status"
+                  title="Tình trạng"
                   array={array}
                   paramName="status"
                 />
@@ -142,40 +202,38 @@ function Order() {
                       className="border border-gray-300 p-[6px_10px] text-[0.9rem] outline-none focus:border-gray-400  "
                     >
                       {order.status === -1 && (
-                        <option value="-1">Pending Payment</option>
+                        <option value="-1">Chờ thanh toán</option>
                       )}
                       {order.status === 0 && (
                         <>
-                          <option value="0">Pending Confirmation</option>
-                          <option value="1">Confirmed</option>
-                          <option value="4">Cancelled</option>
+                          <option value="0">Chờ xác nhận</option>
+                          <option value="1">Xác nhận</option>
+                          <option value="4">Hủy</option>
                         </>
                       )}
                       {order.status === 1 && (
                         <>
-                          <option value="1">Confirmed</option>
-                          <option value="2">Delivering</option>
-                          <option value="4">Cancelled</option>
+                          <option value="1">Xác nhận</option>
+                          <option value="2">Đang giao</option>
+                          <option value="4">Hủy</option>
                         </>
                       )}
                       {order.status === 2 && (
                         <>
-                          <option value="2">Delivering</option>
-                          <option value="3">Delivered Successfully</option>
-                          <option value="4">Cancelled</option>
+                          <option value="2">Đang giao</option>
+                          <option value="3">Giao thành công</option>
+                          <option value="4">Hủy</option>
                         </>
                       )}
                       {order.status === 3 && (
                         <>
-                          <option value="3">Delivered Successfully</option>
-                          <option value="5">Returned order</option>
+                          <option value="3">Giao thành công</option>
+                          <option value="5">Trả hàng</option>
                         </>
                       )}
-                      {order.status === 4 && (
-                        <option value="4">Cancelled</option>
-                      )}
+                      {order.status === 4 && <option value="4">Hủy</option>}
                       {order.status === 5 && (
-                        <option value="5">Returned order</option>
+                        <option value="5">Trả hàng</option>
                       )}
                     </select>
                   </td>

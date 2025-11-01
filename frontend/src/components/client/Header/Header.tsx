@@ -77,12 +77,12 @@ function Header() {
               <ul className="flex items-center gap-[30px] text-[0.9rem] font-semibold uppercase">
                 <li className="relative group">
                   <span className="cursor-pointer relative after:content-[''] after:absolute after:-bottom-2.5 after:left-0 after:w-full after:h-[1.5px] after:bg-black after:origin-left after:scale-x-0 after:transition-transform after:duration-200 after:ease-in-out hover:after:scale-x-100">
-                    Category
+                    Danh mục
                   </span>
 
                   <MenuDropDown
                     items={[
-                      { name: "All", href: "/books/all" },
+                      { name: "Tất cả", href: "/books/all" },
                       ...categories.map((c) => ({
                         name: c.name,
                         href: `/books/${c.slug}`,
@@ -92,7 +92,7 @@ function Header() {
                 </li>
 
                 <li className="cursor-pointer relative after:content-[''] after:absolute after:-bottom-2.5 after:left-0 after:w-full after:h-[1.5px] after:bg-black after:origin-left after:scale-x-0 after:transition-transform after:duration-200 after:ease-in-out hover:after:scale-x-100">
-                  <Link to={"/sale"}>Sale</Link>
+                  <Link to={"/sale"}>Giảm giá</Link>
                 </li>
               </ul>
             </nav>

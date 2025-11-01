@@ -6,7 +6,7 @@ function AccountInfo() {
   return (
     <div className="w-full flex-1 px-[15px] bg-white">
       <div className="space-y-[20px]">
-        <h2>My account</h2>
+        <h2>Thông tin tài khoản</h2>
 
         <div className="flex flex-col gap-[15px]">
           <div className="space-y-[5px]">
@@ -14,7 +14,7 @@ function AccountInfo() {
               htmlFor=""
               className="block text-left text-[0.9rem] font-medium"
             >
-              Fullname:
+              Họ tên:
             </label>
             <input
               type="text"

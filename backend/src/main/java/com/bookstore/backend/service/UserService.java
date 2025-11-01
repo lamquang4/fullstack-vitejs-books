@@ -110,11 +110,15 @@ public Optional<UserDTO> getUserById(String id) {
 // tạo user
   public UserDTO createUser(UserDTO dto) {
     if (!ValidationUtils.validateEmail(dto.getEmail())) {
-        throw new IllegalArgumentException("Invalid email");
+        throw new IllegalArgumentException("Email không hợp lệ");
     }
 
     if (userRepository.findByEmail(dto.getFullname()).isPresent()) {
-        throw new IllegalArgumentException("Email already exists");
+        throw new IllegalArgumentException("Email đã tồn tại");
+    }
+
+    if (dto.getPassword() == null || dto.getPassword().length() < 6) {
+        throw new IllegalArgumentException("Mật khẩu phải có ít nhất 6 ký tự");
     }
 
     User user = User.builder()
@@ -136,15 +140,23 @@ public Optional<UserDTO> getUserById(String id) {
   public UserDTO updateUser(String id, UserDTO userDTO) {
     return userRepository.findById(id).map(user -> {
         if (!ValidationUtils.validateEmail(userDTO.getEmail())) {
-            throw new IllegalArgumentException("Invalid email");
+            throw new IllegalArgumentException("Email không hợp lệ");
         }
 
         if (userRepository.findByEmail(userDTO.getFullname()).isPresent()) {
-        throw new IllegalArgumentException("Emailalready exists");
+        throw new IllegalArgumentException("Email đã tồn tại");
         }
 
+        if (userDTO.getEmail() != null) {
         user.setEmail(userDTO.getEmail());
+        }
+        if (userDTO.getFullname() != null) {
+         user.setFullname(userDTO.getFullname());
+        }
         if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
+            if (userDTO.getPassword().length() < 6) {
+                throw new IllegalArgumentException("Mật khẩu phải có ít nhất 6 ký tự");
+            }
             user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         }
         if (userDTO.getRole() != null) {
@@ -154,7 +166,6 @@ public Optional<UserDTO> getUserById(String id) {
             user.setStatus(userDTO.getStatus());
         }
         userRepository.save(user);
-
 
         userDTO.setId(user.getId());
         userDTO.setPassword(null); 
@@ -169,16 +180,16 @@ public Optional<UserDTO> getUserById(String id) {
                     user.setStatus(status);
                     return userRepository.save(user);
                 })
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Người dùng không tìm thấy"));
     }
 
     // Xóa user
     public void deleteUser(String id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Not found user"));
+                .orElseThrow(() -> new EntityNotFoundException("Người dùng không tìm thấy"));
 
         if (orderRepository.existsByUser(user)) {
-            throw new IllegalStateException("This user cannot be deleted because they have existing orders");
+            throw new IllegalStateException("Người dùng này không thể xóa vì đã mua hàng");
         }
 
         // xóa tất cả address và cart trước

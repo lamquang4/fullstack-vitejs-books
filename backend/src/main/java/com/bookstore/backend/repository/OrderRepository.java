@@ -21,6 +21,15 @@ public interface OrderRepository extends JpaRepository<Order, String> {
      Page<Order> findByOrderCodeContainingIgnoreCaseAndStatus(String orderCode, Integer status, Pageable pageable);
      Page<Order> findByStatus(Integer status, Pageable pageable);
 
+    Page<Order> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end, Pageable pageable);
+
+    Page<Order> findByStatusAndCreatedAtBetween(Integer status, LocalDateTime start, LocalDateTime end, Pageable pageable);
+
+    Page<Order> findByOrderCodeContainingIgnoreCaseAndCreatedAtBetween(String orderCode, LocalDateTime start, LocalDateTime end, Pageable pageable);
+
+    Page<Order> findByOrderCodeContainingIgnoreCaseAndStatusAndCreatedAtBetween(String orderCode, Integer status, LocalDateTime start, LocalDateTime end, Pageable pageable);
+
+
          @Query("SELECT o.status AS status, COUNT(o) AS total " +
            "FROM Order o " +
            "WHERE o.status IN :statuses " +

@@ -15,7 +15,7 @@ export default function useLogout() {
         window.location.href = "/login";
       }
     } catch (err) {
-      console.error("Logout error:", err);
+      console.error("Lỗi:", err);
     } finally {
       setIsLoading(false);
     }

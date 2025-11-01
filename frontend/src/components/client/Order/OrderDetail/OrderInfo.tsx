@@ -13,10 +13,10 @@ type Props = {
 
 function OrderInfo({ order, isLoading }: Props) {
   const steps = [
-    { label: "Pending Confirmation", icon: <LuArchive size={24} /> },
-    { label: "Confirmed", icon: <LuCheck size={24} /> },
-    { label: "Delivering", icon: <LuTruck size={24} /> },
-    { label: "Delivered Successfully", icon: <LuStar size={24} /> },
+    { label: "Chờ xác nhận", icon: <LuArchive size={24} /> },
+    { label: "Xác nhận", icon: <LuCheck size={24} /> },
+    { label: "Đang giao", icon: <LuTruck size={24} /> },
+    { label: "Giao thành công", icon: <LuStar size={24} /> },
   ];
   return (
     <div className="w-full flex-1 border border-gray-300 text-black">
@@ -26,30 +26,36 @@ function OrderInfo({ order, isLoading }: Props) {
         <div className=" pb-[20px]">
           <div className="flex justify-between px-[20px] py-[20px] border-b border-gray-300">
             <div className="flex flex-col gap-[8px]">
-              <h4 className="uppercase">Order detail</h4>
+              <h4 className="uppercase">Đơn hàng</h4>
 
-              <span>Code: {order?.orderCode}</span>
-              <span>
-                Date:{" "}
-                {order?.createdAt && (
-                  <>
-                    {new Date(order.createdAt).toLocaleDateString("vi-VN", {
-                      day: "2-digit",
-                      month: "2-digit",
-                      year: "numeric",
-                    })}{" "}
-                    {new Date(order.createdAt).toLocaleTimeString("vi-VN", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </>
-                )}
-              </span>
+              <p className="font-medium">
+                Mã: <span className="font-normal">{order?.orderCode}</span>
+              </p>
+
+              <p className="font-medium">
+                Ngày:{" "}
+                <span className="font-normal">
+                  {" "}
+                  {order?.createdAt && (
+                    <>
+                      {new Date(order.createdAt).toLocaleDateString("vi-VN", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      })}{" "}
+                      {new Date(order.createdAt).toLocaleTimeString("vi-VN", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </>
+                  )}
+                </span>
+              </p>
             </div>
 
-            <Link to={"/order"} className="text-center">
+            <Link to={"/admin/orders"} className="text-center">
               <span className="flex items-center font-semibold text-gray-600">
-                <RiArrowLeftSLine size={20} /> Back
+                <RiArrowLeftSLine size={20} /> Trở về
               </span>
             </Link>
           </div>
@@ -57,13 +63,13 @@ function OrderInfo({ order, isLoading }: Props) {
           {order?.status === 4 ? (
             <div className="relative flex items-center justify-center py-[20px] px-[20px] border-b border-gray-300">
               <span className="font-semibold text-center text-red-500 flex items-center gap-2">
-                <TbCancel size={25} /> Order Cancelled
+                <TbCancel size={25} /> Đã hủy đơn hàng
               </span>
             </div>
           ) : order?.status === 5 ? (
             <div className="relative flex items-center justify-center py-[20px] px-[20px] border-b border-gray-300">
               <span className="font-semibold text-center text-red-500 flex items-center gap-2">
-                <TbCancel size={25} /> Order Returned
+                <TbCancel size={25} /> Đã trả hàng
               </span>
             </div>
           ) : (
@@ -98,18 +104,18 @@ function OrderInfo({ order, isLoading }: Props) {
           )}
 
           <div className="px-[20px]   space-y-[8px] py-[20px]">
-            <h4 className="uppercase">Shipping information</h4>
+            <h4 className="uppercase">Thông tin giao hàng</h4>
 
             <p className="font-medium">
-              Fullname: <span className="font-normal">{order?.fullname}</span>
+              Họ tên: <span className="font-normal">{order?.fullname}</span>
             </p>
 
             <p className="font-medium">
-              Phone: <span className="font-normal">{order?.phone}</span>
+              Số điện thoại: <span className="font-normal">{order?.phone}</span>
             </p>
 
             <p className="font-medium">
-              Address:{" "}
+              Địa chỉ:{" "}
               <span className="font-normal">
                 {order?.speaddress}
                 {", "}
@@ -120,7 +126,7 @@ function OrderInfo({ order, isLoading }: Props) {
             </p>
 
             <p className="font-medium">
-              Payment method:{" "}
+              Phương thức thanh toán:{" "}
               <span className="font-normal uppercase">{order?.paymethod}</span>
             </p>
           </div>
@@ -129,10 +135,10 @@ function OrderInfo({ order, isLoading }: Props) {
             <table className="w-[200%] border-collapse text-[0.9rem] sm:w-full">
               <thead>
                 <tr className="text-left bg-[#F1F2F4]">
-                  <th className="p-[20px]  ">Name</th>
-                  <th className="p-[20px]  ">Price</th>
-                  <th className="p-[20px]  ">Quantity</th>
-                  <th className="p-[20px]  ">Subtotal</th>
+                  <th className="p-[20px]  ">Tiêu đề</th>
+                  <th className="p-[20px]  ">Giá</th>
+                  <th className="p-[20px]  ">Số lượng</th>
+                  <th className="p-[20px]  ">Thành tiền</th>
                 </tr>
               </thead>
               <tbody>
@@ -171,7 +177,7 @@ function OrderInfo({ order, isLoading }: Props) {
                           </p>
                         </div>
                       ) : (
-                        <p className="font-medium text-[#C62028]">
+                        <p className="font-medium">
                           {item.price.toLocaleString("vi-VN")}₫
                         </p>
                       )}
@@ -196,7 +202,7 @@ function OrderInfo({ order, isLoading }: Props) {
                 </tr>
 
                 <tr className="text-[1rem] font-semibold">
-                  <td className="p-[20px]  ">Total:</td>
+                  <td className="p-[20px]  ">Tổng cộng:</td>
                   <td className="p-[20px]  ">
                     {order?.total.toLocaleString("vi-VN")}₫
                   </td>

@@ -37,34 +37,37 @@ public class BookController {
         ));
     }
 
-     @GetMapping("/active")
-    public ResponseEntity<?> getAllActiveBooks(
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(required = false) String q,
-             @RequestParam(required = false) String sort
-    ) {
-        Page<BookDTO> bookPage = bookService.getAllActiveBooks(page, q, sort);
+ @GetMapping("/active")
+public ResponseEntity<?> getAllActiveBooks(
+        @RequestParam(defaultValue = "1") int page,
+        @RequestParam(required = false) String q,
+        @RequestParam(required = false) String sort,
+        @RequestParam(required = false) Integer min,
+        @RequestParam(required = false) Integer max
+) {
+    Page<BookDTO> bookPage = bookService.getAllActiveBooks(page, q, sort, min, max);
 
-        return ResponseEntity.ok(Map.of(
-                "books", bookPage.getContent(),
-                "totalPages", bookPage.getTotalPages(),
-                "total", bookPage.getTotalElements()
-        ));
-    }
+    return ResponseEntity.ok(Map.of(
+            "books", bookPage.getContent(),
+            "totalPages", bookPage.getTotalPages(),
+            "total", bookPage.getTotalElements()
+    ));
+}
 
-
-    @GetMapping("/active/discount")
+@GetMapping("/active/discount")
 public ResponseEntity<?> getDiscountedActiveBooks(
         @RequestParam(defaultValue = "1") int page,
         @RequestParam(required = false) String q,
-         @RequestParam(required = false) String sort
+        @RequestParam(required = false) String sort,
+        @RequestParam(required = false) Integer min,
+        @RequestParam(required = false) Integer max
 ) {
-    Page<BookDTO> bookPage = bookService.getDiscountedActiveBooks(page, q, sort);
+    Page<BookDTO> bookPage = bookService.getDiscountedActiveBooks(page, q, sort, min, max);
 
     return ResponseEntity.ok(Map.of(
-        "books", bookPage.getContent(),
-        "totalPages", bookPage.getTotalPages(),
-        "total", bookPage.getTotalElements()
+            "books", bookPage.getContent(),
+            "totalPages", bookPage.getTotalPages(),
+            "total", bookPage.getTotalElements()
     ));
 }
 
@@ -73,9 +76,11 @@ public ResponseEntity<?> getActiveBooksByCategory(
         @PathVariable("slug") String slug,
         @RequestParam(defaultValue = "1") int page,
         @RequestParam(required = false) String q,
-         @RequestParam(required = false) String sort
+        @RequestParam(required = false) String sort,
+        @RequestParam(required = false) Integer min,
+        @RequestParam(required = false) Integer max
 ) {
-    Page<BookDTO> bookPage = bookService.getActiveBooksByCategory(slug, page, q, sort);
+    Page<BookDTO> bookPage = bookService.getActiveBooksByCategory(slug, page, q, sort, min, max);
 
     return ResponseEntity.ok(Map.of(
             "books", bookPage.getContent(),

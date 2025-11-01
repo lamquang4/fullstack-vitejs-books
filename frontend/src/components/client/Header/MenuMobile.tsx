@@ -62,7 +62,7 @@ function MenuMobile({ isOpen, toggleMenu }: MenuMobileProps) {
             onClick={() => toggleOpen(`a3`)}
           >
             <div className="w-full flex justify-between items-center py-[15px]">
-              <p>Category</p>
+              <p>Danh mục</p>
               <button>
                 {openMenus[`a3`] ? (
                   <FaMinus className="text-[#3b3a3a]" size={15} />
@@ -82,7 +82,7 @@ function MenuMobile({ isOpen, toggleMenu }: MenuMobileProps) {
                   to={`/books/all`}
                   className="py-[15px] text-[0.9rem] text-[#444] font-medium hover:text-black"
                 >
-                  All
+                  Tất cả
                 </Link>
               </li>
               {categories.map((category) => (
@@ -100,7 +100,7 @@ function MenuMobile({ isOpen, toggleMenu }: MenuMobileProps) {
 
           <li className="border-b border-gray-300 cursor-pointer">
             <Link to={"/sale"} className="py-[15px]">
-              Sale
+              Giảm giá
             </Link>
           </li>
         </ul>

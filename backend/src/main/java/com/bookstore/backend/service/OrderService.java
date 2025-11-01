@@ -24,9 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.scheduling.annotation.Scheduled;
 import java.util.Random;
 import org.springframework.data.domain.Sort;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -118,19 +118,33 @@ public class OrderService {
     // order cho admin
 
     // lấy tất cả orders
-    public Page<OrderDTO> getAllOrders(int page, int limit, String orderCode, Integer status) {
+    public Page<OrderDTO> getAllOrders(int page, int limit, String orderCode, Integer status, LocalDate start, LocalDate end) {
         Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
         Page<Order> orderPage;
 
-        if ((orderCode != null && !orderCode.isEmpty()) && status != null) {
-            orderPage = orderRepository.findByOrderCodeContainingIgnoreCaseAndStatus(orderCode, status, pageable);
-        } else if (orderCode != null && !orderCode.isEmpty()) {
-            orderPage = orderRepository.findByOrderCodeContainingIgnoreCase(orderCode, pageable);
-        } else if (status != null) {
-            orderPage = orderRepository.findByStatus(status, pageable);
-        } else {
-            orderPage = orderRepository.findAll(pageable);
-        }
+  LocalDateTime startDateTime = null;
+    LocalDateTime endDateTime = null;
+    if (start != null) startDateTime = start.atStartOfDay();
+    if (end != null) endDateTime = end.atTime(LocalTime.MAX);
+
+    if ((orderCode != null && !orderCode.isEmpty()) && status != null && startDateTime != null && endDateTime != null) {
+        orderPage = orderRepository.findByOrderCodeContainingIgnoreCaseAndStatusAndCreatedAtBetween(orderCode, status, startDateTime, endDateTime, pageable);
+    } else if ((orderCode != null && !orderCode.isEmpty()) && startDateTime != null && endDateTime != null) {
+        orderPage = orderRepository.findByOrderCodeContainingIgnoreCaseAndCreatedAtBetween(orderCode, startDateTime, endDateTime, pageable);
+    } else if (status != null && startDateTime != null && endDateTime != null) {
+        orderPage = orderRepository.findByStatusAndCreatedAtBetween(status, startDateTime, endDateTime, pageable);
+    } else if (startDateTime != null && endDateTime != null) {
+        orderPage = orderRepository.findByCreatedAtBetween(startDateTime, endDateTime, pageable);
+    } else if ((orderCode != null && !orderCode.isEmpty()) && status != null) {
+        orderPage = orderRepository.findByOrderCodeContainingIgnoreCaseAndStatus(orderCode, status, pageable);
+    } else if (orderCode != null && !orderCode.isEmpty()) {
+        orderPage = orderRepository.findByOrderCodeContainingIgnoreCase(orderCode, pageable);
+    } else if (status != null) {
+        orderPage = orderRepository.findByStatus(status, pageable);
+    } else {
+        orderPage = orderRepository.findAll(pageable);
+    }
+
 
         return orderPage.map(this::convertToDTO);
     }
@@ -154,7 +168,7 @@ public class OrderService {
     // lấy 1 order theo id
     public OrderDTO getOrderById(String id) {
         Order order = orderRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Order not found"));
+            .orElseThrow(() -> new EntityNotFoundException("Đơn hàng không tìm thấy"));
         return convertToDTO(order);
     }
 
@@ -162,7 +176,7 @@ public class OrderService {
     @Transactional
     public OrderDTO updateOrderStatus(String orderId, Integer status) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new EntityNotFoundException("Order not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Đơn hàng không tìm thấy"));
 
         if ((status == 4 || status == 5) && order.getStatus() != 4 && order.getStatus() != 5) {
             // trả tồn kho
@@ -177,7 +191,7 @@ public class OrderService {
             // hoàn tiền momo
     if ("momo".equalsIgnoreCase(order.getPaymethod())) {
         Payment payment = paymentRepository.findFirstByOrder_OrderCode(order.getOrderCode())
-                .orElseThrow(() -> new EntityNotFoundException("Payment not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Thanh toán không tìm thấy"));
 
         Map<String, Object> payload = new HashMap<>();
         payload.put("orderId", order.getOrderCode());
@@ -187,7 +201,7 @@ public class OrderService {
         try {
             momoService.refundPayment(payload);
         } catch (Exception e) {
-            throw new RuntimeException("Refund Momo failed: " + e.getMessage(), e);
+            throw new RuntimeException("Hoàn tiền Momo thất bại " + e.getMessage(), e);
         }
 
         Payment refundPayment = Payment.builder()
@@ -212,7 +226,7 @@ public class OrderService {
     // tạo đơn hàng mặc định status = 0
     public OrderDTO createOrder(OrderDTO orderDTO, String userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Người dùng không tìm thấy"));
 
         // cod -> status = 0 (chờ xác nhận)
         // momo -> status = -1 (chờ thanh toán)
@@ -234,14 +248,14 @@ public class OrderService {
         if (orderDTO.getItems() != null && !orderDTO.getItems().isEmpty()) {
             List<OrderDetail> details = orderDTO.getItems().stream().map(d -> {
                 Book book = bookRepository.findById(d.getBookId())
-                        .orElseThrow(() -> new EntityNotFoundException("Book not found"));
+                        .orElseThrow(() -> new EntityNotFoundException("Sách không tìm thấy"));
 
-                // Kiểm tra tồn kho
+                // Kiểm tra số lượng
             if (d.getQuantity() > book.getStock()) {
-                    throw new IllegalArgumentException(book.getTitle() + " not enough stock");
+                    throw new IllegalArgumentException(book.getTitle() + " không đủ số lượng");
                 }
 
-                // Nếu thanh toán COD trừ tồn kho, thanh toán Momo không trừ tồn kho
+                // Nếu thanh toán COD trừ số lượng, thanh toán Momo không trừ tồn kho
             if ("cod".equalsIgnoreCase(orderDTO.getPaymethod())) {
                     book.setStock(book.getStock() - d.getQuantity());
                     bookRepository.save(book);
@@ -287,7 +301,7 @@ public class OrderService {
     // láy order của customer theo user id và order code
     public OrderDTO getOrderByUserAndCode(String userId, String orderCode) {
         Order order = orderRepository.findByUserIdAndOrderCode(userId, orderCode)
-                .orElseThrow(() -> new EntityNotFoundException("Order not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Đơn hàng không tìm thấy"));
         return convertToDTO(order);
     }
 
@@ -308,7 +322,7 @@ public class OrderService {
 
     public OrderDTO getOrderByOrderCode(String orderCode) {
         Order order = orderRepository.findByOrderCode(orderCode)
-            .orElseThrow(() -> new EntityNotFoundException("Order not found"));
+            .orElseThrow(() -> new EntityNotFoundException("Đơn hàng không tìm thấy"));
         return convertToDTO(order);
     }
 

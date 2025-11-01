@@ -7,12 +7,16 @@ import Image from "../../Image";
 function MainBanner() {
   const banners = [
     {
-      mobile: "/assets/banner/mainbanner1-mobile.png",
+      mobile: "/assets/banner/mainbanner1.png",
       desktop: "/assets/banner/mainbanner1.png",
     },
     {
-      mobile: "/assets/banner/mainbanner2-mobile.png",
+      mobile: "/assets/banner/mainbanner2.png",
       desktop: "/assets/banner/mainbanner2.png",
+    },
+    {
+      mobile: "/assets/banner/mainbanner3.png",
+      desktop: "/assets/banner/mainbanner3.png",
     },
   ];
   return (
@@ -30,7 +34,7 @@ function MainBanner() {
           >
             {banners.map((banner, index) => (
               <SwiperSlide key={index}>
-                <div className="relative block w-full">
+                <div className="relative block w-full h-full">
                   <div className="w-full">
                     <picture>
                       <source

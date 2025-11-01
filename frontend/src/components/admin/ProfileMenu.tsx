@@ -36,7 +36,7 @@ function ProfileMenu({ menuOpen, toggleMenu }: Props) {
           {menuOpen && (
             <div className="w-[185px] absolute top-full right-0 overflow-hidden z-20 duration-400 ease-in-out bg-white shadow-md rounded-md border border-gray-200 ">
               <p className="border-b p-2.5 border-gray-300 max-w-[210px] overflow-hidden text-ellipsis whitespace-nowrap text-center">
-                Hello, {user.fullname}
+                Xin chào, {user.fullname}
               </p>
 
               <Link
@@ -45,7 +45,7 @@ function ProfileMenu({ menuOpen, toggleMenu }: Props) {
               >
                 <div className="flex items-center gap-[8px]">
                   <FaRegCircleUser size={18} />
-                  <p>My account</p>
+                  <p>Tài khoản</p>
                 </div>
               </Link>
 
@@ -55,7 +55,7 @@ function ProfileMenu({ menuOpen, toggleMenu }: Props) {
               >
                 <div className="flex items-center gap-[8px] text-[#C62028] font-medium">
                   <RiLogoutBoxLine size={18} />
-                  <p>Logout</p>
+                  <p>Đăng xuất</p>
                 </div>
               </button>
             </div>

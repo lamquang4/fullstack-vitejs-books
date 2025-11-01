@@ -29,15 +29,15 @@ function Category() {
 
   const array = [
     {
-      name: "All",
+      name: "Tất cả",
       value: null,
     },
     {
-      name: "Show",
+      name: "Hiện",
       value: 1,
     },
     {
-      name: "Hidden",
+      name: "Ẩn",
       value: 0,
     },
   ];
@@ -72,13 +72,13 @@ function Category() {
     <>
       <div className="py-[1.3rem] px-[1.2rem] bg-[#f1f4f9]">
         <div className="flex justify-between items-center">
-          <h2 className=" text-[#74767d]">Categories ({totalItems})</h2>
+          <h2 className=" text-[#74767d]">Danh mục ({totalItems})</h2>
 
           <Link
             to={"/admin/add-category"}
             className="bg-[#C62028] border-0 cursor-pointer text-[0.9rem] font-medium w-[90px] !flex p-[10px_12px] items-center justify-center gap-[5px] text-white"
           >
-            <IoMdAddCircle size={22} /> Add
+            <IoMdAddCircle size={22} /> Thêm
           </Link>
         </div>
       </div>
@@ -91,15 +91,15 @@ function Category() {
         <table className="w-[350%] border-collapse sm:w-[220%] xl:w-full text-[0.9rem]">
           <thead>
             <tr className="bg-[#E9EDF2] text-left">
-              <th className="p-[1rem]   ">Name</th>
-              <th className="p-[1rem]   relative">
+              <th className="p-[1rem]">Tên</th>
+              <th className="p-[1rem] relative">
                 <FilterDropDownMenu
-                  title="Status"
+                  title="Tình trạng"
                   array={array}
                   paramName="status"
                 />
               </th>
-              <th className="p-[1rem]  ">Action</th>
+              <th className="p-[1rem]">Hành động</th>
             </tr>
           </thead>
           <tbody>
@@ -116,9 +116,9 @@ function Category() {
 
                   <td className="p-[1rem]  ">
                     {category.status === 1
-                      ? "Show"
+                      ? "Hiện"
                       : category.status === 0
-                      ? "Hidden"
+                      ? "Ẩn"
                       : ""}
                   </td>
 

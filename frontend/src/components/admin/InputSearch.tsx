@@ -28,7 +28,7 @@ function InputSearch() {
     <form onSubmit={handleSearch}>
       <input
         type="search"
-        placeholder="Search..."
+        placeholder="Tìm kiếm..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className="p-[6px_10px] border border-[#b0b0b0] outline-none text-[0.8rem] placeholder:text-[0.8rem]"

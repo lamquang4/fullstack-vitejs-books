@@ -15,7 +15,7 @@ export function useChangeQuantityItemCart() {
       }/api/cart/item/${id}?quantity=${quantity}`;
       await axios.put(url);
     } catch (err: any) {
-      console.error("Error:", err);
+      console.error("Lỗi:", err);
       throw err;
     } finally {
       setIsLoading(false);

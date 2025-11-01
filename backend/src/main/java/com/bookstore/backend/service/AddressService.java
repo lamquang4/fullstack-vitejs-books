@@ -27,16 +27,16 @@ public List<Address> getAddressesByUserId(String userId) {
 // lấy 1 address của customer dựa vào id
 public Address getAddressByIdAndUserId(String id, String userId) {
     return addressRepository.findByIdAndUserId(id, userId)
-            .orElseThrow(() -> new EntityNotFoundException("Address not found"));
+            .orElseThrow(() -> new EntityNotFoundException("Địa chỉ không tìm  thấy"));
 }
 
 // tạo address
  public Address createAddress(AddressDTO dto) {
         if (!ValidationUtils.validatePhone(dto.getPhone())) {
-            throw new IllegalArgumentException("Invalid phone number");
+            throw new IllegalArgumentException("Số điện thoại không hợp lệ");
         }
         User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Người dùng không tìm thấy"));
 
         Address address = Address.builder()
                 .fullname(dto.getFullname())
@@ -53,7 +53,7 @@ public Address getAddressByIdAndUserId(String id, String userId) {
     // cập nhật address
 public Address updateAddress(String id, AddressDTO dto) {
         if (!ValidationUtils.validatePhone(dto.getPhone())) {
-            throw new IllegalArgumentException("Invalid phone number");
+            throw new IllegalArgumentException("Số điện thoại không hợp lệ");
         }
 
         return addressRepository.findById(id)
@@ -66,19 +66,19 @@ public Address updateAddress(String id, AddressDTO dto) {
 
                     if (dto.getUserId() != null) {
                         User user = userRepository.findById(dto.getUserId())
-                                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                                .orElseThrow(() -> new EntityNotFoundException("Người dùng không tìm thấy"));
                         existingAddress.setUser(user);
                     }
 
                     return addressRepository.save(existingAddress);
                 })
-                .orElseThrow(() -> new EntityNotFoundException("Address not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Địa chỉ không tìm thấy"));
     }
 
     // xóa address
     public void deleteAddress(String id) {
         if (!addressRepository.existsById(id)) {
-            throw new EntityNotFoundException("Address not found");
+            throw new EntityNotFoundException("Địa chỉ không tìm thấy");
         }
         
         addressRepository.deleteById(id);

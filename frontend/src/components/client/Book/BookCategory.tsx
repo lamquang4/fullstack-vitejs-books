@@ -11,11 +11,11 @@ function BookCategory() {
 
   const array = [
     {
-      name: "Home",
+      name: "Trang chủ",
       href: "/",
     },
     {
-      name: slug === "all" ? "All books" : books[0]?.category?.name ?? slug,
+      name: slug === "all" ? "Tất cả sách" : books[0]?.category?.name,
     },
   ];
   return (
@@ -26,7 +26,7 @@ function BookCategory() {
         <div className="mx-auto max-w-[1200px] w-full">
           <BookList
             books={books}
-            category={slug}
+            category={slug === "all" ? "Tất cả sách" : books[0]?.category?.name}
             isLoading={isLoading}
             total={totalItems}
           />

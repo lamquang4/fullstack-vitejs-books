@@ -14,7 +14,7 @@ export function useRemoveItemCart() {
       const url = `${import.meta.env.VITE_BACKEND_URL}/api/cart/item/${id}`;
       await axios.delete(url);
     } catch (err: any) {
-      console.error("Error:", err);
+      console.error("Lỗi:", err);
       throw err;
     } finally {
       setIsLoading(false);

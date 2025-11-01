@@ -57,7 +57,7 @@ function CartItem({ cart, mutate }: Props) {
     const limit = stock > max ? max : stock; // số lượng tối đa có thể mua
 
     if (currentQuantity >= limit) {
-      toast.error("The maximum quantity available for this book is " + limit);
+      toast.error("Số lượng tối đa hiện có cho cuốn sách này là " + limit);
       return;
     }
 
@@ -79,14 +79,14 @@ function CartItem({ cart, mutate }: Props) {
     e.preventDefault();
 
     if (cart?.items.length === 0) {
-      toast.error("There’s nothing in your cart");
+      toast.error("Không có gì trong giỏ hết");
       navigate("/cart");
       return;
     }
 
     if (outOfStockItems.length > 0) {
       toast.error(
-        "Some products do not have enough stock for the quantity you want to purchase"
+        "Một số sản phẩm không đủ hàng so với số lượng bạn muốn mua trong giỏ hàng"
       );
       navigate("/cart");
       return;
@@ -98,7 +98,7 @@ function CartItem({ cart, mutate }: Props) {
   return (
     <section className="my-[40px] px-[15px] text-black">
       <div className="max-w-[1200px] mx-auto">
-        <h2 className="mb-[20px]">Cart ({totalQuantity})</h2>
+        <h2 className="mb-[20px]">Giỏ hàng ({totalQuantity})</h2>
         {cart?.items && cart.items.length > 0 ? (
           <form onSubmit={handleSubmit}>
             <div className="flex w-full gap-4 lg:flex-row flex-col">
@@ -223,9 +223,8 @@ function CartItem({ cart, mutate }: Props) {
                       {item.stock < item.quantity && (
                         <div>
                           <p className="text-[#C62028] font-semibold text-center">
-                            The product is currently out of sufficient stock.
-                            Please reduce the quantity or remove the item from
-                            your cart.
+                            Sản phẩm hiện tại không đủ số lượng. Vui lòng giảm
+                            số lượng hoặc xóa sản phẩm khỏi giỏ hàng
                           </p>
                         </div>
                       )}
@@ -238,7 +237,7 @@ function CartItem({ cart, mutate }: Props) {
 
               <div className="bg-[#F7F7F7] rounded-sm px-4 py-6 h-auto basis-[40%]">
                 <div className=" flex justify-between items-center">
-                  <h4>Total price</h4>
+                  <h4>Tổng cộng</h4>
                   <h4>{totalPrice.toLocaleString("vi-VN")}₫</h4>
                 </div>
 
@@ -249,14 +248,14 @@ function CartItem({ cart, mutate }: Props) {
                     type="submit"
                     className="text-[0.9rem] px-4 py-2.5 w-full font-semibold tracking-wide bg-[#C62028] text-white rounded-md"
                   >
-                    Checkout
+                    Thanh toán
                   </button>
 
                   <Link
                     className="text-[0.9rem] px-4 py-2.5 w-full tracking-wide bg-transparent hover:bg-gray-200 text-slate-900 border border-gray-300 rounded-md text-center font-semibold"
                     to={"/books/all"}
                   >
-                    Continue Shopping
+                    Tiếp tục mua hàng
                   </Link>
                 </div>
               </div>
@@ -272,13 +271,13 @@ function CartItem({ cart, mutate }: Props) {
                 loading="eager"
               />
 
-              <h4>There’s nothing in your cart</h4>
+              <h4>Không có gì trong giỏ hết</h4>
 
               <Link
                 to={"/books/all"}
                 className="text-[0.9rem] border-2 uppercase border-[#C62028] rounded-md font-semibold px-3 py-2 hover:bg-[#C62028] text-[#C62028] hover:text-white"
               >
-                Shop now
+                Mua hàng ngay
               </Link>
             </div>
           </div>

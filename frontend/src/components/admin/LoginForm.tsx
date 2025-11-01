@@ -44,7 +44,9 @@ function LoginForm() {
           <div className="relative bg-white rounded-lg shadow-md border border-gray-300 max-w-[850px] w-full h-[500px]">
             <div className="h-full grid grid-cols-1 sm:grid-cols-2 items-center">
               <div className="w-full px-4 sm:px-8 bg-white">
-                <h1 className="relative text-center uppercase mb-6">Login</h1>
+                <h1 className="relative text-center uppercase mb-6">
+                  Đăng nhập
+                </h1>
 
                 <form className="space-y-[15px]" onSubmit={handleSubmit}>
                   <div className="space-y-[5px]">
@@ -70,7 +72,7 @@ function LoginForm() {
                       htmlFor=""
                       className="block text-[0.9rem] font-medium"
                     >
-                      Password <span className="text-red-500">*</span>
+                      Mật khẩu <span className="text-red-500">*</span>
                     </label>
 
                     <div className="relative">
@@ -103,7 +105,7 @@ function LoginForm() {
                     type="submit"
                     className="w-full bg-[#C62028] text-[0.9rem] text-white focus:outline-none font-semibold rounded-sm px-5 py-2.5 text-center mt-6"
                   >
-                    Login
+                    Đăng nhập
                   </button>
                 </form>
               </div>
@@ -124,7 +126,7 @@ function LoginForm() {
       {isLoading && (
         <Overplay>
           <Loading height={0} size={55} color="white" thickness={8} />
-          <h4 className="text-white">Please wait a moment...</h4>
+          <h4 className="text-white">Vui lòng chờ trong giây lát ...</h4>
         </Overplay>
       )}
     </>

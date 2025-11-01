@@ -1,11 +1,12 @@
 package com.bookstore.backend.controller;
 import com.bookstore.backend.dto.OrderDTO;
 import com.bookstore.backend.service.OrderService;
-
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,13 +23,15 @@ public class OrderController {
 
     // order cho admin
 @GetMapping
-public ResponseEntity<?> getOrders(
+public ResponseEntity<?> getAllOrders(
         @RequestParam(defaultValue = "1") int page,
         @RequestParam(defaultValue = "12") int limit,
         @RequestParam(required = false) String q,
-        @RequestParam(required = false) Integer status
+        @RequestParam(required = false) Integer status,
+ @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end
 ) {
-    Page<OrderDTO> orderPage = orderService.getAllOrders(page, limit, q, status);
+    Page<OrderDTO> orderPage = orderService.getAllOrders(page, limit, q, status, start, end);
 
     List<Integer> statuses = Arrays.asList(0, 3, 4, 5);
     Map<Integer, Long> totalByStatus = orderService.getOrderCountByStatus(statuses);

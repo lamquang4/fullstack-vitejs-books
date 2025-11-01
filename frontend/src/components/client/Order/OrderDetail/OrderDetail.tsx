@@ -14,15 +14,15 @@ function OrderDetail() {
 
   const array = [
     {
-      name: "Home",
+      name: "Trang chủ",
       href: "/",
     },
     {
-      name: "Order",
+      name: "Đơn hàng",
       href: "/order",
     },
     {
-      name: `Order ${code}`,
+      name: `Mã đơn ${code}`,
     },
   ];
 
@@ -30,7 +30,7 @@ function OrderDetail() {
     if (isLoading) return;
 
     if (!order) {
-      toast.error("Order not found");
+      toast.error("Đơn hàng không tìm thấy");
       navigate("/order");
     }
   }, [isLoading, order, navigate]);

@@ -37,7 +37,7 @@ export function useInputImage(max: number = 1) {
       const incomingFiles = Array.from(files);
 
       if (previewImages.length + incomingFiles.length > max) {
-        toast.error(`The total number of images must not exceed ${max}.`);
+        toast.error(`Tổng số hình ảnh không được vượt quá ${max}.`);
         e.target.value = "";
         return;
       }

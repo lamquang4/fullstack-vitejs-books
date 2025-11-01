@@ -7,17 +7,17 @@ export default function useDeleteAddress() {
   const [isLoading, setIsLoading] = useState(false);
   const deleteAddress = async (id: string) => {
     const result = await Swal.fire({
-      title: `Confirm deletion?`,
-      text: `Are you sure you want to delete this address?`,
+      title: `Xác nhận xóa?`,
+      text: `Bạn có chắc muốn xóa địa chỉ này không?`,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "Cancel",
+      confirmButtonText: "Đồng ý",
+      cancelButtonText: "Hủy",
     });
 
     if (!result.isConfirmed || !id) return;
 
-    const loadingToast = toast.loading("Deleting...");
+    const loadingToast = toast.loading("Đang xóa...");
 
     setIsLoading(true);
 
@@ -25,9 +25,9 @@ export default function useDeleteAddress() {
       const url = `${import.meta.env.VITE_BACKEND_URL}/api/address/${id}`;
       await axios.delete(url);
       toast.dismiss(loadingToast);
-      toast.success("Deleted successfully");
+      toast.success("Xóa thành công");
     } catch (err) {
-      console.error("Error:", err);
+      console.error("Lỗi:", err);
       throw err;
     } finally {
       toast.dismiss(loadingToast);

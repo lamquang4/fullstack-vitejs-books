@@ -4,6 +4,8 @@ import com.bookstore.backend.service.AuthorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
+
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -18,19 +20,25 @@ public class AuthorController {
     }
 
     @GetMapping
- public ResponseEntity<?> getAuthors(
-        @RequestParam(defaultValue = "1") int page,
-        @RequestParam(defaultValue = "12") int limit,
-        @RequestParam(required = false) String q
-) {
-    Page<Author> authorPage = authorService.getAllAuthors(page, limit, q);
+    public ResponseEntity<?> getAllAuthors(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "12") int limit,
+            @RequestParam(required = false) String q
+    ) {
+        Page<Author> authorPage = authorService.getAllAuthors(page, limit, q);
 
-    return ResponseEntity.ok(Map.of(
-        "authors", authorPage.getContent(),
-        "totalPages", authorPage.getTotalPages(),
-        "total", authorPage.getTotalElements()
-    ));
-}
+        return ResponseEntity.ok(Map.of(
+            "authors", authorPage.getContent(),
+            "totalPages", authorPage.getTotalPages(),
+            "total", authorPage.getTotalElements()
+        ));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Author>> getAllAuthors1() {
+        List<Author> authors = authorService.getAllAuthors1();
+        return ResponseEntity.ok(authors);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Author> getAuthorById(@PathVariable String id) {

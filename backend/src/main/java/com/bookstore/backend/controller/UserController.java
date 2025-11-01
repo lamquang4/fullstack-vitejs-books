@@ -51,19 +51,19 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-public ResponseEntity<UserDTO> getUserById(@PathVariable String id) {
-    return userService.getUserById(id)
-            .map(userDTO -> ResponseEntity.ok(userDTO))
-            .orElseGet(() -> ResponseEntity.notFound().build());
-}
+    public ResponseEntity<UserDTO> getUserById(@PathVariable String id) {
+        return userService.getUserById(id)
+                .map(userDTO -> ResponseEntity.ok(userDTO))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
-      @PostMapping
+    @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO dto) {
         UserDTO created = userService.createUser(dto);
         return ResponseEntity.ok(created);
     }
 
-        @PutMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable String id, @RequestBody UserDTO dto) {
         UserDTO updated = userService.updateUser(id, dto);
         if (updated == null) {
@@ -72,7 +72,6 @@ public ResponseEntity<UserDTO> getUserById(@PathVariable String id) {
         return ResponseEntity.ok(updated);
     }
    
-
     @PatchMapping("/status/{id}")
     public ResponseEntity<?> updateUserStatus(
             @PathVariable String id,
@@ -80,7 +79,7 @@ public ResponseEntity<UserDTO> getUserById(@PathVariable String id) {
     ) {
         Integer status = body.get("status");
         if (status == null) {
-            throw new IllegalArgumentException("Status is required");
+            throw new IllegalArgumentException("Tình trạng không để trống");
         }
 
         User updated = userService.updateUserStatus(id, status);

@@ -4,11 +4,11 @@ import SideBarMenu from "../SideMenuBar";
 function Account() {
   const array = [
     {
-      name: "Home",
+      name: "Trang chủ",
       href: "/",
     },
     {
-      name: "Account",
+      name: "Thông tin tài khoản",
     },
   ];
   return (

@@ -51,14 +51,14 @@ function Pagination({ totalPages, currentPage, totalItems }: Props) {
 
   return (
     <div className="mt-[20px] px-[15px]">
-      <div className="flex items-center justify-center w-full flex-wrap gap-2.5 text-[#C62028] text-[0.9rem]">
+      <div className="flex items-center justify-center w-full flex-wrap gap-2.5 text-[0.9rem]">
         <button
           type="button"
-          className="h-8.5 w-8.5 flex justify-center items-center border border-[#C62028]"
+          className="h-8.5 w-8.5 flex justify-center items-center hover:bg-gray-100 text-[#C62028] border border-[#C62028] rounded-sm"
           disabled={currentPage <= 1}
           onClick={() => currentPage > 1 && goToPage(currentPage - 1)}
         >
-          <GrFormPrevious size={20} />
+          <GrFormPrevious size={22} />
         </button>
 
         {getPageNumbers().map((page, index) => {
@@ -68,7 +68,7 @@ function Pagination({ totalPages, currentPage, totalItems }: Props) {
                 type="button"
                 disabled
                 key={`ellipsis-${index}`}
-                className="group h-8.5 w-8.5 flex justify-center items-center   font-medium border border-[#C62028]"
+                className="group h-8.5 w-8.5 flex justify-center items-center text-[#C62028] rounded-sm font-semibold border border-[#C62028]"
               >
                 ...
               </button>
@@ -79,10 +79,10 @@ function Pagination({ totalPages, currentPage, totalItems }: Props) {
             <button
               key={page}
               onClick={() => goToPage(page as number)}
-              className={`h-8.5 w-8.5 border border-[#C62028] flex justify-center items-center font-medium   ${
+              className={`h-8.5 w-8.5 flex justify-center items-center text-[#C62028] font-medium rounded-sm ${
                 currentPage === page
                   ? "bg-[#C62028] text-white"
-                  : " hover:bg-gray-50"
+                  : " hover:bg-gray-100 border border-[#C62028]"
               }`}
             >
               {page}
@@ -93,9 +93,9 @@ function Pagination({ totalPages, currentPage, totalItems }: Props) {
         <button
           disabled={currentPage >= totalPages}
           onClick={() => currentPage < totalPages && goToPage(currentPage + 1)}
-          className="h-8.5 w-8.5 flex justify-center items-center  border border-[#C62028]"
+          className="h-8.5 w-8.5 flex justify-center items-center hover:bg-gray-100 text-[#C62028] border border-[#C62028] rounded-sm"
         >
-          <GrFormNext size={20} />
+          <GrFormNext size={22} />
         </button>
       </div>
     </div>

@@ -4,11 +4,11 @@ import BreadCrumb from "../BreadCrumb";
 function Order() {
   const array = [
     {
-      name: "Home",
+      name: "Trang chủ",
       href: "/",
     },
     {
-      name: "Order history",
+      name: "Đơn hàng",
     },
   ];
   return (

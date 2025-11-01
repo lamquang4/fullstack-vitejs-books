@@ -9,7 +9,6 @@ type Props = {
 };
 
 function PromotionBanner({ banner }: Props) {
-  // Kiểm tra banner có tồn tại
   if (!banner || !banner.desktop) return null;
 
   return (

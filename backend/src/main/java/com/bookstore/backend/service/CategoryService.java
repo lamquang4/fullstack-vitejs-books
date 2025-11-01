@@ -38,12 +38,17 @@ public class CategoryService {
         return categoryRepository.findAll(pageable);
     }
 
+    // lấy tất cả category không phân trang
+    public List<Category> getAllCategories1() {
+        return categoryRepository.findAll(Sort.by("createdAt").descending());
+    }
+
     // lấy các category có status = 1 và chứa sản phẩm có status = 1
     public List<Category> getActiveCategoriesWithActiveBooks() {
-    return categoryRepository.findActiveCategoriesWithActiveBooks();
-}
+        return categoryRepository.findActiveCategoriesWithActiveBooks();
+    }
 
-// lấy 1 category theo id
+    // lấy 1 category theo id
     public Optional<Category> getCategoryById(String id) {
         return categoryRepository.findById(id);
     }
@@ -51,7 +56,7 @@ public class CategoryService {
     // tạo category
     public Category createCategory(Category category) {
     if (categoryRepository.findByName(category.getName()).isPresent()) {
-        throw new IllegalArgumentException("Category name already exists");
+        throw new IllegalArgumentException("Tên danh mục đã tồn tại");
     }
         category.setSlug(SlugUtil.toSlug(category.getName()));
         return categoryRepository.save(category);
@@ -63,7 +68,7 @@ public class CategoryService {
                 .map(existingCategory -> {
                     categoryRepository.findByName(category.getName())
                             .filter(a -> !a.getId().equals(id))
-                            .ifPresent(a -> { throw new IllegalArgumentException("Category name already exists"); });
+                            .ifPresent(a -> { throw new IllegalArgumentException("Tên danh mục đã tồn tại"); });
                     category.setSlug(SlugUtil.toSlug(category.getName()));
 
                     existingCategory.setName(category.getName());
@@ -98,17 +103,17 @@ public Category updateCategoryStatus(String id, Integer status) {
 
                 return categoryRepository.save(category);
             })
-            .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+            .orElseThrow(() -> new EntityNotFoundException("Danh mục không tìm thấy"));
 }
 
 
     // xóa category
     public void deleteCategory(String id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Not found category"));
+                .orElseThrow(() -> new EntityNotFoundException("Danh mục không tìm thấy"));
 
         if (bookRepository.existsByCategory(category)) {
-            throw new IllegalStateException("This category cannot be deleted as they have books associated with them");
+            throw new IllegalStateException("Danh mục này không thể xóa vì vẫn còn sách liên kết với nó");
         }
 
         categoryRepository.deleteById(id);

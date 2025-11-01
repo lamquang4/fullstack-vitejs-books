@@ -17,7 +17,7 @@ function BookDetailSlug() {
     if (isLoading) return;
 
     if (!book) {
-      toast.error("Book not found");
+      toast.error("Sách không tìm thấy");
       navigate("/", { replace: true });
       return;
     }
@@ -25,7 +25,7 @@ function BookDetailSlug() {
 
   const array = [
     {
-      name: "Home",
+      name: "Trang chủ",
       href: "/",
     },
     {
@@ -46,7 +46,7 @@ function BookDetailSlug() {
           <BreadCrumb items={array} />
 
           {book && <BookDetail book={book} />}
-          <BookSlider books={books} title="You may also like" />
+          <BookSlider books={books} title="Bạn có thể thích" />
         </>
       )}
     </>

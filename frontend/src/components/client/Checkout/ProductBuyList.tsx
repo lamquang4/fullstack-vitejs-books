@@ -9,7 +9,7 @@ type Props = {
 function ProductBuyList({ productsInCart }: Props) {
   return (
     <div className="space-y-[15px] bg-white">
-      <h4>Order</h4>
+      <h4>Đơn hàng</h4>
 
       {productsInCart.map((item, index) => (
         <div

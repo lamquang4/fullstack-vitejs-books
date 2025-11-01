@@ -40,7 +40,7 @@ function SearchDesktop() {
           className="px-3 py-1.5 pr-7 w-[160px] border border-gray-300 text-[0.8rem] placeholder:text-[0.8rem] bg-transparent outline-none"
           required
           maxLength={50}
-          placeholder="Search..."
+          placeholder="Tìm kiếm..."
           autoComplete="off"
           value={search}
           onChange={(e) => setSearch(e.target.value)}

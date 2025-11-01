@@ -30,7 +30,7 @@ public class Book {
 @GeneratedValue(strategy = GenerationType.UUID)
 private String id;
 
-    @Column(nullable = false, unique = true, length = 50)    
+    @Column(nullable = false, unique = true, length = 100)    
     private String title;
 
     @Column(nullable = false)

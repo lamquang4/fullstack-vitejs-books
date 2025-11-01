@@ -34,11 +34,11 @@ function RegisterForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateEmail(data.email)) {
-      toast.error("Invalid email");
+      toast.error("Email không hợp lệ");
       return;
     }
     if (data.password.trim().length < 6) {
-      toast.error("Password must be at least 6 characters long");
+      toast.error("Mật khẩu phải có ít nhất 6 ký tự");
       return;
     }
     try {
@@ -67,7 +67,7 @@ function RegisterForm() {
           <div className="flex items-center justify-center">
             <div className="max-w-sm w-full">
               <h2 className="uppercase mb-[20px] text-center text-[#C62028]">
-                Register
+                Đăng ký
               </h2>
               <form className="space-y-[15px]" onSubmit={handleSubmit}>
                 <div className="space-y-[5px]">
@@ -75,7 +75,7 @@ function RegisterForm() {
                     htmlFor=""
                     className="block   text-[0.9rem] font-medium"
                   >
-                    Fullname
+                    Họ tên
                   </label>
                   <input
                     type="text"
@@ -83,7 +83,7 @@ function RegisterForm() {
                     value={data.fullname}
                     onChange={handleChange}
                     className="text-[0.9rem] block w-full px-3 py-2 border border-gray-200"
-                    placeholder="Enter fullname"
+                    placeholder="Nhập họ tên"
                     required
                   />
                 </div>
@@ -101,14 +101,14 @@ function RegisterForm() {
                     value={data.email}
                     onChange={handleChange}
                     className="text-[0.9rem] block w-full px-3 py-2 border border-gray-200"
-                    placeholder="Enter email"
+                    placeholder="Nhập email"
                     required
                   />
                 </div>
 
                 <div className="space-y-[5px]">
                   <label htmlFor="" className="block text-[0.9rem] font-medium">
-                    Password
+                    Mật khẩu
                   </label>
 
                   <div className="relative">
@@ -117,7 +117,7 @@ function RegisterForm() {
                       name="password"
                       value={data.password}
                       onChange={handleChange}
-                      placeholder="Enter password"
+                      placeholder="Nhập mật khẩu"
                       className="text-[0.9rem] block w-full  px-3 pr-12 py-2 border border-gray-200"
                       required
                     />
@@ -141,13 +141,13 @@ function RegisterForm() {
                   type="submit"
                   className="w-full bg-[#C62028] text-white focus:outline-none font-semibold rounded-sm text-[0.9rem] px-5 py-2.5 text-center"
                 >
-                  Register
+                  Đăng ký
                 </button>
 
                 <p className="flex gap-1.5 justify-center font-medium">
-                  Do you already have an account?
+                  Bạn đã có tài khoản?
                   <Link to="/login" className="text-blue-400 font-medium">
-                    Login
+                    Đăng nhập
                   </Link>
                 </p>
               </form>

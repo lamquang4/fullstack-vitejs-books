@@ -38,13 +38,13 @@ function Author() {
     <>
       <div className="py-[1.3rem] px-[1.2rem] bg-[#f1f4f9]">
         <div className="flex justify-between items-center">
-          <h2 className=" text-[#74767d]">Authors ({totalItems})</h2>
+          <h2 className=" text-[#74767d]">Tác giả ({totalItems})</h2>
 
           <Link
             to={"/admin/add-author"}
             className="bg-[#C62028] border-0 cursor-pointer text-[0.9rem] font-medium w-[90px] !flex p-[10px_12px] items-center justify-center gap-[5px] text-white"
           >
-            <IoMdAddCircle size={22} /> Add
+            <IoMdAddCircle size={22} /> Thêm
           </Link>
         </div>
       </div>
@@ -57,9 +57,9 @@ function Author() {
         <table className="w-[350%] border-collapse sm:w-[220%] xl:w-full text-[0.9rem]">
           <thead>
             <tr className="bg-[#E9EDF2] text-left">
-              <th className="p-[1rem]   ">Fullname</th>
+              <th className="p-[1rem]   ">Họ tên</th>
 
-              <th className="p-[1rem]  ">Action</th>
+              <th className="p-[1rem]  ">Hành động</th>
             </tr>
           </thead>
           <tbody>

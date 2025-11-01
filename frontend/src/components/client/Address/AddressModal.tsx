@@ -16,7 +16,14 @@ type Props = {
   addressesLength: number;
   userId: string;
 };
-function AddressModal({ isOpen, toggleMenu, mutateAddresses, addressesLength, addressId, userId }: Props) {
+function AddressModal({
+  isOpen,
+  toggleMenu,
+  mutateAddresses,
+  addressesLength,
+  addressId,
+  userId,
+}: Props) {
   const { provinces } = useGetProvinces();
   const { address, mutate, isLoading } = useGetAddress(addressId, userId);
   const { addAddress, isLoading: isLoadingAddAddress } = useAddAddress();
@@ -71,13 +78,13 @@ function AddressModal({ isOpen, toggleMenu, mutateAddresses, addressesLength, ad
     e.preventDefault();
 
     if (!validatePhone(data.phone)) {
-      toast.error("Invalid phone number");
+      toast.error("Số điện thoại không hợp lệ");
       mutate();
       return;
     }
 
     if (addressesLength === 5 && !addressId) {
-      toast.error("You can only save up to 5 addresses for your account");
+      toast.error("Bạn chỉ có thể lưu tối đa 5 địa chỉ cho tài khoản");
       mutate();
       return;
     }
@@ -122,7 +129,7 @@ function AddressModal({ isOpen, toggleMenu, mutateAddresses, addressesLength, ad
         <div className="relative w-full max-w-lg max-h-full">
           <div className="relative sm:p-[25px_20px] p-[25px_15px] bg-white z-20 space-y-[15px] rounded-lg">
             <div className="flex items-center justify-between">
-              <h4 className="uppercase">Your address</h4>
+              <h4 className="uppercase">Địa chỉ của bạn</h4>
 
               <button
                 type="button"
@@ -142,7 +149,7 @@ function AddressModal({ isOpen, toggleMenu, mutateAddresses, addressesLength, ad
                     htmlFor="fullname"
                     className="block text-[0.9rem] font-medium"
                   >
-                    Fullname
+                    Họ tên
                   </label>
                   <input
                     type="text"
@@ -151,7 +158,7 @@ function AddressModal({ isOpen, toggleMenu, mutateAddresses, addressesLength, ad
                     onChange={handleChange}
                     value={data.fullname}
                     className="bg-gray-50 border border-gray-300   text-[0.9rem] rounded-sm block w-full p-2 outline-0"
-                    placeholder="Fullname"
+                    placeholder="Họ tên"
                   />
                 </div>
 
@@ -160,7 +167,7 @@ function AddressModal({ isOpen, toggleMenu, mutateAddresses, addressesLength, ad
                     htmlFor="phone"
                     className="block text-[0.9rem] font-medium"
                   >
-                    Phone
+                    Số điện thoại
                   </label>
                   <input
                     type="number"
@@ -170,7 +177,7 @@ function AddressModal({ isOpen, toggleMenu, mutateAddresses, addressesLength, ad
                     onChange={handleChange}
                     value={data.phone}
                     className="bg-gray-50 border border-gray-300   text-[0.9rem] rounded-sm block w-full p-2 outline-0"
-                    placeholder="Phone"
+                    placeholder="Số điện thoại"
                   />
                 </div>
 
@@ -179,7 +186,7 @@ function AddressModal({ isOpen, toggleMenu, mutateAddresses, addressesLength, ad
                     htmlFor="speaddress"
                     className="block text-[0.9rem] font-medium"
                   >
-                    Specific address
+                    Địa chỉ cụ thể
                   </label>
                   <input
                     type="text"
@@ -197,7 +204,7 @@ function AddressModal({ isOpen, toggleMenu, mutateAddresses, addressesLength, ad
                     htmlFor="city"
                     className="block text-[0.9rem] font-medium"
                   >
-                    Province/city
+                    Tỉnh/thành phố
                   </label>
                   <select
                     name="cỉty"
@@ -212,7 +219,7 @@ function AddressModal({ isOpen, toggleMenu, mutateAddresses, addressesLength, ad
                     }
                     className="bg-gray-50 border border-gray-300   text-[0.9rem] rounded-sm block w-full p-2 outline-0"
                   >
-                    <option value="">Select province/city</option>
+                    <option value="">Chọn Tỉnh/thành phố</option>
                     {provinces?.map((province) => (
                       <option key={province.id} value={province.province}>
                         {province.province}
@@ -226,7 +233,7 @@ function AddressModal({ isOpen, toggleMenu, mutateAddresses, addressesLength, ad
                     htmlFor="ward"
                     className="block text-[0.9rem] font-medium"
                   >
-                    Ward/Commune
+                    Phường/xã
                   </label>
                   <select
                     name="ward"
@@ -235,7 +242,7 @@ function AddressModal({ isOpen, toggleMenu, mutateAddresses, addressesLength, ad
                     onChange={handleChange}
                     className="bg-gray-50 border border-gray-300   text-[0.9rem] rounded-sm block w-full p-2 outline-0"
                   >
-                    <option value="">Select ward/commune</option>
+                    <option value="">Chọn Phường/xã</option>
                     {selectedProvince?.wards.map((ward, idx) => (
                       <option key={idx} value={ward.name}>
                         {ward.name}
@@ -251,8 +258,8 @@ function AddressModal({ isOpen, toggleMenu, mutateAddresses, addressesLength, ad
                   className="px-[14px] py-[6px] bg-red-600 text-white text-[0.9rem] font-medium text-center rounded-sm hover:bg-red-700"
                 >
                   {isLoadingAddAddress || isLoadingUpdateAddress
-                    ? "saving..."
-                    : "Save"}
+                    ? "Đang lưu..."
+                    : "Lưu"}
                 </button>
               </div>
             </form>

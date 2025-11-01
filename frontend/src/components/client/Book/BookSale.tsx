@@ -9,11 +9,11 @@ function BookSale() {
 
   const array = [
     {
-      name: "Home",
+      name: "Trang chủ",
       href: "/",
     },
     {
-      name: "Sale",
+      name: "Giảm giá",
     },
   ];
   return (
@@ -24,7 +24,7 @@ function BookSale() {
         <div className="mx-auto max-w-[1200px] w-full">
           <BookList
             books={books}
-            category={"Sale"}
+            category={"Giảm giá"}
             isLoading={isLoading}
             total={totalItems}
           />

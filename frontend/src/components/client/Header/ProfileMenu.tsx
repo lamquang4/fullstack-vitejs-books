@@ -17,28 +17,28 @@ function ProfileMenu({ isOpen }: ProfileMenuProp) {
       {user ? (
         <div className="w-[180px] absolute top-[22px] right-[-40px] overflow-hidden z-20 bg-white shadow-md rounded-md font-normal">
           <p className="border-b p-2.5 border-gray-200 max-w-[210px] overflow-hidden text-ellipsis whitespace-nowrap text-center">
-            Hello, {user.fullname}
+            Xin chào, {user.fullname}
           </p>
 
           <Link
             to="/account"
             className="hover:bg-gray-100 w-full block p-2.5 text-[0.95rem]  "
           >
-            Account
+            Thông tin tài khoản
           </Link>
 
           <Link
             to="/order"
             className="hover:bg-gray-100 w-full block p-2.5 text-[0.95rem]  "
           >
-            Order history
+            Đơn hàng
           </Link>
 
           <Link
             to="/address"
             className="hover:bg-gray-100 w-full block p-2.5 text-[0.95rem]  "
           >
-            Address book
+            Sổ địa chỉ
           </Link>
 
           <button
@@ -46,7 +46,7 @@ function ProfileMenu({ isOpen }: ProfileMenuProp) {
             onClick={() => handleLogout("client")}
             className="hover:bg-gray-100 w-full block p-2.5 text-[0.95rem]   text-left"
           >
-            Logout
+            Đăng xuất
           </button>
         </div>
       ) : (
@@ -55,14 +55,14 @@ function ProfileMenu({ isOpen }: ProfileMenuProp) {
             to="/login"
             className="hover:bg-gray-100 w-full block p-2.5 text-[0.95rem]  "
           >
-            Login
+            Đăng nhập
           </Link>
 
           <Link
             to="/register"
             className="hover:bg-gray-100 w-full block p-2.5 text-[0.95rem]  "
           >
-            Register
+            Đăng ký
           </Link>
         </div>
       )}

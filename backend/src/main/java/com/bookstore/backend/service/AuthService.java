@@ -24,14 +24,14 @@ public class AuthService {
     // đăng nhập
     public LoginResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("Email or password is incorrect"));
+                .orElseThrow(() -> new IllegalArgumentException("Email hoặc mật khẩu không chính xác"));
 
        if (user.getStatus() == 0) {
-        throw new IllegalArgumentException("Account has been blocked");
+        throw new IllegalArgumentException("Tài khoản của bạn đã bị khóa");
        }
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("Email or password is incorrect");
+            throw new IllegalArgumentException("Email hoặc mật khẩu không chính xác");
         }
 
         // Tạo token

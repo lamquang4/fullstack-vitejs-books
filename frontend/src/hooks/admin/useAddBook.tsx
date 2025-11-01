@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 export default function useAddBook() {
   const [isLoading, setIsLoading] = useState(false);
   const addBook = async (formData: FormData) => {
-    const loadingToast = toast.loading("Adding...");
+    const loadingToast = toast.loading("Đang thêm...");
     setIsLoading(true);
     try {
       const url = `${import.meta.env.VITE_BACKEND_URL}/api/book`;
@@ -15,9 +15,9 @@ export default function useAddBook() {
         },
       });
       toast.dismiss(loadingToast);
-      toast.success("Added successfully");
+      toast.success("Thêm thành công");
     } catch (err) {
-      console.error("Error:", err);
+      console.error("Lỗi:", err);
       throw err;
     } finally {
       toast.dismiss(loadingToast);

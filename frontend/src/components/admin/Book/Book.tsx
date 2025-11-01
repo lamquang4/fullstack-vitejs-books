@@ -16,15 +16,15 @@ import useUpdateStatusBook from "../../../hooks/admin/useUpdateStatusBook";
 function Book() {
   const array = [
     {
-      name: "All",
+      name: "Tất cả",
       value: null,
     },
     {
-      name: "Show",
+      name: "Hiện",
       value: 1,
     },
     {
-      name: "Hidden",
+      name: "Ẩn",
       value: 0,
     },
   ];
@@ -73,13 +73,13 @@ function Book() {
     <>
       <div className="py-[1.3rem] px-[1.2rem] bg-[#f1f4f9]">
         <div className="flex justify-between items-center">
-          <h2 className=" text-[#74767d]">Book ({totalItems})</h2>
+          <h2 className=" text-[#74767d]">Sách ({totalItems})</h2>
 
           <Link
             to={"/admin/add-book"}
             className="bg-[#C62028] border-0 cursor-pointer text-[0.9rem] font-medium w-[90px] !flex p-[10px_12px] items-center justify-center gap-[5px] text-white"
           >
-            <IoMdAddCircle size={22} /> Add
+            <IoMdAddCircle size={22} /> Thêm
           </Link>
         </div>
       </div>
@@ -92,20 +92,20 @@ function Book() {
         <table className="w-[350%] border-collapse sm:w-[220%] xl:w-full text-[0.9rem]">
           <thead>
             <tr className="bg-[#E9EDF2] text-left">
-              <th className="p-[1rem]  ">Name</th>
-              <th className="p-[1rem]  ">Price</th>
-              <th className="p-[1rem]  ">Stock</th>
-              <th className="p-[1rem]  ">Author</th>
-              <th className="p-[1rem]  ">Publisher</th>
-              <th className="p-[1rem]  ">Category</th>
+              <th className="p-[1rem]  ">Tiêu đề</th>
+              <th className="p-[1rem]  ">Giá</th>
+              <th className="p-[1rem]  ">Số lượng</th>
+              <th className="p-[1rem]  ">Tác giả</th>
+              <th className="p-[1rem]  ">Nhà xuất bản</th>
+              <th className="p-[1rem]  ">Danh mục</th>
               <th className="p-[1rem]   relative">
                 <FilterDropDownMenu
-                  title="Status"
+                  title="Tình trạng"
                   array={array}
                   paramName="status"
                 />
               </th>
-              <th className="p-[1rem]  ">Action</th>
+              <th className="p-[1rem]  ">Hành động</th>
             </tr>
           </thead>
           <tbody>
@@ -163,8 +163,8 @@ function Book() {
 
                     <td className="p-[1rem]  ">
                       <div className="flex flex-col gap-1.5">
-                        <p>In stock: {book.stock}</p>
-                        <p>Sold: {book.totalSold}</p>
+                        <p>Hiện có: {book.stock}</p>
+                        <p>Đã bán: {book.totalSold}</p>
                       </div>
                     </td>
 
@@ -174,9 +174,9 @@ function Book() {
 
                     <td className="p-[1rem]  ">
                       {book.status === 1
-                        ? "Show"
+                        ? "Hiện"
                         : book.status === 0
-                        ? "Hidden"
+                        ? "Ẩn"
                         : ""}
                     </td>
 

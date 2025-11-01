@@ -148,7 +148,7 @@ public void updateCartItemQuantity(String cartItemId, int quantity) {
 @Transactional
 public void removeItemFromCart(String cartItemId) {
     CartItem item = cartItemRepository.findById(cartItemId)
-            .orElseThrow(() -> new EntityNotFoundException("Item not found in cart"));
+            .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy"));
     cartItemRepository.delete(item);
 }
 

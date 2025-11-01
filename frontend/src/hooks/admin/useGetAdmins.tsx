@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import useSWR from "swr";
 import type { User } from "../../types/type";
@@ -12,8 +12,7 @@ interface ResponseType {
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 export default function useGetAdmins() {
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
+  const [searchParams] = useSearchParams();
 
   const page = parseInt(searchParams.get("page") || "1", 10);
   const limit = parseInt(searchParams.get("limit") || "12", 10);

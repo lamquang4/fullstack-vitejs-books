@@ -5,15 +5,15 @@ import TextBoxEditor from "../TextBoxEditor/TextBoxEditor";
 import { Link } from "react-router-dom";
 import { useInputImage } from "../../../hooks/admin/useInputImage";
 import useAddBook from "../../../hooks/admin/useAddBook";
-import useGetCategories from "../../../hooks/admin/useGetCategories";
-import useGetAuthors from "../../../hooks/admin/useGetAuthors";
-import useGetPublishers from "../../../hooks/admin/useGetPublishers";
+import useGetCategories1 from "../../../hooks/admin/useGetCategories1";
+import useGetAuthors1 from "../../../hooks/admin/useGetAuthors1";
+import useGetPublishers1 from "../../../hooks/admin/useGetPublishers1";
 
 function AddBook() {
   const { addBook, isLoading } = useAddBook();
-  const { categories } = useGetCategories();
-  const { authors } = useGetAuthors();
-  const { publishers } = useGetPublishers();
+  const { categories } = useGetCategories1();
+  const { authors } = useGetAuthors1();
+  const { publishers } = useGetPublishers1();
 
   const [data, setData] = useState({
     title: "",
@@ -61,53 +61,53 @@ function AddBook() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (data.discount > data.price) {
-      toast.error("Discount cannot be greater than price");
+    if (Number(data.price) < Number(data.discount)) {
+      toast.error("Số tiền giảm không được lớn hơn giá gốc");
       return;
     }
 
-    if (data.discount < 0) {
-      toast.error("Discount amount must be greater than or equal 0");
+    if (Number(data.discount) < 0) {
+      toast.error("Số tiền giảm phải lớn hơn hoặc bằng 0");
       return;
     }
 
-    if (data.price <= 0) {
-      toast.error("Price must be greater than 0");
+    if (Number(data.price) <= 0) {
+      toast.error("Giá gốc phải lớn hơn 0");
       return;
     }
 
-    if (data.stock < 0) {
-      toast.error("Stock must be greater than or equal 0");
+    if (Number(data.stock) < 0) {
+      toast.error("Số lượng hiện có phải lớn hơn hoặc bằng 0");
       return;
     }
 
-    if (data.numberOfPages <= 0) {
-      toast.error("Number of pages must be greater than 0");
+    if (Number(data.numberOfPages) <= 0) {
+      toast.error("Số trang phải lớn hơn 0");
       return;
     }
 
-    if (data.weight <= 0) {
-      toast.error("Weight must be greater than 0");
+    if (Number(data.weight) <= 0) {
+      toast.error("Khối lượng phải lớn hơn 0");
       return;
     }
 
-    if (data.width <= 0) {
-      toast.error("Width must be greater than 0");
+    if (Number(data.width) <= 0) {
+      toast.error("Chiều rộng phải lớn hơn 0");
       return;
     }
 
-    if (data.length <= 0) {
-      toast.error("Length must be greater than 0");
+    if (Number(data.length) <= 0) {
+      toast.error("Chiều dài phải lớn hơn 0");
       return;
     }
 
-    if (data.thickness <= 0) {
-      toast.error("Thickness must be greater than 0");
+    if (Number(data.thickness) <= 0) {
+      toast.error("Độ dày phải lớn hơn 0");
       return;
     }
 
     if (!selectedFiles) {
-      toast.error("Please select at least one image");
+      toast.error("Vui lòng thêm ít nhất một hình sản phẩm");
       return;
     }
 
@@ -116,16 +116,16 @@ function AddBook() {
 
       const bookData = {
         title: data.title,
-        price: data.price,
-        discount: data.discount,
+        price: Number(data.price),
+        discount: Number(data.discount),
         description: data.description,
         publicationDate: data.publicationDate,
-        numberOfPages: data.numberOfPages,
-        weight: data.weight,
-        width: data.width,
-        length: data.length,
-        thickness: data.thickness,
-        stock: data.stock,
+        numberOfPages: Number(data.numberOfPages),
+        weight: Number(data.weight),
+        width: Number(data.width),
+        length: Number(data.length),
+        thickness: Number(data.thickness),
+        stock: Number(data.stock),
         status: data.status,
         author: { id: data.author },
         publisher: { id: data.publisher },
@@ -170,7 +170,7 @@ function AddBook() {
     <>
       <div className="py-[30px] sm:px-[25px] px-[15px] bg-[#F1F4F9] h-auto">
         <form className="flex flex-col gap-7 w-full" onSubmit={handleSubmit}>
-          <h2 className="text-[#74767d]">Add book</h2>
+          <h2 className="text-[#74767d]">Thêm sách</h2>
 
           <div className="flex gap-[25px] w-full flex-col">
             <div className="md:p-[25px] p-[15px] bg-white rounded-md w-full">
@@ -184,11 +184,11 @@ function AddBook() {
             </div>
 
             <div className="sm:p-[25px] p-[15px] bg-white rounded-md flex flex-col gap-[20px] w-full">
-              <h5 className="font-bold text-[#74767d]">General information</h5>
+              <h5 className="font-bold text-[#74767d]">Thông tin chung</h5>
 
               <div className="flex flex-col gap-1 w-full">
                 <label htmlFor="" className="text-[0.9rem] font-medium">
-                  Title
+                  Tiêu đề
                 </label>
                 <input
                   type="text"
@@ -203,7 +203,7 @@ function AddBook() {
               <div className="flex flex-wrap md:flex-nowrap gap-[15px]">
                 <div className="flex flex-col gap-1 w-full">
                   <label htmlFor="" className="text-[0.9rem] font-medium">
-                    Category
+                    Danh mục
                   </label>
                   <select
                     name="category"
@@ -212,7 +212,7 @@ function AddBook() {
                     value={data.category}
                     className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
                   >
-                    <option value="">Select category</option>
+                    <option value="">Chọn danh mục</option>
                     {categories.map((category) => (
                       <option value={category.id} key={category.id}>
                         {category.name}
@@ -223,7 +223,7 @@ function AddBook() {
 
                 <div className="flex flex-col gap-1 w-full">
                   <label htmlFor="" className="text-[0.9rem] font-medium">
-                    Author
+                    Tác giả
                   </label>
                   <select
                     name="author"
@@ -232,7 +232,7 @@ function AddBook() {
                     value={data.author}
                     className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
                   >
-                    <option value="">Select author</option>
+                    <option value="">Chọn tác giả</option>
                     {authors.map((author) => (
                       <option value={author.id} key={author.id}>
                         {author.fullname}
@@ -245,7 +245,7 @@ function AddBook() {
               <div className="flex flex-wrap md:flex-nowrap gap-[15px]">
                 <div className="flex flex-col gap-1 w-full">
                   <label htmlFor="" className="text-[0.9rem] font-medium">
-                    Publisher
+                    Nhà xuất bản
                   </label>
                   <select
                     name="publisher"
@@ -254,7 +254,7 @@ function AddBook() {
                     value={data.publisher}
                     className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
                   >
-                    <option value="">Select publisher</option>
+                    <option value="">Chọn nhà xuất bản</option>
                     {publishers.map((publisher) => (
                       <option value={publisher.id} key={publisher.id}>
                         {publisher.name}
@@ -265,7 +265,7 @@ function AddBook() {
 
                 <div className="flex flex-col gap-1 w-full">
                   <label htmlFor="" className="text-[0.9rem] font-medium">
-                    Status
+                    Tình trạng
                   </label>
                   <select
                     name="status"
@@ -274,16 +274,16 @@ function AddBook() {
                     value={data.status}
                     className="border border-gray-300 p-[6px_10px] text-[0.9rem] w-full outline-none focus:border-gray-400  "
                   >
-                    <option value="">Select status</option>
-                    <option value="0">Hidden</option>
-                    <option value="1">Show</option>
+                    <option value="">Chọn tình trạng</option>
+                    <option value="0">Ẩn</option>
+                    <option value="1">Hiện</option>
                   </select>
                 </div>
               </div>
 
               <div className="flex flex-col gap-1">
                 <label htmlFor="" className="text-[0.9rem] font-medium">
-                  Description
+                  Mô tả
                 </label>
                 <TextBoxEditor
                   content={data.description}
@@ -293,12 +293,12 @@ function AddBook() {
             </div>
 
             <div className="sm:p-[25px] p-[15px] bg-white rounded-md flex flex-col gap-[20px] w-full">
-              <h5 className="font-bold text-[#74767d]">Pricing</h5>
+              <h5 className="font-bold text-[#74767d]">Giá cả</h5>
 
               <div className="flex flex-wrap md:flex-nowrap gap-[15px]">
                 <div className="flex flex-col gap-1 w-full">
                   <label htmlFor="" className="text-[0.9rem] font-medium">
-                    Price
+                    Giá gốc
                   </label>
                   <input
                     type="number"
@@ -313,7 +313,7 @@ function AddBook() {
 
                 <div className="flex flex-col gap-1 w-full">
                   <label htmlFor="" className="text-[0.9rem] font-medium">
-                    Discount amount (Discount{" "}
+                    Số tiền giảm (Giảm giá{" "}
                     {Math.floor((data.discount / data.price) * 100)}%)
                   </label>
                   <input
@@ -329,7 +329,7 @@ function AddBook() {
 
                 <div className="flex flex-col gap-1 w-full">
                   <label htmlFor="" className="text-[0.9rem] font-medium">
-                    Stock
+                    Số lượng hiện có
                   </label>
                   <input
                     type="number"
@@ -345,14 +345,12 @@ function AddBook() {
             </div>
 
             <div className="sm:p-[25px] p-[15px] bg-white rounded-md flex flex-col gap-[20px] w-full">
-              <h5 className="font-bold text-[#74767d]">
-                Book detail information
-              </h5>
+              <h5 className="font-bold text-[#74767d]">Thông tin chi tiết</h5>
 
               <div className="flex gap-[15px]">
                 <div className="flex flex-col gap-1 w-full">
                   <label htmlFor="" className="text-[0.9rem] font-medium">
-                    Publication date
+                    Ngày xuất bản
                   </label>
                   <input
                     type="date"
@@ -366,7 +364,7 @@ function AddBook() {
 
                 <div className="flex flex-col gap-1 w-full">
                   <label htmlFor="" className="text-[0.9rem] font-medium">
-                    Number of pages
+                    Số trang
                   </label>
                   <input
                     type="number"
@@ -383,7 +381,7 @@ function AddBook() {
               <div className="flex gap-[15px]">
                 <div className="flex flex-col gap-1 w-full">
                   <label htmlFor="" className="text-[0.9rem] font-medium">
-                    Width (cm)
+                    Chiều rộng (cm)
                   </label>
                   <input
                     type="number"
@@ -398,7 +396,7 @@ function AddBook() {
 
                 <div className="flex flex-col gap-1 w-full">
                   <label htmlFor="" className="text-[0.9rem] font-medium">
-                    Length (cm)
+                    Chiều dài (cm)
                   </label>
                   <input
                     type="number"
@@ -415,7 +413,7 @@ function AddBook() {
               <div className="flex gap-[15px]">
                 <div className="flex flex-col gap-1 w-full">
                   <label htmlFor="" className="text-[0.9rem] font-medium">
-                    Thickness (cm)
+                    Độ dày (cm)
                   </label>
                   <input
                     type="number"
@@ -430,7 +428,7 @@ function AddBook() {
 
                 <div className="flex flex-col gap-1 w-full">
                   <label htmlFor="" className="text-[0.9rem] font-medium">
-                    Weight (gr)
+                    Khối lượng (gr)
                   </label>
                   <input
                     type="number"
@@ -452,13 +450,13 @@ function AddBook() {
               type="submit"
               className="p-[6px_10px] bg-teal-500 text-white text-[0.9rem] font-medium text-center hover:bg-teal-600 rounded-sm"
             >
-              {isLoading ? "Adding..." : "Add"}
+              {isLoading ? "Đang thêm..." : "Thêm"}
             </button>
             <Link
               to="/admin/books"
               className="p-[6px_10px] bg-red-500 text-white text-[0.9rem] text-center hover:bg-red-600 rounded-sm"
             >
-              Back
+              Trở vể
             </Link>
           </div>
         </form>

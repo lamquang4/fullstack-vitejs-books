@@ -10,18 +10,16 @@ function Payment() {
     useGetPayments();
 
   const array = [
-    { name: "All", value: null },
-    { name: "Successfully", value: 1 },
-    { name: "Refund", value: 0 },
+    { name: "Tát cả", value: null },
+    { name: "Thành công", value: 1 },
+    { name: "Hoàn tiền", value: 0 },
   ];
-
-  console.log(payments);
 
   return (
     <>
       <div className="py-[1.3rem] px-[1.2rem] bg-[#f1f4f9]">
         <div className="flex justify-between items-center">
-          <h2 className=" text-[#74767d]">Payments ({totalItems})</h2>
+          <h2 className=" text-[#74767d]">Thanh toán ({totalItems})</h2>
         </div>
       </div>
 
@@ -33,19 +31,18 @@ function Payment() {
         <table className="w-[350%] border-collapse sm:w-[220%] xl:w-full text-[0.9rem]">
           <thead>
             <tr className="bg-[#E9EDF2] text-left">
-              <th className="p-[1rem]   ">Order code</th>
-
-              <th className="p-[1rem]  ">Payment method</th>
-              <th className="p-[1rem]  ">Amount</th>
-              <th className="p-[1rem]  ">Transaction ID</th>
+              <th className="p-[1rem]   ">Mã đơn</th>
+              <th className="p-[1rem]  ">Mã giao dịch</th>
+              <th className="p-[1rem]  ">Phương thức thanh toán</th>
+              <th className="p-[1rem]  ">Số tiền</th>
               <th className="p-[1rem]   relative">
                 <FilterDropDownMenu
-                  title="Status"
+                  title="Tình trạng"
                   array={array}
                   paramName="status"
                 />
               </th>
-              <th className="p-[1rem]  ">Created at</th>
+              <th className="p-[1rem]  ">Ngày tạo</th>
             </tr>
           </thead>
           <tbody>
@@ -61,16 +58,18 @@ function Payment() {
                   <td className="p-[1rem] font-semibold">
                     {payment.orderCode}
                   </td>
-
+                  <td className="p-[1rem]">{payment.transactionId}</td>
                   <td className="p-[1rem] uppercase">{payment.paymethod}</td>
 
-                  <td className="p-[1rem]">{payment.amount}</td>
-                  <td className="p-[1rem]">{payment.transactionId}</td>
+                  <td className="p-[1rem]">
+                    {payment.amount.toLocaleString("vi-VN")}₫
+                  </td>
+
                   <td className="p-[1rem]">
                     {payment.status === 1
-                      ? "Successfully"
+                      ? "Thành công"
                       : payment.status === 0
-                      ? "Refund"
+                      ? "Hoàn tiền"
                       : ""}
                   </td>
                   <td className="p-[1rem]">

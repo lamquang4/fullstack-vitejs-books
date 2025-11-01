@@ -27,85 +27,85 @@ function MenuSide({ menuOpen, toggleMenu }: Props) {
 
   const menuData = [
     {
-      title: "Goods",
+      title: "Hàng hóa",
       items: [
         {
           icon: <LuChartNoAxesCombined size={20} />,
-          label: "Statistics",
+          label: "Thống kê",
           path: "/admin/dashboard",
         },
         {
           icon: <GrBook size={20} />,
-          label: "Books",
+          label: "Sách",
           key: "2a",
           children: [
-            { label: "List books", path: "/admin/books" },
-            { label: "Add book", path: "/admin/add-book" },
+            { label: "Danh sách sách", path: "/admin/books" },
+            { label: "Thêm sách", path: "/admin/add-book" },
           ],
         },
         {
           icon: <RiShoppingBag4Line size={20} />,
-          label: "Orders",
+          label: "Đơn hàng",
           path: "/admin/orders",
         },
         {
           icon: <AiOutlineCreditCard size={20} />,
-          label: "Payments",
+          label: "Thanh toán",
           path: "/admin/payments",
         },
       ],
     },
     {
-      title: "Users",
+      title: "Người dùng",
       items: [
         {
           icon: <FaRegAddressCard size={20} />,
-          label: "Administrators",
+          label: "Quản trị viên",
           key: "5a",
           children: [
-            { label: "List administrators", path: "/admin/admins" },
-            { label: "Add administrator", path: "/admin/add-admin" },
+            { label: "Danh sách quản trị viên", path: "/admin/admins" },
+            { label: "Thêm quản trị viên", path: "/admin/add-admin" },
           ],
         },
         {
           icon: <FaRegCircleUser size={20} />,
-          label: "Customers",
+          label: "Khách hàng",
           key: "6a",
           children: [
-            { label: "List customers", path: "/admin/customers" },
-            { label: "Add customer", path: "/admin/add-customer" },
+            { label: "Danh sách khách hàng", path: "/admin/customers" },
+            { label: "Thêm khách hàng", path: "/admin/add-customer" },
           ],
         },
       ],
     },
     {
-      title: "Other",
+      title: "Khác",
       items: [
         {
           icon: <TbCategoryPlus size={20} />,
-          label: "Categories",
+          label: "Danh mục",
           key: "3a",
           children: [
-            { label: "List categories", path: "/admin/categories" },
-            { label: "Add category", path: "/admin/add-category" },
+            { label: "Danh sách danh mục", path: "/admin/categories" },
+            { label: "Thêm danh mục", path: "/admin/add-category" },
           ],
         },
         {
           icon: <LuUserRoundPen size={20} />,
-          label: "Authors",
+          label: "Tác giả",
           key: "14a",
           children: [
-            { label: "List authors", path: "/admin/authors" },
-            { label: "Add author", path: "/admin/add-author" },
+            { label: "Danh sách tác giả", path: "/admin/authors" },
+            { label: "Thêm tác giả", path: "/admin/add-author" },
           ],
         },
         {
           icon: <LuHousePlus size={20} />,
-          label: "Publishers",
+          label: "Nhà xuất bản",
           key: "28a",
           children: [
-            { label: "List publishers", path: "/admin/publishers" },
-            { label: "Add publisher", path: "/admin/add-publisher" },
+            { label: "Danh sách nhà xuất bản", path: "/admin/publishers" },
+            { label: "Thêm nhà xuất bản", path: "/admin/add-publisher" },
           ],
         },
       ],

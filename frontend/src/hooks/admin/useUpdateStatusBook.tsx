@@ -6,21 +6,21 @@ import Swal from "sweetalert2";
 export default function useUpdateStatusBook() {
   const [isLoading, setIsLoading] = useState(false);
   const updateStatusBook = async (id: string, status: number) => {
-    const action = status === 1 ? "show" : "hide";
+    const action = status === 1 ? "hiện" : "ẩn";
     const result = await Swal.fire({
-      title: `Confirm ${action}?`,
-      text: `Are you want to ${action} this book?`,
+      title: `Xác nhận ${action}?`,
+      text: `Bạn có chắc muốn ${action} sách này không?`,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "Cancel",
+      confirmButtonText: "Đồng ý",
+      cancelButtonText: "Hủy",
     });
 
     if (!result.isConfirmed || !id) {
       return;
     }
 
-    const loadingToast = toast.loading("Updating...");
+    const loadingToast = toast.loading("Đang cập nhật...");
 
     setIsLoading(true);
     try {
@@ -28,9 +28,9 @@ export default function useUpdateStatusBook() {
       await axios.patch(url, { status });
 
       toast.dismiss(loadingToast);
-      toast.success("Updated successfully");
+      toast.success("Cập nhật thành công");
     } catch (err) {
-      console.error("Error:", err);
+      console.error("Lỗi:", err);
       throw err;
     } finally {
       toast.dismiss(loadingToast);

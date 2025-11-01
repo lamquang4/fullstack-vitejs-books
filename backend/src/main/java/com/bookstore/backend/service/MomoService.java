@@ -104,7 +104,7 @@ public MomoService(OrderRepository orderRepository, BookRepository bookRepositor
         String orderId = (String) payload.get("orderId"); // orderCode
 
         Order order = orderRepository.findByOrderCode(orderId)
-                .orElseThrow(() -> new EntityNotFoundException("Order not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Đơn hàng không tìm thấy"));
 
         if (order.getStatus() != -1) return true;
 
@@ -158,7 +158,7 @@ public MomoService(OrderRepository orderRepository, BookRepository bookRepositor
 
         String refundOrderId = originalOrderId + "_REFUND_" + System.currentTimeMillis();
         String requestId = UUID.randomUUID().toString();
-        String description = "Refund due to insufficient stock for one or more items in your order";
+        String description = "Hoàn tiền do một hoặc nhiều sản phẩm trong đơn hàng của bạn không đủ số lượng sách đã mua";
 
         String rawSignature = "accessKey=" + accessKey +
                 "&amount=" + amount +
@@ -185,7 +185,7 @@ public MomoService(OrderRepository orderRepository, BookRepository bookRepositor
         Map<String, Object> response = restTemplate.postForObject(refundUrl, requestBody, Map.class);
 
         if (response != null && !"0".equals(String.valueOf(response.get("resultCode")))) {
-            throw new IllegalStateException("Refund failed: " + response);
+            throw new IllegalStateException("Hoàn tiền Momo thất bại " + response);
         }
     }
 

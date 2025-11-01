@@ -64,7 +64,7 @@ function SearchMobile({ toggleSearch, openSearch }: Props) {
             <input
               type="text"
               required
-              placeholder="Search..."
+              placeholder="Tìm kiếm..."
               maxLength={50}
               autoComplete="off"
               className="w-full rounded outline-none text-[0.9rem]"

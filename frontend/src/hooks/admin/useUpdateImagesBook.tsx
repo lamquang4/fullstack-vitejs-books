@@ -6,7 +6,7 @@ export default function useUpdateImagesBook() {
   const [isLoading, setIsLoading] = useState(false);
 
   const updateImagesBook = async (formData: FormData) => {
-    const loadingToast = toast.loading("Updating...");
+    const loadingToast = toast.loading("Đang cập nhật hình...");
     setIsLoading(true);
 
     try {
@@ -16,10 +16,9 @@ export default function useUpdateImagesBook() {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      toast.success("Updated images successfully");
+      toast.success("Cập nhật hình thành công");
     } catch (err: any) {
-      console.error("Error:", err);
-      toast.error(err?.response?.data?.message);
+      console.error("Lỗi:", err);
       throw err;
     } finally {
       setIsLoading(false);

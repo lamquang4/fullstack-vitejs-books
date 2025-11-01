@@ -12,7 +12,7 @@ export default function usePaymentMomo() {
       const res = await axios.post(url);
       return res.data;
     } catch (err) {
-      console.error("Error", err);
+      console.error("Lỗi:", err);
       throw err;
     } finally {
       setIsLoading(false);

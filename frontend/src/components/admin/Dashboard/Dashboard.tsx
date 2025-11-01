@@ -9,22 +9,22 @@ function Dashboard() {
     useGetStatistic();
   const array1 = [
     {
-      title: "Total revenue",
+      title: "Tổng doanh thu",
       number: `${totalRevenue.toLocaleString("vi-VN")}₫` || 0,
       icon1: <FaRegMoneyBillAlt size={25} />,
     },
     {
-      title: "Today revenue",
+      title: "Doanh thu hôm nay",
       number: `${todayRevenue.toLocaleString("vi-VN")}₫` || 0,
       icon1: <FaRegMoneyBillAlt size={25} />,
     },
     {
-      title: "Total sold quantity",
+      title: "Tất cả số lượng bán ra",
       number: totalSoldQuantity || 0,
       icon1: <LuPackageCheck size={25} />,
     },
     {
-      title: "Tody sold quantity",
+      title: "Số lượng bán ra hôm nay",
       number: todaySoldQuantity || 0,
       icon1: <LuPackageCheck size={25} />,
     },
@@ -32,7 +32,7 @@ function Dashboard() {
   return (
     <>
       <div className="py-[1.3rem] px-[1.2rem] bg-[#f1f4f9] space-y-[20px]">
-        <h2 className=" text-[#74767d]">Statistic</h2>
+        <h2 className=" text-[#74767d]">Thống kê</h2>
 
         <div>
           <StaticCard array={array1} />

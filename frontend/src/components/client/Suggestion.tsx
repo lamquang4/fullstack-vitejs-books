@@ -17,7 +17,7 @@ function Suggestion({ search }: Props) {
     <>
       <div className="p-2.5">
         <p className="font-medium text-balance">
-          Search results for <span className="text-[#C62028]">{search}</span>
+          Kết quả tìm kiếm cho <span className="text-[#C62028]">{search}</span>
         </p>
       </div>
 
@@ -65,7 +65,7 @@ function Suggestion({ search }: Props) {
           ))
         ) : (
           <p className="p-4 text-center text-[0.9rem] text-gray-500">
-            No results found
+            Không tìm thấy kết quả
           </p>
         )}
       </div>
