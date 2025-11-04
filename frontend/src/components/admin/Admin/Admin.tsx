@@ -130,7 +130,7 @@ function Admin() {
                     {admin.role === 0
                       ? "Quản trị viên hệ thống"
                       : admin.role === 1
-                      ? "Salesperson"
+                      ? "Nhân viên bán hàng"
                       : ""}
                   </td>
                   <td className="p-[1rem]  ">
