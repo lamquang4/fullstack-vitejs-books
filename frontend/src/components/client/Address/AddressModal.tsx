@@ -195,7 +195,7 @@ function AddressModal({
                     onChange={handleChange}
                     value={data.speaddress}
                     className="bg-gray-50 border border-gray-300 text-[0.9rem] rounded-sm block w-full p-2 outline-0"
-                    placeholder="Specific address"
+                    placeholder="Địa chỉ cụ thể"
                   />
                 </div>
 
