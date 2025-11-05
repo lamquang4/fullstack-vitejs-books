@@ -16,16 +16,20 @@ export default function useLogin() {
       const isAdminPage = window.location.pathname.startsWith("/admin");
 
       if (!isAdminPage && role >= 0 && role <= 2) {
-        toast.error("You cannot login as admin from client page");
+        toast.error(
+          "Bạn không thể đăng nhập bằng tài khoản quản trị viên vào trang khách hàng"
+        );
         return;
       }
 
       if (isAdminPage && role === 3) {
-        toast.error("You cannot login as client from admin page");
+        toast.error(
+          "Bạn không thể đăng nhập bằng tài khoản khách hàng vào trang quản trị"
+        );
         return;
       }
 
-      toast.success("Login successfully");
+      toast.success("Đăng nhập thành công");
 
       if (role === 3) {
         Cookies.set("token-client", token, {
@@ -43,7 +47,7 @@ export default function useLogin() {
         window.location.href = "/admin/account";
       }
     } catch (err: any) {
-      console.error("Login error:", err);
+      console.error("Lỗi:", err);
       throw err;
     } finally {
       setIsLoading(false);
