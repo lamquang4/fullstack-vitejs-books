@@ -11,12 +11,14 @@ import "swiper/css";
 import { useAddItemToCart } from "../../../../hooks/client/useAddItemToCart";
 import useCurrentUser from "../../../../hooks/useGetCurrentUser";
 import useGetCart from "../../../../hooks/client/useGetCart";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   book: Book;
 };
 
 function BookDetail({ book }: Props) {
+  const navigate = useNavigate();
   const max = 15;
   const maxHeight = 200;
   const { user } = useCurrentUser("client");
@@ -90,6 +92,7 @@ function BookDetail({ book }: Props) {
 
     if (!user?.id) {
       toast.error("Bạn phải đăng nhập để mua sách");
+      navigate("/login");
       return;
     }
 
