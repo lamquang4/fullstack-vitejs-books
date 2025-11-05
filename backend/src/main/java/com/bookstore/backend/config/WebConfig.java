@@ -10,13 +10,11 @@ import org.springframework.lang.NonNull;
 public class WebConfig implements WebMvcConfigurer {
 
     @Override
-    public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
-
-        Path uploadDir = Paths.get(System.getProperty("user.dir")).getParent().resolve("uploads");
-        String uploadPath = uploadDir.toFile().getAbsolutePath();
-       
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        String uploadPath = System.getProperty("user.dir") + "/uploads/";
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:" + uploadPath + "/")
-                .setCachePeriod(0); 
+                .addResourceLocations("file:" + uploadPath)
+                .setCachePeriod(0);
     }
 }
+

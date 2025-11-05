@@ -6,7 +6,7 @@
 
 ### B2: npm run dev
 
-## Backend Spring boot - MySQL database tên là bookstore
+## Backend (Spring boot - MySQL)
 
 ### B1: Tạo env (nhớ đổi mật khẩu và username database)
 
