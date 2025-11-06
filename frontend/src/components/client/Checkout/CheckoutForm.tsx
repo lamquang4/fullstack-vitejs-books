@@ -15,6 +15,7 @@ import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import toast from "react-hot-toast";
 import useAddOrder from "../../../hooks/client/useAddOrder";
 import usePaymentMomo from "../../../hooks/client/usePaymentMomo";
+import { validatePhone } from "../../../utils/validatePhone";
 
 function CheckoutForm() {
   const navigate = useNavigate();
@@ -113,6 +114,11 @@ function CheckoutForm() {
     if (cart?.items.length === 0) {
       toast.error("Không có gì trong giỏ hết");
       navigate("/cart");
+      return;
+    }
+
+    if (!validatePhone(data.phone)) {
+      toast.error("Số điện thoại không hợp lệ");
       return;
     }
 

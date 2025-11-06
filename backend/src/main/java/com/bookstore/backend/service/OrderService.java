@@ -11,6 +11,7 @@ import com.bookstore.backend.repository.BookRepository;
 import com.bookstore.backend.repository.CartRepository;
 import com.bookstore.backend.repository.OrderRepository;
 import com.bookstore.backend.repository.UserRepository;
+import com.bookstore.backend.utils.ValidationUtils;
 import com.bookstore.backend.repository.PaymentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
@@ -227,6 +228,10 @@ public class OrderService {
     public OrderDTO createOrder(OrderDTO orderDTO, String userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("Người dùng không tìm thấy"));
+
+        if (!ValidationUtils.validatePhone(orderDTO.getPhone())) {
+            throw new IllegalArgumentException("Số điện thoại không hợp lệ");
+        }
 
         // cod -> status = 0 (chờ xác nhận)
         // momo -> status = -1 (chờ thanh toán)
