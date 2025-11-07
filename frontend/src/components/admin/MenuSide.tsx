@@ -27,7 +27,7 @@ function MenuSide({ menuOpen, toggleMenu }: Props) {
 
   const menuData = [
     {
-      title: "Hàng hóa",
+      title: "Sản phẩm",
       items: [
         {
           icon: <LuChartNoAxesCombined size={20} />,
@@ -43,6 +43,38 @@ function MenuSide({ menuOpen, toggleMenu }: Props) {
             { label: "Thêm sách", path: "/admin/add-book" },
           ],
         },
+        {
+          icon: <TbCategoryPlus size={20} />,
+          label: "Danh mục",
+          key: "3a",
+          children: [
+            { label: "Danh sách danh mục", path: "/admin/categories" },
+            { label: "Thêm danh mục", path: "/admin/add-category" },
+          ],
+        },
+        {
+          icon: <LuUserRoundPen size={20} />,
+          label: "Tác giả",
+          key: "14a",
+          children: [
+            { label: "Danh sách tác giả", path: "/admin/authors" },
+            { label: "Thêm tác giả", path: "/admin/add-author" },
+          ],
+        },
+        {
+          icon: <LuHousePlus size={20} />,
+          label: "Nhà xuất bản",
+          key: "28a",
+          children: [
+            { label: "Danh sách nhà xuất bản", path: "/admin/publishers" },
+            { label: "Thêm nhà xuất bản", path: "/admin/add-publisher" },
+          ],
+        },
+      ],
+    },
+    {
+      title: "Đơn hàng & thanh toán",
+      items: [
         {
           icon: <RiShoppingBag4Line size={20} />,
           label: "Đơn hàng",
@@ -74,38 +106,6 @@ function MenuSide({ menuOpen, toggleMenu }: Props) {
           children: [
             { label: "Danh sách khách hàng", path: "/admin/customers" },
             { label: "Thêm khách hàng", path: "/admin/add-customer" },
-          ],
-        },
-      ],
-    },
-    {
-      title: "Khác",
-      items: [
-        {
-          icon: <TbCategoryPlus size={20} />,
-          label: "Danh mục",
-          key: "3a",
-          children: [
-            { label: "Danh sách danh mục", path: "/admin/categories" },
-            { label: "Thêm danh mục", path: "/admin/add-category" },
-          ],
-        },
-        {
-          icon: <LuUserRoundPen size={20} />,
-          label: "Tác giả",
-          key: "14a",
-          children: [
-            { label: "Danh sách tác giả", path: "/admin/authors" },
-            { label: "Thêm tác giả", path: "/admin/add-author" },
-          ],
-        },
-        {
-          icon: <LuHousePlus size={20} />,
-          label: "Nhà xuất bản",
-          key: "28a",
-          children: [
-            { label: "Danh sách nhà xuất bản", path: "/admin/publishers" },
-            { label: "Thêm nhà xuất bản", path: "/admin/add-publisher" },
           ],
         },
       ],

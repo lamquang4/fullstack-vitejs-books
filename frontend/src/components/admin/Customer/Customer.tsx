@@ -109,7 +109,7 @@ function Customer() {
                   </td>
                   <td className="p-[1rem]">{customer.email}</td>
                   <td className="p-[1rem]  ">
-                    {customer.status === 1 ? "Normal" : "Blocked"}
+                    {customer.status === 1 ? "Bình thường" : "Bị chặn"}
                   </td>
                   <td className="p-[1rem]  ">
                     <div className="flex items-center gap-[15px]">
