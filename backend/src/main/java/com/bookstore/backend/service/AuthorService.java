@@ -4,9 +4,7 @@ import com.bookstore.backend.repository.AuthorRepository;
 import com.bookstore.backend.repository.BookRepository;
 import com.bookstore.backend.utils.SlugUtil;
 import jakarta.persistence.EntityNotFoundException;
-
 import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

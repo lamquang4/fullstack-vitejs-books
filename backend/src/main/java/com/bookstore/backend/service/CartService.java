@@ -38,7 +38,7 @@ private final UserRepository userRepository;
     // lấy giỏ hàng của customer dựa vào user id
 public CartDTO getCartByUserId(String userId) {
     Cart cart = cartRepository.findByUserId(userId)
-            .orElseThrow(() -> new EntityNotFoundException("Cart not found"));
+            .orElseThrow(() -> new EntityNotFoundException("Giỏ hàng không tìm thấy"));
 
     List<CartItemDTO> itemDTOs = cart.getItems().stream().map(item -> CartItemDTO.builder()
             .id(item.getId())
@@ -70,12 +70,12 @@ public CartDTO getCartByUserId(String userId) {
  @Transactional
 public void addItemToCart(String userId, String bookId, int quantity) {
     User user = userRepository.findById(userId)
-            .orElseThrow(() -> new EntityNotFoundException("User not found"));
+            .orElseThrow(() -> new EntityNotFoundException("Khách hàng không tìm thấy"));
     Book book = bookRepository.findById(bookId)
-            .orElseThrow(() -> new EntityNotFoundException("Book not found"));
+            .orElseThrow(() -> new EntityNotFoundException("Sách không tìm thấy"));
 
     if (quantity <= 0) {
-       throw new IllegalArgumentException("Quantity must be greater than 0");
+       throw new IllegalArgumentException("Số lượng mua phải lớn hơn 0");
     }
 
     Cart cart = cartRepository.findByUserId(userId)
@@ -95,7 +95,7 @@ public void addItemToCart(String userId, String bookId, int quantity) {
 
         // Nếu vượt quá tồn kho, giới hạn bằng tồn kho
     if (newQuantity > book.getStock()) {
-        throw new IllegalStateException("Not enough stock available");
+        throw new IllegalStateException("Số lượng hiện có không đủ");
     }
 
         // Nếu vượt quá max, giới hạn bằng max
@@ -123,7 +123,7 @@ public void addItemToCart(String userId, String bookId, int quantity) {
 @Transactional
 public void updateCartItemQuantity(String cartItemId, int quantity) {
     CartItem item = cartItemRepository.findById(cartItemId)
-            .orElseThrow(() -> new EntityNotFoundException("Cart item not found"));
+            .orElseThrow(() -> new EntityNotFoundException("Sản phẩm trong giỏ hàng không tìm thấy"));
 
     Book book = item.getBook();
 
