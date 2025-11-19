@@ -1,7 +1,13 @@
 FROM maven:3-openjdk-17 AS build
 WORKDIR /app
-COPY . .
-RUN mvn clean package -DskipTests
+
+COPY backend/pom.xml .
+COPY backend/mvnw .
+COPY backend/.mvn ./.mvn
+COPY backend/src ./src
+
+RUN chmod +x mvnw
+RUN ./mvnw clean package -DskipTests
 
 FROM eclipse-temurin:17-jdk-jammy
 WORKDIR /app
