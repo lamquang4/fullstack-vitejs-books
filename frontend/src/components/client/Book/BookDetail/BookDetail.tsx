@@ -9,7 +9,7 @@ import { HiOutlinePlusSmall } from "react-icons/hi2";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { useAddItemToCart } from "../../../../hooks/client/useAddItemToCart";
-import useCurrentUser from "../../../../hooks/useGetCurrentUser";
+import useGetCurrentUser from "../../../../hooks/useGetCurrentUser";
 import useGetCart from "../../../../hooks/client/useGetCart";
 import { useNavigate } from "react-router-dom";
 
@@ -21,7 +21,7 @@ function BookDetail({ book }: Props) {
   const navigate = useNavigate();
   const max = 15;
   const maxHeight = 200;
-  const { user } = useCurrentUser("client");
+  const { user } = useGetCurrentUser("client");
   const { addItem, isLoading: isLoadingAddItem } = useAddItemToCart();
   const { cart, mutate } = useGetCart(user?.id || "");
 

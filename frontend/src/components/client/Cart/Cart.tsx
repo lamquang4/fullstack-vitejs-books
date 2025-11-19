@@ -1,12 +1,12 @@
 import Loading from "../../Loading";
 import CartItem from "./CartItem";
 import useGetCart from "../../../hooks/client/useGetCart";
-import useCurrentUser from "../../../hooks/useGetCurrentUser";
+import useGetCurrentUser from "../../../hooks/useGetCurrentUser";
 import useGetActiveBooks from "../../../hooks/client/useGetActiveBooks";
 import BookSlider from "../Book/BookSlider";
 
 function Cart() {
-  const { user } = useCurrentUser("client");
+  const { user } = useGetCurrentUser("client");
   const { cart, isLoading, mutate } = useGetCart(user?.id || "");
   const { books } = useGetActiveBooks();
   return (

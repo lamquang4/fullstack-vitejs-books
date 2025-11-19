@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import useGetAdmins from "../../../hooks/admin/useGetAdmins";
 import useDeleteUser from "../../../hooks/admin/useDeleteUser";
 import useUpdateStatusUser from "../../../hooks/admin/useUpdateStatusUser";
-import useCurrentUser from "../../../hooks/useGetCurrentUser";
+import useGetCurrentUser from "../../../hooks/useGetCurrentUser";
 
 function Admin() {
   const array = [
@@ -21,7 +21,7 @@ function Admin() {
     { name: "Bị khóa", value: 0 },
   ];
 
-  const { user } = useCurrentUser("admin");
+  const { user } = useGetCurrentUser("admin");
   const {
     admins,
     mutate,

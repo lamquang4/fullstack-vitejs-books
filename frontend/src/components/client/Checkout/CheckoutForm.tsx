@@ -5,7 +5,7 @@ import Overplay from "./../Overplay";
 import ProductBuyList from "./ProductBuyList";
 import ShippingInfoForm from "./ShippingInfoForm";
 import PaymentMethod from "./PaymentMethod";
-import useCurrentUser from "../../../hooks/useGetCurrentUser";
+import useGetCurrentUser from "../../../hooks/useGetCurrentUser";
 import useGetCart from "../../../hooks/client/useGetCart";
 import { Link, useNavigate } from "react-router-dom";
 import useGetAddresses from "../../../hooks/client/useGetAddresses";
@@ -20,7 +20,7 @@ import { validatePhone } from "../../../utils/validatePhone";
 function CheckoutForm() {
   const navigate = useNavigate();
   const { provinces } = useGetProvinces();
-  const { user } = useCurrentUser("client");
+  const { user } = useGetCurrentUser("client");
   const {
     cart,
     isLoading: isLoadingCart,

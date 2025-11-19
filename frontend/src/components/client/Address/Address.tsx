@@ -3,11 +3,11 @@ import SideBarMenu from "../SideMenuBar";
 import AddressModal from "./AddressModal";
 import AddressInfo from "./AddressInfo";
 import BreadCrumb from "../BreadCrumb";
-import useCurrentUser from "../../../hooks/useGetCurrentUser";
+import useGetCurrentUser from "../../../hooks/useGetCurrentUser";
 import useGetAddresses from "../../../hooks/client/useGetAddresses";
 
 function Address() {
-  const { user } = useCurrentUser("client");
+  const { user } = useGetCurrentUser("client");
   const { addresses, mutate, isLoading } = useGetAddresses(user?.id || "");
   const [addressId, setAddressId] = useState<string>("");
   const [openAddressModal, setOpenAddressModal] = useState<boolean>(false);

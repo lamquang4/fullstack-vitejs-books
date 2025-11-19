@@ -1,7 +1,7 @@
-import useCurrentUser from "../../../hooks/useGetCurrentUser";
+import useGetCurrentUser from "../../../hooks/useGetCurrentUser";
 
 function AccountInfo() {
-  const { user } = useCurrentUser("client");
+  const { user } = useGetCurrentUser("client");
 
   return (
     <div className="w-full flex-1 px-[15px] bg-white">

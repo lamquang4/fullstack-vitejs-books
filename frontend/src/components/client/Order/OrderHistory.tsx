@@ -3,13 +3,13 @@ import Image from "../../Image";
 import Loading from "../../Loading";
 import { CiCalendar } from "react-icons/ci";
 import useGetOrders from "../../../hooks/client/useGetOrders";
-import useCurrentUser from "../../../hooks/useGetCurrentUser";
+import useGetCurrentUser from "../../../hooks/useGetCurrentUser";
 import Pagination from "../Pagination";
 
 function OrderHistory() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { user } = useCurrentUser("client");
+  const { user } = useGetCurrentUser("client");
   const { orders, isLoading, totalItems, totalPages, currentPage } =
     useGetOrders(user?.id || "");
   const array = [

@@ -20,7 +20,7 @@ const fetcher =
     return res.data;
   };
 
-export default function useCurrentUser(type: "admin" | "client") {
+export default function useGetCurrentUser(type: "admin" | "client") {
   const url = `${import.meta.env.VITE_BACKEND_URL}/api/auth/me`;
 
   const { data, error, isLoading, mutate } = useSWR<User>(url, fetcher(type));

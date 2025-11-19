@@ -4,14 +4,14 @@ import { FaRegCircleUser } from "react-icons/fa6";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import useLogout from "../../hooks/useLogout";
-import useCurrentUser from "../../hooks/useGetCurrentUser";
+import useGetCurrentUser from "../../hooks/useGetCurrentUser";
 
 type Props = {
   menuOpen: boolean;
   toggleMenu: () => void;
 };
 function ProfileMenu({ menuOpen, toggleMenu }: Props) {
-  const { user } = useCurrentUser("admin");
+  const { user } = useGetCurrentUser("admin");
   const { handleLogout } = useLogout();
   return (
     <>

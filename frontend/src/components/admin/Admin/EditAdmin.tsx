@@ -4,13 +4,13 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { validateEmail } from "../../../utils/validateEmail";
 import useGetUser from "../../../hooks/admin/useGetUser";
 import useUpdateUser from "../../../hooks/admin/useUpdateUser";
-import useCurrentUser from "../../../hooks/useGetCurrentUser";
+import useGetCurrentUser from "../../../hooks/useGetCurrentUser";
 
 function EditAdmin() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { user: admin } = useCurrentUser("admin");
+  const { user: admin } = useGetCurrentUser("admin");
   const { user, isLoading, mutate } = useGetUser(id as string);
   const { updateUser, isLoading: isLoadingUpdate } = useUpdateUser(
     id as string
@@ -153,7 +153,7 @@ function EditAdmin() {
 
               <div className="flex flex-col gap-1 w-full">
                 <label htmlFor="" className="text-[0.9rem] font-medium">
-                 Tình trạng
+                  Tình trạng
                 </label>
                 <select
                   name="status"
@@ -171,7 +171,7 @@ function EditAdmin() {
 
             <div className="flex flex-col gap-1">
               <label htmlFor="" className="text-[0.9rem] font-medium">
-               Mật khẩu mới
+                Mật khẩu mới
               </label>
               <input
                 type="password"

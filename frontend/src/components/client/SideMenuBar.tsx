@@ -1,11 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
 import useLogout from "../../hooks/useLogout";
-import useCurrentUser from "../../hooks/useGetCurrentUser";
+import useGetCurrentUser from "../../hooks/useGetCurrentUser";
 
 function SideMenuBar() {
   const location = useLocation();
   const pathname = location.pathname;
-  const { user } = useCurrentUser("client");
+  const { user } = useGetCurrentUser("client");
   const { handleLogout } = useLogout();
   return (
     <div className="w-full max-w-full lg:max-w-[300px] self-start lg:sticky lg:top-[5rem] bg-white ">

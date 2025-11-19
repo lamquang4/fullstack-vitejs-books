@@ -11,10 +11,10 @@ import MenuMobile from "./MenuMobile";
 import Overplay from "../Overplay";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useGetCategories from "../../../hooks/client/useGetCategories";
-import useCurrentUser from "../../../hooks/useGetCurrentUser";
+import useGetCurrentUser from "../../../hooks/useGetCurrentUser";
 import useGetCart from "../../../hooks/client/useGetCart";
 function Header() {
-  const { user } = useCurrentUser("client");
+  const { user } = useGetCurrentUser("client");
   const { cart } = useGetCart(user?.id || "");
   const { categories } = useGetCategories();
 
