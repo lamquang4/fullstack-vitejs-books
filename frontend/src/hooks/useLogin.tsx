@@ -24,7 +24,7 @@ export default function useLogin() {
 
       if (isAdminPage && role === 3) {
         toast.error(
-          "Bạn không thể đăng nhập bằng tài khoản khách hàng vào trang quản trị"
+          "Bạn không thể đăng nhập bằng tài khoản khách hàng vào trang quản trị viên"
         );
         return;
       }
