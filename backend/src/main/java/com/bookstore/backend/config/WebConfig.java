@@ -1,29 +1,24 @@
 package com.bookstore.backend.config;
-
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import org.springframework.lang.NonNull;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Value("${frontend.url}") 
-    private String frontendUrl;
-
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
+        Path uploadDir = Paths.get(System.getProperty("user.dir")).resolve("uploads");
+        String uploadPath = uploadDir.toFile().getAbsolutePath();
+       
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:uploads/")
-                .setCachePeriod(0);
-    }
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/uploads/**")
-                .allowedOrigins(frontendUrl) 
-                .allowedMethods("GET")
-                .allowedHeaders("*");
+                .addResourceLocations("file:" + uploadPath + "/")
+                .setCachePeriod(0); 
     }
 }
+
+
+
