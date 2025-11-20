@@ -166,7 +166,7 @@ function CheckoutForm() {
         const momoResponse = await createPaymentMomo(res.orderCode);
         window.location.href = momoResponse.payUrl;
       } catch (err: any) {
-        toast.error(err?.response?.data?.msg);
+        toast.error(err?.response?.data?.message);
       }
     }
   };
