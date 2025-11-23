@@ -12,10 +12,12 @@ import com.bookstore.backend.dto.MomoRequest;
 import com.bookstore.backend.dto.MomoResponse;
 import com.bookstore.backend.dto.OrderDTO;
 import com.bookstore.backend.entities.Book;
+import com.bookstore.backend.entities.Cart;
 import com.bookstore.backend.entities.Order;
 import com.bookstore.backend.entities.OrderDetail;
 import com.bookstore.backend.entities.Payment;
 import com.bookstore.backend.repository.BookRepository;
+import com.bookstore.backend.repository.CartRepository;
 import com.bookstore.backend.repository.OrderRepository;
 import com.bookstore.backend.repository.PaymentRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -45,12 +47,14 @@ public class MomoService {
     private String refundUrl;
 
     private final OrderRepository orderRepository;
+    private final CartRepository cartRepository;
 private final BookRepository bookRepository;
  private final PaymentRepository paymentRepository;
 private final RestTemplate restTemplate = new RestTemplate();
    
-public MomoService(OrderRepository orderRepository, BookRepository bookRepository, PaymentRepository paymentRepository) {
+public MomoService(OrderRepository orderRepository, CartRepository cartRepository, BookRepository bookRepository, PaymentRepository paymentRepository) {
     this.orderRepository = orderRepository;
+    this.cartRepository = cartRepository;
     this.bookRepository = bookRepository;
     this.paymentRepository = paymentRepository;
 }
@@ -137,6 +141,11 @@ public MomoService(OrderRepository orderRepository, BookRepository bookRepositor
                     .status(1)
                     .build());
            
+         Cart cart = cartRepository.findByUserId(order.getUser().getId()).orElse(null);
+            if (cart != null) {
+                cartRepository.delete(cart);
+            }
+
             return true;
 
         } else {

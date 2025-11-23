@@ -287,18 +287,20 @@ public class OrderService {
 
             order.setItems(details);
             order.setTotal(total);
+
+        // xóa giỏ hàng cho phương thức thanh toán COD
+        if ("cod".equalsIgnoreCase(orderDTO.getPaymethod())) {
+            Cart cart = cartRepository.findByUserId(userId).orElse(null);
+            if (cart != null) {
+                cartRepository.delete(cart);
+            }
+        }
         } else {
             order.setTotal(0.0);
         }
 
         Order savedOrder = orderRepository.save(order);
 
-        // xóa giỏ hàng
-
-        Cart cart = cartRepository.findByUserId(userId).orElse(null);
-        if (cart != null) {
-            cartRepository.delete(cart);
-        }
 
         return convertToDTO(savedOrder);
     }
