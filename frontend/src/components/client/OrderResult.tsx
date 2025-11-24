@@ -22,7 +22,7 @@ function OrderResult() {
           {result === "successfully" ? (
             <div className="flex flex-col justify-center items-center gap-[15px]">
               <Image
-                source={"/assets/packing.png"}
+                source={"/assets/successful.png"}
                 alt={""}
                 className={"w-[100px]"}
                 loading="eager"
@@ -39,7 +39,7 @@ function OrderResult() {
           ) : result === "fail" ? (
             <div className="flex flex-col justify-center items-center gap-[15px]">
               <Image
-                source={"/assets/order-fail.png"}
+                source={"/assets/fail.png"}
                 alt={""}
                 className={"w-[120px]"}
                 loading="eager"
