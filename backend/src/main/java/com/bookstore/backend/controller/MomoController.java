@@ -53,7 +53,7 @@ public ResponseEntity<Void> handleRedirect(
         boolean success = momoService.handleSuccessfulPayment(payload);
 
         if (success) {
-            redirectUrl = frontendUrl + "/order-result?result=successfully&&orderCode=" + orderId;
+            redirectUrl = frontendUrl + "/order-result?result=successful&&orderCode=" + orderId;
         } else {
             redirectUrl = frontendUrl + "/order-result?result=fail";
         }

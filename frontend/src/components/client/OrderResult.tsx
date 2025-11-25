@@ -19,7 +19,7 @@ function OrderResult() {
     <section className="my-[40px] px-[15px]">
       <div className="mx-auto max-w-[1200px] w-full">
         <div className="flex justify-center items-center h-[40vh]">
-          {result === "successfully" ? (
+          {result === "successful" ? (
             <div className="flex flex-col justify-center items-center gap-[15px]">
               <Image
                 source={"/assets/successful.png"}
