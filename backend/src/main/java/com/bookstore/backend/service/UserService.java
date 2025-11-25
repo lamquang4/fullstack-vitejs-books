@@ -113,7 +113,7 @@ public Optional<UserDTO> getUserById(String id) {
         throw new IllegalArgumentException("Email không hợp lệ");
     }
 
-    if (userRepository.findByEmail(dto.getFullname()).isPresent()) {
+    if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
         throw new IllegalArgumentException("Email đã tồn tại");
     }
 
@@ -143,7 +143,7 @@ public Optional<UserDTO> getUserById(String id) {
             throw new IllegalArgumentException("Email không hợp lệ");
         }
 
-        if (userRepository.findByEmail(userDTO.getFullname()).isPresent()) {
+        if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
         throw new IllegalArgumentException("Email đã tồn tại");
         }
 
