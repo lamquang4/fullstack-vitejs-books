@@ -1,0 +1,57 @@
+version: "3.9"
+
+services:
+  mysql-db:
+    image: mysql:8
+    container_name: mysql-db
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_DATABASE=bookstore_dev
+      - MYSQL_ROOT_PASSWORD=root123
+      - MYSQL_USER=dev
+      - MYSQL_PASSWORD=dev123
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-udev", "-pdev123"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - DATASOURCE_URL=jdbc:mysql://mysql-db:3306/bookstore_dev?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - DATASOURCE_USERNAME=dev
+      - DATASOURCE_PASSWORD=dev123
+      - FRONTEND_URL=http://localhost:5173
+      - BACKEND_URL=http://localhost:8080
+      - JWT_SECRET=a3f4c8e9d0b1f2a3c4e5f67890abcd1234567890abcdef1234567890abcdef12
+      - MOMO_PARTNERCODE=MOMO
+      - MOMO_ACCESSKEY=F8BBA842ECF85
+      - MOMO_SECRETKEY=K951B6PE1waDMi640xX08PD3vg6EkVlz
+      - MOMO_URL=https://test-payment.momo.vn/v2/gateway/api/create
+      - MOMO_REFUND_URL=https://test-payment.momo.vn/v2/gateway/api/refund
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_BACKEND_URL=http://localhost:8080
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
