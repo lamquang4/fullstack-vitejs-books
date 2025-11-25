@@ -144,7 +144,7 @@ function CheckoutForm() {
         });
 
         setIsOrderPlaced(true);
-        navigate("/order-result?result=successfully");
+        navigate("/order-result?result=successful");
 
         mutateCart({ items: [] }, false);
       } catch (err: any) {
