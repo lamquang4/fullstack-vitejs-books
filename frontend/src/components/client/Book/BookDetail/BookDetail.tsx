@@ -127,7 +127,9 @@ function BookDetail({ book }: Props) {
                 <Swiper
                   slidesPerView="auto"
                   spaceBetween={10}
-                  className="lg:max-h-[600px] w-full"
+                  className="lg:max-h-[600px] w-full flex justify-center 
+                  [&&_.swiper-wrapper]:flex 
+                  [&&_.swiper-wrapper]:justify-center"
                   direction={isLargeScreen ? "vertical" : "horizontal"}
                 >
                   {book?.images.map((image, index) => (
@@ -160,18 +162,18 @@ function BookDetail({ book }: Props) {
                 </Swiper>
               </div>
 
-              <div className="group flex justify-center w-full relative">
+              <div
+                className="group flex justify-center w-full relative cursor-pointer "
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  handleOpenViewer(
+                    `${import.meta.env.VITE_BACKEND_URL}${mainImage}`
+                  );
+                }}
+              >
                 {mainImage && (
-                  <div
-                    className="cursor-pointer group"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      e.preventDefault();
-                      handleOpenViewer(
-                        `${import.meta.env.VITE_BACKEND_URL}${mainImage}`
-                      );
-                    }}
-                  >
+                  <div className="group">
                     <button
                       type="button"
                       onClick={handleNextImage}
