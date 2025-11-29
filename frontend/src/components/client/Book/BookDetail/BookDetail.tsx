@@ -91,7 +91,7 @@ function BookDetail({ book }: Props) {
     }
 
     if (!user?.id) {
-      toast.error("Bạn phải đăng nhập để mua sách!");
+      toast.error("Bạn phải đăng nhập để mua sách");
       navigate("/login");
       return;
     }
