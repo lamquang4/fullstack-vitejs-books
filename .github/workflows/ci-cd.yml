@@ -46,22 +46,22 @@ jobs:
         working-directory: ./frontend
         run: npm run build
 
-deploy:
-  runs-on: ubuntu-latest
-  needs: test
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
 
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Trigger frontend deploy on Render
-      run: |
-        curl -X POST "https://api.render.com/deploy/srv-d45j3563jp1c73dis3n0" \
-        -H "Accept: application/json" \
-        -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}"
+      - name: Trigger frontend deploy on Render
+        run: |
+          curl -X POST "https://api.render.com/deploy/srv-d45j3563jp1c73dis3n0" \
+          -H "Accept: application/json" \
+          -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}"
 
-    - name: Trigger backend deploy on Render
-      run: |
-        curl -X POST "https://api.render.com/deploy/srv-d45dckre5dus73c28ml0" \
-        -H "Accept: application/json" \
-        -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}"
+      - name: Trigger backend deploy on Render
+        run: |
+          curl -X POST "https://api.render.com/deploy/srv-d45dckre5dus73c28ml0" \
+          -H "Accept: application/json" \
+          -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}"
