@@ -60,12 +60,12 @@ jobs:
 
       - name: Trigger frontend deploy on Render
         run: |
-          curl -X POST "https://api.render.com/deploy/srv-d45j3563jp1c73dis3n0?key=pLNNm2Zhu0Y" \
+          curl -X POST "https://api.render.com/deploy/srv-d45j3563jp1c73dis3n0" \
           -H "Accept: application/json" \
           -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}"
 
       - name: Trigger backend deploy on Render
         run: |
-          curl -X POST "https://api.render.com/deploy/srv-d45dckre5dus73c28ml0?key=oniP33ueNdc" \
+          curl -X POST "https://api.render.com/deploy/srv-d45dckre5dus73c28ml0" \
           -H "Accept: application/json" \
           -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}"
