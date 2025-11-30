@@ -15,7 +15,7 @@ function Footer() {
               />
             </Link>
             <p className=" text-gray-500">
-              Fahasa nhận đặt hàng trực tuyến và giao hàng tận nơi. KHÔNG hỗ trợ
+              Fahasa nhận đặt hàng trực tuyến và giao hàng tận nơi, không hỗ trợ
               đặt mua và nhận hàng trực tiếp tại văn phòng cũng như tất cả Hệ
               Thống Fahasa trên toàn quốc.
             </p>
