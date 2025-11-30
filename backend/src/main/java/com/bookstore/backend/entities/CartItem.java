@@ -22,8 +22,8 @@ import lombok.Setter;
 @Builder
 public class CartItem {
     @Id
-@GeneratedValue(strategy = GenerationType.UUID)
-private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @ManyToOne
     @JoinColumn(name = "cartId", nullable = false)
@@ -35,5 +35,4 @@ private String id;
 
     @Column(nullable = false)
     private int quantity;
-
 }

@@ -21,10 +21,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class Author {
-
     @Id
-@GeneratedValue(strategy = GenerationType.UUID)
-private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(nullable = false, unique = true, length = 50)
     private String fullname;
@@ -33,6 +32,6 @@ private String id;
     private String slug;
 
     @Builder.Default
-@Column(nullable = false)
-private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

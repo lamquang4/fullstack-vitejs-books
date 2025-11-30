@@ -27,8 +27,8 @@ import lombok.Setter;
 public class Book {
 
     @Id
-@GeneratedValue(strategy = GenerationType.UUID)
-private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(nullable = false, unique = true, length = 100)    
     private String title;
@@ -61,28 +61,27 @@ private String id;
     private String slug;
 
     @Column(nullable = false)
-    private Integer status;
+    private Integer status; // 1 hiện, 0 ẩn
 
     @Column(nullable = false)
     private Integer stock;
 
-@ManyToOne()
+    @ManyToOne()
     @JoinColumn(name = "categoryId", nullable = false)
     private Category category;
 
-@ManyToOne()
+    @ManyToOne()
     @JoinColumn(name = "authorId", nullable = false)
     private Author author;
 
- @ManyToOne()
+    @ManyToOne()
     @JoinColumn(name = "publisherId", nullable = false)
     private Publisher publisher;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-private List<ImageBook> images;
+    private List<ImageBook> images;
 
     @Builder.Default
-@Column(nullable = false)
-private LocalDateTime createdAt = LocalDateTime.now();
-
+    @Column(nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

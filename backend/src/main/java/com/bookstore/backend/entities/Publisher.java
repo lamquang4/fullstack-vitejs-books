@@ -23,8 +23,8 @@ import lombok.Setter;
 public class Publisher {
 
     @Id
-@GeneratedValue(strategy = GenerationType.UUID)
-private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(unique = true, nullable = false, length = 50)
     private String name;
@@ -33,6 +33,6 @@ private String id;
     private String slug;
 
     @Builder.Default
-@Column(nullable = false)
-private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 }
