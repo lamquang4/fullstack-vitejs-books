@@ -21,10 +21,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class Category {
-
     @Id
-@GeneratedValue(strategy = GenerationType.UUID)
-private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(nullable = false, unique = true, length = 50)
     private String name;
@@ -32,10 +31,10 @@ private String id;
     @Column(nullable = false, unique = true, length = 50)
     private String slug;
 
-        @Column(nullable = false)
+    @Column(nullable = false)
     private Integer status;
 
     @Builder.Default
-@Column(nullable = false)
-private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

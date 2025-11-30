@@ -28,28 +28,28 @@ import java.util.List;
 public class Order {
 
     @Id
-@GeneratedValue(strategy = GenerationType.UUID)
-private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(nullable = false, unique = true, length = 15)
     private String orderCode;
 
-     @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 50)
     private String fullname;
 
-     @Column(nullable = false, length = 15)
+    @Column(nullable = false, length = 15)
     private String phone;
 
     @Column(nullable = false, length = 70)
     private String speaddress;
 
-     @Column(nullable = false, length = 70)
+    @Column(nullable = false, length = 70)
     private String city;
 
-     @Column(nullable = false, length = 70)
+    @Column(nullable = false, length = 70)
     private String ward;
 
-     @Column(nullable = false, length = 15)
+    @Column(nullable = false, length = 15)
     private String paymethod; 
 
     @Column(nullable = false)

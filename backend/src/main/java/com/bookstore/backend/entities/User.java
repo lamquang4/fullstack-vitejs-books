@@ -28,7 +28,7 @@ public class User {
     @Column(unique = true, nullable = false, length = 100)
     private String email;
 
-     @Column(nullable = false, length = 50)
+        @Column(nullable = false, length = 50)
     private String fullname;
 
     @Column(nullable = false)
@@ -41,6 +41,6 @@ public class User {
     private Integer status;
 
     @Builder.Default
-@Column(nullable = false)
-private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

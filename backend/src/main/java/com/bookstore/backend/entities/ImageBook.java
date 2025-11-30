@@ -23,9 +23,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class ImageBook {
-        @Id
-@GeneratedValue(strategy = GenerationType.UUID)
-private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(nullable = false, length = 250)    
     private String image;
@@ -33,8 +33,8 @@ private String id;
     @ManyToOne
     @JoinColumn(name = "bookId", nullable = false)
     private Book book;
-    
+
     @Builder.Default
-@Column(nullable = false)
-private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

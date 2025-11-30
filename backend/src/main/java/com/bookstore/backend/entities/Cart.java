@@ -27,18 +27,18 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class Cart {
-@Id
-@GeneratedValue(strategy = GenerationType.UUID)
-private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
-@ManyToOne
+    @ManyToOne
     @JoinColumn(name = "userId", nullable = false, unique = true)
     private User user;
 
     @Builder.Default
-@Column(nullable = false)
-private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-private List<CartItem> items; // khi xóa cart thì cartitem cũng bị xóa theo
+    private List<CartItem> items; // khi xóa cart thì cartitem cũng bị xóa theo
 }
