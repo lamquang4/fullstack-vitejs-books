@@ -55,10 +55,8 @@ class UserControllerTest {
                 .build();
     }
 
-    /* ========================================================= */
-    /* ======================= CUSTOMER ======================= */
-    /* ========================================================= */
 
+    // Lấy tất cả khách hàng
     @Test
     @WithMockUser
     void getAllCustomers_shouldReturnPage() throws Exception {
@@ -79,8 +77,7 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.total").value(1));
     }
 
-    /* ========================================================= */
-
+    // Lấy tất cả quản trị viên
     @Test
     @WithMockUser
     void getAllAdmins_shouldReturnPage() throws Exception {
@@ -101,8 +98,7 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.total").value(1));
     }
 
-    /* ========================================================= */
-
+    // lấy người dùng theo id
     @Test
     @WithMockUser
     void getUserById_success() throws Exception {
@@ -127,8 +123,8 @@ class UserControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    /* ========================================================= */
 
+    // thêm người dùng
     @Test
     @WithMockUser
     void createUser_shouldReturnCreatedUser() throws Exception {
@@ -147,9 +143,8 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.fullname")
                         .value("Test User"));
     }
-
-    /* ========================================================= */
-
+    
+    // cập nhật người dùng
     @Test
     @WithMockUser
     void updateUser_success() throws Exception {
@@ -170,7 +165,7 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.fullname")
                         .value("Updated Name"));
     }
-
+    
     @Test
     @WithMockUser
     void updateUser_notFound() throws Exception {
@@ -189,8 +184,7 @@ class UserControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    /* ========================================================= */
-
+    // cập nhật status người dùng
     @Test
     @WithMockUser
     void updateUserStatus_shouldReturnUpdatedStatus() throws Exception {
@@ -219,8 +213,8 @@ class UserControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    /* ========================================================= */
 
+    // xóa người dùng
     @Test
     @WithMockUser
     void deleteUser_shouldReturn204() throws Exception {

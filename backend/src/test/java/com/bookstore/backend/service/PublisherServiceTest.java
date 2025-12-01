@@ -44,10 +44,8 @@ class PublisherServiceTest {
                 .build();
     }
 
-    // ============================================================
-    // GET ALL PUBLISHERS
-    // ============================================================
 
+    // Lấy tất cả nhà xuất bản
     @Test
     void testGetAllPublishers_WithQuery() {
         Page<Publisher> page = new PageImpl<>(List.of(publisher));
@@ -85,10 +83,7 @@ class PublisherServiceTest {
         assertEquals(1, list.size());
     }
 
-    // ============================================================
-    // GET BY ID
-    // ============================================================
-
+    // Lấy nhà xuất bản theo id
     @Test
     void testGetPublisherById() {
         when(publisherRepository.findById("pub1")).thenReturn(Optional.of(publisher));
@@ -99,10 +94,7 @@ class PublisherServiceTest {
         assertEquals("pub1", result.get().getId());
     }
 
-    // ============================================================
-    // CREATE PUBLISHER
-    // ============================================================
-
+    // Tạo nhà xuất bản
     @Test
     void testCreatePublisher_Success() {
         Publisher newPub = Publisher.builder().name("New Pub").build();
@@ -131,10 +123,7 @@ class PublisherServiceTest {
                 () -> publisherService.createPublisher(newPub));
     }
 
-    // ============================================================
-    // UPDATE PUBLISHER
-    // ============================================================
-
+    // Cập nhật nhà xuất bản
     @Test
     void testUpdatePublisher_Success() {
         Publisher updateData = Publisher.builder().name("New Name").build();
@@ -171,10 +160,7 @@ class PublisherServiceTest {
                 () -> publisherService.updatePublisher("pub1", updateData));
     }
 
-    // ============================================================
-    // DELETE PUBLISHER
-    // ============================================================
-
+    // Xóa nhà xuất bản
     @Test
     void testDeletePublisher_Success() {
         when(publisherRepository.findById("pub1")).thenReturn(Optional.of(publisher));

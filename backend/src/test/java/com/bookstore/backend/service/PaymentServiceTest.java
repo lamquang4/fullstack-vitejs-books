@@ -51,10 +51,7 @@ class PaymentServiceTest {
                 .build();
     }
 
-    // ============================================================
-    // GET ALL PAYMENTS
-    // ============================================================
-
+    // Lấy tất cả giao dịch thanh toán
     @Test
     void testGetAllPayments_FilterByOrderCodeAndStatus() {
         Page<Payment> page = new PageImpl<>(List.of(payment));
@@ -114,10 +111,8 @@ class PaymentServiceTest {
         verify(paymentRepository).findAll(any(Pageable.class));
     }
 
-    // ============================================================
-    // CREATE PAYMENT
-    // ============================================================
 
+    // Lưu giao dịch thanh toán
     @Test
     void testCreatePayment_Success() {
         when(paymentRepository.save(payment)).thenReturn(payment);

@@ -56,9 +56,7 @@ class BookService_UpdateStatusTest {
                 .build();
     }
 
-    // -------------------------------------------------------------
-    // SUCCESS CASE
-    // -------------------------------------------------------------
+    // Trường hợp thành công
     @Test
     void testUpdateBookStatus_Success() {
         when(bookRepository.findById("book1"))
@@ -73,9 +71,7 @@ class BookService_UpdateStatusTest {
         verify(bookRepository).save(any(Book.class));
     }
 
-    // -------------------------------------------------------------
-    // CATEGORY IS HIDDEN, CANNOT SHOW THE BOOK
-    // -------------------------------------------------------------
+    // Danh mục mà sách đang thuộc ẩn thì sách không được hiện
     @Test
     void testUpdateBookStatus_CategoryHidden() {
         when(bookRepository.findById("book2"))
@@ -85,9 +81,7 @@ class BookService_UpdateStatusTest {
                 () -> bookService.updateBookStatus("book2", 1));
     }
 
-    // -------------------------------------------------------------
-    // BOOK NOT FOUND
-    // -------------------------------------------------------------
+    // Sách không tìm thấy
     @Test
     void testUpdateBookStatus_NotFound() {
         when(bookRepository.findById("book404"))

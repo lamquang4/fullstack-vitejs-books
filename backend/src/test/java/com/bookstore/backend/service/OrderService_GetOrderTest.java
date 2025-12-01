@@ -73,9 +73,7 @@ class OrderService_GetOrderTest {
                 .build();
     }
 
-    // =========================================================
-    // GET ORDER BY ID
-    // =========================================================
+    // Lấy đơn hàng theo id
     @Test
     void testGetOrderById_Success() {
         when(orderRepository.findById("o1")).thenReturn(Optional.of(order));
@@ -94,9 +92,7 @@ class OrderService_GetOrderTest {
                 () -> orderService.getOrderById("o1"));
     }
 
-    // =========================================================
-    // GET ORDER BY USER + CODE
-    // =========================================================
+    // Lấy đơn hàng theo id người dùng và orderCode
     @Test
     void testGetOrderByUserAndCode_Success() {
         when(orderRepository.findByUserIdAndOrderCode("u1", "ABC123"))
@@ -116,9 +112,7 @@ class OrderService_GetOrderTest {
                 () -> orderService.getOrderByUserAndCode("u1", "ABC123"));
     }
 
-    // =========================================================
-    // GET ORDER BY ORDER CODE
-    // =========================================================
+    // Lấy đơn hàng theo orderCode
     @Test
     void testGetOrderByOrderCode_Success() {
         when(orderRepository.findByOrderCode("ABC123"))
@@ -137,9 +131,7 @@ class OrderService_GetOrderTest {
                 () -> orderService.getOrderByOrderCode("ABC123"));
     }
 
-    // =========================================================
-    // GET ORDERS BY USER + STATUS
-    // =========================================================
+    // Lấy các đơn hàng của id người dùng
     @Test
     void testGetOrdersByUserAndStatus_Filtered() {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("createdAt").descending());
@@ -166,9 +158,7 @@ class OrderService_GetOrderTest {
         assertEquals(1, result.getTotalElements());
     }
 
-    // =========================================================
-    // REVENUE & SOLD QUANTITY
-    // =========================================================
+    // Lấy doanh thu và tổng số lượng bán ra
     @Test
     void testGetTotalRevenue() {
         when(orderRepository.sumTotalByStatus(3)).thenReturn(5000.0);

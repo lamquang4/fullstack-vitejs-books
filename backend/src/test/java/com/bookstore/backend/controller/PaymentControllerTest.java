@@ -31,7 +31,7 @@ class PaymentControllerTest {
     private PaymentService paymentService;
 
     @Autowired
-    private ObjectMapper objectMapper; //  PHẢI inject
+    private ObjectMapper objectMapper;
 
     private PaymentDTO paymentDTO;
 
@@ -45,11 +45,11 @@ class PaymentControllerTest {
                 .amount(150000.0)
                 .transactionId("TRANS123")
                 .status(1)
-                .createdAt(LocalDateTime.now())   //  KHÔNG lỗi
+                .createdAt(LocalDateTime.now())
                 .build();
     }
 
-    // ---------------- GET LIST ----------------
+    // Lấy tất cả giao dịch thanh toán
     @Test
     @WithMockUser
     void getAllPayments_shouldReturnPayments() throws Exception {
@@ -77,7 +77,7 @@ class PaymentControllerTest {
                 .andExpect(jsonPath("$.total").value(1));
     }
 
-    // ---------------- EMPTY RESULT ----------------
+    // Lấy tất cả thanh toán nhưng trong trường hợp không có thanh toán nào
     @Test
     @WithMockUser
     void getAllPayments_emptyResult() throws Exception {

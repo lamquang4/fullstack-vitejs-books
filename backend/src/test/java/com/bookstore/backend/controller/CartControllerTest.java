@@ -33,7 +33,6 @@ class CartControllerTest {
     @WithMockUser
     void getCartByUserId_shouldReturnCart() throws Exception {
 
-        // Mock dữ liệu trả về
         CartDTO mockCart = new CartDTO();
         Mockito.when(cartService.getCartByUserId("u1"))
                 .thenReturn(mockCart);
@@ -44,7 +43,7 @@ class CartControllerTest {
                 .andExpect(status().isOk());
     }
 
-    // ---------------- ADD ITEM ----------------
+    // Thêm sản phẩm vào giỏ hàng
     @Test
     @WithMockUser
     void addItemToCart_shouldReturnOk() throws Exception {
@@ -63,7 +62,7 @@ class CartControllerTest {
                 .andExpect(status().isOk());
     }
 
-    // ---------------- UPDATE ITEM ----------------
+    // Cập nhật số lượng mua trong giỏ hàng
     @Test
     @WithMockUser
     void updateCartItemQuantity_shouldReturnOk() throws Exception {
@@ -80,7 +79,7 @@ class CartControllerTest {
                 .andExpect(status().isOk());
     }
 
-    // ---------------- DELETE ITEM ----------------
+    // Xóa sản phẩm khỏi giỏ hàng
     @Test
     @WithMockUser
     void removeItemFromCart_shouldReturnOk() throws Exception {

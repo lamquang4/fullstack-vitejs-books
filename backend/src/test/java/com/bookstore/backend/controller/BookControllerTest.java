@@ -78,8 +78,7 @@ class BookControllerTest {
         );
     }
 
-    // ---------------- GET --------------------
-
+    // Lấy sách
     @Test
     @WithMockUser
     void getAllBooks_shouldReturnBooks() throws Exception {
@@ -131,8 +130,7 @@ class BookControllerTest {
                 .andExpect(jsonPath("$.slug").value("kinh-van-hoa"));
     }
 
-    // ---------------- PATCH --------------------
-
+    // Cập nhật sách
     @Test
     @WithMockUser
     void updateStatus_shouldReturnUpdatedStatus() throws Exception {
@@ -155,8 +153,7 @@ class BookControllerTest {
                 .andExpect(jsonPath("$.status").value(0));
     }
 
-    // ---------------- DELETE --------------------
-
+    // Xóa sách
     @Test
     @WithMockUser
     void deleteBook_shouldReturnNoContent() throws Exception {
@@ -181,8 +178,7 @@ class BookControllerTest {
         ).andExpect(status().isNoContent());
     }
 
-    // ---------------- MULTIPART --------------------
-
+    // Multipart
     @Test
     @WithMockUser
     void createBook_withMultipart_shouldReturnOk() throws Exception {

@@ -57,8 +57,7 @@ class OrderControllerTest {
                 .build();
     }
 
-    // ------------------- ADMIN -----------------------
-
+    // lấy tất cả đơn hàng
     @Test
     @WithMockUser
     void getAllOrders_shouldReturnOrders() throws Exception {
@@ -88,6 +87,7 @@ class OrderControllerTest {
                         .value(5));
     }
 
+    // lấy đơn hàng theo id
     @Test
     @WithMockUser
     void getOrderById_shouldReturnOrder() throws Exception {
@@ -118,8 +118,8 @@ class OrderControllerTest {
                         .value(3));
     }
 
-    // ------------------- CUSTOMER -----------------------
 
+    // tạo đơn hàng
     @Test
     @WithMockUser
     void createOrder_shouldReturnCreatedOrder() throws Exception {
@@ -179,8 +179,8 @@ class OrderControllerTest {
                         .value("ORD001"));
     }
 
-    // ------------------- STATISTICS -----------------------
 
+    // Thống kê từ đơn hàng
     @Test
     @WithMockUser
     void getOrderStats_shouldReturnStats() throws Exception {

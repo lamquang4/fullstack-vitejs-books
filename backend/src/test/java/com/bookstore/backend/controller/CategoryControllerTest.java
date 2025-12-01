@@ -49,9 +49,7 @@ class CategoryControllerTest {
                 .build();
     }
 
-    // ----------------------------------------------------
-    // GET /api/category
-    // ----------------------------------------------------
+    // Lấy tất cả danh mục có phân trang
     @Test
     @WithMockUser
     void getAllCategories() throws Exception {
@@ -76,9 +74,7 @@ class CategoryControllerTest {
                         .value("Thiếu nhi"));
     }
 
-    // ----------------------------------------------------
-    // GET /api/category/all
-    // ----------------------------------------------------
+    // Lấy tất cả danh mục không phân trang
     @Test
     @WithMockUser
     void getAllCategories1() throws Exception {
@@ -92,9 +88,7 @@ class CategoryControllerTest {
                         .value("thieu-nhi"));
     }
 
-    // ----------------------------------------------------
-    // GET /api/category/{id}
-    // ----------------------------------------------------
+    // Láy danh mục theo id
     @Test
     @WithMockUser
     void getById_found() throws Exception {
@@ -119,9 +113,7 @@ class CategoryControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    // ----------------------------------------------------
-    // GET /api/category/active
-    // ----------------------------------------------------
+    // Lấy danh mục có status = 1
     @Test
     @WithMockUser
     void getActiveCategories() throws Exception {
@@ -135,9 +127,7 @@ class CategoryControllerTest {
                         .value("Thiếu nhi"));
     }
 
-    // ----------------------------------------------------
-    // POST /api/category
-    // ----------------------------------------------------
+    // Thêm danh mục
     @Test
     @WithMockUser
     void createCategory() throws Exception {
@@ -157,9 +147,7 @@ class CategoryControllerTest {
                         .value("thieu-nhi"));
     }
 
-    // ----------------------------------------------------
-    // PUT /api/category/{id}
-    // ----------------------------------------------------
+    // Cập nhật danh mục
     @Test
     @WithMockUser
     void updateCategory_found() throws Exception {
@@ -198,9 +186,7 @@ class CategoryControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    // ----------------------------------------------------
-    // PATCH /api/category/status/{id}
-    // ----------------------------------------------------
+    // Cập nhật status danh mục
     @Test
     @WithMockUser
     void updateCategoryStatus() throws Exception {
@@ -224,9 +210,7 @@ class CategoryControllerTest {
                         .value(0));
     }
 
-    // ----------------------------------------------------
-    // DELETE /api/category/{id}
-    // ----------------------------------------------------
+    // Xóa danh mục
     @Test
     @WithMockUser
     void deleteCategory() throws Exception {

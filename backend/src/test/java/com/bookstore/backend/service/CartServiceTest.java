@@ -74,10 +74,8 @@ class CartServiceTest {
         item.setCart(cart);
     }
 
-    // ============================================================
-    // GET CART
-    // ============================================================
-
+ 
+    // Lấy giỏ hàng của khách hàng
     @Test
     void testGetCartByUserId_Success() {
         when(cartRepository.findByUserId("u1")).thenReturn(Optional.of(cart));
@@ -99,10 +97,8 @@ class CartServiceTest {
     }
 
 
-    // ============================================================
-    // ADD ITEM
-    // ============================================================
 
+    // Thêm sản phẩm vào giỏ hàng
     @Test
     void testAddItemToCart_UserNotFound() {
         when(userRepository.findById("u1")).thenReturn(Optional.empty());
@@ -196,10 +192,7 @@ class CartServiceTest {
     }
 
 
-    // ============================================================
-    // UPDATE CART ITEM
-    // ============================================================
-
+    // Cập nhật giỏ hàng
     @Test
     void testUpdateItem_NotFound() {
         when(cartItemRepository.findById("ci404")).thenReturn(Optional.empty());
@@ -239,11 +232,7 @@ class CartServiceTest {
         verify(cartItemRepository).save(item);
     }
 
-
-    // ============================================================
-    // REMOVE ITEM
-    // ============================================================
-
+    // Xóa sản phẩm khỏi giỏ hàng
     @Test
     void testRemoveItem_NotFound() {
         when(cartItemRepository.findById("ci404")).thenReturn(Optional.empty());
