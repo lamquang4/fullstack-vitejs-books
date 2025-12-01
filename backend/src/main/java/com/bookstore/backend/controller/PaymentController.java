@@ -17,20 +17,19 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-@GetMapping
-public ResponseEntity<?> getAllPayments(
-        @RequestParam(defaultValue = "1") int page,
-        @RequestParam(defaultValue = "12") int limit,
-        @RequestParam(required = false) String q,
-        @RequestParam(required = false) Integer status
-) {
-    Page<PaymentDTO> paymentPage = paymentService.getAllPayments(page, limit, q, status);
+    @GetMapping
+    public ResponseEntity<?> getAllPayments(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "12") int limit,
+            @RequestParam(required = false) String q,
+            @RequestParam(required = false) Integer status
+    ) {
+        Page<PaymentDTO> paymentPage = paymentService.getAllPayments(page, limit, q, status);
 
-    return ResponseEntity.ok(Map.of(
-        "payments", paymentPage.getContent(),
-        "totalPages", paymentPage.getTotalPages(),
-        "total", paymentPage.getTotalElements()
-    ));
-}
-
+        return ResponseEntity.ok(Map.of(
+            "payments", paymentPage.getContent(),
+            "totalPages", paymentPage.getTotalPages(),
+            "total", paymentPage.getTotalElements()
+        ));
+    }
 }

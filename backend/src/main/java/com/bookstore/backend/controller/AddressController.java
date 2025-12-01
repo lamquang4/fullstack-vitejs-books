@@ -24,14 +24,14 @@ public class AddressController {
         return ResponseEntity.ok(addresses);
     }
 
-@GetMapping("/{userId}/{id}")
-public ResponseEntity<Address> getAddressByIdAndUserId(
-        @PathVariable String userId,
-        @PathVariable String id) {
+    @GetMapping("/{userId}/{id}")
+    public ResponseEntity<Address> getAddressByIdAndUserId(
+            @PathVariable String userId,
+            @PathVariable String id) {
 
-    Address address = addressService.getAddressByIdAndUserId(id, userId);
-    return ResponseEntity.ok(address);
-}
+        Address address = addressService.getAddressByIdAndUserId(id, userId);
+        return ResponseEntity.ok(address);
+    }
 
    @PostMapping
     public ResponseEntity<Address> createAddress(@RequestBody AddressDTO dto) {

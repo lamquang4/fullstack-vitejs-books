@@ -32,18 +32,18 @@ public class CartController {
     }
 
     // items trong cart
-@PutMapping("/item/{cartItemId}")
-public ResponseEntity<Void> updateCartItemQuantity(
-        @PathVariable String cartItemId,
-        @RequestParam int quantity) {
-    cartService.updateCartItemQuantity(cartItemId, quantity);
-    return ResponseEntity.ok().build();
-}
+    @PutMapping("/item/{cartItemId}")
+    public ResponseEntity<Void> updateCartItemQuantity(
+            @PathVariable String cartItemId,
+            @RequestParam int quantity) {
+        cartService.updateCartItemQuantity(cartItemId, quantity);
+        return ResponseEntity.ok().build();
+    }
 
-@DeleteMapping("/item/{cartItemId}")
-public ResponseEntity<Void> removeItemFromCart(@PathVariable String cartItemId) {
-    cartService.removeItemFromCart(cartItemId);
-    return ResponseEntity.ok().build();
-}
+    @DeleteMapping("/item/{cartItemId}")
+    public ResponseEntity<Void> removeItemFromCart(@PathVariable String cartItemId) {
+        cartService.removeItemFromCart(cartItemId);
+        return ResponseEntity.ok().build();
+    }
   
 }

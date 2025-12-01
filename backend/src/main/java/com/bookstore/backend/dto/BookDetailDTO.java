@@ -1,7 +1,9 @@
 package com.bookstore.backend.dto;
-import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
+import java.util.List;
 @Data
 @AllArgsConstructor
 public class BookDetailDTO {
@@ -19,7 +21,7 @@ public class BookDetailDTO {
     private Double thickness; 
     private Integer stock;
     private Integer status;
-private String createdAt;
+    private String createdAt;
     private AuthorDTO author;
     private PublisherDTO publisher;
     private CategoryDTO category;
