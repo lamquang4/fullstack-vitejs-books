@@ -127,9 +127,7 @@ function BookDetail({ book }: Props) {
                 <Swiper
                   slidesPerView="auto"
                   spaceBetween={10}
-                  className="lg:max-h-[600px] w-full flex justify-center 
-                  [&&_.swiper-wrapper]:flex 
-                  [&&_.swiper-wrapper]:justify-center"
+                  className="lg:max-h-[600px] w-full flex justify-center [&&_.swiper-wrapper]:flex [&&_.swiper-wrapper]:justify-center"
                   direction={isLargeScreen ? "vertical" : "horizontal"}
                 >
                   {book?.images.map((image, index) => (
@@ -236,7 +234,7 @@ function BookDetail({ book }: Props) {
                 {book && book.stock > 0 ? (
                   <>
                     <div className="w-full flex items-center gap-[15px]">
-                      <h5 className="font-medium ">Số lượng:</h5>
+                      <h5 className="font-medium">Số lượng:</h5>
                       <div className="relative flex justify-between items-center max-w-[8rem] border border-gray-300 rounded-sm">
                         <button
                           type="button"

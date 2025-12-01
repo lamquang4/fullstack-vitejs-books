@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class Category {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -24,7 +23,7 @@ public class Category {
     @Column(nullable = false, unique = true, length = 50)
     private String slug;
 
-        @Column(nullable = false)
+    @Column(nullable = false)
     private Integer status;
 
     @Builder.Default

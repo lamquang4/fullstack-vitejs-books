@@ -13,7 +13,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class ImageBook {
-        @Id
+    
+    @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
