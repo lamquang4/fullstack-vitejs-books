@@ -23,8 +23,8 @@ import lombok.Setter;
 public class OrderDetail {
 
     @Id
-@GeneratedValue(strategy = GenerationType.UUID)
-private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(nullable = false)
     private Integer quantity;

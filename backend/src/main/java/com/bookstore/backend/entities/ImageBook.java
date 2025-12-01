@@ -1,19 +1,9 @@
 package com.bookstore.backend.entities;
-import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "imagebook")
@@ -24,8 +14,8 @@ import lombok.Setter;
 @Builder
 public class ImageBook {
         @Id
-@GeneratedValue(strategy = GenerationType.UUID)
-private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(nullable = false, length = 250)    
     private String image;
@@ -35,6 +25,6 @@ private String id;
     private Book book;
     
     @Builder.Default
-@Column(nullable = false)
-private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

@@ -19,7 +19,7 @@ public class UserController {
     }
 
     // customer
-  @GetMapping("/customer")
+    @GetMapping("/customer")
     public ResponseEntity<?> getAllCustomers(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "12") int limit,
@@ -35,7 +35,7 @@ public class UserController {
     }
 
 // admin
- @GetMapping("/admin")
+    @GetMapping("/admin")
     public ResponseEntity<?> getAllAdmins(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "12") int limit,

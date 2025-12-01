@@ -1,17 +1,9 @@
 package com.bookstore.backend.entities;
-import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "author")
@@ -23,8 +15,8 @@ import lombok.Setter;
 public class Author {
 
     @Id
-@GeneratedValue(strategy = GenerationType.UUID)
-private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(nullable = false, unique = true, length = 50)
     private String fullname;
@@ -33,6 +25,6 @@ private String id;
     private String slug;
 
     @Builder.Default
-@Column(nullable = false)
-private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 }
