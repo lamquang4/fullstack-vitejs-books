@@ -67,10 +67,7 @@ class AddressServiceTest {
                 .build();
     }
 
-    // ----------------------------------------------------
-    // GET ADDRESS LIST
-    // ----------------------------------------------------
-
+    // Lấy danh sách địa chỉ của id người dùng
     @Test
     void testGetAddressesByUserId_Success() {
         when(addressRepository.findByUserId("user123"))
@@ -82,10 +79,7 @@ class AddressServiceTest {
         verify(addressRepository).findByUserId("user123");
     }
 
-    // ----------------------------------------------------
-    // GET ADDRESS BY ID + USER ID
-    // ----------------------------------------------------
-
+    // Lấy địa chỉ bằng id của id người dùng
     @Test
     void testGetAddressByIdAndUserId_Success() {
         when(addressRepository.findByIdAndUserId("addr1", "user123"))
@@ -106,10 +100,7 @@ class AddressServiceTest {
                 () -> addressService.getAddressByIdAndUserId("addr1", "user123"));
     }
 
-    // ----------------------------------------------------
-    // CREATE ADDRESS
-    // ----------------------------------------------------
-
+    // Tạo địa chỉ
     @Test
     void testCreateAddress_Success() {
         try (MockedStatic<ValidationUtils> utilities = mockStatic(ValidationUtils.class)) {
@@ -153,10 +144,7 @@ class AddressServiceTest {
         }
     }
 
-    // ----------------------------------------------------
-    // UPDATE ADDRESS
-    // ----------------------------------------------------
-
+    // Cập nhật địa chỉ
     @Test
     void testUpdateAddress_Success() {
         AddressDTO updateDto = AddressDTO.builder()
@@ -199,10 +187,7 @@ class AddressServiceTest {
         }
     }
 
-    // ----------------------------------------------------
-    // DELETE ADDRESS
-    // ----------------------------------------------------
-
+    // Xóa địa chỉ
     @Test
     void testDeleteAddress_Success() {
         when(addressRepository.existsById("addr1")).thenReturn(true);

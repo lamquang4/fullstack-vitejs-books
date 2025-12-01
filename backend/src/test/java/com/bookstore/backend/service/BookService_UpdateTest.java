@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -71,10 +72,7 @@ class BookService_UpdateTest {
                 .build();
     }
 
-    // ---------------------------------------------------------
-    // SUCCESS
-    // ---------------------------------------------------------
-    @Test
+    // Trường hợp thành công
     void testUpdateBook_Success() throws IOException {
         MultipartFile file = mock(MultipartFile.class);
 
@@ -92,9 +90,8 @@ class BookService_UpdateTest {
         verify(imageBookRepository).save(any());
     }
 
-    // ---------------------------------------------------------
-    // CATEGORY NOT FOUND (service KHÔNG check → test xác minh rằng không ném exception)
-    // ---------------------------------------------------------
+ 
+    // Danh mục không tìm thấy (service KHÔNG check → test xác minh rằng không ném exception)
     @Test
     void testUpdateBook_CategoryNotFound_NoCheckInService() {
         updatedBook.setCategory(Category.builder().id("catX").build());
@@ -105,9 +102,7 @@ class BookService_UpdateTest {
         assertDoesNotThrow(() -> bookService.updateBook("book1", updatedBook, null));
     }
 
-    // ---------------------------------------------------------
-    // FILE TRANSFER ERROR
-    // ---------------------------------------------------------
+    // Lỗi truyền file
     @Test
     void testUpdateBook_FileTransferException() throws IOException {
         MultipartFile file = mock(MultipartFile.class);
@@ -124,9 +119,7 @@ class BookService_UpdateTest {
                 () -> bookService.updateBook("book1", updatedBook, List.of(file)));
     }
 
-    // ---------------------------------------------------------
-    // INVALID PRICE
-    // ---------------------------------------------------------
+    // Giá không hợp lệ
     @Test
     void testUpdateBook_InvalidPrice() {
         updatedBook.setPrice(0.0);
@@ -137,9 +130,8 @@ class BookService_UpdateTest {
                 () -> bookService.updateBook("book1", updatedBook, null));
     }
 
-    // ---------------------------------------------------------
-    // INVALID DISCOUNT NEGATIVE
-    // ---------------------------------------------------------
+  
+    // Giảm giá không hợp lệ
     @Test
     void testUpdateBook_InvalidDiscountNegative() {
         updatedBook.setDiscount(-1.0);
@@ -150,9 +142,7 @@ class BookService_UpdateTest {
                 () -> bookService.updateBook("book1", updatedBook, null));
     }
 
-    // ---------------------------------------------------------
-    // INVALID DISCOUNT TOO LARGE
-    // ---------------------------------------------------------
+    // Giảm giá không hợp lệ — mức giảm quá lớn
     @Test
     void testUpdateBook_InvalidDiscountTooLarge() {
         updatedBook.setDiscount(999.0);
@@ -163,9 +153,7 @@ class BookService_UpdateTest {
                 () -> bookService.updateBook("book1", updatedBook, null));
     }
 
-    // ---------------------------------------------------------
-    // INVALID STOCK
-    // ---------------------------------------------------------
+    // Tồn kho không hợp lệ
     @Test
     void testUpdateBook_InvalidStock() {
         updatedBook.setStock(-5);
@@ -176,9 +164,8 @@ class BookService_UpdateTest {
                 () -> bookService.updateBook("book1", updatedBook, null));
     }
 
-    // ---------------------------------------------------------
-    // INVALID EXTENSION
-    // ---------------------------------------------------------
+   
+    // Phần mở rộng không hợp lệ
     @Test
     void testUpdateBook_InvalidFileExtension() {
         MultipartFile file = mock(MultipartFile.class);
@@ -191,9 +178,8 @@ class BookService_UpdateTest {
                 () -> bookService.updateBook("book1", updatedBook, List.of(file)));
     }
 
-    // ---------------------------------------------------------
-    // INVALID MIME TYPE
-    // ---------------------------------------------------------
+  
+    // Kiểu MIME không hợp lệ
     @Test
     void testUpdateBook_InvalidMimeType() {
         MultipartFile file = mock(MultipartFile.class);

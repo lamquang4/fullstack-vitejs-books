@@ -74,9 +74,7 @@ class OrderService_CreateOrderTest {
         orderDTO.setItems(List.of(detailDTO));
     }
 
-    // ============================================================
-    // USER NOT FOUND
-    // ============================================================
+    // Người dùng không tìm thấy
     @Test
     void testCreateOrder_UserNotFound() {
         when(userRepository.findById("u1")).thenReturn(Optional.empty());
@@ -85,9 +83,7 @@ class OrderService_CreateOrderTest {
                 () -> orderService.createOrder(orderDTO, "u1"));
     }
 
-    // ============================================================
-    // INVALID PHONE
-    // ============================================================
+    // Số điện thoại không hợp lệ
     @Test
     void testCreateOrder_InvalidPhone() {
         orderDTO.setPhone("abc123");
@@ -102,9 +98,7 @@ class OrderService_CreateOrderTest {
         }
     }
 
-    // ============================================================
-    // BOOK NOT FOUND
-    // ============================================================
+    // Sách không tìm thấy
     @Test
     void testCreateOrder_BookNotFound() {
         when(userRepository.findById("u1")).thenReturn(Optional.of(user));
@@ -118,9 +112,7 @@ class OrderService_CreateOrderTest {
         }
     }
 
-    // ============================================================
-    // QUANTITY > STOCK
-    // ============================================================
+    // Kiểm tra số lượng mua > tồn kho
     @Test
     void testCreateOrder_QuantityExceedsStock() {
         detailDTO.setQuantity(999); // vượt stock
@@ -136,9 +128,7 @@ class OrderService_CreateOrderTest {
         }
     }
 
-    // ============================================================
-    // COD PAYMENT — DEDUCT STOCK + DELETE CART
-    // ============================================================
+    // Phương thức thanh toán COD - cập nhật tồn kho, xóa giỏ hàng
     @Test
     void testCreateOrder_COD_DeductStock_AndDeleteCart() {
 
@@ -169,9 +159,7 @@ class OrderService_CreateOrderTest {
         }
     }
 
-    // ============================================================
-    // CALCULATE TOTAL
-    // ============================================================
+    // Tính tông tiền
     @Test
     void testCreateOrder_CalculateTotalCorrectly() {
 

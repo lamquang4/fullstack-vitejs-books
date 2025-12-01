@@ -33,7 +33,6 @@ class PublisherControllerTest {
     @MockBean
     private PublisherService publisherService;
 
-    //  ObjectMapper xử lý LocalDateTime
     private final ObjectMapper mapper = JsonMapper.builder()
             .addModule(new JavaTimeModule())
             .build();
@@ -47,9 +46,7 @@ class PublisherControllerTest {
                 .build();
     }
 
-    // ---------------------------------------
-    // GET /api/publisher
-    // ---------------------------------------
+    // Lấy tất cả nhà xuất bản có phân trang
     @Test
     @WithMockUser
     void getAllPublishers_shouldReturnPage() throws Exception {
@@ -73,9 +70,7 @@ class PublisherControllerTest {
                 .andExpect(jsonPath("$.total").value(1));
     }
 
-    // ---------------------------------------
-    // GET /api/publisher/all
-    // ---------------------------------------
+    // Láy tất cả nhà xuất bản không phân trang
     @Test
     @WithMockUser
     void getAllPublishers1_shouldReturnList() throws Exception {
@@ -89,9 +84,7 @@ class PublisherControllerTest {
                 .andExpect(jsonPath("$[0].name").value("Test Publisher"));
     }
 
-    // ---------------------------------------
-    // GET /api/publisher/{id} - FOUND
-    // ---------------------------------------
+    // Lấy nhà xuất bản theo id - tìm thấy
     @Test
     @WithMockUser
     void getPublisherById_found() throws Exception {
@@ -105,9 +98,7 @@ class PublisherControllerTest {
                 .andExpect(jsonPath("$.name").value("Test Publisher"));
     }
 
-    // ---------------------------------------
-    // GET /api/publisher/{id} - NOT FOUND
-    // ---------------------------------------
+    // Lấy nhà xuất bản theo id - không tìm thấy
     @Test
     @WithMockUser
     void getPublisherById_notFound() throws Exception {
@@ -119,9 +110,7 @@ class PublisherControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    // ---------------------------------------
-    // POST /api/publisher
-    // ---------------------------------------
+    // Thêm nhà xuất bản
     @Test
     @WithMockUser
     void createPublisher_shouldReturnPublisher() throws Exception {
@@ -141,9 +130,7 @@ class PublisherControllerTest {
                         .value("Test Publisher"));
     }
 
-    // ---------------------------------------
-    // PUT /api/publisher/{id}
-    // ---------------------------------------
+    // Cập nhật nhà xuất bản
     @Test
     @WithMockUser
     void updatePublisher_shouldUpdate() throws Exception {
@@ -163,9 +150,7 @@ class PublisherControllerTest {
                         .value("Updated Publisher"));
     }
 
-    // ---------------------------------------
-    // PUT /api/publisher/{id} - NOT FOUND
-    // ---------------------------------------
+    // Cập nhật nhà xuất bản - không tìm thấy
     @Test
     @WithMockUser
     void updatePublisher_notFound() throws Exception {
@@ -180,9 +165,7 @@ class PublisherControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    // ---------------------------------------
-    // DELETE /api/publisher/{id}
-    // ---------------------------------------
+    // Xóa nhà xuất bản
     @Test
     @WithMockUser
     void deletePublisher_shouldReturn204() throws Exception {

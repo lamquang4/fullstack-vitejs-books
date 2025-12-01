@@ -39,7 +39,6 @@ class AuthorControllerTest {
 
     private final String AUTHOR_ID = "author123";
 
-    // ------------------- SETUP -------------------
     @BeforeEach
     void setup() {
 
@@ -51,7 +50,7 @@ class AuthorControllerTest {
                 .build();
     }
 
-    // ---------------- GET PAGING ----------------
+    // Lấy tất cả tác giả có phân trang
     @Test
     @WithMockUser
     void getAllAuthors_shouldReturnPagingResult() throws Exception {
@@ -74,7 +73,7 @@ class AuthorControllerTest {
                 .andExpect(jsonPath("$.total").value(1));
     }
 
-    // ---------------- GET ALL ----------------
+    // Lấy tất cả tác giả không phân trang
     @Test
     @WithMockUser
     void getAllAuthors1_shouldReturnList() throws Exception {
@@ -88,7 +87,7 @@ class AuthorControllerTest {
                 .andExpect(jsonPath("$[0].fullname").value("Nguyễn Nhật Ánh"));
     }
 
-    // ---------------- GET BY ID ----------------
+    // Láy tác giả theo id
     @Test
     @WithMockUser
     void getAuthorById_shouldReturnAuthor() throws Exception {
@@ -102,7 +101,7 @@ class AuthorControllerTest {
                 .andExpect(jsonPath("$.slug").value("nguyen-nhat-anh"));
     }
 
-    // ---------------- CREATE ----------------
+    // Thêm tác giả
     @Test
     @WithMockUser
     void createAuthor_shouldReturnCreatedAuthor() throws Exception {
@@ -118,7 +117,7 @@ class AuthorControllerTest {
                 .andExpect(jsonPath("$.fullname").value("Nguyễn Nhật Ánh"));
     }
 
-    // ---------------- UPDATE ----------------
+    // Cập nhật tác giả
     @Test
     @WithMockUser
     void updateAuthor_shouldReturnUpdatedAuthor() throws Exception {
@@ -135,7 +134,7 @@ class AuthorControllerTest {
                 .andExpect(jsonPath("$.slug").value("nguyen-nhat-anh"));
     }
 
-    // ---------------- DELETE ----------------
+    // Xóa tác giả-
     @Test
     @WithMockUser
     void deleteAuthor_shouldReturnNoContent() throws Exception {

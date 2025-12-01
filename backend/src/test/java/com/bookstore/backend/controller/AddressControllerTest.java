@@ -55,7 +55,7 @@ class AddressControllerTest {
         address.setId(ADDRESS_ID);
     }
 
-    // ---------------- GET LIST ----------------
+    // Lấy các địa chỉ của người dùng
     @Test
     @WithMockUser
     void getAddressesByUserId_shouldReturnList() throws Exception {
@@ -68,7 +68,7 @@ class AddressControllerTest {
                 .andExpect(jsonPath("$[0].id").value(ADDRESS_ID));
     }
 
-    // ---------------- GET SINGLE ----------------
+    // Lấy địa chỉ theo id
     @Test
     @WithMockUser
     void getAddressByIdAndUserId_shouldReturnAddress() throws Exception {
@@ -81,7 +81,7 @@ class AddressControllerTest {
                 .andExpect(jsonPath("$.id").value(ADDRESS_ID));
     }
 
-    // ---------------- CREATE ----------------
+    // Thêm địa chỉ
     @Test
     @WithMockUser
     void createAddress_shouldReturnCreatedAddress() throws Exception {
@@ -97,7 +97,7 @@ class AddressControllerTest {
                 .andExpect(jsonPath("$.id").value(ADDRESS_ID));
     }
 
-    // ---------------- UPDATE ----------------
+    // Cập nhật địa chỉ
     @Test
     @WithMockUser
     void updateAddress_shouldReturnUpdatedAddress() throws Exception {
@@ -113,7 +113,7 @@ class AddressControllerTest {
                 .andExpect(jsonPath("$.id").value(ADDRESS_ID));
     }
 
-    // ---------------- DELETE ----------------
+    // Xóa địa chỉ
     @Test
     @WithMockUser
     void deleteAddress_shouldReturnNoContent() throws Exception {

@@ -39,10 +39,7 @@ class CategoryServiceTest {
                 .build();
     }
 
-    // ===========================================
-    // GET ALL CATEGORIES
-    // ===========================================
-
+    // Lấy các danh mục
     @Test
     void testGetAllCategories_WithQAndStatus() {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("createdAt").descending());
@@ -86,10 +83,7 @@ class CategoryServiceTest {
         assertEquals(1, result.getContent().size());
     }
 
-    // ===========================================
-    // CREATE CATEGORY
-    // ===========================================
-
+    // Tạo danh mục
     @Test
     void testCreateCategory_Success() {
         when(categoryRepository.findByName("Test Category"))
@@ -109,10 +103,7 @@ class CategoryServiceTest {
                 () -> categoryService.createCategory(category));
     }
 
-    // ===========================================
-    // UPDATE CATEGORY
-    // ===========================================
-
+    // Cập nhật danh mục
     @Test
     void testUpdateCategory_Success() {
         Category newData = Category.builder()
@@ -176,10 +167,7 @@ class CategoryServiceTest {
         assertEquals(0, b2.getStatus());
     }
 
-    // ===========================================
-    // UPDATE CATEGORY STATUS
-    // ===========================================
-
+    // Cập nhật status danh mục
     @Test
     void testUpdateCategoryStatus_Success() {
         when(categoryRepository.findById("c1")).thenReturn(Optional.of(category));
@@ -210,10 +198,7 @@ class CategoryServiceTest {
                 () -> categoryService.updateCategoryStatus("c1", 1));
     }
 
-    // ===========================================
-    // DELETE CATEGORY
-    // ===========================================
-
+    // Xóa danh mục
     @Test
     void testDeleteCategory_Success() {
         when(categoryRepository.findById("c1")).thenReturn(Optional.of(category));

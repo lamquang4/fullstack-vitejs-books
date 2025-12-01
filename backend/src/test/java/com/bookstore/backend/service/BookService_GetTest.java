@@ -78,9 +78,8 @@ class BookService_GetTest {
                 .build();
     }
 
-    // ----------------------------------------------------------------
-    // GET ALL BOOKS
-    // ----------------------------------------------------------------
+  
+    // Lấy tất cả sách
     @Test
     void testGetAllBooks_Success() {
         Page<Book> page = new PageImpl<>(List.of(sampleBook));
@@ -112,9 +111,8 @@ class BookService_GetTest {
         assertEquals(20L, result.getContent().get(0).getTotalSold());
     }
 
-    // ----------------------------------------------------------------
-    // GET ACTIVE BOOKS
-    // ----------------------------------------------------------------
+ 
+    // Lấy các sách có status = 1 (hiện)
     @Test
     void testGetAllActiveBooks_Success() {
         Page<Book> page = new PageImpl<>(List.of(sampleBook));
@@ -130,9 +128,8 @@ class BookService_GetTest {
         assertEquals("Sample Book", result.getContent().get(0).getTitle());
     }
 
-    // ----------------------------------------------------------------
-    // GET DISCOUNTED BOOKS
-    // ----------------------------------------------------------------
+ 
+    // Lấy các sách giảm giá
     @Test
     void testGetDiscountedActiveBooks_Success() {
         Page<Book> page = new PageImpl<>(List.of(sampleBook));
@@ -149,9 +146,8 @@ class BookService_GetTest {
         assertEquals(15L, result.getContent().get(0).getTotalSold());
     }
 
-    // ----------------------------------------------------------------
-    // GET BOOKS BY CATEGORY
-    // ----------------------------------------------------------------
+ 
+    // Lấy các sách theo danh mục
     @Test
     void testGetActiveBooksByCategory_Success() {
         Page<Book> page = new PageImpl<>(List.of(sampleBook));
@@ -167,9 +163,8 @@ class BookService_GetTest {
         assertEquals("Sample Book", result.getContent().get(0).getTitle());
     }
 
-    // ----------------------------------------------------------------
-    // GET BOOKS BY TOTAL SOLD
-    // ----------------------------------------------------------------
+   
+    // Lấy sách theo tổng số đã bán
     @Test
     void testGetAllBooksByTotalSold_Success() {
         Page<Book> page = new PageImpl<>(List.of(sampleBook));
@@ -198,9 +193,8 @@ class BookService_GetTest {
         assertEquals(1, result.size());
     }
 
-    // ----------------------------------------------------------------
-    // GET BOOK BY SLUG
-    // ----------------------------------------------------------------
+  
+    // Lấy sách theo slug
     @Test
     void testGetBookBySlug_Success() {
         when(bookRepository.findBySlugAndStatus("sample-book", 1))
@@ -221,9 +215,8 @@ class BookService_GetTest {
                 () -> bookService.getBookBySlug("x"));
     }
 
-    // ----------------------------------------------------------------
-    // GET BOOK BY ID
-    // ----------------------------------------------------------------
+
+    // Lấy sách theo id
     @Test
     void testGetBookById_Success() {
         when(bookRepository.findById("book1"))

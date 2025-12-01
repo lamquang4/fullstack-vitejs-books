@@ -33,8 +33,7 @@ class MomoControllerTest {
     @MockBean
     private OrderService orderService;
 
-    // ===================== PAY WITH MOMO =====================
-
+    // Thanh toán bằng Momo
     @Test
     @WithMockUser
     void payWithMomo_success() throws Exception {
@@ -69,8 +68,7 @@ class MomoControllerTest {
                         .value(0));
     }
 
-    // ===================== REDIRECT SUCCESS =====================
-
+    // Xử lý thanh toán thành công
     @Test
     @WithMockUser
     void redirect_success_flow() throws Exception {
@@ -92,8 +90,7 @@ class MomoControllerTest {
                 ));
     }
 
-    // ===================== REDIRECT FAIL =====================
-
+    // Xử lý thanh toán thất bại
     @Test
     @WithMockUser
     void redirect_fail_flow() throws Exception {
@@ -113,8 +110,7 @@ class MomoControllerTest {
                 ));
     }
 
-    // ===================== REDIRECT CANCEL =====================
-
+    // Xử lý khi hủy thanh toán
     @Test
     @WithMockUser
     void redirect_cancel_flow() throws Exception {

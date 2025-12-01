@@ -52,10 +52,8 @@ class AuthorServiceTest {
                 .build();
     }
 
-    // =========================================================
-    // getAllAuthors
-    // =========================================================
 
+    // Lấy tất cả tác giả có phân trang
     @Test
     void testGetAllAuthors_NoQuery() {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("createdAt").descending());
@@ -83,10 +81,7 @@ class AuthorServiceTest {
         verify(authorRepository).findByFullnameContainingIgnoreCase("john", pageable);
     }
 
-    // =========================================================
-    // getAllAuthors1
-    // =========================================================
-
+    // Lấy tất cả tác giả không phân trang
     @Test
     void testGetAllAuthors1() {
         when(authorRepository.findAll(Sort.by("createdAt").descending()))
@@ -98,10 +93,7 @@ class AuthorServiceTest {
         verify(authorRepository).findAll(any(Sort.class));
     }
 
-    // =========================================================
-    // getAuthorById
-    // =========================================================
-
+    // Lấy tác giả theo id
     @Test
     void testGetAuthorById_Success() {
         when(authorRepository.findById("a1")).thenReturn(Optional.of(author));
@@ -119,10 +111,7 @@ class AuthorServiceTest {
                 () -> authorService.getAuthorById("missing"));
     }
 
-    // =========================================================
-    // createAuthor
-    // =========================================================
-
+    // Tạo tác giả
     @Test
     void testCreateAuthor_NameExists() {
         when(authorRepository.findByFullname("John Wick")).thenReturn(Optional.of(author));
@@ -147,10 +136,7 @@ class AuthorServiceTest {
         }
     }
 
-    // =========================================================
-    // updateAuthor
-    // =========================================================
-
+    // Cập nhật tác giả
     @Test
     void testUpdateAuthor_NotFound() {
         when(authorRepository.findById("missing")).thenReturn(Optional.empty());
@@ -193,10 +179,7 @@ class AuthorServiceTest {
         }
     }
 
-    // =========================================================
-    // deleteAuthor
-    // =========================================================
-
+    // Xóa tác giả
     @Test
     void testDeleteAuthor_NotFound() {
         when(authorRepository.findById("missing")).thenReturn(Optional.empty());

@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -56,9 +57,7 @@ class BookService_CreateTest {
                 .build();
     }
 
-    // -------------------------------------------------------------
-    // SUCCESS CASE
-    // -------------------------------------------------------------
+    // Trường hợp thành công
     @Test
     void testCreateBook_Success() throws IOException {
 
@@ -85,9 +84,7 @@ class BookService_CreateTest {
         verify(imageBookRepository).save(any(ImageBook.class));
     }
 
-    // -------------------------------------------------------------
-    // DUPLICATE TITLE
-    // -------------------------------------------------------------
+    // Trùng tiêu đề
     @Test
     void testCreateBook_TitleDuplicate() {
 
@@ -98,9 +95,7 @@ class BookService_CreateTest {
                 () -> bookService.createBook(validBook, List.of()));
     }
 
-    // -------------------------------------------------------------
-    // VALIDATION ERRORS
-    // -------------------------------------------------------------
+    // Lỗi xác thực
     @Test
     void testCreateBook_InvalidPrice() {
         validBook.setPrice(0.0);
@@ -173,9 +168,7 @@ class BookService_CreateTest {
                 () -> bookService.createBook(validBook, null));
     }
 
-    // -------------------------------------------------------------
-    // CATEGORY NOT FOUND
-    // -------------------------------------------------------------
+    // Danh mục không tìm thấy
     @Test
     void testCreateBook_CategoryNotFound() {
 
@@ -186,9 +179,7 @@ class BookService_CreateTest {
                 () -> bookService.createBook(validBook, null));
     }
 
-    // -------------------------------------------------------------
-    // CATEGORY HIDDEN => book.status = 0
-    // -------------------------------------------------------------
+    // Danh mục mà sách thuộc bị ẩn thì các sách thuộc danh mục sẽ bị ẩn
     @Test
     void testCreateBook_CategoryHidden_ForceBookStatusZero() {
 
@@ -217,9 +208,7 @@ class BookService_CreateTest {
         assertEquals(0, result.getStatus());
     }
 
-    // -------------------------------------------------------------
-    // INVALID EXTENSION
-    // -------------------------------------------------------------
+    // Phần mở rộng không hợp lệ
     @Test
     void testCreateBook_InvalidFileExtension() {
 
@@ -242,9 +231,7 @@ class BookService_CreateTest {
                 () -> bookService.createBook(validBook, List.of(file)));
     }
 
-    // -------------------------------------------------------------
-    // INVALID MIME TYPE
-    // -------------------------------------------------------------
+    // Kiểu MIME không hợp lệ
     @Test
     void testCreateBook_InvalidMimeType() {
 
@@ -268,10 +255,7 @@ class BookService_CreateTest {
                 () -> bookService.createBook(validBook, List.of(file)));
     }
 
-
-    // -------------------------------------------------------------
-    // FILE TRANSFER ERROR
-    // -------------------------------------------------------------
+    // Lỗi truyền file
     @Test
     void testCreateBook_FileTransferError() throws IOException {
 

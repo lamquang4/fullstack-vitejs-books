@@ -58,7 +58,7 @@ class AuthControllerTest {
     }
 
 
-    // ================= LOGIN ==================
+    // Đăng nhập
     @Test
     @WithMockUser
     void login_shouldReturnToken() throws Exception {
@@ -79,7 +79,7 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$.role").value(3));
     }
 
-    // ================= /me NO TOKEN ==================
+    // Lấy thông tin tài khoản không token
     @Test
     void getMe_withoutToken_shouldReturn401() throws Exception {
 
@@ -87,7 +87,7 @@ class AuthControllerTest {
                 .andExpect(status().isUnauthorized());
     }
 
-    // ================= /me WITH TOKEN ==================
+    // Lấy thông tin tài khoản có token
     @Test
     @WithMockUser
     void getMe_withValidToken_shouldReturnUser() throws Exception {
