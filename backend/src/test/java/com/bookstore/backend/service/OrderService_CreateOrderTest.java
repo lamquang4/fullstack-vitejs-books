@@ -112,7 +112,7 @@ class OrderService_CreateOrderTest {
         }
     }
 
-    // Kiểm tra số lượng mua > tồn kho
+    // Kiểm tra số lượng mua > số lượng hiện có
     @Test
     void testCreateOrder_QuantityExceedsStock() {
         detailDTO.setQuantity(999); // vượt stock
@@ -128,7 +128,7 @@ class OrderService_CreateOrderTest {
         }
     }
 
-    // Phương thức thanh toán COD - cập nhật tồn kho, xóa giỏ hàng
+    // Phương thức thanh toán COD - cập nhật số lượng hiện có, xóa giỏ hàng
     @Test
     void testCreateOrder_COD_DeductStock_AndDeleteCart() {
 

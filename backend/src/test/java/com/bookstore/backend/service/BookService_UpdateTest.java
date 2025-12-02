@@ -153,7 +153,7 @@ class BookService_UpdateTest {
                 () -> bookService.updateBook("book1", updatedBook, null));
     }
 
-    // Tồn kho không hợp lệ
+    // Số lượng hiện có không hợp lệ
     @Test
     void testUpdateBook_InvalidStock() {
         updatedBook.setStock(-5);

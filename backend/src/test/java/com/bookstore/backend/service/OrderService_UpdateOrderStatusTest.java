@@ -104,7 +104,7 @@ class OrderService_UpdateOrderStatusTest {
         }
     }
 
-    // Cập nhật đơn hàng thành status 4 hoặc 5 và đơn hàng thanh toán bằng Momo thì hoàn tiền Momo và trả lại tồn kho
+    // Cập nhật đơn hàng thành status 4 hoặc 5 và đơn hàng thanh toán bằng Momo thì hoàn tiền Momo và trả lại số lượng hiện có
     @Test
     void testUpdateOrderStatus_RefundAndReturnStock() throws Exception {
 
@@ -127,7 +127,7 @@ class OrderService_UpdateOrderStatusTest {
         assertEquals(4, result.getStatus());
     }
 
-    // Phương thức thanh toán không phải Momo thì chỉ trả lại tồn kho, không hoàn tiền
+    // Phương thức thanh toán không phải Momo thì chỉ trả lại số lượng hiện có, không hoàn tiền
     @Test
     void testUpdateOrderStatus_ReturnStock_NoRefundWhenNotMomo() {
 
