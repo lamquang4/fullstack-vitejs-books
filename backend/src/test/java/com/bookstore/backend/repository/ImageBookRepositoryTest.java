@@ -2,7 +2,11 @@ package com.bookstore.backend.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.bookstore.backend.entities.*;
+import com.bookstore.backend.entities.Author;
+import com.bookstore.backend.entities.Book;
+import com.bookstore.backend.entities.Category;
+import com.bookstore.backend.entities.ImageBook;
+import com.bookstore.backend.entities.Publisher;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
