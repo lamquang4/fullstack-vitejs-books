@@ -25,10 +25,14 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class CartServiceTest {
 
-    @Mock private CartRepository cartRepository;
-    @Mock private CartItemRepository cartItemRepository;
-    @Mock private BookRepository bookRepository;
-    @Mock private UserRepository userRepository;
+    @Mock
+    private CartRepository cartRepository;
+    @Mock
+    private CartItemRepository cartItemRepository;
+    @Mock
+    private BookRepository bookRepository;
+    @Mock
+    private UserRepository userRepository;
 
     @InjectMocks
     private CartService cartService;
@@ -54,8 +58,7 @@ class CartServiceTest {
                 .stock(20)
                 .images(List.of(
                         ImageBook.builder().image("img1").createdAt(LocalDateTime.now().minusDays(2)).build(),
-                        ImageBook.builder().image("img2").createdAt(LocalDateTime.now().minusDays(1)).build()
-                ))
+                        ImageBook.builder().image("img2").createdAt(LocalDateTime.now().minusDays(1)).build()))
                 .build();
 
         item = CartItem.builder()
@@ -74,7 +77,6 @@ class CartServiceTest {
         item.setCart(cart);
     }
 
- 
     // Lấy giỏ hàng của khách hàng
     @Test
     void testGetCartByUserId_Success() {
@@ -95,8 +97,6 @@ class CartServiceTest {
         assertThrows(EntityNotFoundException.class,
                 () -> cartService.getCartByUserId("u404"));
     }
-
-
 
     // Thêm sản phẩm vào giỏ hàng
     @Test
@@ -184,13 +184,12 @@ class CartServiceTest {
         when(cartItemRepository.findByCartIdAndBookId("c1", "b1"))
                 .thenReturn(Optional.of(item));
 
-        item.setQuantity(10);  // ⬅ quantity ban đầu
-        book.setStock(20);     // ⬅ đảm bảo không bị vượt stock
+        item.setQuantity(10); // ⬅ quantity ban đầu
+        book.setStock(20); // ⬅ đảm bảo không bị vượt stock
 
         assertDoesNotThrow(() -> cartService.addItemToCart("u1", "b1", 10));
         assertEquals(15, item.getQuantity()); // max limit
     }
-
 
     // Cập nhật giỏ hàng
     @Test

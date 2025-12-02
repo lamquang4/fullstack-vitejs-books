@@ -27,12 +27,18 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class OrderService_CreateOrderTest {
 
-    @Mock private OrderRepository orderRepository;
-    @Mock private UserRepository userRepository;
-    @Mock private BookRepository bookRepository;
-    @Mock private CartRepository cartRepository;
-    @Mock private PaymentRepository paymentRepository;
-    @Mock private MomoService momoService;
+    @Mock
+    private OrderRepository orderRepository;
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private BookRepository bookRepository;
+    @Mock
+    private CartRepository cartRepository;
+    @Mock
+    private PaymentRepository paymentRepository;
+    @Mock
+    private MomoService momoService;
 
     @InjectMocks
     private OrderService orderService;

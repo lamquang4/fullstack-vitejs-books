@@ -1,4 +1,5 @@
 package com.bookstore.backend.controller;
+
 import com.bookstore.backend.entities.Publisher;
 import com.bookstore.backend.service.PublisherService;
 import org.springframework.data.domain.Page;
@@ -23,15 +24,13 @@ public class PublisherController {
     public ResponseEntity<?> getAllPublishers(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "12") int limit,
-            @RequestParam(required = false) String q
-    ) {
+            @RequestParam(required = false) String q) {
         Page<Publisher> publisherPage = publisherService.getAllPublishers(page, limit, q);
 
         return ResponseEntity.ok(Map.of(
-            "publishers", publisherPage.getContent(),
-            "totalPages", publisherPage.getTotalPages(),
-            "total", publisherPage.getTotalElements()
-        ));
+                "publishers", publisherPage.getContent(),
+                "totalPages", publisherPage.getTotalPages(),
+                "total", publisherPage.getTotalElements()));
     }
 
     @GetMapping("/all")

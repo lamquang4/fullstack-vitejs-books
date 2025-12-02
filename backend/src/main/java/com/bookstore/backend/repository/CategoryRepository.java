@@ -1,4 +1,5 @@
 package com.bookstore.backend.repository;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -11,16 +12,19 @@ import com.bookstore.backend.entities.Category;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, String> {
-Optional<Category> findByName(String name);
-Page<Category> findByNameContainingIgnoreCase(String q, Pageable pageable);
-Page<Category> findByStatus(Integer status, Pageable pageable);
-Page<Category> findByNameContainingIgnoreCaseAndStatus(String q, Integer status, Pageable pageable);
+    Optional<Category> findByName(String name);
+
+    Page<Category> findByNameContainingIgnoreCase(String q, Pageable pageable);
+
+    Page<Category> findByStatus(Integer status, Pageable pageable);
+
+    Page<Category> findByNameContainingIgnoreCaseAndStatus(String q, Integer status, Pageable pageable);
 
     @Query("""
-           SELECT DISTINCT c
-           FROM Category c
-           JOIN Book b ON b.category = c
-           WHERE c.status = 1 AND b.status = 1
-           """)
+            SELECT DISTINCT c
+            FROM Category c
+            JOIN Book b ON b.category = c
+            WHERE c.status = 1 AND b.status = 1
+            """)
     List<Category> findActiveCategoriesWithActiveBooks();
 }

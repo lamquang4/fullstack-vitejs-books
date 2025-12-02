@@ -24,105 +24,98 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 class MomoControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+        @Autowired
+        private MockMvc mockMvc;
 
-    @MockBean
-    private MomoService momoService;
+        @MockBean
+        private MomoService momoService;
 
-    @MockBean
-    private OrderService orderService;
+        @MockBean
+        private OrderService orderService;
 
-    // Thanh toán bằng Momo
-    @Test
-    @WithMockUser
-    void payWithMomo_success() throws Exception {
+        // Thanh toán bằng Momo
+        @Test
+        @WithMockUser
+        void payWithMomo_success() throws Exception {
 
-        OrderDTO order = OrderDTO.builder()
-                .orderCode("ORD123")
-                .fullname("Nguyen Van A")
-                .total(150000d)
-                .createdAt(LocalDateTime.now())
-                .build();
+                OrderDTO order = OrderDTO.builder()
+                                .orderCode("ORD123")
+                                .fullname("Nguyen Van A")
+                                .total(150000d)
+                                .createdAt(LocalDateTime.now())
+                                .build();
 
-        MomoResponse response = MomoResponse.builder()
-                .payUrl("https://momo.test/pay")
-                .qrCodeUrl("https://momo.test/qr.png")
-                .resultCode(0)
-                .build();
+                MomoResponse response = MomoResponse.builder()
+                                .payUrl("https://momo.test/pay")
+                                .qrCodeUrl("https://momo.test/qr.png")
+                                .resultCode(0)
+                                .build();
 
-        Mockito.when(orderService.getOrderByOrderCode("ORD123"))
-                .thenReturn(order);
+                Mockito.when(orderService.getOrderByOrderCode("ORD123"))
+                                .thenReturn(order);
 
-        Mockito.when(momoService.createPayment(order))
-                .thenReturn(response);
+                Mockito.when(momoService.createPayment(order))
+                                .thenReturn(response);
 
-        mockMvc.perform(
-                        post("/api/payment/momo/qr/{orderCode}", "ORD123")
-                                .with(csrf())
-                )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.payUrl")
-                        .value("https://momo.test/pay"))
-                .andExpect(jsonPath("$.resultCode")
-                        .value(0));
-    }
+                mockMvc.perform(
+                                post("/api/payment/momo/qr/{orderCode}", "ORD123")
+                                                .with(csrf()))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.payUrl")
+                                                .value("https://momo.test/pay"))
+                                .andExpect(jsonPath("$.resultCode")
+                                                .value(0));
+        }
 
-    // Xử lý thanh toán thành công
-    @Test
-    @WithMockUser
-    void redirect_success_flow() throws Exception {
+        // Xử lý thanh toán thành công
+        @Test
+        @WithMockUser
+        void redirect_success_flow() throws Exception {
 
-        Mockito.when(momoService.handleSuccessfulPayment(Mockito.any()))
-                .thenReturn(true);
+                Mockito.when(momoService.handleSuccessfulPayment(Mockito.any()))
+                                .thenReturn(true);
 
-        mockMvc.perform(
-                        get("/api/payment/momo/redirect")
-                                .param("resultCode", "0")
-                                .param("orderId", "ORD123")
-                                .param("transId", "123")
-                                .param("message", "OK")
-                )
-                .andExpect(status().isFound())
-                .andExpect(header().string(
-                        "Location",
-                        "http://localhost:5173/order-result?result=successful&&orderCode=ORD123"
-                ));
-    }
+                mockMvc.perform(
+                                get("/api/payment/momo/redirect")
+                                                .param("resultCode", "0")
+                                                .param("orderId", "ORD123")
+                                                .param("transId", "123")
+                                                .param("message", "OK"))
+                                .andExpect(status().isFound())
+                                .andExpect(header().string(
+                                                "Location",
+                                                "http://localhost:5173/order-result?result=successful&&orderCode=ORD123"));
+        }
 
-    // Xử lý thanh toán thất bại
-    @Test
-    @WithMockUser
-    void redirect_fail_flow() throws Exception {
+        // Xử lý thanh toán thất bại
+        @Test
+        @WithMockUser
+        void redirect_fail_flow() throws Exception {
 
-        Mockito.when(momoService.handleSuccessfulPayment(Mockito.any()))
-                .thenReturn(false);
+                Mockito.when(momoService.handleSuccessfulPayment(Mockito.any()))
+                                .thenReturn(false);
 
-        mockMvc.perform(
-                        get("/api/payment/momo/redirect")
-                                .param("resultCode", "0")
-                                .param("orderId", "ORD404")
-                )
-                .andExpect(status().isFound())
-                .andExpect(header().string(
-                        "Location",
-                        "http://localhost:5173/order-result?result=fail"
-                ));
-    }
+                mockMvc.perform(
+                                get("/api/payment/momo/redirect")
+                                                .param("resultCode", "0")
+                                                .param("orderId", "ORD404"))
+                                .andExpect(status().isFound())
+                                .andExpect(header().string(
+                                                "Location",
+                                                "http://localhost:5173/order-result?result=fail"));
+        }
 
-    // Xử lý khi hủy thanh toán
-    @Test
-    @WithMockUser
-    void redirect_cancel_flow() throws Exception {
+        // Xử lý khi hủy thanh toán
+        @Test
+        @WithMockUser
+        void redirect_cancel_flow() throws Exception {
 
-        mockMvc.perform(
-                        get("/api/payment/momo/redirect")
-                                .param("resultCode", "1")
-                )
-                .andExpect(status().isFound())
-                .andExpect(header().string(
-                        "Location",
-                        "http://localhost:5173/"
-                ));
-    }
+                mockMvc.perform(
+                                get("/api/payment/momo/redirect")
+                                                .param("resultCode", "1"))
+                                .andExpect(status().isFound())
+                                .andExpect(header().string(
+                                                "Location",
+                                                "http://localhost:5173/"));
+        }
 }

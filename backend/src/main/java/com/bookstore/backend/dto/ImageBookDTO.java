@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ImageBookDTO {
-    private String id; 
-    private String image; 
-    private String createdAt;     
+    private String id;
+    private String image;
+    private String createdAt;
 }

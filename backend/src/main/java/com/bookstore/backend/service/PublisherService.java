@@ -1,4 +1,5 @@
 package com.bookstore.backend.service;
+
 import com.bookstore.backend.entities.Publisher;
 import com.bookstore.backend.repository.BookRepository;
 import com.bookstore.backend.repository.PublisherRepository;
@@ -17,11 +18,11 @@ import java.util.Optional;
 public class PublisherService {
 
     private final PublisherRepository publisherRepository;
-        private final BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
     public PublisherService(PublisherRepository publisherRepository, BookRepository bookRepository) {
         this.publisherRepository = publisherRepository;
-               this.bookRepository = bookRepository;
+        this.bookRepository = bookRepository;
     }
 
     // lấy tất cả publishers
@@ -45,9 +46,9 @@ public class PublisherService {
 
     // tạo publisher
     public Publisher createPublisher(Publisher publisher) {
-         if (publisherRepository.findByName(publisher.getName()).isPresent()) {
-        throw new IllegalArgumentException("Tên nhà xuất bản đã tồn tại");
-    }
+        if (publisherRepository.findByName(publisher.getName()).isPresent()) {
+            throw new IllegalArgumentException("Tên nhà xuất bản đã tồn tại");
+        }
         publisher.setSlug(SlugUtil.toSlug(publisher.getName()));
         return publisherRepository.save(publisher);
     }
@@ -57,8 +58,10 @@ public class PublisherService {
         return publisherRepository.findById(id)
                 .map(existingPublisher -> {
                     publisherRepository.findByName(publisher.getName())
-                    .filter(a -> !a.getId().equals(id))
-                    .ifPresent(a -> { throw new IllegalArgumentException("Tên nhà xuất bản đã tồn tại"); });
+                            .filter(a -> !a.getId().equals(id))
+                            .ifPresent(a -> {
+                                throw new IllegalArgumentException("Tên nhà xuất bản đã tồn tại");
+                            });
 
                     publisher.setSlug(SlugUtil.toSlug(publisher.getName()));
                     existingPublisher.setName(publisher.getName());
@@ -76,7 +79,7 @@ public class PublisherService {
         if (bookRepository.existsByPublisher(publisher)) {
             throw new IllegalStateException("Nhà xuất bản này không thể xóa vì vẫn còn sách liên kết với họ");
         }
-        
+
         publisherRepository.deleteById(id);
     }
 }

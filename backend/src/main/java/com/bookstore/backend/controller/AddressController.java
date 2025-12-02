@@ -1,4 +1,5 @@
 package com.bookstore.backend.controller;
+
 import com.bookstore.backend.dto.AddressDTO;
 import com.bookstore.backend.entities.Address;
 import com.bookstore.backend.service.AddressService;
@@ -33,7 +34,7 @@ public class AddressController {
         return ResponseEntity.ok(address);
     }
 
-   @PostMapping
+    @PostMapping
     public ResponseEntity<Address> createAddress(@RequestBody AddressDTO dto) {
         Address newAddress = addressService.createAddress(dto);
         return ResponseEntity.ok(newAddress);
@@ -46,7 +47,6 @@ public class AddressController {
         Address updated = addressService.updateAddress(id, dto);
         return ResponseEntity.ok(updated);
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAddress(@PathVariable String id) {

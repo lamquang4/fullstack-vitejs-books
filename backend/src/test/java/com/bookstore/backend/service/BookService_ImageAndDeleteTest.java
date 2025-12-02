@@ -30,10 +30,14 @@ import static org.mockito.Mockito.*;
 @MockitoSettings(strictness = Strictness.LENIENT)
 class BookService_ImageAndDeleteTest {
 
-    @Mock private BookRepository bookRepository;
-    @Mock private ImageBookRepository imageBookRepository;
-    @Mock private OrderDetailRepository orderDetailRepository;
-    @Mock private CartItemRepository cartItemRepository;
+    @Mock
+    private BookRepository bookRepository;
+    @Mock
+    private ImageBookRepository imageBookRepository;
+    @Mock
+    private OrderDetailRepository orderDetailRepository;
+    @Mock
+    private CartItemRepository cartItemRepository;
 
     @InjectMocks
     private BookService bookService;
@@ -54,7 +58,6 @@ class BookService_ImageAndDeleteTest {
                 .build();
     }
 
- 
     // Xóa sách
     @Test
     void testDeleteBook_Success() {
@@ -204,9 +207,7 @@ class BookService_ImageAndDeleteTest {
             return null;
         }).when(file).transferTo(any(File.class));
 
-        assertDoesNotThrow(() ->
-                bookService.updateImagesBook(List.of(file), List.of("img1"))
-        );
+        assertDoesNotThrow(() -> bookService.updateImagesBook(List.of(file), List.of("img1")));
     }
 
     // Xóa hình

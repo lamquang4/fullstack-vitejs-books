@@ -1,4 +1,5 @@
 package com.bookstore.backend.dto;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,4 +12,3 @@ public class AuthorDTO {
     private String fullname;
     private String slug;
 }
-

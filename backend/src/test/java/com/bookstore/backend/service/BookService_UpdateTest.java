@@ -23,11 +23,16 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class BookService_UpdateTest {
 
-    @Mock private BookRepository bookRepository;
-    @Mock private ImageBookRepository imageBookRepository;
-    @Mock private OrderDetailRepository orderDetailRepository;
-    @Mock private CartItemRepository cartItemRepository;
-    @Mock private CategoryRepository categoryRepository;
+    @Mock
+    private BookRepository bookRepository;
+    @Mock
+    private ImageBookRepository imageBookRepository;
+    @Mock
+    private OrderDetailRepository orderDetailRepository;
+    @Mock
+    private CartItemRepository cartItemRepository;
+    @Mock
+    private CategoryRepository categoryRepository;
 
     @InjectMocks
     private BookService bookService;
@@ -90,8 +95,8 @@ class BookService_UpdateTest {
         verify(imageBookRepository).save(any());
     }
 
- 
-    // Danh mục không tìm thấy (service KHÔNG check → test xác minh rằng không ném exception)
+    // Danh mục không tìm thấy (service KHÔNG check → test xác minh rằng không ném
+    // exception)
     @Test
     void testUpdateBook_CategoryNotFound_NoCheckInService() {
         updatedBook.setCategory(Category.builder().id("catX").build());
@@ -130,7 +135,6 @@ class BookService_UpdateTest {
                 () -> bookService.updateBook("book1", updatedBook, null));
     }
 
-  
     // Giảm giá không hợp lệ
     @Test
     void testUpdateBook_InvalidDiscountNegative() {
@@ -164,7 +168,6 @@ class BookService_UpdateTest {
                 () -> bookService.updateBook("book1", updatedBook, null));
     }
 
-   
     // Phần mở rộng không hợp lệ
     @Test
     void testUpdateBook_InvalidFileExtension() {
@@ -178,7 +181,6 @@ class BookService_UpdateTest {
                 () -> bookService.updateBook("book1", updatedBook, List.of(file)));
     }
 
-  
     // Kiểu MIME không hợp lệ
     @Test
     void testUpdateBook_InvalidMimeType() {

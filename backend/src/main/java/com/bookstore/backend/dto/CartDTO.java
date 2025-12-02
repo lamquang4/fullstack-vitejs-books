@@ -1,4 +1,5 @@
 package com.bookstore.backend.dto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,4 +1,5 @@
 package com.bookstore.backend.service;
+
 import com.bookstore.backend.entities.Payment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,13 +11,14 @@ import com.bookstore.backend.dto.PaymentDTO;
 
 @Service
 public class PaymentService {
-    
+
     private final PaymentRepository paymentRepository;
+
     public PaymentService(PaymentRepository paymentRepository) {
         this.paymentRepository = paymentRepository;
     }
 
-        // lấy tất cả các payments
+    // lấy tất cả các payments
     public Page<PaymentDTO> getAllPayments(int page, int limit, String q, Integer status) {
         Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
         Page<Payment> paymentPage;
@@ -37,7 +39,7 @@ public class PaymentService {
         return paymentRepository.save(payment);
     }
 
- private PaymentDTO convertToDTO(Payment payment) {
+    private PaymentDTO convertToDTO(Payment payment) {
         return PaymentDTO.builder()
                 .id(payment.getId())
                 .orderId(payment.getOrder() != null ? payment.getOrder().getId() : null)
@@ -49,6 +51,5 @@ public class PaymentService {
                 .createdAt(payment.getCreatedAt())
                 .build();
     }
-
 
 }

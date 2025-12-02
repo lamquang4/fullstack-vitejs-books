@@ -1,4 +1,5 @@
 package com.bookstore.backend.controller;
+
 import com.bookstore.backend.dto.CartDTO;
 import com.bookstore.backend.service.CartService;
 
@@ -16,13 +17,13 @@ public class CartController {
         this.cartService = cartService;
     }
 
-       @GetMapping("/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<CartDTO> getCartByUserId(@PathVariable String userId) {
         CartDTO cart = cartService.getCartByUserId(userId);
         return ResponseEntity.ok(cart);
     }
 
-       @PostMapping
+    @PostMapping
     public ResponseEntity<Void> addItemToCart(
             @RequestParam String userId,
             @RequestParam String bookId,
@@ -45,5 +46,5 @@ public class CartController {
         cartService.removeItemFromCart(cartItemId);
         return ResponseEntity.ok().build();
     }
-  
+
 }

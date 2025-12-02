@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+
 @RestController
 @RequestMapping("/api/payment/momo")
 @RequiredArgsConstructor
@@ -35,8 +36,7 @@ public class MomoController {
             @RequestParam(required = false) String resultCode,
             @RequestParam(required = false) String orderId,
             @RequestParam(required = false) String transId,
-            @RequestParam(required = false) String message
-    ) throws Exception {
+            @RequestParam(required = false) String message) throws Exception {
         String redirectUrl;
 
         if ("0".equals(resultCode)) {

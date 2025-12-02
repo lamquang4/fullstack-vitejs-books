@@ -44,7 +44,6 @@ class PublisherServiceTest {
                 .build();
     }
 
-
     // Lấy tất cả nhà xuất bản
     @Test
     void testGetAllPublishers_WithQuery() {
@@ -52,8 +51,7 @@ class PublisherServiceTest {
 
         when(publisherRepository.findByNameContainingIgnoreCase(
                 eq("abc"),
-                any(Pageable.class)
-        )).thenReturn(page);
+                any(Pageable.class))).thenReturn(page);
 
         Page<Publisher> result = publisherService.getAllPublishers(1, 10, "abc");
 

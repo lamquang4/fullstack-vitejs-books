@@ -22,8 +22,10 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class CategoryServiceTest {
 
-    @Mock private CategoryRepository categoryRepository;
-    @Mock private BookRepository bookRepository;
+    @Mock
+    private CategoryRepository categoryRepository;
+    @Mock
+    private BookRepository bookRepository;
 
     @InjectMocks
     private CategoryService categoryService;

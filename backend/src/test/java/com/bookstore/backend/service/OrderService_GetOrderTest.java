@@ -26,12 +26,18 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class OrderService_GetOrderTest {
 
-    @Mock private OrderRepository orderRepository;
-    @Mock private UserRepository userRepository;
-    @Mock private BookRepository bookRepository;
-    @Mock private CartRepository cartRepository;
-    @Mock private PaymentRepository paymentRepository;
-    @Mock private MomoService momoService;
+    @Mock
+    private OrderRepository orderRepository;
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private BookRepository bookRepository;
+    @Mock
+    private CartRepository cartRepository;
+    @Mock
+    private PaymentRepository paymentRepository;
+    @Mock
+    private MomoService momoService;
 
     @InjectMocks
     private OrderService orderService;
@@ -188,8 +194,7 @@ class OrderService_GetOrderTest {
         when(orderRepository.sumTotalByStatusAndCreatedAtBetween(
                 eq(3),
                 any(LocalDateTime.class),
-                any(LocalDateTime.class)
-        )).thenReturn(2000.0);
+                any(LocalDateTime.class))).thenReturn(2000.0);
 
         assertEquals(2000.0, orderService.getTodayRevenue());
     }
@@ -197,8 +202,7 @@ class OrderService_GetOrderTest {
     @Test
     void testGetTodayRevenue_Null() {
         when(orderRepository.sumTotalByStatusAndCreatedAtBetween(
-                eq(3), any(), any()
-        )).thenReturn(null);
+                eq(3), any(), any())).thenReturn(null);
 
         assertEquals(0.0, orderService.getTodayRevenue());
     }
@@ -206,8 +210,7 @@ class OrderService_GetOrderTest {
     @Test
     void testGetTodaySoldQuantity() {
         when(orderRepository.sumQuantityByStatusAndCreatedAtBetween(
-                eq(3), any(), any()
-        )).thenReturn(10L);
+                eq(3), any(), any())).thenReturn(10L);
 
         assertEquals(10L, orderService.getTodaySoldQuantity());
     }
@@ -215,8 +218,7 @@ class OrderService_GetOrderTest {
     @Test
     void testGetTodaySoldQuantity_Null() {
         when(orderRepository.sumQuantityByStatusAndCreatedAtBetween(
-                eq(3), any(), any()
-        )).thenReturn(null);
+                eq(3), any(), any())).thenReturn(null);
 
         assertEquals(0L, orderService.getTodaySoldQuantity());
     }

@@ -52,7 +52,6 @@ class AuthorServiceTest {
                 .build();
     }
 
-
     // Lấy tất cả tác giả có phân trang
     @Test
     void testGetAllAuthors_NoQuery() {

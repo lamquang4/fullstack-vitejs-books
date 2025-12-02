@@ -1,4 +1,5 @@
 package com.bookstore.backend.controller;
+
 import com.bookstore.backend.service.PaymentService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +23,12 @@ public class PaymentController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "12") int limit,
             @RequestParam(required = false) String q,
-            @RequestParam(required = false) Integer status
-    ) {
+            @RequestParam(required = false) Integer status) {
         Page<PaymentDTO> paymentPage = paymentService.getAllPayments(page, limit, q, status);
 
         return ResponseEntity.ok(Map.of(
-            "payments", paymentPage.getContent(),
-            "totalPages", paymentPage.getTotalPages(),
-            "total", paymentPage.getTotalElements()
-        ));
+                "payments", paymentPage.getContent(),
+                "totalPages", paymentPage.getTotalPages(),
+                "total", paymentPage.getTotalElements()));
     }
 }

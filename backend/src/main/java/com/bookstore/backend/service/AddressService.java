@@ -1,4 +1,5 @@
 package com.bookstore.backend.service;
+
 import com.bookstore.backend.dto.AddressDTO;
 import com.bookstore.backend.entities.Address;
 import com.bookstore.backend.entities.User;
@@ -14,24 +15,25 @@ public class AddressService {
 
     private final AddressRepository addressRepository;
     private final UserRepository userRepository;
+
     public AddressService(AddressRepository addressRepository, UserRepository userRepository) {
         this.addressRepository = addressRepository;
-         this.userRepository = userRepository;
+        this.userRepository = userRepository;
     }
-    
+
     // lấy các address của customer dựa vào id
-public List<Address> getAddressesByUserId(String userId) {
-    return addressRepository.findByUserId(userId);
-}
+    public List<Address> getAddressesByUserId(String userId) {
+        return addressRepository.findByUserId(userId);
+    }
 
-// lấy 1 address của customer dựa vào id
-public Address getAddressByIdAndUserId(String id, String userId) {
-    return addressRepository.findByIdAndUserId(id, userId)
-            .orElseThrow(() -> new EntityNotFoundException("Địa chỉ không tìm  thấy"));
-}
+    // lấy 1 address của customer dựa vào id
+    public Address getAddressByIdAndUserId(String id, String userId) {
+        return addressRepository.findByIdAndUserId(id, userId)
+                .orElseThrow(() -> new EntityNotFoundException("Địa chỉ không tìm  thấy"));
+    }
 
-// tạo address
- public Address createAddress(AddressDTO dto) {
+    // tạo address
+    public Address createAddress(AddressDTO dto) {
         if (!ValidationUtils.validatePhone(dto.getPhone())) {
             throw new IllegalArgumentException("Số điện thoại không hợp lệ");
         }
@@ -51,7 +53,7 @@ public Address getAddressByIdAndUserId(String id, String userId) {
     }
 
     // cập nhật address
-public Address updateAddress(String id, AddressDTO dto) {
+    public Address updateAddress(String id, AddressDTO dto) {
         if (!ValidationUtils.validatePhone(dto.getPhone())) {
             throw new IllegalArgumentException("Số điện thoại không hợp lệ");
         }
@@ -80,7 +82,7 @@ public Address updateAddress(String id, AddressDTO dto) {
         if (!addressRepository.existsById(id)) {
             throw new EntityNotFoundException("Địa chỉ không tìm thấy");
         }
-        
+
         addressRepository.deleteById(id);
     }
 }

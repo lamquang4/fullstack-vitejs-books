@@ -1,4 +1,5 @@
 package com.bookstore.backend.service;
+
 import com.bookstore.backend.repository.OrderRepository;
 import com.bookstore.backend.repository.UserRepository;
 import com.bookstore.backend.repository.AddressRepository;
@@ -26,7 +27,8 @@ public class UserService {
     private final CartRepository cartRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, AddressRepository addressRepository, OrderRepository orderRepository, CartRepository cartRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, AddressRepository addressRepository,
+            OrderRepository orderRepository, CartRepository cartRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
         this.orderRepository = orderRepository;
@@ -35,145 +37,141 @@ public class UserService {
     }
 
     // lấy tất cả users có role = 3 là customer
-public Page<UserDTO> getAllCustomers(int page, int limit, String q, Integer status) {
-    Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
-    List<Integer> roles = List.of(3);
+    public Page<UserDTO> getAllCustomers(int page, int limit, String q, Integer status) {
+        Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
+        List<Integer> roles = List.of(3);
 
-    Page<User> customersPage;
+        Page<User> customersPage;
 
-    if (q != null && !q.isEmpty() && status != null) {
-        customersPage = userRepository.findByEmailContainingIgnoreCaseAndRoleInAndStatus(q, roles, status, pageable);
-    } else if (q != null && !q.isEmpty()) {
-        customersPage = userRepository.findByEmailContainingIgnoreCaseAndRoleIn(q, roles, pageable);
-    } else if (status != null) {
-        customersPage = userRepository.findByRoleInAndStatus(roles, status, pageable);
-    } else {
-        customersPage = userRepository.findByRoleIn(roles, pageable);
+        if (q != null && !q.isEmpty() && status != null) {
+            customersPage = userRepository.findByEmailContainingIgnoreCaseAndRoleInAndStatus(q, roles, status,
+                    pageable);
+        } else if (q != null && !q.isEmpty()) {
+            customersPage = userRepository.findByEmailContainingIgnoreCaseAndRoleIn(q, roles, pageable);
+        } else if (status != null) {
+            customersPage = userRepository.findByRoleInAndStatus(roles, status, pageable);
+        } else {
+            customersPage = userRepository.findByRoleIn(roles, pageable);
+        }
+
+        List<UserDTO> dtos = customersPage.getContent().stream().map(user -> UserDTO.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .status(user.getStatus())
+                .fullname(user.getFullname())
+                .build()).toList();
+
+        return new PageImpl<>(dtos, pageable, customersPage.getTotalElements());
     }
-
-    List<UserDTO> dtos = customersPage.getContent().stream().map(user -> 
-        UserDTO.builder()
-               .id(user.getId())
-               .email(user.getEmail())
-               .role(user.getRole())
-               .status(user.getStatus())
-               .fullname(user.getFullname())
-               .build()
-    ).toList();
-
-    return new PageImpl<>(dtos, pageable, customersPage.getTotalElements());
-}
 
     // lấy tất cả user có role là 0,1,2 là admin hoặc nhân viên
-public Page<UserDTO> getAllAdmins(int page, int limit, String q, Integer status) {
-    Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
-    List<Integer> roles = List.of(0, 1, 2);
+    public Page<UserDTO> getAllAdmins(int page, int limit, String q, Integer status) {
+        Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
+        List<Integer> roles = List.of(0, 1, 2);
 
-    Page<User> adminsPage;
+        Page<User> adminsPage;
 
-    if (q != null && !q.isEmpty() && status != null) {
-        adminsPage = userRepository.findByEmailContainingIgnoreCaseAndRoleInAndStatus(q, roles, status, pageable);
-    } else if (q != null && !q.isEmpty()) {
-        adminsPage = userRepository.findByEmailContainingIgnoreCaseAndRoleIn(q, roles, pageable);
-    } else if (status != null) {
-        adminsPage = userRepository.findByRoleInAndStatus(roles, status, pageable);
-    } else {
-        adminsPage = userRepository.findByRoleIn(roles, pageable);
+        if (q != null && !q.isEmpty() && status != null) {
+            adminsPage = userRepository.findByEmailContainingIgnoreCaseAndRoleInAndStatus(q, roles, status, pageable);
+        } else if (q != null && !q.isEmpty()) {
+            adminsPage = userRepository.findByEmailContainingIgnoreCaseAndRoleIn(q, roles, pageable);
+        } else if (status != null) {
+            adminsPage = userRepository.findByRoleInAndStatus(roles, status, pageable);
+        } else {
+            adminsPage = userRepository.findByRoleIn(roles, pageable);
+        }
+
+        List<UserDTO> dtos = adminsPage.getContent().stream().map(user -> UserDTO.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .status(user.getStatus())
+                .fullname(user.getFullname())
+                .build()).toList();
+
+        return new PageImpl<>(dtos, pageable, adminsPage.getTotalElements());
     }
 
-    List<UserDTO> dtos = adminsPage.getContent().stream().map(user -> 
-        UserDTO.builder()
-               .id(user.getId())
-               .email(user.getEmail())
-               .role(user.getRole())
-               .status(user.getStatus())
-               .fullname(user.getFullname())
-               .build()
-    ).toList();
-
-    return new PageImpl<>(dtos, pageable, adminsPage.getTotalElements());
-}
-
-// lấy 1 user theo id
-public Optional<UserDTO> getUserById(String id) {
-    return userRepository.findById(id)
-            .map(user -> UserDTO.builder()
-                    .id(user.getId())
-                    .fullname(user.getFullname())
-                    .email(user.getEmail())
-                    .role(user.getRole())
-                    .status(user.getStatus())
-                    .build()
-            );
-}
-
-// tạo user
-  public UserDTO createUser(UserDTO dto) {
-    if (!ValidationUtils.validateEmail(dto.getEmail())) {
-        throw new IllegalArgumentException("Email không hợp lệ");
+    // lấy 1 user theo id
+    public Optional<UserDTO> getUserById(String id) {
+        return userRepository.findById(id)
+                .map(user -> UserDTO.builder()
+                        .id(user.getId())
+                        .fullname(user.getFullname())
+                        .email(user.getEmail())
+                        .role(user.getRole())
+                        .status(user.getStatus())
+                        .build());
     }
 
-    if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
-        throw new IllegalArgumentException("Email đã tồn tại");
-    }
-
-    if (dto.getPassword() == null || dto.getPassword().length() < 6) {
-        throw new IllegalArgumentException("Mật khẩu phải có ít nhất 6 ký tự");
-    }
-
-    User user = User.builder()
-            .email(dto.getEmail())
-            .fullname(dto.getFullname())
-            .password(passwordEncoder.encode(dto.getPassword()))
-            .status(dto.getStatus() != null ? dto.getStatus() : 1)
-            .role(dto.getRole() != null ? dto.getRole() : 3) 
-            .build();
-
-    User saved = userRepository.save(user);
-
-    dto.setId(saved.getId());
-    dto.setPassword(null);
-    return dto;
-}
-
-// cập nhật user
-  public UserDTO updateUser(String id, UserDTO userDTO) {
-    return userRepository.findById(id).map(user -> {
-        if (!ValidationUtils.validateEmail(userDTO.getEmail())) {
+    // tạo user
+    public UserDTO createUser(UserDTO dto) {
+        if (!ValidationUtils.validateEmail(dto.getEmail())) {
             throw new IllegalArgumentException("Email không hợp lệ");
         }
 
-        if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
-        throw new IllegalArgumentException("Email đã tồn tại");
+        if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Email đã tồn tại");
         }
 
-        if (userDTO.getEmail() != null) {
-        user.setEmail(userDTO.getEmail());
+        if (dto.getPassword() == null || dto.getPassword().length() < 6) {
+            throw new IllegalArgumentException("Mật khẩu phải có ít nhất 6 ký tự");
         }
-        if (userDTO.getFullname() != null) {
-         user.setFullname(userDTO.getFullname());
-        }
-        if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
-            if (userDTO.getPassword().length() < 6) {
-                throw new IllegalArgumentException("Mật khẩu phải có ít nhất 6 ký tự");
+
+        User user = User.builder()
+                .email(dto.getEmail())
+                .fullname(dto.getFullname())
+                .password(passwordEncoder.encode(dto.getPassword()))
+                .status(dto.getStatus() != null ? dto.getStatus() : 1)
+                .role(dto.getRole() != null ? dto.getRole() : 3)
+                .build();
+
+        User saved = userRepository.save(user);
+
+        dto.setId(saved.getId());
+        dto.setPassword(null);
+        return dto;
+    }
+
+    // cập nhật user
+    public UserDTO updateUser(String id, UserDTO userDTO) {
+        return userRepository.findById(id).map(user -> {
+            if (!ValidationUtils.validateEmail(userDTO.getEmail())) {
+                throw new IllegalArgumentException("Email không hợp lệ");
             }
-            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        }
-        if (userDTO.getRole() != null) {
-            user.setRole(userDTO.getRole());
-        }
-        if (userDTO.getStatus() != null) {
-            user.setStatus(userDTO.getStatus());
-        }
-        userRepository.save(user);
 
-        userDTO.setId(user.getId());
-        userDTO.setPassword(null); 
-        return userDTO;
-    }).orElse(null);
-}
+            if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
+                throw new IllegalArgumentException("Email đã tồn tại");
+            }
 
-// cập nhật status của user
+            if (userDTO.getEmail() != null) {
+                user.setEmail(userDTO.getEmail());
+            }
+            if (userDTO.getFullname() != null) {
+                user.setFullname(userDTO.getFullname());
+            }
+            if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
+                if (userDTO.getPassword().length() < 6) {
+                    throw new IllegalArgumentException("Mật khẩu phải có ít nhất 6 ký tự");
+                }
+                user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+            }
+            if (userDTO.getRole() != null) {
+                user.setRole(userDTO.getRole());
+            }
+            if (userDTO.getStatus() != null) {
+                user.setStatus(userDTO.getStatus());
+            }
+            userRepository.save(user);
+
+            userDTO.setId(user.getId());
+            userDTO.setPassword(null);
+            return userDTO;
+        }).orElse(null);
+    }
+
+    // cập nhật status của user
     public User updateUserStatus(String id, Integer status) {
         return userRepository.findById(id)
                 .map(user -> {

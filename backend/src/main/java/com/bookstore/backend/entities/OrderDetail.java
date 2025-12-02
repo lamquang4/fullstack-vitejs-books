@@ -1,4 +1,5 @@
 package com.bookstore.backend.entities;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -41,5 +42,5 @@ public class OrderDetail {
 
     @ManyToOne
     @JoinColumn(name = "orderId", nullable = false)
-    private Order order; 
+    private Order order;
 }

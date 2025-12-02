@@ -13,18 +13,18 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class ImageBook {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(nullable = false, length = 250)    
+    @Column(nullable = false, length = 250)
     private String image;
 
     @ManyToOne
     @JoinColumn(name = "bookId", nullable = false)
     private Book book;
-    
+
     @Builder.Default
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();

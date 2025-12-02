@@ -24,11 +24,16 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
-    @Mock private UserRepository userRepository;
-    @Mock private AddressRepository addressRepository;
-    @Mock private OrderRepository orderRepository;
-    @Mock private CartRepository cartRepository;
-    @Mock private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private AddressRepository addressRepository;
+    @Mock
+    private OrderRepository orderRepository;
+    @Mock
+    private CartRepository cartRepository;
+    @Mock
+    private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private UserService userService;
@@ -73,8 +78,7 @@ class UserServiceTest {
     void testGetCustomers_FilterByEmail() {
         Page<User> page = new PageImpl<>(List.of(customer), pageable, 1);
         when(userRepository.findByEmailContainingIgnoreCaseAndRoleIn(
-                "cus", List.of(3), pageable
-        )).thenReturn(page);
+                "cus", List.of(3), pageable)).thenReturn(page);
 
         var result = userService.getAllCustomers(1, 10, "cus", null);
         assertEquals("customer@gmail.com", result.getContent().get(0).getEmail());
@@ -84,7 +88,7 @@ class UserServiceTest {
     @Test
     void testGetAdmins_NoFilters() {
         Page<User> page = new PageImpl<>(List.of(admin), pageable, 1);
-        when(userRepository.findByRoleIn(List.of(0,1,2), pageable))
+        when(userRepository.findByRoleIn(List.of(0, 1, 2), pageable))
                 .thenReturn(page);
 
         var result = userService.getAllAdmins(1, 10, null, null);

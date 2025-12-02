@@ -1,4 +1,5 @@
 package com.bookstore.backend.controller;
+
 import com.bookstore.backend.entities.Author;
 import com.bookstore.backend.service.AuthorService;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ import java.util.Map;
 public class AuthorController {
 
     private final AuthorService authorService;
-    
+
     public AuthorController(AuthorService authorService) {
         this.authorService = authorService;
     }
@@ -23,15 +24,13 @@ public class AuthorController {
     public ResponseEntity<?> getAllAuthors(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "12") int limit,
-            @RequestParam(required = false) String q
-    ) {
+            @RequestParam(required = false) String q) {
         Page<Author> authorPage = authorService.getAllAuthors(page, limit, q);
 
         return ResponseEntity.ok(Map.of(
-            "authors", authorPage.getContent(),
-            "totalPages", authorPage.getTotalPages(),
-            "total", authorPage.getTotalElements()
-        ));
+                "authors", authorPage.getContent(),
+                "totalPages", authorPage.getTotalPages(),
+                "total", authorPage.getTotalElements()));
     }
 
     @GetMapping("/all")
@@ -66,4 +65,3 @@ public class AuthorController {
         return ResponseEntity.noContent().build();
     }
 }
-

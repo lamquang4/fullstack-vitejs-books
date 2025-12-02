@@ -1,4 +1,5 @@
 package com.bookstore.backend.service;
+
 import com.bookstore.backend.entities.Author;
 import com.bookstore.backend.repository.AuthorRepository;
 import com.bookstore.backend.repository.BookRepository;
@@ -14,12 +15,12 @@ import org.springframework.data.domain.Sort;
 @Service
 public class AuthorService {
 
-  private final AuthorRepository authorRepository;
+    private final AuthorRepository authorRepository;
     private final BookRepository bookRepository;
 
     public AuthorService(AuthorRepository authorRepository, BookRepository bookRepository) {
         this.authorRepository = authorRepository;
-       this.bookRepository = bookRepository;
+        this.bookRepository = bookRepository;
     }
 
     // lấy tất cả các authors
@@ -44,20 +45,22 @@ public class AuthorService {
 
     // tạo author
     public Author createAuthor(Author author) {
-    if (authorRepository.findByFullname(author.getFullname()).isPresent()) {
-        throw new IllegalArgumentException("Họ tên của tác giả đã tồn tại");
-    }
-         author.setSlug(SlugUtil.toSlug(author.getFullname()));
+        if (authorRepository.findByFullname(author.getFullname()).isPresent()) {
+            throw new IllegalArgumentException("Họ tên của tác giả đã tồn tại");
+        }
+        author.setSlug(SlugUtil.toSlug(author.getFullname()));
         return authorRepository.save(author);
     }
 
     // cập nhật author
     public Author updateAuthor(String id, Author author) {
-    return authorRepository.findById(id)
+        return authorRepository.findById(id)
                 .map(existingAuthor -> {
                     authorRepository.findByFullname(author.getFullname())
                             .filter(a -> !a.getId().equals(id))
-                            .ifPresent(a -> { throw new IllegalArgumentException("Họ tên của tác giả đã tồn tại"); });
+                            .ifPresent(a -> {
+                                throw new IllegalArgumentException("Họ tên của tác giả đã tồn tại");
+                            });
 
                     author.setSlug(SlugUtil.toSlug(author.getFullname()));
 
@@ -77,7 +80,7 @@ public class AuthorService {
         if (bookRepository.existsByAuthor(author)) {
             throw new IllegalStateException("Tác giả này không thể xóa vì vẫn còn sách liên kết với họ");
         }
-        
+
         authorRepository.deleteById(id);
     }
 }
