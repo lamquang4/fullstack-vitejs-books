@@ -20,7 +20,7 @@ import { validatePhone } from "../../../utils/validatePhone";
 function CheckoutForm() {
   const navigate = useNavigate();
   const { provinces } = useGetProvinces();
-  const { user } = useGetCurrentUser("client");
+  const { user, isLoading: isLoadingCurrentUser } = useGetCurrentUser("client");
   const {
     cart,
     isLoading: isLoadingCart,
@@ -48,9 +48,9 @@ function CheckoutForm() {
   }, [cart?.items]);
 
   useEffect(() => {
-    if (isLoadingCart || isOrderPlaced) return;
+    if (isLoadingCart || isLoadingCurrentUser || isOrderPlaced) return;
 
-    if (!cart || !cart.items?.length) {
+    if (!cart?.items.length || !cart) {
       toast.error("Không có gì trong giỏ hết");
       navigate("/cart");
       return;
@@ -62,7 +62,14 @@ function CheckoutForm() {
       );
       navigate("/cart");
     }
-  }, [cart, outOfStockItems, navigate, isLoadingCart]);
+  }, [
+    cart,
+    outOfStockItems,
+    navigate,
+    isLoadingCart,
+    isLoadingCurrentUser,
+    isOrderPlaced,
+  ]);
 
   const totalPrice = useMemo(() => {
     return (
@@ -106,7 +113,9 @@ function CheckoutForm() {
     }
 
     if (totalPrice < 10000 && paymethod === "momo") {
-      ("Tổng giá trị đơn hàng của bạn dưới 10.000đ, nên bạn chỉ có thể chọn hình thức thanh toán khi nhận hàng");
+      toast.error(
+        "Tổng giá trị đơn hàng của bạn dưới 10.000đ, nên bạn chỉ có thể chọn hình thức thanh toán khi nhận hàng"
+      );
       setPaymethod("cod");
       return;
     }

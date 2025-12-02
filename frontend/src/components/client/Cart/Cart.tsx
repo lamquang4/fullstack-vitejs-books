@@ -6,12 +6,12 @@ import useGetActiveBooks from "../../../hooks/client/useGetActiveBooks";
 import BookSlider from "../Book/BookSlider";
 
 function Cart() {
-  const { user } = useGetCurrentUser("client");
-  const { cart, isLoading, mutate } = useGetCart(user?.id || "");
+  const { user, isLoading: isLoadingCurrentUser } = useGetCurrentUser("client");
+  const { cart, isLoading: isLoadingCart, mutate } = useGetCart(user?.id || "");
   const { books } = useGetActiveBooks();
   return (
     <>
-      {isLoading ? (
+      {isLoadingCart || isLoadingCurrentUser ? (
         <Loading height={60} size={50} color="black" thickness={2} />
       ) : (
         <>
