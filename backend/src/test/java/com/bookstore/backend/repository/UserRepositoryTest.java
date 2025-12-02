@@ -1,7 +1,5 @@
 package com.bookstore.backend.repository;
-
 import static org.assertj.core.api.Assertions.assertThat;
-
 import com.bookstore.backend.entities.User;
 import java.util.Arrays;
 import java.util.Optional;
