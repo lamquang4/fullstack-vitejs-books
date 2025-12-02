@@ -30,20 +30,18 @@ public class OrderController {
             @RequestParam(defaultValue = "12") int limit,
             @RequestParam(required = false) String q,
             @RequestParam(required = false) Integer status,
-     @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end
-    ) {
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
         Page<OrderDTO> orderPage = orderService.getAllOrders(page, limit, q, status, start, end);
 
         List<Integer> statuses = Arrays.asList(0, 3, 4, 5);
         Map<Integer, Long> totalByStatus = orderService.getOrderCountByStatus(statuses);
 
         return ResponseEntity.ok(Map.of(
-            "orders", orderPage.getContent(),
-            "totalPages", orderPage.getTotalPages(),
-            "total", orderPage.getTotalElements(),
-            "totalByStatus", totalByStatus
-        ));
+                "orders", orderPage.getContent(),
+                "totalPages", orderPage.getTotalPages(),
+                "total", orderPage.getTotalElements(),
+                "totalByStatus", totalByStatus));
     }
 
     @GetMapping("/{id}")
@@ -55,8 +53,7 @@ public class OrderController {
     @PutMapping("/{id}")
     public ResponseEntity<OrderDTO> updateOrderStatus(
             @PathVariable("id") String orderId,
-            @RequestParam Integer status
-    ) {
+            @RequestParam Integer status) {
         OrderDTO updatedOrder = orderService.updateOrderStatus(orderId, status);
         return ResponseEntity.ok(updatedOrder);
     }
@@ -65,8 +62,7 @@ public class OrderController {
     @PostMapping("/user/{userId}")
     public ResponseEntity<OrderDTO> createOrder(
             @RequestBody OrderDTO orderDTO,
-           @PathVariable String userId
-    ) {
+            @PathVariable String userId) {
         OrderDTO createdOrder = orderService.createOrder(orderDTO, userId);
         return ResponseEntity.ok(createdOrder);
     }
@@ -74,8 +70,7 @@ public class OrderController {
     @GetMapping("/user/{userId}/{orderCode}")
     public ResponseEntity<OrderDTO> getOrderByUserAndCode(
             @PathVariable String userId,
-            @PathVariable String orderCode
-    ) {
+            @PathVariable String orderCode) {
         OrderDTO order = orderService.getOrderByUserAndCode(userId, orderCode);
         return ResponseEntity.ok(order);
     }
@@ -85,18 +80,16 @@ public class OrderController {
             @PathVariable String userId,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "12") int limit,
-            @RequestParam(required = false) Integer status
-    ) {
+            @RequestParam(required = false) Integer status) {
         Page<OrderDTO> orderPage = orderService.getOrdersByUserAndStatus(userId, page, limit, status);
 
         return ResponseEntity.ok(Map.of(
-            "orders", orderPage.getContent(),
-            "totalPages", orderPage.getTotalPages(),
-            "total", orderPage.getTotalElements()
-        ));
+                "orders", orderPage.getContent(),
+                "totalPages", orderPage.getTotalPages(),
+                "total", orderPage.getTotalElements()));
     }
 
-    @GetMapping("/statistics") 
+    @GetMapping("/statistics")
     public ResponseEntity<Map<String, Object>> getOrderStats() {
         double totalRevenue = orderService.getTotalRevenue();
         double todayRevenue = orderService.getTodayRevenue();
@@ -107,8 +100,7 @@ public class OrderController {
                 "totalRevenue", totalRevenue,
                 "todayRevenue", todayRevenue,
                 "totalSoldQuantity", totalSoldQuantity,
-                "todaySoldQuantity", todaySoldQuantity
-        );
+                "todaySoldQuantity", todaySoldQuantity);
 
         return ResponseEntity.ok(stats);
     }

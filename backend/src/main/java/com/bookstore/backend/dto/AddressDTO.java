@@ -1,4 +1,5 @@
 package com.bookstore.backend.dto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,4 +18,3 @@ public class AddressDTO {
     private String city;
     private String userId;
 }
-

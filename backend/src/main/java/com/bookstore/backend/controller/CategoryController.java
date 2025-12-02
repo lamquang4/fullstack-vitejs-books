@@ -1,4 +1,5 @@
 package com.bookstore.backend.controller;
+
 import com.bookstore.backend.entities.Category;
 import com.bookstore.backend.service.CategoryService;
 import org.springframework.data.domain.Page;
@@ -24,15 +25,13 @@ public class CategoryController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "12") int limit,
             @RequestParam(required = false) String q,
-            @RequestParam(required = false) Integer status
-    ) {
+            @RequestParam(required = false) Integer status) {
         Page<Category> categoryPage = categoryService.getAllCategories(page, limit, q, status);
 
         return ResponseEntity.ok(Map.of(
-            "categories", categoryPage.getContent(),
-            "totalPages", categoryPage.getTotalPages(),
-            "total", categoryPage.getTotalElements()
-        ));
+                "categories", categoryPage.getContent(),
+                "totalPages", categoryPage.getTotalPages(),
+                "total", categoryPage.getTotalElements()));
     }
 
     @GetMapping("/all")
@@ -68,11 +67,10 @@ public class CategoryController {
         return ResponseEntity.notFound().build();
     }
 
-        @PatchMapping("/status/{id}")
+    @PatchMapping("/status/{id}")
     public ResponseEntity<?> updateCategoryStatus(
             @PathVariable String id,
-            @RequestBody Map<String, Integer> body
-    ) {
+            @RequestBody Map<String, Integer> body) {
         Integer status = body.get("status");
         if (status == null) {
             throw new IllegalArgumentException("Status is required");
@@ -82,8 +80,7 @@ public class CategoryController {
 
         return ResponseEntity.ok(Map.of(
                 "id", updated.getId(),
-                "status", updated.getStatus()
-        ));
+                "status", updated.getStatus()));
     }
 
     @DeleteMapping("/{id}")

@@ -30,172 +30,155 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 class PublisherControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+        @Autowired
+        private MockMvc mockMvc;
 
-    @MockBean
-    private PublisherService publisherService;
+        @MockBean
+        private PublisherService publisherService;
 
-    //  ObjectMapper xử lý LocalDateTime
-    private final ObjectMapper mapper = JsonMapper.builder()
-            .addModule(new JavaTimeModule())
-            .build();
+        private final ObjectMapper mapper = JsonMapper.builder()
+                        .addModule(new JavaTimeModule())
+                        .build();
 
-    private Publisher mockPublisher() {
-        return Publisher.builder()
-                .id("pub1")
-                .name("Test Publisher")
-                .slug("test-publisher")
-                .createdAt(LocalDateTime.now())
-                .build();
-    }
+        private Publisher mockPublisher() {
+                return Publisher.builder()
+                                .id("pub1")
+                                .name("Test Publisher")
+                                .slug("test-publisher")
+                                .createdAt(LocalDateTime.now())
+                                .build();
+        }
 
-    // ---------------------------------------
-    // GET /api/publisher
-    // ---------------------------------------
-    @Test
-    @WithMockUser
-    void getAllPublishers_shouldReturnPage() throws Exception {
+        // Lấy tất cả nhà xuất bản có phân trang
+        @Test
+        @WithMockUser
+        void getAllPublishers_shouldReturnPage() throws Exception {
 
-        List<Publisher> publishers = List.of(mockPublisher());
-        Page<Publisher> page = new PageImpl<>(publishers);
+                List<Publisher> publishers = List.of(mockPublisher());
+                Page<Publisher> page = new PageImpl<>(publishers);
 
-        Mockito.when(publisherService.getAllPublishers(
-                        anyInt(), anyInt(), anyString()))
-                .thenReturn(page);
+                Mockito.when(publisherService.getAllPublishers(
+                                anyInt(), anyInt(), anyString()))
+                                .thenReturn(page);
 
-        mockMvc.perform(get("/api/publisher")
-                        .param("page", "1")
-                        .param("limit", "12")
-                        .param("q", "test"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.publishers[0].id").value("pub1"))
-                .andExpect(jsonPath("$.publishers[0].name")
-                        .value("Test Publisher"))
-                .andExpect(jsonPath("$.totalPages").value(1))
-                .andExpect(jsonPath("$.total").value(1));
-    }
+                mockMvc.perform(get("/api/publisher")
+                                .param("page", "1")
+                                .param("limit", "12")
+                                .param("q", "test"))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.publishers[0].id").value("pub1"))
+                                .andExpect(jsonPath("$.publishers[0].name")
+                                                .value("Test Publisher"))
+                                .andExpect(jsonPath("$.totalPages").value(1))
+                                .andExpect(jsonPath("$.total").value(1));
+        }
 
-    // ---------------------------------------
-    // GET /api/publisher/all
-    // ---------------------------------------
-    @Test
-    @WithMockUser
-    void getAllPublishers1_shouldReturnList() throws Exception {
+        // Láy tất cả nhà xuất bản không phân trang
+        @Test
+        @WithMockUser
+        void getAllPublishers1_shouldReturnList() throws Exception {
 
-        Mockito.when(publisherService.getAllPublishers1())
-                .thenReturn(List.of(mockPublisher()));
+                Mockito.when(publisherService.getAllPublishers1())
+                                .thenReturn(List.of(mockPublisher()));
 
-        mockMvc.perform(get("/api/publisher/all"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value("pub1"))
-                .andExpect(jsonPath("$[0].name").value("Test Publisher"));
-    }
+                mockMvc.perform(get("/api/publisher/all"))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$[0].id").value("pub1"))
+                                .andExpect(jsonPath("$[0].name").value("Test Publisher"));
+        }
 
-    // ---------------------------------------
-    // GET /api/publisher/{id} - FOUND
-    // ---------------------------------------
-    @Test
-    @WithMockUser
-    void getPublisherById_found() throws Exception {
+        // Lấy nhà xuất bản theo id - tìm thấy
+        @Test
+        @WithMockUser
+        void getPublisherById_found() throws Exception {
 
-        Mockito.when(publisherService.getPublisherById("pub1"))
-                .thenReturn(Optional.of(mockPublisher()));
+                Mockito.when(publisherService.getPublisherById("pub1"))
+                                .thenReturn(Optional.of(mockPublisher()));
 
-        mockMvc.perform(get("/api/publisher/{id}", "pub1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value("pub1"))
-                .andExpect(jsonPath("$.name").value("Test Publisher"));
-    }
+                mockMvc.perform(get("/api/publisher/{id}", "pub1"))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.id").value("pub1"))
+                                .andExpect(jsonPath("$.name").value("Test Publisher"));
+        }
 
-    // ---------------------------------------
-    // GET /api/publisher/{id} - NOT FOUND
-    // ---------------------------------------
-    @Test
-    @WithMockUser
-    void getPublisherById_notFound() throws Exception {
+        // Lấy nhà xuất bản theo id - không tìm thấy
+        @Test
+        @WithMockUser
+        void getPublisherById_notFound() throws Exception {
 
-        Mockito.when(publisherService.getPublisherById("404"))
-                .thenReturn(Optional.empty());
+                Mockito.when(publisherService.getPublisherById("404"))
+                                .thenReturn(Optional.empty());
 
-        mockMvc.perform(get("/api/publisher/{id}", "404"))
-                .andExpect(status().isNotFound());
-    }
+                mockMvc.perform(get("/api/publisher/{id}", "404"))
+                                .andExpect(status().isNotFound());
+        }
 
-    // ---------------------------------------
-    // POST /api/publisher
-    // ---------------------------------------
-    @Test
-    @WithMockUser
-    void createPublisher_shouldReturnPublisher() throws Exception {
+        // Thêm nhà xuất bản
+        @Test
+        @WithMockUser
+        void createPublisher_shouldReturnPublisher() throws Exception {
 
-        Publisher publisher = mockPublisher();
+                Publisher publisher = mockPublisher();
 
-        Mockito.when(publisherService.createPublisher(any()))
-                .thenReturn(publisher);
+                Mockito.when(publisherService.createPublisher(any()))
+                                .thenReturn(publisher);
 
-        mockMvc.perform(post("/api/publisher")
-                        .with(csrf())
-                        .contentType("application/json")
-                        .content(mapper.writeValueAsString(publisher)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value("pub1"))
-                .andExpect(jsonPath("$.name")
-                        .value("Test Publisher"));
-    }
+                mockMvc.perform(post("/api/publisher")
+                                .with(csrf())
+                                .contentType("application/json")
+                                .content(mapper.writeValueAsString(publisher)))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.id").value("pub1"))
+                                .andExpect(jsonPath("$.name")
+                                                .value("Test Publisher"));
+        }
 
-    // ---------------------------------------
-    // PUT /api/publisher/{id}
-    // ---------------------------------------
-    @Test
-    @WithMockUser
-    void updatePublisher_shouldUpdate() throws Exception {
+        // Cập nhật nhà xuất bản
+        @Test
+        @WithMockUser
+        void updatePublisher_shouldUpdate() throws Exception {
 
-        Publisher updated = mockPublisher();
-        updated.setName("Updated Publisher");
+                Publisher updated = mockPublisher();
+                updated.setName("Updated Publisher");
 
-        Mockito.when(publisherService.updatePublisher(eq("pub1"), any()))
-                .thenReturn(updated);
+                Mockito.when(publisherService.updatePublisher(eq("pub1"), any()))
+                                .thenReturn(updated);
 
-        mockMvc.perform(put("/api/publisher/{id}", "pub1")
-                        .with(csrf())
-                        .contentType("application/json")
-                        .content(mapper.writeValueAsString(updated)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name")
-                        .value("Updated Publisher"));
-    }
+                mockMvc.perform(put("/api/publisher/{id}", "pub1")
+                                .with(csrf())
+                                .contentType("application/json")
+                                .content(mapper.writeValueAsString(updated)))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.name")
+                                                .value("Updated Publisher"));
+        }
 
-    // ---------------------------------------
-    // PUT /api/publisher/{id} - NOT FOUND
-    // ---------------------------------------
-    @Test
-    @WithMockUser
-    void updatePublisher_notFound() throws Exception {
+        // Cập nhật nhà xuất bản - không tìm thấy
+        @Test
+        @WithMockUser
+        void updatePublisher_notFound() throws Exception {
 
-        Mockito.when(publisherService.updatePublisher(eq("404"), any()))
-                .thenReturn(null);
+                Mockito.when(publisherService.updatePublisher(eq("404"), any()))
+                                .thenReturn(null);
 
-        mockMvc.perform(put("/api/publisher/{id}", "404")
-                        .with(csrf())
-                        .contentType("application/json")
-                        .content(mapper.writeValueAsString(mockPublisher())))
-                .andExpect(status().isNotFound());
-    }
+                mockMvc.perform(put("/api/publisher/{id}", "404")
+                                .with(csrf())
+                                .contentType("application/json")
+                                .content(mapper.writeValueAsString(mockPublisher())))
+                                .andExpect(status().isNotFound());
+        }
 
-    // ---------------------------------------
-    // DELETE /api/publisher/{id}
-    // ---------------------------------------
-    @Test
-    @WithMockUser
-    void deletePublisher_shouldReturn204() throws Exception {
+        // Xóa nhà xuất bản
+        @Test
+        @WithMockUser
+        void deletePublisher_shouldReturn204() throws Exception {
 
-        Mockito.doNothing().when(publisherService)
-                .deletePublisher("pub1");
+                Mockito.doNothing().when(publisherService)
+                                .deletePublisher("pub1");
 
-        mockMvc.perform(delete("/api/publisher/{id}", "pub1")
-                        .with(csrf()))
-                .andExpect(status().isNoContent());
-    }
+                mockMvc.perform(delete("/api/publisher/{id}", "pub1")
+                                .with(csrf()))
+                                .andExpect(status().isNoContent());
+        }
 
 }

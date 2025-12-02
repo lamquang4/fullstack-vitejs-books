@@ -1,4 +1,5 @@
 package com.bookstore.backend.controller;
+
 import com.bookstore.backend.dto.UserDTO;
 import com.bookstore.backend.entities.User;
 import com.bookstore.backend.service.UserService;
@@ -24,30 +25,26 @@ public class UserController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "12") int limit,
             @RequestParam(required = false) String q,
-            @RequestParam(required = false) Integer status
-    ) {
+            @RequestParam(required = false) Integer status) {
         Page<UserDTO> customers = userService.getAllCustomers(page, limit, q, status);
         return ResponseEntity.ok(Map.of(
                 "customers", customers.getContent(),
                 "totalPages", customers.getTotalPages(),
-                "total", customers.getTotalElements()
-        ));
+                "total", customers.getTotalElements()));
     }
 
-// admin
+    // admin
     @GetMapping("/admin")
     public ResponseEntity<?> getAllAdmins(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "12") int limit,
             @RequestParam(required = false) String q,
-            @RequestParam(required = false) Integer status
-    ) {
+            @RequestParam(required = false) Integer status) {
         Page<UserDTO> admins = userService.getAllAdmins(page, limit, q, status);
         return ResponseEntity.ok(Map.of(
                 "admins", admins.getContent(),
                 "totalPages", admins.getTotalPages(),
-                "total", admins.getTotalElements()
-        ));
+                "total", admins.getTotalElements()));
     }
 
     @GetMapping("/{id}")
@@ -71,12 +68,11 @@ public class UserController {
         }
         return ResponseEntity.ok(updated);
     }
-   
+
     @PatchMapping("/status/{id}")
     public ResponseEntity<?> updateUserStatus(
             @PathVariable String id,
-            @RequestBody Map<String, Integer> body
-    ) {
+            @RequestBody Map<String, Integer> body) {
         Integer status = body.get("status");
         if (status == null) {
             throw new IllegalArgumentException("Tình trạng không để trống");
@@ -86,8 +82,7 @@ public class UserController {
 
         return ResponseEntity.ok(Map.of(
                 "id", updated.getId(),
-                "status", updated.getStatus()
-        ));
+                "status", updated.getStatus()));
     }
 
     @DeleteMapping("/{id}")

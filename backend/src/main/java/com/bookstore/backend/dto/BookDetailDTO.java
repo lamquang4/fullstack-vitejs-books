@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
+
 @Data
 @AllArgsConstructor
 public class BookDetailDTO {
@@ -16,9 +17,9 @@ public class BookDetailDTO {
     private Integer numberOfPages;
     private String publicationDate;
     private Double weight;
-    private Double width;      
-    private Double length;    
-    private Double thickness; 
+    private Double width;
+    private Double length;
+    private Double thickness;
     private Integer stock;
     private Integer status;
     private String createdAt;

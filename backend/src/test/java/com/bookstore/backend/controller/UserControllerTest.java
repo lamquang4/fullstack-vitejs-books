@@ -28,212 +28,197 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 class UserControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+        @Autowired
+        private MockMvc mockMvc;
 
-    @MockBean
-    private UserService userService;
+        @MockBean
+        private UserService userService;
 
-    private final ObjectMapper mapper = new ObjectMapper();
+        private final ObjectMapper mapper = new ObjectMapper();
 
-    private UserDTO mockUserDTO() {
-        return UserDTO.builder()
-                .id("u1")
-                .email("user@test.com")
-                .fullname("Test User")
-                .password("123456")
-                .role(3)
-                .status(1)
-                .build();
-    }
+        private UserDTO mockUserDTO() {
+                return UserDTO.builder()
+                                .id("u1")
+                                .email("user@test.com")
+                                .fullname("Test User")
+                                .password("123456")
+                                .role(3)
+                                .status(1)
+                                .build();
+        }
 
-    private User mockUserEntity() {
-        return User.builder()
-                .id("u1")
-                .email("user@test.com")
-                .fullname("Test User")
-                .password("123456")
-                .role(3)
-                .status(1)
-                .build();
-    }
+        private User mockUserEntity() {
+                return User.builder()
+                                .id("u1")
+                                .email("user@test.com")
+                                .fullname("Test User")
+                                .password("123456")
+                                .role(3)
+                                .status(1)
+                                .build();
+        }
 
-    /* ========================================================= */
-    /* ======================= CUSTOMER ======================= */
-    /* ========================================================= */
+        // Lấy tất cả khách hàng
+        @Test
+        @WithMockUser
+        void getAllCustomers_shouldReturnPage() throws Exception {
 
-    @Test
-    @WithMockUser
-    void getAllCustomers_shouldReturnPage() throws Exception {
+                Page<UserDTO> page = new PageImpl<>(List.of(mockUserDTO()));
 
-        Page<UserDTO> page =
-                new PageImpl<>(List.of(mockUserDTO()));
+                Mockito.when(userService.getAllCustomers(
+                                anyInt(), anyInt(), any(), any()))
+                                .thenReturn(page);
 
-        Mockito.when(userService.getAllCustomers(
-                        anyInt(), anyInt(), any(), any()))
-                .thenReturn(page);
+                mockMvc.perform(get("/api/user/customer")
+                                .param("page", "1")
+                                .param("limit", "12"))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.customers[0].id").value("u1"))
+                                .andExpect(jsonPath("$.totalPages").value(1))
+                                .andExpect(jsonPath("$.total").value(1));
+        }
 
-        mockMvc.perform(get("/api/user/customer")
-                        .param("page", "1")
-                        .param("limit", "12"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.customers[0].id").value("u1"))
-                .andExpect(jsonPath("$.totalPages").value(1))
-                .andExpect(jsonPath("$.total").value(1));
-    }
+        // Lấy tất cả quản trị viên
+        @Test
+        @WithMockUser
+        void getAllAdmins_shouldReturnPage() throws Exception {
 
-    /* ========================================================= */
+                Page<UserDTO> page = new PageImpl<>(List.of(mockUserDTO()));
 
-    @Test
-    @WithMockUser
-    void getAllAdmins_shouldReturnPage() throws Exception {
+                Mockito.when(userService.getAllAdmins(
+                                anyInt(), anyInt(), any(), any()))
+                                .thenReturn(page);
 
-        Page<UserDTO> page =
-                new PageImpl<>(List.of(mockUserDTO()));
+                mockMvc.perform(get("/api/user/admin")
+                                .param("page", "1")
+                                .param("limit", "12"))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.admins[0].id").value("u1"))
+                                .andExpect(jsonPath("$.totalPages").value(1))
+                                .andExpect(jsonPath("$.total").value(1));
+        }
 
-        Mockito.when(userService.getAllAdmins(
-                        anyInt(), anyInt(), any(), any()))
-                .thenReturn(page);
+        // lấy người dùng theo id
+        @Test
+        @WithMockUser
+        void getUserById_success() throws Exception {
 
-        mockMvc.perform(get("/api/user/admin")
-                        .param("page", "1")
-                        .param("limit", "12"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.admins[0].id").value("u1"))
-                .andExpect(jsonPath("$.totalPages").value(1))
-                .andExpect(jsonPath("$.total").value(1));
-    }
+                Mockito.when(userService.getUserById("u1"))
+                                .thenReturn(Optional.of(mockUserDTO()));
 
-    /* ========================================================= */
+                mockMvc.perform(get("/api/user/{id}", "u1"))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.id").value("u1"))
+                                .andExpect(jsonPath("$.email").value("user@test.com"));
+        }
 
-    @Test
-    @WithMockUser
-    void getUserById_success() throws Exception {
+        @Test
+        @WithMockUser
+        void getUserById_notFound() throws Exception {
 
-        Mockito.when(userService.getUserById("u1"))
-                .thenReturn(Optional.of(mockUserDTO()));
+                Mockito.when(userService.getUserById("404"))
+                                .thenReturn(Optional.empty());
 
-        mockMvc.perform(get("/api/user/{id}", "u1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value("u1"))
-                .andExpect(jsonPath("$.email").value("user@test.com"));
-    }
+                mockMvc.perform(get("/api/user/{id}", "404"))
+                                .andExpect(status().isNotFound());
+        }
 
-    @Test
-    @WithMockUser
-    void getUserById_notFound() throws Exception {
+        // thêm người dùng
+        @Test
+        @WithMockUser
+        void createUser_shouldReturnCreatedUser() throws Exception {
 
-        Mockito.when(userService.getUserById("404"))
-                .thenReturn(Optional.empty());
+                Mockito.when(userService.createUser(any()))
+                                .thenReturn(mockUserDTO());
 
-        mockMvc.perform(get("/api/user/{id}", "404"))
-                .andExpect(status().isNotFound());
-    }
+                mockMvc.perform(post("/api/user")
+                                .with(csrf())
+                                .contentType("application/json")
+                                .content(mapper.writeValueAsString(
+                                                mockUserDTO())))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.id").value("u1"))
+                                .andExpect(jsonPath("$.fullname")
+                                                .value("Test User"));
+        }
 
-    /* ========================================================= */
+        // cập nhật người dùng
+        @Test
+        @WithMockUser
+        void updateUser_success() throws Exception {
 
-    @Test
-    @WithMockUser
-    void createUser_shouldReturnCreatedUser() throws Exception {
+                UserDTO updated = mockUserDTO();
+                updated.setFullname("Updated Name");
 
-        Mockito.when(userService.createUser(any()))
-                .thenReturn(mockUserDTO());
+                Mockito.when(userService.updateUser(eq("u1"), any()))
+                                .thenReturn(updated);
 
-        mockMvc.perform(post("/api/user")
-                        .with(csrf())
-                        .contentType("application/json")
-                        .content(mapper.writeValueAsString(
-                                mockUserDTO()
-                        )))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value("u1"))
-                .andExpect(jsonPath("$.fullname")
-                        .value("Test User"));
-    }
+                mockMvc.perform(put("/api/user/{id}", "u1")
+                                .with(csrf())
+                                .contentType("application/json")
+                                .content(
+                                                mapper.writeValueAsString(updated)))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.fullname")
+                                                .value("Updated Name"));
+        }
 
-    /* ========================================================= */
+        @Test
+        @WithMockUser
+        void updateUser_notFound() throws Exception {
 
-    @Test
-    @WithMockUser
-    void updateUser_success() throws Exception {
+                Mockito.when(userService.updateUser(eq("404"), any()))
+                                .thenReturn(null);
 
-        UserDTO updated = mockUserDTO();
-        updated.setFullname("Updated Name");
+                mockMvc.perform(put("/api/user/{id}", "404")
+                                .with(csrf())
+                                .contentType("application/json")
+                                .content(
+                                                mapper.writeValueAsString(
+                                                                mockUserDTO())))
+                                .andExpect(status().isNotFound());
+        }
 
-        Mockito.when(userService.updateUser(eq("u1"), any()))
-                .thenReturn(updated);
+        // cập nhật status người dùng
+        @Test
+        @WithMockUser
+        void updateUserStatus_shouldReturnUpdatedStatus() throws Exception {
 
-        mockMvc.perform(put("/api/user/{id}", "u1")
-                        .with(csrf())
-                        .contentType("application/json")
-                        .content(
-                                mapper.writeValueAsString(updated)
-                        ))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.fullname")
-                        .value("Updated Name"));
-    }
+                Mockito.when(userService.updateUserStatus(
+                                eq("u1"), eq(0)))
+                                .thenReturn(mockUserEntity());
 
-    @Test
-    @WithMockUser
-    void updateUser_notFound() throws Exception {
+                mockMvc.perform(patch("/api/user/status/{id}", "u1")
+                                .with(csrf())
+                                .contentType("application/json")
+                                .content("{\"status\":0}"))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.id").value("u1"))
+                                .andExpect(jsonPath("$.status").value(1));
+        }
 
-        Mockito.when(userService.updateUser(eq("404"), any()))
-                .thenReturn(null);
+        @Test
+        @WithMockUser
+        void updateUserStatus_missingStatus_shouldThrow400() throws Exception {
 
-        mockMvc.perform(put("/api/user/{id}", "404")
-                        .with(csrf())
-                        .contentType("application/json")
-                        .content(
-                                mapper.writeValueAsString(
-                                        mockUserDTO()
-                                )
-                        ))
-                .andExpect(status().isNotFound());
-    }
+                mockMvc.perform(patch("/api/user/status/{id}", "u1")
+                                .with(csrf())
+                                .contentType("application/json")
+                                .content("{}"))
+                                .andExpect(status().isBadRequest());
+        }
 
-    /* ========================================================= */
+        // xóa người dùng
+        @Test
+        @WithMockUser
+        void deleteUser_shouldReturn204() throws Exception {
 
-    @Test
-    @WithMockUser
-    void updateUserStatus_shouldReturnUpdatedStatus() throws Exception {
+                Mockito.doNothing().when(userService)
+                                .deleteUser("u1");
 
-        Mockito.when(userService.updateUserStatus(
-                        eq("u1"), eq(0)))
-                .thenReturn(mockUserEntity());
-
-        mockMvc.perform(patch("/api/user/status/{id}", "u1")
-                        .with(csrf())
-                        .contentType("application/json")
-                        .content("{\"status\":0}"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value("u1"))
-                .andExpect(jsonPath("$.status").value(1));
-    }
-
-    @Test
-    @WithMockUser
-    void updateUserStatus_missingStatus_shouldThrow400() throws Exception {
-
-        mockMvc.perform(patch("/api/user/status/{id}", "u1")
-                        .with(csrf())
-                        .contentType("application/json")
-                        .content("{}"))
-                .andExpect(status().isBadRequest());
-    }
-
-    /* ========================================================= */
-
-    @Test
-    @WithMockUser
-    void deleteUser_shouldReturn204() throws Exception {
-
-        Mockito.doNothing().when(userService)
-                .deleteUser("u1");
-
-        mockMvc.perform(delete("/api/user/{id}", "u1")
-                        .with(csrf()))
-                .andExpect(status().isNoContent());
-    }
+                mockMvc.perform(delete("/api/user/{id}", "u1")
+                                .with(csrf()))
+                                .andExpect(status().isNoContent());
+        }
 
 }

@@ -19,24 +19,23 @@ import java.util.Map;
 public class BookController {
 
     private final BookService bookService;
+
     public BookController(BookService bookService) {
         this.bookService = bookService;
     }
-    
+
     @GetMapping
     public ResponseEntity<?> getAllBooks(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "12") int limit,
             @RequestParam(required = false) String q,
-            @RequestParam(required = false) Integer status
-    ) {
+            @RequestParam(required = false) Integer status) {
         Page<BookDTO> bookPage = bookService.getAllBooks(page, limit, q, status);
 
         return ResponseEntity.ok(Map.of(
                 "books", bookPage.getContent(),
                 "totalPages", bookPage.getTotalPages(),
-                "total", bookPage.getTotalElements()
-        ));
+                "total", bookPage.getTotalElements()));
     }
 
     @GetMapping("/active")
@@ -45,15 +44,13 @@ public class BookController {
             @RequestParam(required = false) String q,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) Integer min,
-            @RequestParam(required = false) Integer max
-    ) {
+            @RequestParam(required = false) Integer max) {
         Page<BookDTO> bookPage = bookService.getAllActiveBooks(page, q, sort, min, max);
 
         return ResponseEntity.ok(Map.of(
                 "books", bookPage.getContent(),
                 "totalPages", bookPage.getTotalPages(),
-                "total", bookPage.getTotalElements()
-        ));
+                "total", bookPage.getTotalElements()));
     }
 
     @GetMapping("/active/discount")
@@ -62,15 +59,13 @@ public class BookController {
             @RequestParam(required = false) String q,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) Integer min,
-            @RequestParam(required = false) Integer max
-    ) {
+            @RequestParam(required = false) Integer max) {
         Page<BookDTO> bookPage = bookService.getDiscountedActiveBooks(page, q, sort, min, max);
 
         return ResponseEntity.ok(Map.of(
                 "books", bookPage.getContent(),
                 "totalPages", bookPage.getTotalPages(),
-                "total", bookPage.getTotalElements()
-        ));
+                "total", bookPage.getTotalElements()));
     }
 
     @GetMapping("/active/{slug}")
@@ -80,15 +75,13 @@ public class BookController {
             @RequestParam(required = false) String q,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) Integer min,
-            @RequestParam(required = false) Integer max
-    ) {
+            @RequestParam(required = false) Integer max) {
         Page<BookDTO> bookPage = bookService.getActiveBooksByCategory(slug, page, q, sort, min, max);
 
         return ResponseEntity.ok(Map.of(
                 "books", bookPage.getContent(),
                 "totalPages", bookPage.getTotalPages(),
-                "total", bookPage.getTotalElements()
-        ));
+                "total", bookPage.getTotalElements()));
     }
 
     @GetMapping("/bestseller")
@@ -102,7 +95,6 @@ public class BookController {
         List<BookDTO> bestsellerBooks = bookService.getActiveBooksByTotalSold();
         return ResponseEntity.ok(Map.of("books", bestsellerBooks));
     }
-
 
     @GetMapping("/slug/{slug}")
     public ResponseEntity<BookDetailDTO> getBookBySlug(@PathVariable String slug) {
@@ -119,8 +111,7 @@ public class BookController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Book> createBook(
             @RequestPart("book") Book book,
-            @RequestPart(value = "files", required = true) List<MultipartFile> files
-    ) {
+            @RequestPart(value = "files", required = true) List<MultipartFile> files) {
         Book savedBook = bookService.createBook(book, files);
         return ResponseEntity.ok(savedBook);
     }
@@ -129,8 +120,7 @@ public class BookController {
     public ResponseEntity<Book> updateBook(
             @PathVariable String id,
             @RequestPart("book") Book book,
-            @RequestPart(value = "files", required = false) List<MultipartFile> files
-    ) {
+            @RequestPart(value = "files", required = false) List<MultipartFile> files) {
         Book updatedBook = bookService.updateBook(id, book, files);
         return ResponseEntity.ok(updatedBook);
     }
@@ -138,8 +128,7 @@ public class BookController {
     @PatchMapping("/status/{id}")
     public ResponseEntity<?> updateBookStatus(
             @PathVariable String id,
-            @RequestBody Map<String, Integer> body
-    ) {
+            @RequestBody Map<String, Integer> body) {
         Integer status = body.get("status");
         if (status == null) {
             throw new IllegalArgumentException("Status is required");
@@ -149,8 +138,7 @@ public class BookController {
 
         return ResponseEntity.ok(Map.of(
                 "id", updated.getId(),
-                "status", updated.getStatus()
-        ));
+                "status", updated.getStatus()));
     }
 
     @DeleteMapping("/{id}")
@@ -163,8 +151,7 @@ public class BookController {
     @PutMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateImagesBook(
             @RequestParam(value = "oldImageIds", required = false) List<String> oldImageIds,
-            @RequestPart(value = "files", required = false) List<MultipartFile> files
-    ) {
+            @RequestPart(value = "files", required = false) List<MultipartFile> files) {
         bookService.updateImagesBook(files, oldImageIds);
         return ResponseEntity.noContent().build();
     }

@@ -1,4 +1,5 @@
 package com.bookstore.backend.service;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.UUID;
@@ -22,6 +23,7 @@ import com.bookstore.backend.repository.OrderRepository;
 import com.bookstore.backend.repository.PaymentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
+
 @Service
 public class MomoService {
 
@@ -48,35 +50,35 @@ public class MomoService {
 
     private final OrderRepository orderRepository;
     private final CartRepository cartRepository;
-private final BookRepository bookRepository;
- private final PaymentRepository paymentRepository;
-private final RestTemplate restTemplate = new RestTemplate();
-   
-public MomoService(OrderRepository orderRepository, CartRepository cartRepository, BookRepository bookRepository, PaymentRepository paymentRepository) {
-    this.orderRepository = orderRepository;
-    this.cartRepository = cartRepository;
-    this.bookRepository = bookRepository;
-    this.paymentRepository = paymentRepository;
-}
+    private final BookRepository bookRepository;
+    private final PaymentRepository paymentRepository;
+    private final RestTemplate restTemplate = new RestTemplate();
 
- public MomoResponse createPayment(OrderDTO orderDTO) throws Exception {
+    public MomoService(OrderRepository orderRepository, CartRepository cartRepository, BookRepository bookRepository,
+            PaymentRepository paymentRepository) {
+        this.orderRepository = orderRepository;
+        this.cartRepository = cartRepository;
+        this.bookRepository = bookRepository;
+        this.paymentRepository = paymentRepository;
+    }
+
+    public MomoResponse createPayment(OrderDTO orderDTO) throws Exception {
         String requestId = UUID.randomUUID().toString();
         String orderId = orderDTO.getOrderCode();
         String amount = String.valueOf(orderDTO.getTotal().intValue());
         String orderInfo = "Payment order " + orderId;
         String extraData = "";
 
-        String rawSignature =
-            "accessKey=" + accessKey +
-            "&amount=" + amount +
-            "&extraData=" + extraData +
-            "&ipnUrl=" + ipnUrl +
-            "&orderId=" + orderId +
-            "&orderInfo=" + orderInfo +
-            "&partnerCode=" + partnerCode +
-            "&redirectUrl=" + redirectUrl +
-            "&requestId=" + requestId +
-            "&requestType=captureWallet";
+        String rawSignature = "accessKey=" + accessKey +
+                "&amount=" + amount +
+                "&extraData=" + extraData +
+                "&ipnUrl=" + ipnUrl +
+                "&orderId=" + orderId +
+                "&orderInfo=" + orderInfo +
+                "&partnerCode=" + partnerCode +
+                "&redirectUrl=" + redirectUrl +
+                "&requestId=" + requestId +
+                "&requestType=captureWallet";
 
         // Tạo chữ ký HMAC SHA256
         String signature = HmacSHA256(rawSignature, secretKey);
@@ -97,8 +99,7 @@ public MomoService(OrderRepository orderRepository, CartRepository cartRepositor
                 .build();
 
         MomoResponse response = restTemplate.postForObject(
-                momoUrl, request, MomoResponse.class
-        );
+                momoUrl, request, MomoResponse.class);
 
         return response;
     }
@@ -110,7 +111,8 @@ public MomoService(OrderRepository orderRepository, CartRepository cartRepositor
         Order order = orderRepository.findByOrderCode(orderId)
                 .orElseThrow(() -> new EntityNotFoundException("Đơn hàng không tìm thấy"));
 
-        if (order.getStatus() != -1) return true;
+        if (order.getStatus() != -1)
+            return true;
 
         boolean enoughStock = true;
 
@@ -132,16 +134,16 @@ public MomoService(OrderRepository orderRepository, CartRepository cartRepositor
             }
             order.setStatus(0);
             orderRepository.save(order);
-           
-         paymentRepository.save(Payment.builder()
+
+            paymentRepository.save(Payment.builder()
                     .order(order)
                     .paymethod("momo")
                     .amount(order.getTotal())
                     .transactionId(String.valueOf(payload.get("transId")))
                     .status(1)
                     .build());
-           
-         Cart cart = cartRepository.findByUserId(order.getUser().getId()).orElse(null);
+
+            Cart cart = cartRepository.findByUserId(order.getUser().getId()).orElse(null);
             if (cart != null) {
                 cartRepository.delete(cart);
             }
@@ -184,12 +186,11 @@ public MomoService(OrderRepository orderRepository, CartRepository cartRepositor
                 "accessKey", accessKey,
                 "requestId", requestId,
                 "amount", amount,
-                "orderId", refundOrderId, 
+                "orderId", refundOrderId,
                 "transId", transId,
                 "lang", "en",
                 "description", description,
-                "signature", signature
-        );
+                "signature", signature);
 
         Map<String, Object> response = restTemplate.postForObject(refundUrl, requestBody, Map.class);
 
@@ -211,20 +212,18 @@ public MomoService(OrderRepository orderRepository, CartRepository cartRepositor
         String resultCode = String.valueOf(payload.get("resultCode"));
         String transId = String.valueOf(payload.get("transId"));
 
-        String rawSignature =
-            "partnerCode=" + partnerCode +
-            "&accessKey=" + accessKey +
-            "&requestId=" + payload.get("requestId") +
-            "&amount=" + payload.get("amount") +
-            "&orderId=" + orderId +
-            "&orderInfo=" + payload.get("orderInfo") +
-            "&orderType=" + payload.get("orderType") + 
-            "&transId=" + transId +
-            "&resultCode=" + resultCode +
-            "&message=" + payload.get("message") +
-            "&responseTime=" + payload.get("responseTime") +
-            "&extraData=" + payload.get("extraData");
-
+        String rawSignature = "partnerCode=" + partnerCode +
+                "&accessKey=" + accessKey +
+                "&requestId=" + payload.get("requestId") +
+                "&amount=" + payload.get("amount") +
+                "&orderId=" + orderId +
+                "&orderInfo=" + payload.get("orderInfo") +
+                "&orderType=" + payload.get("orderType") +
+                "&transId=" + transId +
+                "&resultCode=" + resultCode +
+                "&message=" + payload.get("message") +
+                "&responseTime=" + payload.get("responseTime") +
+                "&extraData=" + payload.get("extraData");
 
         String checkSignature = HmacSHA256(rawSignature, secretKey);
         String signature = (String) payload.get("signature");

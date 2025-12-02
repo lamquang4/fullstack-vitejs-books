@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 @Entity
 @Table(name = "book")
 @Getter
@@ -18,7 +19,7 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(nullable = false, unique = true, length = 100)    
+    @Column(nullable = false, unique = true, length = 100)
     private String title;
 
     @Column(nullable = false)
@@ -30,19 +31,19 @@ public class Book {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @Column( nullable = false)
+    @Column(nullable = false)
     private String publicationDate;
 
-    @Column( nullable = false)
+    @Column(nullable = false)
     private Integer numberOfPages;
 
-    @Column( nullable = false)
+    @Column(nullable = false)
     private Double weight;
-    @Column( nullable = false)
+    @Column(nullable = false)
     private Double width;
-    @Column( nullable = false)
+    @Column(nullable = false)
     private Double length;
-    @Column( nullable = false)
+    @Column(nullable = false)
     private Double thickness;
 
     @Column(unique = true, nullable = false)

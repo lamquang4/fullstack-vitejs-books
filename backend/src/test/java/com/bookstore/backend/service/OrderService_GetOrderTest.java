@@ -28,12 +28,18 @@ import static org.mockito.Mockito.*;
 @ActiveProfiles("test")
 class OrderService_GetOrderTest {
 
-    @Mock private OrderRepository orderRepository;
-    @Mock private UserRepository userRepository;
-    @Mock private BookRepository bookRepository;
-    @Mock private CartRepository cartRepository;
-    @Mock private PaymentRepository paymentRepository;
-    @Mock private MomoService momoService;
+    @Mock
+    private OrderRepository orderRepository;
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private BookRepository bookRepository;
+    @Mock
+    private CartRepository cartRepository;
+    @Mock
+    private PaymentRepository paymentRepository;
+    @Mock
+    private MomoService momoService;
 
     @InjectMocks
     private OrderService orderService;
@@ -75,9 +81,7 @@ class OrderService_GetOrderTest {
                 .build();
     }
 
-    // =========================================================
-    // GET ORDER BY ID
-    // =========================================================
+    // Lấy đơn hàng theo id
     @Test
     void testGetOrderById_Success() {
         when(orderRepository.findById("o1")).thenReturn(Optional.of(order));
@@ -96,9 +100,7 @@ class OrderService_GetOrderTest {
                 () -> orderService.getOrderById("o1"));
     }
 
-    // =========================================================
-    // GET ORDER BY USER + CODE
-    // =========================================================
+    // Lấy đơn hàng theo id người dùng và orderCode
     @Test
     void testGetOrderByUserAndCode_Success() {
         when(orderRepository.findByUserIdAndOrderCode("u1", "ABC123"))
@@ -118,9 +120,7 @@ class OrderService_GetOrderTest {
                 () -> orderService.getOrderByUserAndCode("u1", "ABC123"));
     }
 
-    // =========================================================
-    // GET ORDER BY ORDER CODE
-    // =========================================================
+    // Lấy đơn hàng theo orderCode
     @Test
     void testGetOrderByOrderCode_Success() {
         when(orderRepository.findByOrderCode("ABC123"))
@@ -139,9 +139,7 @@ class OrderService_GetOrderTest {
                 () -> orderService.getOrderByOrderCode("ABC123"));
     }
 
-    // =========================================================
-    // GET ORDERS BY USER + STATUS
-    // =========================================================
+    // Lấy các đơn hàng của id người dùng
     @Test
     void testGetOrdersByUserAndStatus_Filtered() {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("createdAt").descending());
@@ -168,9 +166,7 @@ class OrderService_GetOrderTest {
         assertEquals(1, result.getTotalElements());
     }
 
-    // =========================================================
-    // REVENUE & SOLD QUANTITY
-    // =========================================================
+    // Lấy doanh thu và tổng số lượng bán ra
     @Test
     void testGetTotalRevenue() {
         when(orderRepository.sumTotalByStatus(3)).thenReturn(5000.0);
@@ -200,8 +196,7 @@ class OrderService_GetOrderTest {
         when(orderRepository.sumTotalByStatusAndCreatedAtBetween(
                 eq(3),
                 any(LocalDateTime.class),
-                any(LocalDateTime.class)
-        )).thenReturn(2000.0);
+                any(LocalDateTime.class))).thenReturn(2000.0);
 
         assertEquals(2000.0, orderService.getTodayRevenue());
     }
@@ -209,8 +204,7 @@ class OrderService_GetOrderTest {
     @Test
     void testGetTodayRevenue_Null() {
         when(orderRepository.sumTotalByStatusAndCreatedAtBetween(
-                eq(3), any(), any()
-        )).thenReturn(null);
+                eq(3), any(), any())).thenReturn(null);
 
         assertEquals(0.0, orderService.getTodayRevenue());
     }
@@ -218,8 +212,7 @@ class OrderService_GetOrderTest {
     @Test
     void testGetTodaySoldQuantity() {
         when(orderRepository.sumQuantityByStatusAndCreatedAtBetween(
-                eq(3), any(), any()
-        )).thenReturn(10L);
+                eq(3), any(), any())).thenReturn(10L);
 
         assertEquals(10L, orderService.getTodaySoldQuantity());
     }
@@ -227,8 +220,7 @@ class OrderService_GetOrderTest {
     @Test
     void testGetTodaySoldQuantity_Null() {
         when(orderRepository.sumQuantityByStatusAndCreatedAtBetween(
-                eq(3), any(), any()
-        )).thenReturn(null);
+                eq(3), any(), any())).thenReturn(null);
 
         assertEquals(0L, orderService.getTodaySoldQuantity());
     }

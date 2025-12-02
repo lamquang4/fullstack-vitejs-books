@@ -29,12 +29,18 @@ import static org.mockito.Mockito.*;
 @ActiveProfiles("test")
 class OrderService_CreateOrderTest {
 
-    @Mock private OrderRepository orderRepository;
-    @Mock private UserRepository userRepository;
-    @Mock private BookRepository bookRepository;
-    @Mock private CartRepository cartRepository;
-    @Mock private PaymentRepository paymentRepository;
-    @Mock private MomoService momoService;
+    @Mock
+    private OrderRepository orderRepository;
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private BookRepository bookRepository;
+    @Mock
+    private CartRepository cartRepository;
+    @Mock
+    private PaymentRepository paymentRepository;
+    @Mock
+    private MomoService momoService;
 
     @InjectMocks
     private OrderService orderService;
@@ -76,9 +82,7 @@ class OrderService_CreateOrderTest {
         orderDTO.setItems(List.of(detailDTO));
     }
 
-    // ============================================================
-    // USER NOT FOUND
-    // ============================================================
+    // Người dùng không tìm thấy
     @Test
     void testCreateOrder_UserNotFound() {
         when(userRepository.findById("u1")).thenReturn(Optional.empty());
@@ -87,9 +91,7 @@ class OrderService_CreateOrderTest {
                 () -> orderService.createOrder(orderDTO, "u1"));
     }
 
-    // ============================================================
-    // INVALID PHONE
-    // ============================================================
+    // Số điện thoại không hợp lệ
     @Test
     void testCreateOrder_InvalidPhone() {
         orderDTO.setPhone("abc123");
@@ -104,9 +106,7 @@ class OrderService_CreateOrderTest {
         }
     }
 
-    // ============================================================
-    // BOOK NOT FOUND
-    // ============================================================
+    // Sách không tìm thấy
     @Test
     void testCreateOrder_BookNotFound() {
         when(userRepository.findById("u1")).thenReturn(Optional.of(user));
@@ -120,9 +120,7 @@ class OrderService_CreateOrderTest {
         }
     }
 
-    // ============================================================
-    // QUANTITY > STOCK
-    // ============================================================
+    // Kiểm tra số lượng mua > số lượng hiện có
     @Test
     void testCreateOrder_QuantityExceedsStock() {
         detailDTO.setQuantity(999); // vượt stock
@@ -138,9 +136,7 @@ class OrderService_CreateOrderTest {
         }
     }
 
-    // ============================================================
-    // COD PAYMENT — DEDUCT STOCK + DELETE CART
-    // ============================================================
+    // Phương thức thanh toán COD - cập nhật số lượng hiện có, xóa giỏ hàng
     @Test
     void testCreateOrder_COD_DeductStock_AndDeleteCart() {
 
@@ -171,9 +167,7 @@ class OrderService_CreateOrderTest {
         }
     }
 
-    // ============================================================
-    // CALCULATE TOTAL
-    // ============================================================
+    // Tính tông tiền
     @Test
     void testCreateOrder_CalculateTotalCorrectly() {
 

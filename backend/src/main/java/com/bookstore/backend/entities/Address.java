@@ -25,7 +25,7 @@ public class Address {
     private String phone;
 
     @Column(nullable = false, length = 70)
-    private String speaddress; 
+    private String speaddress;
 
     @Column(nullable = false, length = 70)
     private String ward;

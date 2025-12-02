@@ -18,18 +18,26 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 class OrderService_UpdateOrderStatusTest {
 
-    @Mock private OrderRepository orderRepository;
-    @Mock private UserRepository userRepository;
-    @Mock private BookRepository bookRepository;
-    @Mock private CartRepository cartRepository;
-    @Mock private PaymentRepository paymentRepository;
-    @Mock private MomoService momoService;
+    @Mock
+    private OrderRepository orderRepository;
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private BookRepository bookRepository;
+    @Mock
+    private CartRepository cartRepository;
+    @Mock
+    private PaymentRepository paymentRepository;
+    @Mock
+    private MomoService momoService;
 
     @InjectMocks
     private OrderService orderService;
@@ -75,9 +83,7 @@ class OrderService_UpdateOrderStatusTest {
                 .build();
     }
 
-    // ==============================================================
-    // ORDER NOT FOUND
-    // ==============================================================
+    // Đơn hàng không tìm thấy
     @Test
     void testUpdateOrderStatus_OrderNotFound() {
 
@@ -87,9 +93,7 @@ class OrderService_UpdateOrderStatusTest {
                 () -> orderService.updateOrderStatus("o1", 3));
     }
 
-    // ==============================================================
-    // NON-REFUND STATUS — ONLY UPDATE STATUS
-    // ==============================================================
+    // Trạng thái không hoàn tiền — chỉ được phép cập nhật trạng thái
     @Test
     void testUpdateOrderStatus_NormalFlow_NoRefund_NoStockChange() {
 
@@ -99,7 +103,7 @@ class OrderService_UpdateOrderStatusTest {
         OrderDTO result = orderService.updateOrderStatus("o1", 2);
 
         assertEquals(2, result.getStatus());
-        assertEquals(10, book.getStock()); // stock unchanged
+        assertEquals(10, book.getStock()); // stock không thay đổi
 
         try {
             verify(momoService, never()).refundPayment(anyMap());
@@ -108,9 +112,8 @@ class OrderService_UpdateOrderStatusTest {
         }
     }
 
-    // ==============================================================
-    // STATUS 4 or 5 — REFUND Momo + RETURN STOCK
-    // ==============================================================
+    // Cập nhật đơn hàng thành status 4 hoặc 5 và đơn hàng thanh toán bằng Momo thì
+    // hoàn tiền Momo và trả lại số lượng hiện có
     @Test
     void testUpdateOrderStatus_RefundAndReturnStock() throws Exception {
 
@@ -126,16 +129,15 @@ class OrderService_UpdateOrderStatusTest {
 
         OrderDTO result = orderService.updateOrderStatus("o1", 4);
 
-        // stock should be returned: 10 + 3 = 13
+        // stock: 10 + 3 = 13
         assertEquals(13, book.getStock());
 
         verify(momoService).refundPayment(anyMap());
         assertEquals(4, result.getStatus());
     }
 
-    // ==============================================================
-    // PAYMETHOD IS NOT MOMO → RETURN STOCK ONLY, NO REFUND
-    // ==============================================================
+    // Phương thức thanh toán không phải Momo thì chỉ trả lại số lượng hiện có,
+    // không hoàn tiền
     @Test
     void testUpdateOrderStatus_ReturnStock_NoRefundWhenNotMomo() {
 
@@ -154,9 +156,7 @@ class OrderService_UpdateOrderStatusTest {
         }
     }
 
-    // ==============================================================
-    // Momo refund fails → throw RuntimeException
-    // ==============================================================
+    // Hoàn tiền Momo thất bại thông báo lỗi
     @Test
     void testUpdateOrderStatus_RefundFails_ThrowsException() throws Exception {
 

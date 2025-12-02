@@ -55,9 +55,7 @@ class AuthServiceTest {
                 .build();
     }
 
-    // =========================================================
-    // LOGIN SUCCESS
-    // =========================================================
+    // Đăng nhập thành công
     @Test
     void testLogin_Success() {
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(user));
@@ -71,9 +69,7 @@ class AuthServiceTest {
         verify(jwtUtils).generateToken(user);
     }
 
-    // =========================================================
-    // EMAIL NOT FOUND
-    // =========================================================
+    // Email không tồn tại
     @Test
     void testLogin_EmailNotFound() {
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
@@ -82,9 +78,7 @@ class AuthServiceTest {
                 () -> authService.login(request));
     }
 
-    // =========================================================
-    // ACCOUNT LOCKED
-    // =========================================================
+    // Tài khoản đã bị chặn
     @Test
     void testLogin_UserLocked() {
         user.setStatus(0);
@@ -94,9 +88,7 @@ class AuthServiceTest {
                 () -> authService.login(request));
     }
 
-    // =========================================================
-    // WRONG PASSWORD
-    // =========================================================
+    // Sai mật khẩu
     @Test
     void testLogin_WrongPassword() {
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(user));
@@ -106,9 +98,7 @@ class AuthServiceTest {
                 () -> authService.login(request));
     }
 
-    // =========================================================
-    // GET USER FROM TOKEN
-    // =========================================================
+    // Lấy thông tin tài khoản từ token
     @Test
     void testGetUserFromToken() {
         Map<String, Object> mockData = Map.of("id", "u1", "email", "test@example.com");

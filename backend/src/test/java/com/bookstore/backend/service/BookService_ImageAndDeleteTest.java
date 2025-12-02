@@ -32,10 +32,14 @@ import static org.mockito.Mockito.*;
 @MockitoSettings(strictness = Strictness.LENIENT)
 class BookService_ImageAndDeleteTest {
 
-    @Mock private BookRepository bookRepository;
-    @Mock private ImageBookRepository imageBookRepository;
-    @Mock private OrderDetailRepository orderDetailRepository;
-    @Mock private CartItemRepository cartItemRepository;
+    @Mock
+    private BookRepository bookRepository;
+    @Mock
+    private ImageBookRepository imageBookRepository;
+    @Mock
+    private OrderDetailRepository orderDetailRepository;
+    @Mock
+    private CartItemRepository cartItemRepository;
 
     @InjectMocks
     private BookService bookService;
@@ -56,10 +60,7 @@ class BookService_ImageAndDeleteTest {
                 .build();
     }
 
-    // =========================================================
-    // DELETE BOOK TESTS
-    // =========================================================
-
+    // Xóa sách
     @Test
     void testDeleteBook_Success() {
         when(bookRepository.findById("book1")).thenReturn(Optional.of(book));
@@ -115,10 +116,7 @@ class BookService_ImageAndDeleteTest {
         verify(bookRepository).deleteById("book1");
     }
 
-    // =========================================================
-    // UPDATE IMAGES TESTS
-    // =========================================================
-
+    // Cập nhật hình
     @Test
     void testUpdateImagesBook_DoNothing_WhenEmptyLists() {
         assertDoesNotThrow(() -> bookService.updateImagesBook(List.of(), List.of()));
@@ -181,20 +179,20 @@ class BookService_ImageAndDeleteTest {
     void testUpdateImagesBook_Success() throws IOException {
         MultipartFile file = mock(MultipartFile.class);
 
-        // 1️⃣ user.dir
+        // user.dir
         String baseDir = System.getProperty("user.dir");
 
-        // 2️⃣ tạo folder đúng như service cần
+        // tạo folder đúng như service cần
         File uploadsDir = new File(baseDir + "/uploads/books/book1");
         uploadsDir.mkdirs();
 
-        // 3️⃣ tạo file thật
+        // tạo file thật
         File temp = new File(uploadsDir, "test.jpg");
         if (!temp.exists()) {
             temp.createNewFile();
         }
 
-        // 4️⃣ mock ImageBook.image là đường dẫn TƯƠNG ĐỐI (giống lúc lưu thật)
+        // mock ImageBook.image là đường dẫn TƯƠNG ĐỐI (giống lúc lưu thật)
         ImageBook img = ImageBook.builder()
                 .id("img1")
                 .image("/uploads/books/book1/test.jpg") // MUST BE RELATIVE
@@ -211,15 +209,10 @@ class BookService_ImageAndDeleteTest {
             return null;
         }).when(file).transferTo(any(File.class));
 
-        assertDoesNotThrow(() ->
-                bookService.updateImagesBook(List.of(file), List.of("img1"))
-        );
+        assertDoesNotThrow(() -> bookService.updateImagesBook(List.of(file), List.of("img1")));
     }
 
-    // =========================================================
-    // DELETE IMAGE TESTS
-    // =========================================================
-
+    // Xóa hình
     @Test
     void testDeleteImageBook_Success() {
         ImageBook img = ImageBook.builder()

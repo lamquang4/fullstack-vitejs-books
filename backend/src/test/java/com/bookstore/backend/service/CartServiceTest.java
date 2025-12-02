@@ -27,10 +27,14 @@ import static org.mockito.Mockito.*;
 @ActiveProfiles("test")
 class CartServiceTest {
 
-    @Mock private CartRepository cartRepository;
-    @Mock private CartItemRepository cartItemRepository;
-    @Mock private BookRepository bookRepository;
-    @Mock private UserRepository userRepository;
+    @Mock
+    private CartRepository cartRepository;
+    @Mock
+    private CartItemRepository cartItemRepository;
+    @Mock
+    private BookRepository bookRepository;
+    @Mock
+    private UserRepository userRepository;
 
     @InjectMocks
     private CartService cartService;
@@ -56,8 +60,7 @@ class CartServiceTest {
                 .stock(20)
                 .images(List.of(
                         ImageBook.builder().image("img1").createdAt(LocalDateTime.now().minusDays(2)).build(),
-                        ImageBook.builder().image("img2").createdAt(LocalDateTime.now().minusDays(1)).build()
-                ))
+                        ImageBook.builder().image("img2").createdAt(LocalDateTime.now().minusDays(1)).build()))
                 .build();
 
         item = CartItem.builder()
@@ -76,10 +79,7 @@ class CartServiceTest {
         item.setCart(cart);
     }
 
-    // ============================================================
-    // GET CART
-    // ============================================================
-
+    // Lấy giỏ hàng của khách hàng
     @Test
     void testGetCartByUserId_Success() {
         when(cartRepository.findByUserId("u1")).thenReturn(Optional.of(cart));
@@ -100,11 +100,7 @@ class CartServiceTest {
                 () -> cartService.getCartByUserId("u404"));
     }
 
-
-    // ============================================================
-    // ADD ITEM
-    // ============================================================
-
+    // Thêm sản phẩm vào giỏ hàng
     @Test
     void testAddItemToCart_UserNotFound() {
         when(userRepository.findById("u1")).thenReturn(Optional.empty());
@@ -190,18 +186,14 @@ class CartServiceTest {
         when(cartItemRepository.findByCartIdAndBookId("c1", "b1"))
                 .thenReturn(Optional.of(item));
 
-        item.setQuantity(10);  // ⬅ quantity ban đầu
-        book.setStock(20);     // ⬅ đảm bảo không bị vượt stock
+        item.setQuantity(10); // ⬅ quantity ban đầu
+        book.setStock(20); // ⬅ đảm bảo không bị vượt stock
 
         assertDoesNotThrow(() -> cartService.addItemToCart("u1", "b1", 10));
         assertEquals(15, item.getQuantity()); // max limit
     }
 
-
-    // ============================================================
-    // UPDATE CART ITEM
-    // ============================================================
-
+    // Cập nhật giỏ hàng
     @Test
     void testUpdateItem_NotFound() {
         when(cartItemRepository.findById("ci404")).thenReturn(Optional.empty());
@@ -241,11 +233,7 @@ class CartServiceTest {
         verify(cartItemRepository).save(item);
     }
 
-
-    // ============================================================
-    // REMOVE ITEM
-    // ============================================================
-
+    // Xóa sản phẩm khỏi giỏ hàng
     @Test
     void testRemoveItem_NotFound() {
         when(cartItemRepository.findById("ci404")).thenReturn(Optional.empty());

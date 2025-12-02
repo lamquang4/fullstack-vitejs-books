@@ -1,4 +1,5 @@
 package com.bookstore.backend.service;
+
 import com.bookstore.backend.entities.Book;
 import com.bookstore.backend.entities.Category;
 import com.bookstore.backend.repository.BookRepository;
@@ -20,6 +21,7 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final BookRepository bookRepository;
+
     public CategoryService(CategoryRepository categoryRepository, BookRepository bookRepository) {
         this.categoryRepository = categoryRepository;
         this.bookRepository = bookRepository;
@@ -29,12 +31,12 @@ public class CategoryService {
     public Page<Category> getAllCategories(int page, int limit, String q, Integer status) {
         Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
         if (q != null && !q.isEmpty() && status != null) {
-        return categoryRepository.findByNameContainingIgnoreCaseAndStatus(q, status, pageable);
-    } else if (q != null && !q.isEmpty()) {
-        return categoryRepository.findByNameContainingIgnoreCase(q, pageable);
-    } else if (status != null) {
-        return categoryRepository.findByStatus(status, pageable);
-    }
+            return categoryRepository.findByNameContainingIgnoreCaseAndStatus(q, status, pageable);
+        } else if (q != null && !q.isEmpty()) {
+            return categoryRepository.findByNameContainingIgnoreCase(q, pageable);
+        } else if (status != null) {
+            return categoryRepository.findByStatus(status, pageable);
+        }
         return categoryRepository.findAll(pageable);
     }
 
@@ -55,9 +57,9 @@ public class CategoryService {
 
     // tạo category
     public Category createCategory(Category category) {
-    if (categoryRepository.findByName(category.getName()).isPresent()) {
-        throw new IllegalArgumentException("Tên danh mục đã tồn tại");
-    }
+        if (categoryRepository.findByName(category.getName()).isPresent()) {
+            throw new IllegalArgumentException("Tên danh mục đã tồn tại");
+        }
         category.setSlug(SlugUtil.toSlug(category.getName()));
         return categoryRepository.save(category);
     }
@@ -68,7 +70,9 @@ public class CategoryService {
                 .map(existingCategory -> {
                     categoryRepository.findByName(category.getName())
                             .filter(a -> !a.getId().equals(id))
-                            .ifPresent(a -> { throw new IllegalArgumentException("Tên danh mục đã tồn tại"); });
+                            .ifPresent(a -> {
+                                throw new IllegalArgumentException("Tên danh mục đã tồn tại");
+                            });
                     category.setSlug(SlugUtil.toSlug(category.getName()));
 
                     existingCategory.setName(category.getName());
@@ -77,9 +81,9 @@ public class CategoryService {
 
                     // Nếu category bị ẩn, ẩn tất cả sách thuộc category
                     if (existingCategory.getStatus() == 0) {
-                    List<Book> books = bookRepository.findByCategoryAndStatus(existingCategory, 1);
-                    books.forEach(book -> book.setStatus(0));
-                    bookRepository.saveAll(books);
+                        List<Book> books = bookRepository.findByCategoryAndStatus(existingCategory, 1);
+                        books.forEach(book -> book.setStatus(0));
+                        bookRepository.saveAll(books);
                     }
 
                     return categoryRepository.save(existingCategory);
@@ -88,24 +92,23 @@ public class CategoryService {
     }
 
     // cập nhật status của category
-@Transactional
-public Category updateCategoryStatus(String id, Integer status) {
-    return categoryRepository.findById(id)
-            .map(category -> {
-                category.setStatus(status);
+    @Transactional
+    public Category updateCategoryStatus(String id, Integer status) {
+        return categoryRepository.findById(id)
+                .map(category -> {
+                    category.setStatus(status);
 
-                // Nếu category bị ẩn, ẩn tất cả sách thuộc category
-                if (status == 0) {
-                    List<Book> books = bookRepository.findByCategoryAndStatus(category, 1);
-                    books.forEach(book -> book.setStatus(0));
-                    bookRepository.saveAll(books);
-                }
+                    // Nếu category bị ẩn, ẩn tất cả sách thuộc category
+                    if (status == 0) {
+                        List<Book> books = bookRepository.findByCategoryAndStatus(category, 1);
+                        books.forEach(book -> book.setStatus(0));
+                        bookRepository.saveAll(books);
+                    }
 
-                return categoryRepository.save(category);
-            })
-            .orElseThrow(() -> new EntityNotFoundException("Danh mục không tìm thấy"));
-}
-
+                    return categoryRepository.save(category);
+                })
+                .orElseThrow(() -> new EntityNotFoundException("Danh mục không tìm thấy"));
+    }
 
     // xóa category
     public void deleteCategory(String id) {

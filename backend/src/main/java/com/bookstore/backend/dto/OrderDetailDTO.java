@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 public class OrderDetailDTO {
     private String bookId;
-    private String title; 
+    private String title;
     private List<String> images;
     private Integer quantity; // số lượng mua
     private Double price; // giá book tại thời điểm đặt đơn

@@ -26,11 +26,16 @@ import static org.mockito.Mockito.*;
 @ActiveProfiles("test")
 class UserServiceTest {
 
-    @Mock private UserRepository userRepository;
-    @Mock private AddressRepository addressRepository;
-    @Mock private OrderRepository orderRepository;
-    @Mock private CartRepository cartRepository;
-    @Mock private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private AddressRepository addressRepository;
+    @Mock
+    private OrderRepository orderRepository;
+    @Mock
+    private CartRepository cartRepository;
+    @Mock
+    private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private UserService userService;
@@ -60,9 +65,7 @@ class UserServiceTest {
                 .build();
     }
 
-    // ========================================================================
-    // GET CUSTOMERS TEST
-    // ========================================================================
+    // Lấy các khách hàng
     @Test
     void testGetCustomers_NoFilters() {
         Page<User> page = new PageImpl<>(List.of(customer), pageable, 1);
@@ -77,30 +80,24 @@ class UserServiceTest {
     void testGetCustomers_FilterByEmail() {
         Page<User> page = new PageImpl<>(List.of(customer), pageable, 1);
         when(userRepository.findByEmailContainingIgnoreCaseAndRoleIn(
-                "cus", List.of(3), pageable
-        )).thenReturn(page);
+                "cus", List.of(3), pageable)).thenReturn(page);
 
         var result = userService.getAllCustomers(1, 10, "cus", null);
         assertEquals("customer@gmail.com", result.getContent().get(0).getEmail());
     }
 
-    // ========================================================================
-    // GET ADMINS TEST
-    // ========================================================================
+    // aLấy các quản trị viên
     @Test
     void testGetAdmins_NoFilters() {
         Page<User> page = new PageImpl<>(List.of(admin), pageable, 1);
-        when(userRepository.findByRoleIn(List.of(0,1,2), pageable))
+        when(userRepository.findByRoleIn(List.of(0, 1, 2), pageable))
                 .thenReturn(page);
 
         var result = userService.getAllAdmins(1, 10, null, null);
         assertEquals(1, result.getTotalElements());
     }
 
-    // ========================================================================
-    // GET USER BY ID
-    // ========================================================================
-    @Test
+    // Lấy người dùng theo id
     void testGetUserById_Found() {
         when(userRepository.findById("u1")).thenReturn(Optional.of(admin));
 
@@ -117,9 +114,7 @@ class UserServiceTest {
         assertTrue(dto.isEmpty());
     }
 
-    // ========================================================================
-    // CREATE USER
-    // ========================================================================
+    // Thêm người dùng
     @Test
     void testCreateUser_Success() {
 
@@ -146,9 +141,7 @@ class UserServiceTest {
         assertNull(result.getPassword());
     }
 
-    // ========================================================================
-    // UPDATE USER
-    // ========================================================================
+    // Cập nhật người dùng
     @Test
     void testUpdateUser_Success() {
         when(userRepository.findById("u1")).thenReturn(Optional.of(admin));
@@ -176,9 +169,7 @@ class UserServiceTest {
         assertNull(result);
     }
 
-    // ========================================================================
-    // UPDATE USER STATUS
-    // ========================================================================
+    // Cập nhật status người dùng
     @Test
     void testUpdateUserStatus_Success() {
         when(userRepository.findById("u1")).thenReturn(Optional.of(admin));
@@ -196,9 +187,7 @@ class UserServiceTest {
                 () -> userService.updateUserStatus("u1", 0));
     }
 
-    // ========================================================================
-    // DELETE USER
-    // ========================================================================
+    // Xóa người dùng
     @Test
     void testDeleteUser_Success() {
         when(userRepository.findById("u1")).thenReturn(Optional.of(admin));

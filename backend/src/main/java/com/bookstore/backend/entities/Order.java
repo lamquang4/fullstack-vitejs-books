@@ -1,4 +1,5 @@
 package com.bookstore.backend.entities;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -50,10 +51,10 @@ public class Order {
     private String ward;
 
     @Column(nullable = false, length = 15)
-    private String paymethod; 
+    private String paymethod;
 
     @Column(nullable = false)
-    private Integer status; 
+    private Integer status;
 
     @Column(nullable = false)
     private Double total;

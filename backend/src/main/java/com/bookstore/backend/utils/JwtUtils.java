@@ -38,19 +38,19 @@ public class JwtUtils {
                 .compact();
     }
 
-public Map<String, Object> getUserFromToken(String token) {
-    var claims = Jwts.parserBuilder()
-            .setSigningKey(getSigningKey())
-            .build()
-            .parseClaimsJws(token)
-            .getBody();
+    public Map<String, Object> getUserFromToken(String token) {
+        var claims = Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
 
-    Map<String, Object> userDetails = new HashMap<>();
-    userDetails.put("id", claims.getSubject());
-    userDetails.put("email", claims.get("email"));
-    userDetails.put("fullname", claims.get("fullname"));
-    userDetails.put("role", claims.get("role"));
-    return userDetails;
-}
+        Map<String, Object> userDetails = new HashMap<>();
+        userDetails.put("id", claims.getSubject());
+        userDetails.put("email", claims.get("email"));
+        userDetails.put("fullname", claims.get("fullname"));
+        userDetails.put("role", claims.get("role"));
+        return userDetails;
+    }
 
 }

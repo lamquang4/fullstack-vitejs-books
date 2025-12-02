@@ -3,7 +3,8 @@ package com.bookstore.backend.utils;
 public class SlugUtil {
 
     public static String toSlug(String input) {
-        if (input == null) return null;
+        if (input == null)
+            return null;
 
         String slug = input.toLowerCase();
 

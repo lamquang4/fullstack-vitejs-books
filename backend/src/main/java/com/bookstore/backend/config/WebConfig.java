@@ -1,4 +1,5 @@
 package com.bookstore.backend.config;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -13,12 +14,9 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
         Path uploadDir = Paths.get(System.getProperty("user.dir")).resolve("uploads");
         String uploadPath = uploadDir.toFile().getAbsolutePath();
-       
+
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations("file:" + uploadPath + "/")
-                .setCachePeriod(0); 
+                .setCachePeriod(0);
     }
 }
-
-
-

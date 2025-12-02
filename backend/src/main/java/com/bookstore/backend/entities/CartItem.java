@@ -1,4 +1,5 @@
 package com.bookstore.backend.entities;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,11 +28,11 @@ public class CartItem {
 
     @ManyToOne
     @JoinColumn(name = "cartId", nullable = false)
-    private Cart cart; 
+    private Cart cart;
 
     @ManyToOne
     @JoinColumn(name = "bookId", nullable = false)
-    private Book book; 
+    private Book book;
 
     @Column(nullable = false)
     private int quantity;

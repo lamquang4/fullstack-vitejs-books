@@ -1,4 +1,5 @@
 package com.bookstore.backend.service;
+
 import com.bookstore.backend.dto.OrderDTO;
 import com.bookstore.backend.dto.OrderDetailDTO;
 import com.bookstore.backend.entities.Book;
@@ -35,25 +36,25 @@ import java.util.HashMap;
 @Service
 public class OrderService {
 
-  private final OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
     private final CartRepository cartRepository;
     private final PaymentRepository paymentRepository;
-    private final MomoService momoService; 
+    private final MomoService momoService;
 
     public OrderService(OrderRepository orderRepository,
-                        UserRepository userRepository,
-                        BookRepository bookRepository, 
-                        CartRepository cartRepository,
-                       PaymentRepository paymentRepository,
-                        MomoService momoService) {
+            UserRepository userRepository,
+            BookRepository bookRepository,
+            CartRepository cartRepository,
+            PaymentRepository paymentRepository,
+            MomoService momoService) {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
         this.cartRepository = cartRepository;
         this.paymentRepository = paymentRepository;
-        this.momoService = momoService; 
+        this.momoService = momoService;
     }
 
     // tạo order code
@@ -61,7 +62,7 @@ public class OrderService {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         Random random = new Random();
         StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < 6; i++) {
+        for (int i = 0; i < 6; i++) {
             sb.append(chars.charAt(random.nextInt(chars.length())));
         }
         return sb.toString();
@@ -119,33 +120,38 @@ public class OrderService {
     // order cho admin
 
     // lấy tất cả orders
-    public Page<OrderDTO> getAllOrders(int page, int limit, String orderCode, Integer status, LocalDate start, LocalDate end) {
+    public Page<OrderDTO> getAllOrders(int page, int limit, String orderCode, Integer status, LocalDate start,
+            LocalDate end) {
         Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
         Page<Order> orderPage;
 
-  LocalDateTime startDateTime = null;
-    LocalDateTime endDateTime = null;
-    if (start != null) startDateTime = start.atStartOfDay();
-    if (end != null) endDateTime = end.atTime(LocalTime.MAX);
+        LocalDateTime startDateTime = null;
+        LocalDateTime endDateTime = null;
+        if (start != null)
+            startDateTime = start.atStartOfDay();
+        if (end != null)
+            endDateTime = end.atTime(LocalTime.MAX);
 
-    if ((orderCode != null && !orderCode.isEmpty()) && status != null && startDateTime != null && endDateTime != null) {
-        orderPage = orderRepository.findByOrderCodeContainingIgnoreCaseAndStatusAndCreatedAtBetween(orderCode, status, startDateTime, endDateTime, pageable);
-    } else if ((orderCode != null && !orderCode.isEmpty()) && startDateTime != null && endDateTime != null) {
-        orderPage = orderRepository.findByOrderCodeContainingIgnoreCaseAndCreatedAtBetween(orderCode, startDateTime, endDateTime, pageable);
-    } else if (status != null && startDateTime != null && endDateTime != null) {
-        orderPage = orderRepository.findByStatusAndCreatedAtBetween(status, startDateTime, endDateTime, pageable);
-    } else if (startDateTime != null && endDateTime != null) {
-        orderPage = orderRepository.findByCreatedAtBetween(startDateTime, endDateTime, pageable);
-    } else if ((orderCode != null && !orderCode.isEmpty()) && status != null) {
-        orderPage = orderRepository.findByOrderCodeContainingIgnoreCaseAndStatus(orderCode, status, pageable);
-    } else if (orderCode != null && !orderCode.isEmpty()) {
-        orderPage = orderRepository.findByOrderCodeContainingIgnoreCase(orderCode, pageable);
-    } else if (status != null) {
-        orderPage = orderRepository.findByStatus(status, pageable);
-    } else {
-        orderPage = orderRepository.findAll(pageable);
-    }
-
+        if ((orderCode != null && !orderCode.isEmpty()) && status != null && startDateTime != null
+                && endDateTime != null) {
+            orderPage = orderRepository.findByOrderCodeContainingIgnoreCaseAndStatusAndCreatedAtBetween(orderCode,
+                    status, startDateTime, endDateTime, pageable);
+        } else if ((orderCode != null && !orderCode.isEmpty()) && startDateTime != null && endDateTime != null) {
+            orderPage = orderRepository.findByOrderCodeContainingIgnoreCaseAndCreatedAtBetween(orderCode, startDateTime,
+                    endDateTime, pageable);
+        } else if (status != null && startDateTime != null && endDateTime != null) {
+            orderPage = orderRepository.findByStatusAndCreatedAtBetween(status, startDateTime, endDateTime, pageable);
+        } else if (startDateTime != null && endDateTime != null) {
+            orderPage = orderRepository.findByCreatedAtBetween(startDateTime, endDateTime, pageable);
+        } else if ((orderCode != null && !orderCode.isEmpty()) && status != null) {
+            orderPage = orderRepository.findByOrderCodeContainingIgnoreCaseAndStatus(orderCode, status, pageable);
+        } else if (orderCode != null && !orderCode.isEmpty()) {
+            orderPage = orderRepository.findByOrderCodeContainingIgnoreCase(orderCode, pageable);
+        } else if (status != null) {
+            orderPage = orderRepository.findByStatus(status, pageable);
+        } else {
+            orderPage = orderRepository.findAll(pageable);
+        }
 
         return orderPage.map(this::convertToDTO);
     }
@@ -159,7 +165,7 @@ public class OrderService {
             Long total = (Long) row[1];
             map.put(status, total);
         }
-        
+
         for (Integer s : statuses) {
             map.putIfAbsent(s, 0L);
         }
@@ -169,7 +175,7 @@ public class OrderService {
     // lấy 1 order theo id
     public OrderDTO getOrderById(String id) {
         Order order = orderRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Đơn hàng không tìm thấy"));
+                .orElseThrow(() -> new EntityNotFoundException("Đơn hàng không tìm thấy"));
         return convertToDTO(order);
     }
 
@@ -188,34 +194,34 @@ public class OrderService {
                     bookRepository.save(book);
                 }
             }
-    
+
             // hoàn tiền momo
-    if ("momo".equalsIgnoreCase(order.getPaymethod())) {
-        Payment payment = paymentRepository.findFirstByOrder_OrderCode(order.getOrderCode())
-                .orElseThrow(() -> new EntityNotFoundException("Thanh toán không tìm thấy"));
+            if ("momo".equalsIgnoreCase(order.getPaymethod())) {
+                Payment payment = paymentRepository.findFirstByOrder_OrderCode(order.getOrderCode())
+                        .orElseThrow(() -> new EntityNotFoundException("Thanh toán không tìm thấy"));
 
-        Map<String, Object> payload = new HashMap<>();
-        payload.put("orderId", order.getOrderCode());
-        payload.put("amount", order.getTotal().intValue());
-        payload.put("transId", payment.getTransactionId()); 
+                Map<String, Object> payload = new HashMap<>();
+                payload.put("orderId", order.getOrderCode());
+                payload.put("amount", order.getTotal().intValue());
+                payload.put("transId", payment.getTransactionId());
 
-        try {
-            momoService.refundPayment(payload);
-        } catch (Exception e) {
-            throw new RuntimeException("Hoàn tiền Momo thất bại " + e.getMessage(), e);
+                try {
+                    momoService.refundPayment(payload);
+                } catch (Exception e) {
+                    throw new RuntimeException("Hoàn tiền Momo thất bại " + e.getMessage(), e);
+                }
+
+                Payment refundPayment = Payment.builder()
+                        .order(order)
+                        .paymethod("momo")
+                        .amount(order.getTotal())
+                        .transactionId(payment.getTransactionId())
+                        .status(0)
+                        .build();
+
+                paymentRepository.save(refundPayment);
+            }
         }
-
-        Payment refundPayment = Payment.builder()
-                .order(order)
-                .paymethod("momo")
-                .amount(order.getTotal())
-                .transactionId(payment.getTransactionId())
-                .status(0)
-                .build();
-
-        paymentRepository.save(refundPayment);
-    }
-    }
 
         order.setStatus(status);
         Order updatedOrder = orderRepository.save(order);
@@ -235,7 +241,7 @@ public class OrderService {
 
         // cod -> status = 0 (chờ xác nhận)
         // momo -> status = -1 (chờ thanh toán)
-        int status = "cod".equalsIgnoreCase(orderDTO.getPaymethod()) ? 0 : -1; 
+        int status = "cod".equalsIgnoreCase(orderDTO.getPaymethod()) ? 0 : -1;
 
         Order order = Order.builder()
                 .orderCode(generateOrderCode())
@@ -256,17 +262,17 @@ public class OrderService {
                         .orElseThrow(() -> new EntityNotFoundException("Sách không tìm thấy"));
 
                 // Kiểm tra số lượng
-            if (d.getQuantity() > book.getStock()) {
+                if (d.getQuantity() > book.getStock()) {
                     throw new IllegalArgumentException(book.getTitle() + " không đủ số lượng");
                 }
 
                 // Nếu thanh toán COD trừ số lượng, thanh toán Momo không trừ tồn kho
-            if ("cod".equalsIgnoreCase(orderDTO.getPaymethod())) {
+                if ("cod".equalsIgnoreCase(orderDTO.getPaymethod())) {
                     book.setStock(book.getStock() - d.getQuantity());
                     bookRepository.save(book);
                 }
 
-            return OrderDetail.builder()
+                return OrderDetail.builder()
                         .book(book)
                         .order(order)
                         .quantity(d.getQuantity())
@@ -288,19 +294,18 @@ public class OrderService {
             order.setItems(details);
             order.setTotal(total);
 
-        // xóa giỏ hàng cho phương thức thanh toán COD
-        if ("cod".equalsIgnoreCase(orderDTO.getPaymethod())) {
-            Cart cart = cartRepository.findByUserId(userId).orElse(null);
-            if (cart != null) {
-                cartRepository.delete(cart);
+            // xóa giỏ hàng cho phương thức thanh toán COD
+            if ("cod".equalsIgnoreCase(orderDTO.getPaymethod())) {
+                Cart cart = cartRepository.findByUserId(userId).orElse(null);
+                if (cart != null) {
+                    cartRepository.delete(cart);
+                }
             }
-        }
         } else {
             order.setTotal(0.0);
         }
 
         Order savedOrder = orderRepository.save(order);
-
 
         return convertToDTO(savedOrder);
     }
@@ -329,7 +334,7 @@ public class OrderService {
 
     public OrderDTO getOrderByOrderCode(String orderCode) {
         Order order = orderRepository.findByOrderCode(orderCode)
-            .orElseThrow(() -> new EntityNotFoundException("Đơn hàng không tìm thấy"));
+                .orElseThrow(() -> new EntityNotFoundException("Đơn hàng không tìm thấy"));
         return convertToDTO(order);
     }
 
@@ -339,7 +344,7 @@ public class OrderService {
         return total != null ? total : 0.0;
     }
 
-     // Doanh thu của orders có status = 3 trong ngày
+    // Doanh thu của orders có status = 3 trong ngày
     public double getTodayRevenue() {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = LocalDate.now().atTime(23, 59, 59);
@@ -347,13 +352,13 @@ public class OrderService {
         return total != null ? total : 0.0;
     }
 
-     // Tổng số lượng sản phẩm đã bán của orders có status = 3
+    // Tổng số lượng sản phẩm đã bán của orders có status = 3
     public long getTotalSoldQuantity() {
         Long totalQty = orderRepository.sumQuantityByStatus(3);
         return totalQty != null ? totalQty : 0L;
     }
 
-     // Tổng số lượng sản phẩm đã bán của orders có status = 3 trong ngày
+    // Tổng số lượng sản phẩm đã bán của orders có status = 3 trong ngày
     public long getTodaySoldQuantity() {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = LocalDate.now().atTime(23, 59, 59);
@@ -361,7 +366,7 @@ public class OrderService {
         return totalQty != null ? totalQty : 0L;
     }
 
-  // Chạy mỗi 30 phút để xóa order status -1 chưa thanh toán quá 90 phút
+    // Chạy mỗi 30 phút để xóa order status -1 chưa thanh toán quá 90 phút
     @Scheduled(fixedRate = 30 * 60 * 1000)
     public void cleanupUnpaidOrders() {
         LocalDateTime cutoff = LocalDateTime.now().minusMinutes(90);
