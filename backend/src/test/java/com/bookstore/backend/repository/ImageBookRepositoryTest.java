@@ -14,56 +14,53 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class ImageBookRepositoryTest {
 
-  @Autowired private ImageBookRepository imageBookRepository;
+  @Autowired
+  private ImageBookRepository imageBookRepository;
 
-  @Autowired private BookRepository bookRepository;
+  @Autowired
+  private BookRepository bookRepository;
 
-  @Autowired private AuthorRepository authorRepository;
+  @Autowired
+  private AuthorRepository authorRepository;
 
-  @Autowired private PublisherRepository publisherRepository;
+  @Autowired
+  private PublisherRepository publisherRepository;
 
-  @Autowired private CategoryRepository categoryRepository;
+  @Autowired
+  private CategoryRepository categoryRepository;
 
   private Book book;
 
   @BeforeEach
   void setup() {
 
-    Category category =
-        categoryRepository.save(
-            Category.builder().name("Fiction").slug("fiction").status(1).build());
+    Category category = categoryRepository.save(
+        Category.builder().name("Fiction").slug("fiction").status(1).build());
 
-    Author author =
-        authorRepository.save(Author.builder().fullname("John Writer").slug("john-writer").build());
+    Author author = authorRepository.save(Author.builder().fullname("John Writer").slug("john-writer").build());
 
-    Publisher publisher =
-        publisherRepository.save(Publisher.builder().name("NXB Kim Dong").slug("kim-dong").build());
+    Publisher publisher = publisherRepository.save(Publisher.builder().name("NXB Kim Dong").slug("kim-dong").build());
 
-    book =
-        bookRepository.save(
-            Book.builder()
-                .title("Harry Potter")
-                .slug("harry-potter")
-                .price(100.0)
-                .discount(0.0)
-                .description("desc")
-                .publicationDate("2020")
-                .numberOfPages(300)
-                .weight(1.2)
-                .width(10.0)
-                .length(20.0)
-                .thickness(2.0)
-                .stock(10)
-                .status(1)
-                .category(category)
-                .author(author)
-                .publisher(publisher)
-                .build());
+    book = bookRepository.save(
+        Book.builder()
+            .title("Harry Potter")
+            .slug("harry-potter")
+            .price(100.0)
+            .discount(0.0)
+            .description("desc")
+            .publicationDate("2020")
+            .numberOfPages(300)
+            .weight(1.2)
+            .width(10.0)
+            .length(20.0)
+            .thickness(2.0)
+            .stock(10)
+            .status(1)
+            .category(category)
+            .author(author)
+            .publisher(publisher)
+            .build());
   }
-
-  // ==================================================
-  // existsByBook()
-  // ==================================================
 
   @Test
   void existsByBook_shouldReturnTrue_whenImagesExist() {
@@ -80,10 +77,6 @@ class ImageBookRepositoryTest {
 
     assertThat(exists).isFalse();
   }
-
-  // ==================================================
-  // findByBook()
-  // ==================================================
 
   @Test
   void findByBook_shouldReturnAllImagesOfBook() {
@@ -102,10 +95,6 @@ class ImageBookRepositoryTest {
 
     assertThat(list).isEmpty();
   }
-
-  // ==================================================
-  // deleteByBook()
-  // ==================================================
 
   @Test
   void deleteByBook_shouldRemoveAllImagesOfBook() {

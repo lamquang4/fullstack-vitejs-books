@@ -17,9 +17,11 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class AddressRepositoryTest {
 
-  @Autowired private AddressRepository addressRepository;
+  @Autowired
+  private AddressRepository addressRepository;
 
-  @Autowired private UserRepository userRepository;
+  @Autowired
+  private UserRepository userRepository;
 
   private User user1;
   private User user2;
@@ -29,60 +31,51 @@ class AddressRepositoryTest {
   @BeforeEach
   void setup() {
 
-    // --- Create Users ---
-    user1 =
-        User.builder()
-            .fullname("Nguyen Van A")
-            .email("user1@example.com")
-            .password("123456")
-            .role(3)
-            .status(1)
-            .createdAt(LocalDateTime.now())
-            .build();
+    user1 = User.builder()
+        .fullname("Nguyen Van A")
+        .email("user1@example.com")
+        .password("123456")
+        .role(3)
+        .status(1)
+        .createdAt(LocalDateTime.now())
+        .build();
 
-    user2 =
-        User.builder()
-            .fullname("Tran Thi B")
-            .email("user2@example.com")
-            .password("654321")
-            .role(3)
-            .status(1)
-            .createdAt(LocalDateTime.now())
-            .build();
+    user2 = User.builder()
+        .fullname("Tran Thi B")
+        .email("user2@example.com")
+        .password("654321")
+        .role(3)
+        .status(1)
+        .createdAt(LocalDateTime.now())
+        .build();
 
     userRepository.save(user1);
     userRepository.save(user2);
 
-    // --- Create Addresses ---
-    address1 =
-        Address.builder()
-            .fullname("Nguyen Van A")
-            .phone("0909000001")
-            .speaddress("123 ABC Street")
-            .ward("Ward 1")
-            .city("City A")
-            .user(user1)
-            .createdAt(LocalDateTime.now())
-            .build();
+    address1 = Address.builder()
+        .fullname("Nguyen Van A")
+        .phone("0909000001")
+        .speaddress("123 ABC Street")
+        .ward("Ward 1")
+        .city("City A")
+        .user(user1)
+        .createdAt(LocalDateTime.now())
+        .build();
 
-    address2 =
-        Address.builder()
-            .fullname("Nguyen Van A")
-            .phone("0909000002")
-            .speaddress("456 DEF Street")
-            .ward("Ward 2")
-            .city("City A")
-            .user(user1)
-            .createdAt(LocalDateTime.now())
-            .build();
+    address2 = Address.builder()
+        .fullname("Nguyen Van A")
+        .phone("0909000002")
+        .speaddress("456 DEF Street")
+        .ward("Ward 2")
+        .city("City A")
+        .user(user1)
+        .createdAt(LocalDateTime.now())
+        .build();
 
     addressRepository.save(address1);
     addressRepository.save(address2);
   }
 
-  // -------------------------------------------------
-  // Test findByUserId
-  // -------------------------------------------------
   @Test
   void findByUserId_shouldReturnAddressesForUser() {
     List<Address> addresses = addressRepository.findByUserId(user1.getId());
@@ -91,9 +84,6 @@ class AddressRepositoryTest {
     assertThat(addresses.get(0).getUser().getId()).isEqualTo(user1.getId());
   }
 
-  // -------------------------------------------------
-  // Test findByIdAndUserId
-  // -------------------------------------------------
   @Test
   void findByIdAndUserId_shouldReturnCorrectAddress() {
     Optional<Address> found = addressRepository.findByIdAndUserId(address1.getId(), user1.getId());
@@ -109,18 +99,12 @@ class AddressRepositoryTest {
     assertThat(found).isNotPresent();
   }
 
-  // -------------------------------------------------
-  // Test deleteByUserId
-  // -------------------------------------------------
   @Test
   void deleteByUserId_shouldDeleteAllAddressesOfUser() {
-    // Ensure there are 2 addresses initially
     assertThat(addressRepository.findByUserId(user1.getId())).hasSize(2);
 
-    // Delete
     addressRepository.deleteByUserId(user1.getId());
 
-    // Ensure deleted
     assertThat(addressRepository.findByUserId(user1.getId())).isEmpty();
   }
 }

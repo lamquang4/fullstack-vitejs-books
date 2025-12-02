@@ -14,13 +14,20 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class OrderRepositoryTest {
 
-  @Autowired private OrderRepository orderRepository;
-  @Autowired private UserRepository userRepository;
-  @Autowired private BookRepository bookRepository;
-  @Autowired private CategoryRepository categoryRepository;
-  @Autowired private AuthorRepository authorRepository;
-  @Autowired private PublisherRepository publisherRepository;
-  @Autowired private OrderDetailRepository orderDetailRepository;
+  @Autowired
+  private OrderRepository orderRepository;
+  @Autowired
+  private UserRepository userRepository;
+  @Autowired
+  private BookRepository bookRepository;
+  @Autowired
+  private CategoryRepository categoryRepository;
+  @Autowired
+  private AuthorRepository authorRepository;
+  @Autowired
+  private PublisherRepository publisherRepository;
+  @Autowired
+  private OrderDetailRepository orderDetailRepository;
 
   private User user;
   private Book book;
@@ -28,46 +35,41 @@ class OrderRepositoryTest {
   @BeforeEach
   void setup() {
 
-    user =
-        userRepository.save(
-            User.builder()
-                .email("user@gmail.com")
-                .fullname("User Test")
-                .password("123")
-                .role(3)
-                .status(1)
-                .build());
+    user = userRepository.save(
+        User.builder()
+            .email("user@gmail.com")
+            .fullname("User Test")
+            .password("123")
+            .role(3)
+            .status(1)
+            .build());
 
-    Author author =
-        authorRepository.save(Author.builder().fullname("Author1").slug("author1").build());
+    Author author = authorRepository.save(Author.builder().fullname("Author1").slug("author1").build());
 
-    Publisher publisher =
-        publisherRepository.save(Publisher.builder().name("Pub A").slug("pub-a").build());
+    Publisher publisher = publisherRepository.save(Publisher.builder().name("Pub A").slug("pub-a").build());
 
-    Category category =
-        categoryRepository.save(
-            Category.builder().name("CategoryA").slug("cat-a").status(1).build());
+    Category category = categoryRepository.save(
+        Category.builder().name("CategoryA").slug("cat-a").status(1).build());
 
-    book =
-        bookRepository.save(
-            Book.builder()
-                .title("Book 1")
-                .slug("book-1")
-                .price(100.0)
-                .discount(0.0)
-                .description("desc")
-                .publicationDate("2020")
-                .numberOfPages(100)
-                .weight(1.0)
-                .width(10.0)
-                .length(20.0)
-                .thickness(1.0)
-                .stock(10)
-                .status(1)
-                .author(author)
-                .publisher(publisher)
-                .category(category)
-                .build());
+    book = bookRepository.save(
+        Book.builder()
+            .title("Book 1")
+            .slug("book-1")
+            .price(100.0)
+            .discount(0.0)
+            .description("desc")
+            .publicationDate("2020")
+            .numberOfPages(100)
+            .weight(1.0)
+            .width(10.0)
+            .length(20.0)
+            .thickness(1.0)
+            .stock(10)
+            .status(1)
+            .author(author)
+            .publisher(publisher)
+            .category(category)
+            .build());
   }
 
   private Order createOrder(String code, int status, LocalDateTime createdAt) {
@@ -98,9 +100,6 @@ class OrderRepositoryTest {
             .build());
   }
 
-  // =============================================================
-  // existsByUser
-  // =============================================================
   @Test
   void existsByUser_shouldReturnTrue() {
     createOrder("OD1", 1, LocalDateTime.now());
@@ -112,24 +111,17 @@ class OrderRepositoryTest {
     assertThat(orderRepository.existsByUser(user)).isFalse();
   }
 
-  // =============================================================
-  // findByOrderCodeContainingIgnoreCase
-  // =============================================================
   @Test
   void findByOrderCodeContainingIgnoreCase_shouldReturnMatchingOrders() {
     createOrder("ABC001", 1, LocalDateTime.now());
     createOrder("XYZ001", 1, LocalDateTime.now());
 
-    var result =
-        orderRepository.findByOrderCodeContainingIgnoreCase(
-            "abc", org.springframework.data.domain.PageRequest.of(0, 10));
+    var result = orderRepository.findByOrderCodeContainingIgnoreCase(
+        "abc", org.springframework.data.domain.PageRequest.of(0, 10));
 
     assertThat(result.getTotalElements()).isEqualTo(1);
   }
 
-  // =============================================================
-  // findByUserIdAndOrderCode
-  // =============================================================
   @Test
   void findByUserIdAndOrderCode_shouldReturnOrder() {
     createOrder("OD999", 1, LocalDateTime.now());
@@ -139,43 +131,32 @@ class OrderRepositoryTest {
     assertThat(found).isPresent();
   }
 
-  // =============================================================
-  // findByStatus
-  // =============================================================
   @Test
   void findByStatus_shouldReturnCorrectOrders() {
     createOrder("O1", 3, LocalDateTime.now());
     createOrder("O2", 1, LocalDateTime.now());
 
-    var result =
-        orderRepository.findByStatus(3, org.springframework.data.domain.PageRequest.of(0, 10));
+    var result = orderRepository.findByStatus(3, org.springframework.data.domain.PageRequest.of(0, 10));
 
     assertThat(result.getTotalElements()).isEqualTo(1);
   }
 
-  // =============================================================
-  // createdAt (date range)
-  // =============================================================
   @Test
   void findByCreatedAtBetween_shouldReturnCorrectOrders() {
     LocalDateTime now = LocalDateTime.now();
 
     createOrder("A", 1, now.minusDays(5));
-    createOrder("B", 1, now.minusDays(2)); // inside
-    createOrder("C", 1, now.plusDays(1)); // inside
+    createOrder("B", 1, now.minusDays(2));
+    createOrder("C", 1, now.plusDays(1));
 
-    var result =
-        orderRepository.findByCreatedAtBetween(
-            now.minusDays(3),
-            now.plusDays(2),
-            org.springframework.data.domain.PageRequest.of(0, 10));
+    var result = orderRepository.findByCreatedAtBetween(
+        now.minusDays(3),
+        now.plusDays(2),
+        org.springframework.data.domain.PageRequest.of(0, 10));
 
     assertThat(result.getTotalElements()).isEqualTo(2);
   }
 
-  // =============================================================
-  // sumTotalByStatus
-  // =============================================================
   @Test
   void sumTotalByStatus_shouldReturnCorrectSum() {
     createOrder("A", 3, LocalDateTime.now());
@@ -187,26 +168,19 @@ class OrderRepositoryTest {
     assertThat(total).isEqualTo(400.0);
   }
 
-  // =============================================================
-  // sumTotalByStatusAndCreatedAtBetween
-  // =============================================================
   @Test
   void sumTotalByStatusAndCreatedAtBetween_shouldReturnCorrectSum() {
     LocalDateTime now = LocalDateTime.now();
 
-    createOrder("A", 3, now.minusDays(3)); // inside
-    createOrder("B", 3, now.plusDays(1)); // inside
-    createOrder("C", 3, now.minusDays(10)); // outside
+    createOrder("A", 3, now.minusDays(3));
+    createOrder("B", 3, now.plusDays(1));
+    createOrder("C", 3, now.minusDays(10));
 
-    Double total =
-        orderRepository.sumTotalByStatusAndCreatedAtBetween(3, now.minusDays(5), now.plusDays(3));
+    Double total = orderRepository.sumTotalByStatusAndCreatedAtBetween(3, now.minusDays(5), now.plusDays(3));
 
     assertThat(total).isEqualTo(400.0);
   }
 
-  // =============================================================
-  // sumQuantityByStatus
-  // =============================================================
   @Test
   void sumQuantityByStatus_shouldReturnCorrectQuantity() {
     Order o1 = createOrder("A", 3, LocalDateTime.now());
@@ -220,9 +194,6 @@ class OrderRepositoryTest {
     assertThat(qty).isEqualTo(5);
   }
 
-  // =============================================================
-  // sumQuantityByStatusAndCreatedAtBetween
-  // =============================================================
   @Test
   void sumQuantityByStatusAndCreatedAtBetween_shouldReturnCorrectQuantity() {
     LocalDateTime now = LocalDateTime.now();
@@ -231,20 +202,16 @@ class OrderRepositoryTest {
     Order o2 = createOrder("B", 3, now.plusDays(1));
     Order o3 = createOrder("C", 3, now.minusDays(10));
 
-    addOrderDetail(o1, 4); // inside
-    addOrderDetail(o2, 6); // inside
-    addOrderDetail(o3, 99); // outside
+    addOrderDetail(o1, 4);
+    addOrderDetail(o2, 6);
+    addOrderDetail(o3, 99);
 
-    Long qty =
-        orderRepository.sumQuantityByStatusAndCreatedAtBetween(
-            3, now.minusDays(5), now.plusDays(5));
+    Long qty = orderRepository.sumQuantityByStatusAndCreatedAtBetween(
+        3, now.minusDays(5), now.plusDays(5));
 
     assertThat(qty).isEqualTo(10);
   }
 
-  // =============================================================
-  // findByOrderCode
-  // =============================================================
   @Test
   void findByOrderCode_shouldReturnOrder() {
     createOrder("SPECIAL123", 1, LocalDateTime.now());
@@ -253,9 +220,6 @@ class OrderRepositoryTest {
     assertThat(order).isPresent();
   }
 
-  // =============================================================
-  // findByStatusAndCreatedAtBefore
-  // =============================================================
   @Test
   void findByStatusAndCreatedAtBefore_shouldReturnCorrectOrders() {
     LocalDateTime now = LocalDateTime.now();

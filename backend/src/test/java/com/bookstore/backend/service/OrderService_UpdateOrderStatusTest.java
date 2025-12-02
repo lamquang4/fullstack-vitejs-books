@@ -25,14 +25,21 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class OrderService_UpdateOrderStatusTest {
 
-  @Mock private OrderRepository orderRepository;
-  @Mock private UserRepository userRepository;
-  @Mock private BookRepository bookRepository;
-  @Mock private CartRepository cartRepository;
-  @Mock private PaymentRepository paymentRepository;
-  @Mock private MomoService momoService;
+  @Mock
+  private OrderRepository orderRepository;
+  @Mock
+  private UserRepository userRepository;
+  @Mock
+  private BookRepository bookRepository;
+  @Mock
+  private CartRepository cartRepository;
+  @Mock
+  private PaymentRepository paymentRepository;
+  @Mock
+  private MomoService momoService;
 
-  @InjectMocks private OrderService orderService;
+  @InjectMocks
+  private OrderService orderService;
 
   private Order order;
   private Book book;
@@ -44,28 +51,25 @@ class OrderService_UpdateOrderStatusTest {
 
     book = Book.builder().id("b1").title("Java Book").stock(10).build();
 
-    detail =
-        OrderDetail.builder().id("d1").book(book).quantity(3).price(100.0).discount(0.0).build();
+    detail = OrderDetail.builder().id("d1").book(book).quantity(3).price(100.0).discount(0.0).build();
 
-    order =
-        Order.builder()
-            .id("o1")
-            .orderCode("ORD123")
-            .status(1) // đang xử lý
-            .user(User.builder().id("u1").build())
-            .items(List.of(detail))
-            .total(300.0)
-            .build();
+    order = Order.builder()
+        .id("o1")
+        .orderCode("ORD123")
+        .status(1) // đang xử lý
+        .user(User.builder().id("u1").build())
+        .items(List.of(detail))
+        .total(300.0)
+        .build();
 
-    payment =
-        Payment.builder()
-            .id("p1")
-            .order(order)
-            .paymethod("momo")
-            .transactionId("tx123")
-            .status(1)
-            .amount(300.0)
-            .build();
+    payment = Payment.builder()
+        .id("p1")
+        .order(order)
+        .paymethod("momo")
+        .transactionId("tx123")
+        .status(1)
+        .amount(300.0)
+        .build();
   }
 
   // Đơn hàng không tìm thấy
@@ -129,7 +133,7 @@ class OrderService_UpdateOrderStatusTest {
     when(orderRepository.findById("o1")).thenReturn(Optional.of(order));
     when(orderRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
-    OrderDTO result = orderService.updateOrderStatus("o1", 5);
+    orderService.updateOrderStatus("o1", 5);
 
     assertEquals(13, book.getStock());
     try {

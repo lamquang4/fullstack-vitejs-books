@@ -1,7 +1,5 @@
 package com.bookstore.backend.repository;
-
 import static org.assertj.core.api.Assertions.assertThat;
-
 import com.bookstore.backend.entities.Author;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 
 @DataJpaTest
-@ActiveProfiles("test") // Dùng H2 trong application-test.properties
+@ActiveProfiles("test")
 class AuthorRepositoryTest {
 
   @Autowired private AuthorRepository authorRepository;
@@ -31,9 +29,6 @@ class AuthorRepositoryTest {
     authorRepository.save(author2);
   }
 
-  // --------------------------------------------
-  // findByFullname()
-  // --------------------------------------------
   @Test
   void findByFullname_shouldReturnAuthor() {
     Optional<Author> result = authorRepository.findByFullname("Nguyen Nhat Anh");
@@ -49,9 +44,6 @@ class AuthorRepositoryTest {
     assertThat(result).isNotPresent();
   }
 
-  // --------------------------------------------
-  // findByFullnameContainingIgnoreCase()
-  // --------------------------------------------
   @Test
   void findByFullnameContainingIgnoreCase_shouldReturnMatchingAuthors() {
     Page<Author> result =
