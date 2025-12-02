@@ -26,7 +26,11 @@ jobs:
         working-directory: ./backend
         run: mvn -B clean install -DskipTests
 
-      - name: Run backend and frontend tests
+      - name: Run Checkstyle
+        working-directory: ./backend
+        run: mvn checkstyle:check
+
+      - name: Run tests
         working-directory: ./backend
         run: mvn test
 
@@ -45,6 +49,10 @@ jobs:
       - name: Build frontend
         working-directory: ./frontend
         run: npm run build
+
+      - name: Run ESLint
+        working-directory: ./frontend
+        run: npm run lint
 
   deploy:
     runs-on: ubuntu-latest
