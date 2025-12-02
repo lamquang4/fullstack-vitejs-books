@@ -63,9 +63,6 @@ class BookRepositoryTest {
                 .build());
   }
 
-  // -----------------------------
-  // 1. existsByAuthor / Category / Publisher
-  // -----------------------------
   @Test
   void existsByAuthor_shouldReturnTrue() {
     boolean exists = bookRepository.existsByAuthor(author);
@@ -84,9 +81,6 @@ class BookRepositoryTest {
     assertThat(exists).isTrue();
   }
 
-  // -----------------------------
-  // 2. findBySlugAndStatus
-  // -----------------------------
   @Test
   void findBySlugAndStatus_shouldReturnBook() {
     var result = bookRepository.findBySlugAndStatus("test-book", 1);
@@ -140,7 +134,6 @@ class BookRepositoryTest {
                 .user(user)
                 .build());
 
-    // Add orderDetail
     orderDetailRepository.save(
         OrderDetail.builder()
             .book(book)

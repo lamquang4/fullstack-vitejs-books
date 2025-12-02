@@ -92,8 +92,6 @@ class CategoryRepositoryTest {
     // Publisher
     Publisher publisher =
         publisherRepository.save(Publisher.builder().name("Pub House").slug("pub-house").build());
-
-    // Book active (status=1) thuộc category cat1 (status=1)
     bookRepository.save(
         Book.builder()
             .title("Book 1")
