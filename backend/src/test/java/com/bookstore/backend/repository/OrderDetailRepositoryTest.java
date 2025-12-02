@@ -33,7 +33,6 @@ class OrderDetailRepositoryTest {
   @BeforeEach
   void setup() {
 
-    // --- Create User ---
     user =
         userRepository.save(
             User.builder()
@@ -44,20 +43,16 @@ class OrderDetailRepositoryTest {
                 .status(1)
                 .build());
 
-    // --- Create Author ---
     Author author =
         authorRepository.save(Author.builder().fullname("Author 1").slug("author-1").build());
 
-    // --- Create Publisher ---
     Publisher publisher =
         publisherRepository.save(Publisher.builder().name("NXB A").slug("nxb-a").build());
 
-    // --- Create Category ---
     Category category =
         categoryRepository.save(
             Category.builder().name("Fiction").slug("fiction").status(1).build());
 
-    // --- Create Book ---
     book =
         bookRepository.save(
             Book.builder()
@@ -80,10 +75,6 @@ class OrderDetailRepositoryTest {
                 .build());
   }
 
-  // ==========================================================
-  // existsByBook()
-  // ==========================================================
-
   @Test
   void existsByBook_shouldReturnTrue_whenOrderDetailExists() {
 
@@ -97,7 +88,7 @@ class OrderDetailRepositoryTest {
                 .city("City")
                 .ward("Ward")
                 .paymethod("COD")
-                .status(3) // completed
+                .status(3)
                 .total(200.0)
                 .user(user)
                 .build());
@@ -123,14 +114,9 @@ class OrderDetailRepositoryTest {
     assertThat(exists).isFalse();
   }
 
-  // ==========================================================
-  // findTotalSoldByBook()
-  // ==========================================================
-
   @Test
   void findTotalSoldByBook_shouldReturnCorrectSum() {
 
-    // Order 1 - status = 3 (completed)
     Order order1 =
         orderRepository.save(
             Order.builder()
@@ -155,7 +141,6 @@ class OrderDetailRepositoryTest {
             .discount(10.0)
             .build());
 
-    // Order 2 - status = 1 (not completed) → should NOT count
     Order order2 =
         orderRepository.save(
             Order.builder()

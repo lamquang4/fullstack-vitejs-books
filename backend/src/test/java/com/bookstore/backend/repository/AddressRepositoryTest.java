@@ -29,7 +29,6 @@ class AddressRepositoryTest {
   @BeforeEach
   void setup() {
 
-    // --- Create Users ---
     user1 =
         User.builder()
             .fullname("Nguyen Van A")
@@ -53,7 +52,6 @@ class AddressRepositoryTest {
     userRepository.save(user1);
     userRepository.save(user2);
 
-    // --- Create Addresses ---
     address1 =
         Address.builder()
             .fullname("Nguyen Van A")
@@ -80,9 +78,6 @@ class AddressRepositoryTest {
     addressRepository.save(address2);
   }
 
-  // -------------------------------------------------
-  // Test findByUserId
-  // -------------------------------------------------
   @Test
   void findByUserId_shouldReturnAddressesForUser() {
     List<Address> addresses = addressRepository.findByUserId(user1.getId());
@@ -91,9 +86,6 @@ class AddressRepositoryTest {
     assertThat(addresses.get(0).getUser().getId()).isEqualTo(user1.getId());
   }
 
-  // -------------------------------------------------
-  // Test findByIdAndUserId
-  // -------------------------------------------------
   @Test
   void findByIdAndUserId_shouldReturnCorrectAddress() {
     Optional<Address> found = addressRepository.findByIdAndUserId(address1.getId(), user1.getId());
@@ -109,18 +101,12 @@ class AddressRepositoryTest {
     assertThat(found).isNotPresent();
   }
 
-  // -------------------------------------------------
-  // Test deleteByUserId
-  // -------------------------------------------------
   @Test
   void deleteByUserId_shouldDeleteAllAddressesOfUser() {
-    // Ensure there are 2 addresses initially
     assertThat(addressRepository.findByUserId(user1.getId())).hasSize(2);
 
-    // Delete
     addressRepository.deleteByUserId(user1.getId());
 
-    // Ensure deleted
     assertThat(addressRepository.findByUserId(user1.getId())).isEmpty();
   }
 }

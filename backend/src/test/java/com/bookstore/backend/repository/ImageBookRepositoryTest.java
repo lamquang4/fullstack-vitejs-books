@@ -61,10 +61,6 @@ class ImageBookRepositoryTest {
                 .build());
   }
 
-  // ==================================================
-  // existsByBook()
-  // ==================================================
-
   @Test
   void existsByBook_shouldReturnTrue_whenImagesExist() {
     imageBookRepository.save(ImageBook.builder().book(book).image("img1.jpg").build());
@@ -80,10 +76,6 @@ class ImageBookRepositoryTest {
 
     assertThat(exists).isFalse();
   }
-
-  // ==================================================
-  // findByBook()
-  // ==================================================
 
   @Test
   void findByBook_shouldReturnAllImagesOfBook() {
@@ -102,10 +94,6 @@ class ImageBookRepositoryTest {
 
     assertThat(list).isEmpty();
   }
-
-  // ==================================================
-  // deleteByBook()
-  // ==================================================
 
   @Test
   void deleteByBook_shouldRemoveAllImagesOfBook() {

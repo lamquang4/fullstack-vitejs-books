@@ -56,9 +56,6 @@ class UserRepositoryTest {
                 .build());
   }
 
-  // =============================================================
-  // findByEmail
-  // =============================================================
   @Test
   void findByEmail_shouldReturnUser() {
     Optional<User> result = userRepository.findByEmail("admin1@example.com");
@@ -74,9 +71,6 @@ class UserRepositoryTest {
     assertThat(result).isNotPresent();
   }
 
-  // =============================================================
-  // findByRoleIn
-  // =============================================================
   @Test
   void findByRoleIn_shouldReturnMatchingRoles() {
     Page<User> result = userRepository.findByRoleIn(Arrays.asList(1), PageRequest.of(0, 10));
@@ -91,9 +85,6 @@ class UserRepositoryTest {
     assertThat(result.getTotalElements()).isZero();
   }
 
-  // =============================================================
-  // findByEmailContainingIgnoreCaseAndRoleIn
-  // =============================================================
   @Test
   void findByEmailContainingIgnoreCaseAndRoleIn_shouldReturnUsers() {
     Page<User> result =
@@ -112,9 +103,6 @@ class UserRepositoryTest {
     assertThat(result.getTotalElements()).isZero();
   }
 
-  // =============================================================
-  // findByRoleInAndStatus
-  // =============================================================
   @Test
   void findByRoleInAndStatus_shouldReturnMatchingUsers() {
     Page<User> result =
@@ -132,9 +120,6 @@ class UserRepositoryTest {
     assertThat(result.getTotalElements()).isZero();
   }
 
-  // =============================================================
-  // findByEmailContainingIgnoreCaseAndRoleInAndStatus
-  // =============================================================
   @Test
   void findByEmailContainingIgnoreCaseAndRoleInAndStatus_shouldReturnMatching() {
     Page<User> result =

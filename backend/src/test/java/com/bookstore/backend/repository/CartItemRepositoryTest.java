@@ -88,8 +88,6 @@ class CartItemRepositoryTest {
     cartItemRepository.save(CartItem.builder().cart(cart).book(book).quantity(2).build());
   }
 
-  // ------------------------------------------------------------------------
-
   @Test
   void existsByBook_shouldReturnTrue() {
     boolean exists = cartItemRepository.existsByBook(book);

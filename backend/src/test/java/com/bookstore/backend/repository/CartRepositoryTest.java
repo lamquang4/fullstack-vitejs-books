@@ -38,8 +38,6 @@ class CartRepositoryTest {
     cart = cartRepository.save(Cart.builder().user(user).build());
   }
 
-  // ---------------------------------------------------------------------
-
   @Test
   void findByUserId_shouldReturnCart() {
     Optional<Cart> found = cartRepository.findByUserId(user.getId());

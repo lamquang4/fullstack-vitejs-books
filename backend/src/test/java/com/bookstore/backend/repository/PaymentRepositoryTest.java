@@ -94,9 +94,6 @@ class PaymentRepositoryTest {
             .build());
   }
 
-  // =============================================================
-  // findByOrder_OrderCodeContainingIgnoreCase
-  // =============================================================
   @Test
   void findByOrderCodeContainingIgnoreCase_shouldReturnCorrectPayments() {
     var result =
@@ -106,9 +103,6 @@ class PaymentRepositoryTest {
     assertThat(result.getTotalElements()).isEqualTo(2);
   }
 
-  // =============================================================
-  // findByStatus
-  // =============================================================
   @Test
   void findByStatus_shouldReturnCorrectPayments() {
     var result =
@@ -117,9 +111,6 @@ class PaymentRepositoryTest {
     assertThat(result.getTotalElements()).isEqualTo(2);
   }
 
-  // =============================================================
-  // findByOrder_OrderCodeContainingIgnoreCaseAndStatus
-  // =============================================================
   @Test
   void findByOrderCodeAndStatus_shouldReturnCorrectPayments() {
     var result =
@@ -129,9 +120,6 @@ class PaymentRepositoryTest {
     assertThat(result.getTotalElements()).isEqualTo(1);
   }
 
-  // =============================================================
-  // findFirstByOrder_OrderCode
-  // =============================================================
   @Test
   void findFirstByOrderCode_shouldReturnFirstPayment() {
     var result = paymentRepository.findFirstByOrder_OrderCode("ORD001");

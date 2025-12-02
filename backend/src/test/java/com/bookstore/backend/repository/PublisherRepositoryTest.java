@@ -29,9 +29,6 @@ class PublisherRepositoryTest {
         publisherRepository.save(Publisher.builder().name("Kim Đồng").slug("kim-dong").build());
   }
 
-  // =============================================================
-  // findByName
-  // =============================================================
   @Test
   void findByName_shouldReturnPublisher() {
     Optional<Publisher> result = publisherRepository.findByName("NXB Trẻ");
@@ -47,9 +44,6 @@ class PublisherRepositoryTest {
     assertThat(result).isNotPresent();
   }
 
-  // =============================================================
-  // findByNameContainingIgnoreCase
-  // =============================================================
   @Test
   void findByNameContainingIgnoreCase_shouldReturnMatchingPublishers() {
     var result = publisherRepository.findByNameContainingIgnoreCase("nxb", PageRequest.of(0, 10));

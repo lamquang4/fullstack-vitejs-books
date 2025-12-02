@@ -63,9 +63,6 @@ class BookRepositoryTest {
                 .build());
   }
 
-  // -----------------------------
-  // 1. existsByAuthor / Category / Publisher
-  // -----------------------------
   @Test
   void existsByAuthor_shouldReturnTrue() {
     boolean exists = bookRepository.existsByAuthor(author);
@@ -84,9 +81,6 @@ class BookRepositoryTest {
     assertThat(exists).isTrue();
   }
 
-  // -----------------------------
-  // 2. findBySlugAndStatus
-  // -----------------------------
   @Test
   void findBySlugAndStatus_shouldReturnBook() {
     var result = bookRepository.findBySlugAndStatus("test-book", 1);
@@ -94,9 +88,6 @@ class BookRepositoryTest {
     assertThat(result.get().getTitle()).isEqualTo("Test Book");
   }
 
-  // -----------------------------
-  // 3. findByDiscountGreaterThanAndStatus
-  // -----------------------------
   @Test
   void findByDiscountGreaterThanAndStatus_shouldReturnBook() {
     Page<Book> page =
@@ -106,9 +97,6 @@ class BookRepositoryTest {
     assertThat(page.getContent().get(0).getDiscount()).isEqualTo(20.0);
   }
 
-  // -----------------------------
-  // 4. searchByTitleAuthorPublisherCategory
-  // -----------------------------
   @Test
   void searchByTitleAuthorPublisherCategory_shouldReturnMatchingBooks() {
     Page<Book> page =
@@ -117,9 +105,6 @@ class BookRepositoryTest {
     assertThat(page.getTotalElements()).isEqualTo(1);
   }
 
-  // -----------------------------
-  // 5. findByStatusAndPriceRangeOrderByTotalSold
-  // -----------------------------
   @Test
   void findByStatusAndPriceRangeOrderByTotalSold_shouldReturnSortedBooks() {
 
@@ -146,10 +131,9 @@ class BookRepositoryTest {
                 .paymethod("COD")
                 .status(3)
                 .total(1.0)
-                .user(user) // 🟢 Không còn null
+                .user(user)
                 .build());
 
-    // Add orderDetail
     orderDetailRepository.save(
         OrderDetail.builder()
             .book(book)
@@ -166,9 +150,6 @@ class BookRepositoryTest {
     assertThat(page.getContent().get(0).getId()).isEqualTo(book.getId());
   }
 
-  // -----------------------------
-  // 6. findDiscountedAndPriceRangeOrderByEffectivePriceAsc
-  // -----------------------------
   @Test
   void findDiscountedAndPriceRangeOrderByEffectivePriceAsc_shouldSortCorrectly() {
 
@@ -178,7 +159,7 @@ class BookRepositoryTest {
                 .title("Another Book")
                 .slug("another-book")
                 .price(200.0)
-                .discount(50.0) // effective price = 150
+                .discount(50.0)
                 .description("desc")
                 .publicationDate("2020")
                 .numberOfPages(100)

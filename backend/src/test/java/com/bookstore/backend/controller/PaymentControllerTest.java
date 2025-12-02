@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.bookstore.backend.dto.PaymentDTO;
 import com.bookstore.backend.service.PaymentService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,8 +27,6 @@ class PaymentControllerTest {
   @Autowired private MockMvc mockMvc;
 
   @MockBean private PaymentService paymentService;
-
-  @Autowired private ObjectMapper objectMapper;
 
   private PaymentDTO paymentDTO;
 

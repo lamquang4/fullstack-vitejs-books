@@ -98,9 +98,6 @@ class OrderRepositoryTest {
             .build());
   }
 
-  // =============================================================
-  // existsByUser
-  // =============================================================
   @Test
   void existsByUser_shouldReturnTrue() {
     createOrder("OD1", 1, LocalDateTime.now());
@@ -112,9 +109,6 @@ class OrderRepositoryTest {
     assertThat(orderRepository.existsByUser(user)).isFalse();
   }
 
-  // =============================================================
-  // findByOrderCodeContainingIgnoreCase
-  // =============================================================
   @Test
   void findByOrderCodeContainingIgnoreCase_shouldReturnMatchingOrders() {
     createOrder("ABC001", 1, LocalDateTime.now());
@@ -127,9 +121,6 @@ class OrderRepositoryTest {
     assertThat(result.getTotalElements()).isEqualTo(1);
   }
 
-  // =============================================================
-  // findByUserIdAndOrderCode
-  // =============================================================
   @Test
   void findByUserIdAndOrderCode_shouldReturnOrder() {
     createOrder("OD999", 1, LocalDateTime.now());
@@ -139,9 +130,6 @@ class OrderRepositoryTest {
     assertThat(found).isPresent();
   }
 
-  // =============================================================
-  // findByStatus
-  // =============================================================
   @Test
   void findByStatus_shouldReturnCorrectOrders() {
     createOrder("O1", 3, LocalDateTime.now());
@@ -153,16 +141,13 @@ class OrderRepositoryTest {
     assertThat(result.getTotalElements()).isEqualTo(1);
   }
 
-  // =============================================================
-  // createdAt (date range)
-  // =============================================================
   @Test
   void findByCreatedAtBetween_shouldReturnCorrectOrders() {
     LocalDateTime now = LocalDateTime.now();
 
     createOrder("A", 1, now.minusDays(5));
-    createOrder("B", 1, now.minusDays(2)); // inside
-    createOrder("C", 1, now.plusDays(1)); // inside
+    createOrder("B", 1, now.minusDays(2));
+    createOrder("C", 1, now.plusDays(1));
 
     var result =
         orderRepository.findByCreatedAtBetween(
@@ -173,9 +158,6 @@ class OrderRepositoryTest {
     assertThat(result.getTotalElements()).isEqualTo(2);
   }
 
-  // =============================================================
-  // sumTotalByStatus
-  // =============================================================
   @Test
   void sumTotalByStatus_shouldReturnCorrectSum() {
     createOrder("A", 3, LocalDateTime.now());
@@ -187,16 +169,13 @@ class OrderRepositoryTest {
     assertThat(total).isEqualTo(400.0);
   }
 
-  // =============================================================
-  // sumTotalByStatusAndCreatedAtBetween
-  // =============================================================
   @Test
   void sumTotalByStatusAndCreatedAtBetween_shouldReturnCorrectSum() {
     LocalDateTime now = LocalDateTime.now();
 
-    createOrder("A", 3, now.minusDays(3)); // inside
-    createOrder("B", 3, now.plusDays(1)); // inside
-    createOrder("C", 3, now.minusDays(10)); // outside
+    createOrder("A", 3, now.minusDays(3));
+    createOrder("B", 3, now.plusDays(1));
+    createOrder("C", 3, now.minusDays(10));
 
     Double total =
         orderRepository.sumTotalByStatusAndCreatedAtBetween(3, now.minusDays(5), now.plusDays(3));
@@ -204,9 +183,6 @@ class OrderRepositoryTest {
     assertThat(total).isEqualTo(400.0);
   }
 
-  // =============================================================
-  // sumQuantityByStatus
-  // =============================================================
   @Test
   void sumQuantityByStatus_shouldReturnCorrectQuantity() {
     Order o1 = createOrder("A", 3, LocalDateTime.now());
@@ -220,9 +196,6 @@ class OrderRepositoryTest {
     assertThat(qty).isEqualTo(5);
   }
 
-  // =============================================================
-  // sumQuantityByStatusAndCreatedAtBetween
-  // =============================================================
   @Test
   void sumQuantityByStatusAndCreatedAtBetween_shouldReturnCorrectQuantity() {
     LocalDateTime now = LocalDateTime.now();
@@ -231,9 +204,9 @@ class OrderRepositoryTest {
     Order o2 = createOrder("B", 3, now.plusDays(1));
     Order o3 = createOrder("C", 3, now.minusDays(10));
 
-    addOrderDetail(o1, 4); // inside
-    addOrderDetail(o2, 6); // inside
-    addOrderDetail(o3, 99); // outside
+    addOrderDetail(o1, 4);
+    addOrderDetail(o2, 6);
+    addOrderDetail(o3, 99);
 
     Long qty =
         orderRepository.sumQuantityByStatusAndCreatedAtBetween(
@@ -242,9 +215,6 @@ class OrderRepositoryTest {
     assertThat(qty).isEqualTo(10);
   }
 
-  // =============================================================
-  // findByOrderCode
-  // =============================================================
   @Test
   void findByOrderCode_shouldReturnOrder() {
     createOrder("SPECIAL123", 1, LocalDateTime.now());
@@ -253,9 +223,6 @@ class OrderRepositoryTest {
     assertThat(order).isPresent();
   }
 
-  // =============================================================
-  // findByStatusAndCreatedAtBefore
-  // =============================================================
   @Test
   void findByStatusAndCreatedAtBefore_shouldReturnCorrectOrders() {
     LocalDateTime now = LocalDateTime.now();

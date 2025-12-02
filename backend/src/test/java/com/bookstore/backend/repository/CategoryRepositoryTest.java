@@ -41,8 +41,6 @@ class CategoryRepositoryTest {
             Category.builder().name("History").slug("history").status(0).build());
   }
 
-  // ----------------------------------------------------------
-
   @Test
   void findByName_shouldReturnCategory() {
     Optional<Category> found = categoryRepository.findByName("Fiction");
@@ -58,8 +56,6 @@ class CategoryRepositoryTest {
     assertThat(found).isNotPresent();
   }
 
-  // ----------------------------------------------------------
-
   @Test
   void findByNameContainingIgnoreCase_shouldReturnPagedResults() {
     Page<Category> page =
@@ -69,8 +65,6 @@ class CategoryRepositoryTest {
     assertThat(page.getContent().get(0).getName()).isEqualTo("Fiction");
   }
 
-  // ----------------------------------------------------------
-
   @Test
   void findByStatus_shouldReturnCorrectCategories() {
     Page<Category> page = categoryRepository.findByStatus(1, PageRequest.of(0, 10));
@@ -78,8 +72,6 @@ class CategoryRepositoryTest {
     assertThat(page.getTotalElements()).isEqualTo(1);
     assertThat(page.getContent().get(0).getSlug()).isEqualTo("fiction");
   }
-
-  // ----------------------------------------------------------
 
   @Test
   void findByNameContainingIgnoreCaseAndStatus_shouldReturnFilteredResults() {
@@ -89,10 +81,6 @@ class CategoryRepositoryTest {
     assertThat(page.getTotalElements()).isEqualTo(1);
     assertThat(page.getContent().get(0).getName()).isEqualTo("History");
   }
-
-  // ----------------------------------------------------------
-  // TEST QUAN TRỌNG NHẤT: JOIN Category + Book
-  // ----------------------------------------------------------
 
   @Test
   void findActiveCategoriesWithActiveBooks_shouldReturnOnlyActiveOnes() {
@@ -104,8 +92,6 @@ class CategoryRepositoryTest {
     // Publisher
     Publisher publisher =
         publisherRepository.save(Publisher.builder().name("Pub House").slug("pub-house").build());
-
-    // Book active (status=1) thuộc category cat1 (status=1)
     bookRepository.save(
         Book.builder()
             .title("Book 1")

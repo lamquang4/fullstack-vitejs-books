@@ -129,7 +129,7 @@ class OrderService_UpdateOrderStatusTest {
     when(orderRepository.findById("o1")).thenReturn(Optional.of(order));
     when(orderRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
-    OrderDTO result = orderService.updateOrderStatus("o1", 5);
+    orderService.updateOrderStatus("o1", 5);
 
     assertEquals(13, book.getStock());
     try {
