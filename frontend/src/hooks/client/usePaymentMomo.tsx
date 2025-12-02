@@ -4,6 +4,9 @@ import { useState } from "react";
 export default function usePaymentMomo() {
   const [isLoading, setIsLoading] = useState(false);
   const createPaymentMomo = async (orderCode: string) => {
+    if (!orderCode) {
+      return;
+    }
     setIsLoading(true);
     try {
       const url = `${

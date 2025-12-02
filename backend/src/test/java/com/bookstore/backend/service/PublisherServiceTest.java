@@ -1,189 +1,178 @@
 package com.bookstore.backend.service;
 
-import com.bookstore.backend.entities.Publisher;
-import com.bookstore.backend.repository.BookRepository;
-import com.bookstore.backend.repository.PublisherRepository;
-
-import jakarta.persistence.EntityNotFoundException;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import org.springframework.data.domain.*;
-
-import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.bookstore.backend.entities.Publisher;
+import com.bookstore.backend.repository.BookRepository;
+import com.bookstore.backend.repository.PublisherRepository;
+import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.test.context.ActiveProfiles;
+
 @ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 class PublisherServiceTest {
 
-    @Mock
-    private PublisherRepository publisherRepository;
+  @Mock private PublisherRepository publisherRepository;
 
-    @Mock
-    private BookRepository bookRepository;
+  @Mock private BookRepository bookRepository;
 
-    @InjectMocks
-    private PublisherService publisherService;
+  @InjectMocks private PublisherService publisherService;
 
-    private Publisher publisher;
+  private Publisher publisher;
 
-    @BeforeEach
-    void setup() {
-        publisher = Publisher.builder()
-                .id("pub1")
-                .name("NXB ABC")
-                .slug("nxb-abc")
-                .build();
-    }
+  @BeforeEach
+  void setup() {
+    publisher = Publisher.builder().id("pub1").name("NXB ABC").slug("nxb-abc").build();
+  }
 
+  // Lấy tất cả nhà xuất bản
+  @Test
+  void testGetAllPublishers_WithQuery() {
+    Page<Publisher> page = new PageImpl<>(List.of(publisher));
 
-    // Lấy tất cả nhà xuất bản
-    @Test
-    void testGetAllPublishers_WithQuery() {
-        Page<Publisher> page = new PageImpl<>(List.of(publisher));
+    when(publisherRepository.findByNameContainingIgnoreCase(eq("abc"), any(Pageable.class)))
+        .thenReturn(page);
 
-        when(publisherRepository.findByNameContainingIgnoreCase(
-                eq("abc"),
-                any(Pageable.class)
-        )).thenReturn(page);
+    Page<Publisher> result = publisherService.getAllPublishers(1, 10, "abc");
 
-        Page<Publisher> result = publisherService.getAllPublishers(1, 10, "abc");
+    assertEquals(1, result.getTotalElements());
+    verify(publisherRepository).findByNameContainingIgnoreCase(eq("abc"), any(Pageable.class));
+  }
 
-        assertEquals(1, result.getTotalElements());
-        verify(publisherRepository).findByNameContainingIgnoreCase(eq("abc"), any(Pageable.class));
-    }
+  @Test
+  void testGetAllPublishers_NoQuery() {
+    Page<Publisher> page = new PageImpl<>(List.of(publisher));
 
-    @Test
-    void testGetAllPublishers_NoQuery() {
-        Page<Publisher> page = new PageImpl<>(List.of(publisher));
+    when(publisherRepository.findAll(any(Pageable.class))).thenReturn(page);
 
-        when(publisherRepository.findAll(any(Pageable.class))).thenReturn(page);
+    Page<Publisher> result = publisherService.getAllPublishers(1, 10, null);
 
-        Page<Publisher> result = publisherService.getAllPublishers(1, 10, null);
+    assertEquals(1, result.getTotalElements());
+    verify(publisherRepository).findAll(any(Pageable.class));
+  }
 
-        assertEquals(1, result.getTotalElements());
-        verify(publisherRepository).findAll(any(Pageable.class));
-    }
+  @Test
+  void testGetAllPublishers1() {
+    when(publisherRepository.findAll(any(Sort.class))).thenReturn(List.of(publisher));
 
-    @Test
-    void testGetAllPublishers1() {
-        when(publisherRepository.findAll(any(Sort.class)))
-                .thenReturn(List.of(publisher));
+    List<Publisher> list = publisherService.getAllPublishers1();
 
-        List<Publisher> list = publisherService.getAllPublishers1();
+    assertEquals(1, list.size());
+  }
 
-        assertEquals(1, list.size());
-    }
+  // Lấy nhà xuất bản theo id
+  @Test
+  void testGetPublisherById() {
+    when(publisherRepository.findById("pub1")).thenReturn(Optional.of(publisher));
 
-    // Lấy nhà xuất bản theo id
-    @Test
-    void testGetPublisherById() {
-        when(publisherRepository.findById("pub1")).thenReturn(Optional.of(publisher));
+    Optional<Publisher> result = publisherService.getPublisherById("pub1");
 
-        Optional<Publisher> result = publisherService.getPublisherById("pub1");
+    assertTrue(result.isPresent());
+    assertEquals("pub1", result.get().getId());
+  }
 
-        assertTrue(result.isPresent());
-        assertEquals("pub1", result.get().getId());
-    }
+  // Tạo nhà xuất bản
+  @Test
+  void testCreatePublisher_Success() {
+    Publisher newPub = Publisher.builder().name("New Pub").build();
 
-    // Tạo nhà xuất bản
-    @Test
-    void testCreatePublisher_Success() {
-        Publisher newPub = Publisher.builder().name("New Pub").build();
+    when(publisherRepository.findByName("New Pub")).thenReturn(Optional.empty());
+    when(publisherRepository.save(any()))
+        .thenAnswer(
+            inv -> {
+              Publisher p = inv.getArgument(0);
+              p.setId("pub123");
+              return p;
+            });
 
-        when(publisherRepository.findByName("New Pub")).thenReturn(Optional.empty());
-        when(publisherRepository.save(any())).thenAnswer(inv -> {
-            Publisher p = inv.getArgument(0);
-            p.setId("pub123");
-            return p;
-        });
+    Publisher result = publisherService.createPublisher(newPub);
 
-        Publisher result = publisherService.createPublisher(newPub);
+    assertNotNull(result.getId());
+    assertEquals("pub123", result.getId());
+    verify(publisherRepository).save(any(Publisher.class));
+  }
 
-        assertNotNull(result.getId());
-        assertEquals("pub123", result.getId());
-        verify(publisherRepository).save(any(Publisher.class));
-    }
+  @Test
+  void testCreatePublisher_NameExists() {
+    when(publisherRepository.findByName("NXB ABC")).thenReturn(Optional.of(publisher));
 
-    @Test
-    void testCreatePublisher_NameExists() {
-        when(publisherRepository.findByName("NXB ABC")).thenReturn(Optional.of(publisher));
+    Publisher newPub = Publisher.builder().name("NXB ABC").build();
 
-        Publisher newPub = Publisher.builder().name("NXB ABC").build();
+    assertThrows(IllegalArgumentException.class, () -> publisherService.createPublisher(newPub));
+  }
 
-        assertThrows(IllegalArgumentException.class,
-                () -> publisherService.createPublisher(newPub));
-    }
+  // Cập nhật nhà xuất bản
+  @Test
+  void testUpdatePublisher_Success() {
+    Publisher updateData = Publisher.builder().name("New Name").build();
 
-    // Cập nhật nhà xuất bản
-    @Test
-    void testUpdatePublisher_Success() {
-        Publisher updateData = Publisher.builder().name("New Name").build();
+    when(publisherRepository.findById("pub1")).thenReturn(Optional.of(publisher));
+    when(publisherRepository.findByName("New Name")).thenReturn(Optional.empty());
+    when(publisherRepository.save(any())).thenReturn(publisher);
 
-        when(publisherRepository.findById("pub1")).thenReturn(Optional.of(publisher));
-        when(publisherRepository.findByName("New Name")).thenReturn(Optional.empty());
-        when(publisherRepository.save(any())).thenReturn(publisher);
+    Publisher result = publisherService.updatePublisher("pub1", updateData);
 
-        Publisher result = publisherService.updatePublisher("pub1", updateData);
+    assertEquals("New Name", result.getName());
+    verify(publisherRepository).save(any(Publisher.class));
+  }
 
-        assertEquals("New Name", result.getName());
-        verify(publisherRepository).save(any(Publisher.class));
-    }
+  @Test
+  void testUpdatePublisher_NameExists() {
+    Publisher conflict = Publisher.builder().id("pub999").name("New Name").build();
+    Publisher updateData = Publisher.builder().name("New Name").build();
 
-    @Test
-    void testUpdatePublisher_NameExists() {
-        Publisher conflict = Publisher.builder().id("pub999").name("New Name").build();
-        Publisher updateData = Publisher.builder().name("New Name").build();
+    when(publisherRepository.findById("pub1")).thenReturn(Optional.of(publisher));
+    when(publisherRepository.findByName("New Name")).thenReturn(Optional.of(conflict));
 
-        when(publisherRepository.findById("pub1")).thenReturn(Optional.of(publisher));
-        when(publisherRepository.findByName("New Name")).thenReturn(Optional.of(conflict));
+    assertThrows(
+        IllegalArgumentException.class, () -> publisherService.updatePublisher("pub1", updateData));
+  }
 
-        assertThrows(IllegalArgumentException.class,
-                () -> publisherService.updatePublisher("pub1", updateData));
-    }
+  @Test
+  void testUpdatePublisher_NotFound() {
+    when(publisherRepository.findById("pub1")).thenReturn(Optional.empty());
 
-    @Test
-    void testUpdatePublisher_NotFound() {
-        when(publisherRepository.findById("pub1")).thenReturn(Optional.empty());
+    Publisher updateData = Publisher.builder().name("New Name").build();
 
-        Publisher updateData = Publisher.builder().name("New Name").build();
+    assertThrows(
+        EntityNotFoundException.class, () -> publisherService.updatePublisher("pub1", updateData));
+  }
 
-        assertThrows(EntityNotFoundException.class,
-                () -> publisherService.updatePublisher("pub1", updateData));
-    }
+  // Xóa nhà xuất bản
+  @Test
+  void testDeletePublisher_Success() {
+    when(publisherRepository.findById("pub1")).thenReturn(Optional.of(publisher));
+    when(bookRepository.existsByPublisher(publisher)).thenReturn(false);
 
-    // Xóa nhà xuất bản
-    @Test
-    void testDeletePublisher_Success() {
-        when(publisherRepository.findById("pub1")).thenReturn(Optional.of(publisher));
-        when(bookRepository.existsByPublisher(publisher)).thenReturn(false);
+    assertDoesNotThrow(() -> publisherService.deletePublisher("pub1"));
+    verify(publisherRepository).deleteById("pub1");
+  }
 
-        assertDoesNotThrow(() -> publisherService.deletePublisher("pub1"));
-        verify(publisherRepository).deleteById("pub1");
-    }
+  @Test
+  void testDeletePublisher_NotFound() {
+    when(publisherRepository.findById("pub1")).thenReturn(Optional.empty());
 
-    @Test
-    void testDeletePublisher_NotFound() {
-        when(publisherRepository.findById("pub1")).thenReturn(Optional.empty());
+    assertThrows(EntityNotFoundException.class, () -> publisherService.deletePublisher("pub1"));
+  }
 
-        assertThrows(EntityNotFoundException.class,
-                () -> publisherService.deletePublisher("pub1"));
-    }
+  @Test
+  void testDeletePublisher_HasBooks() {
+    when(publisherRepository.findById("pub1")).thenReturn(Optional.of(publisher));
+    when(bookRepository.existsByPublisher(publisher)).thenReturn(true);
 
-    @Test
-    void testDeletePublisher_HasBooks() {
-        when(publisherRepository.findById("pub1")).thenReturn(Optional.of(publisher));
-        when(bookRepository.existsByPublisher(publisher)).thenReturn(true);
-
-        assertThrows(IllegalStateException.class,
-                () -> publisherService.deletePublisher("pub1"));
-    }
+    assertThrows(IllegalStateException.class, () -> publisherService.deletePublisher("pub1"));
+  }
 }

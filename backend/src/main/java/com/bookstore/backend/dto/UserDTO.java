@@ -1,4 +1,5 @@
 package com.bookstore.backend.dto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,11 +10,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class UserDTO {
-    private String id;
-    private String fullname;
-    private String email;
-    private Integer role; // 0,1,2 = admin ; 3 = customer
-    private String password;
-    private Integer status;
+  private String id;
+  private String fullname;
+  private String email;
+  private Integer role; // 0,1,2 = admin ; 3 = customer
+  private String password;
+  private Integer status;
 }
-

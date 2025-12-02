@@ -7,6 +7,9 @@ export default function useLogin() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async (email: string, password: string) => {
+    if (!email || !password) {
+      return;
+    }
     setIsLoading(true);
     try {
       const url = `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`;

@@ -5,10 +5,10 @@ export function useChangeQuantityItemCart() {
   const [isLoading, setIsLoading] = useState(false);
 
   const changeQuantity = async (id: string, quantity: number) => {
-    setIsLoading(true);
-    if (!id) {
+    if (!id || !quantity) {
       return;
     }
+    setIsLoading(true);
     try {
       const url = `${
         import.meta.env.VITE_BACKEND_URL

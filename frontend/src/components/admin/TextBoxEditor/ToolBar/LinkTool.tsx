@@ -44,7 +44,7 @@ function LinkTool({ editor }: { editor: Editor | null }) {
       linkUrl: "",
       textUrl: "",
     });
-    toggleLink;
+    toggleLink();
   };
 
   return (

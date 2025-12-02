@@ -208,7 +208,7 @@ function Book() {
                         </Link>
                         <button
                           disabled={isLoadingDelete}
-                          onClick={() => handleDelete(book.id!)}
+                          onClick={() => handleDelete(book.id || "")}
                         >
                           <VscTrash size={22} className="text-[#d9534f]" />
                         </button>

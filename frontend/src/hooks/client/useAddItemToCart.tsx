@@ -6,6 +6,9 @@ export function useAddItemToCart() {
   const [isLoading, setIsLoading] = useState(false);
 
   const addItem = async (userId: string, bookId: string, quantity: number) => {
+    if (!userId || !bookId || !quantity) {
+      return;
+    }
     setIsLoading(true);
     try {
       const url = `${

@@ -10,12 +10,12 @@ function Dashboard() {
   const array1 = [
     {
       title: "Tổng doanh thu",
-      number: `${totalRevenue.toLocaleString("vi-VN")}₫` || 0,
+      number: `${totalRevenue.toLocaleString("vi-VN")}₫`,
       icon1: <FaRegMoneyBillAlt size={25} />,
     },
     {
       title: "Doanh thu hôm nay",
-      number: `${todayRevenue.toLocaleString("vi-VN")}₫` || 0,
+      number: `${todayRevenue.toLocaleString("vi-VN")}₫`,
       icon1: <FaRegMoneyBillAlt size={25} />,
     },
     {

@@ -6,6 +6,9 @@ import type { User } from "../../types/type";
 export default function useAddUser() {
   const [isLoading, setIsLoading] = useState(false);
   const addUser = async (data: User) => {
+    if (!data) {
+      return;
+    }
     const loadingToast = toast.loading("Đang thêm...");
     setIsLoading(true);
     try {

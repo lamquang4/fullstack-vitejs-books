@@ -149,7 +149,7 @@ function Category() {
 
                       <button
                         disabled={isLoadingDelete}
-                        onClick={() => handleDelete(category.id!)}
+                        onClick={() => handleDelete(category.id || "")}
                       >
                         <VscTrash size={22} className="text-[#d9534f]" />
                       </button>

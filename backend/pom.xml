@@ -41,7 +41,6 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -150,6 +149,18 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+		<!-- Spotless plugin -->
+        <plugin>
+            <groupId>com.diffplug.spotless</groupId>
+            <artifactId>spotless-maven-plugin</artifactId>
+            <version>2.44.0</version>
+            <configuration>
+                <java>
+                    <googleJavaFormat/>
+                </java>
+            </configuration>
+        </plugin>
 		</plugins>
 	</build>
 

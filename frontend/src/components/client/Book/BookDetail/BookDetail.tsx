@@ -76,7 +76,7 @@ function BookDetail({ book }: Props) {
   };
 
   const HandleIncrement = () => {
-    const maxQuantity = book?.stock! > max ? max : book?.stock!;
+    const maxQuantity = book?.stock > max ? max : book?.stock;
     setQuantity((prev) => (prev < maxQuantity ? prev + 1 : prev));
   };
 
@@ -251,15 +251,14 @@ function BookDetail({ book }: Props) {
                           className="h-11 text-center text-black w-11 outline-none placeholder:text-[1.2rem] font-medium"
                           placeholder="1"
                           min={1}
-                          max={book?.stock! > max ? max : book?.stock!}
+                          max={book?.stock > max ? max : book?.stock}
                           value={quantity}
                         />
                         <button
                           type="button"
                           onClick={HandleIncrement}
                           disabled={
-                            quantity >=
-                            (book?.stock! > max ? max : book?.stock!)
+                            quantity >= (book?.stock > max ? max : book?.stock)
                           }
                           className=" p-3 h-11 outline-none"
                         >

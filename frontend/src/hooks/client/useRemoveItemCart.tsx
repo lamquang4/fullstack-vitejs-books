@@ -5,11 +5,10 @@ export function useRemoveItemCart() {
   const [isLoading, setIsLoading] = useState(false);
 
   const removeItem = async (id: string) => {
-    setIsLoading(true);
     if (!id) {
       return;
     }
-
+    setIsLoading(true);
     try {
       const url = `${import.meta.env.VITE_BACKEND_URL}/api/cart/item/${id}`;
       await axios.delete(url);

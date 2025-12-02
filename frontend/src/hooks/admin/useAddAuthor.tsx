@@ -6,6 +6,9 @@ import type { Author } from "../../types/type";
 export default function useAddAuthor() {
   const [isLoading, setIsLoading] = useState(false);
   const addAuthor = async (data: Author) => {
+    if (!data) {
+      return;
+    }
     const loadingToast = toast.loading("Đang thêm...");
     setIsLoading(true);
     try {

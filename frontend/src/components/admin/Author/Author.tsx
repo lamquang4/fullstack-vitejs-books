@@ -82,7 +82,7 @@ function Author() {
 
                       <button
                         disabled={isLoadingDelete}
-                        onClick={() => handleDelete(author.id!)}
+                        onClick={() => handleDelete(author.id || "")}
                       >
                         <VscTrash size={22} className="text-[#d9534f]" />
                       </button>

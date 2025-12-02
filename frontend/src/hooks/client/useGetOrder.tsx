@@ -4,7 +4,12 @@ import useSWR from "swr";
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 export default function useGetOrder(userId: string, orderCode: string) {
-  const url = `${import.meta.env.VITE_BACKEND_URL}/api/order/user/${userId}/${orderCode}`;
+  const url =
+    userId && orderCode
+      ? `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/order/user/${userId}/${orderCode}`
+      : null;
   const { data, error, isLoading, mutate } = useSWR<any>(url, fetcher, {
     shouldRetryOnError: false,
     revalidateOnFocus: false,

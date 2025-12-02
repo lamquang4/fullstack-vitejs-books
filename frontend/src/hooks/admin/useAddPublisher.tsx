@@ -6,6 +6,9 @@ import type { Publisher } from "../../types/type";
 export default function useAddPublisher() {
   const [isLoading, setIsLoading] = useState(false);
   const addPublisher = async (data: Publisher) => {
+    if (!data) {
+      return;
+    }
     const loadingToast = toast.loading("Đang thêm...");
     setIsLoading(true);
     try {
