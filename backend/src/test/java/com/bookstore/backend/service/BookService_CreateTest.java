@@ -1,23 +1,29 @@
 package com.bookstore.backend.service;
 
-import com.bookstore.backend.entities.*;
+import com.bookstore.backend.entities.Book;
+import com.bookstore.backend.entities.Category;
+import com.bookstore.backend.entities.ImageBook;
 import com.bookstore.backend.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 class BookService_CreateTest {
 
     @Mock private BookRepository bookRepository;

@@ -1,6 +1,7 @@
 package com.bookstore.backend.service;
 
-import com.bookstore.backend.dto.*;
+import com.bookstore.backend.dto.BookDTO;
+import com.bookstore.backend.dto.BookDetailDTO;
 import com.bookstore.backend.entities.*;
 import com.bookstore.backend.repository.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -10,15 +11,22 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.*;
-import java.time.LocalDateTime;
-import java.util.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.ActiveProfiles;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 class BookService_GetTest {
 
     @Mock private BookRepository bookRepository;
