@@ -15,17 +15,18 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class PublisherRepositoryTest {
 
-  @Autowired
-  private PublisherRepository publisherRepository;
+  @Autowired private PublisherRepository publisherRepository;
 
   private Publisher publisher1;
   private Publisher publisher2;
 
   @BeforeEach
   void setup() {
-    publisher1 = publisherRepository.save(Publisher.builder().name("NXB Trẻ").slug("nxb-tre").build());
+    publisher1 =
+        publisherRepository.save(Publisher.builder().name("NXB Trẻ").slug("nxb-tre").build());
 
-    publisher2 = publisherRepository.save(Publisher.builder().name("Kim Đồng").slug("kim-dong").build());
+    publisher2 =
+        publisherRepository.save(Publisher.builder().name("Kim Đồng").slug("kim-dong").build());
   }
 
   @Test

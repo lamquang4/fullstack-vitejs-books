@@ -14,20 +14,13 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class OrderRepositoryTest {
 
-  @Autowired
-  private OrderRepository orderRepository;
-  @Autowired
-  private UserRepository userRepository;
-  @Autowired
-  private BookRepository bookRepository;
-  @Autowired
-  private CategoryRepository categoryRepository;
-  @Autowired
-  private AuthorRepository authorRepository;
-  @Autowired
-  private PublisherRepository publisherRepository;
-  @Autowired
-  private OrderDetailRepository orderDetailRepository;
+  @Autowired private OrderRepository orderRepository;
+  @Autowired private UserRepository userRepository;
+  @Autowired private BookRepository bookRepository;
+  @Autowired private CategoryRepository categoryRepository;
+  @Autowired private AuthorRepository authorRepository;
+  @Autowired private PublisherRepository publisherRepository;
+  @Autowired private OrderDetailRepository orderDetailRepository;
 
   private User user;
   private Book book;
@@ -35,41 +28,46 @@ class OrderRepositoryTest {
   @BeforeEach
   void setup() {
 
-    user = userRepository.save(
-        User.builder()
-            .email("user@gmail.com")
-            .fullname("User Test")
-            .password("123")
-            .role(3)
-            .status(1)
-            .build());
+    user =
+        userRepository.save(
+            User.builder()
+                .email("user@gmail.com")
+                .fullname("User Test")
+                .password("123")
+                .role(3)
+                .status(1)
+                .build());
 
-    Author author = authorRepository.save(Author.builder().fullname("Author1").slug("author1").build());
+    Author author =
+        authorRepository.save(Author.builder().fullname("Author1").slug("author1").build());
 
-    Publisher publisher = publisherRepository.save(Publisher.builder().name("Pub A").slug("pub-a").build());
+    Publisher publisher =
+        publisherRepository.save(Publisher.builder().name("Pub A").slug("pub-a").build());
 
-    Category category = categoryRepository.save(
-        Category.builder().name("CategoryA").slug("cat-a").status(1).build());
+    Category category =
+        categoryRepository.save(
+            Category.builder().name("CategoryA").slug("cat-a").status(1).build());
 
-    book = bookRepository.save(
-        Book.builder()
-            .title("Book 1")
-            .slug("book-1")
-            .price(100.0)
-            .discount(0.0)
-            .description("desc")
-            .publicationDate("2020")
-            .numberOfPages(100)
-            .weight(1.0)
-            .width(10.0)
-            .length(20.0)
-            .thickness(1.0)
-            .stock(10)
-            .status(1)
-            .author(author)
-            .publisher(publisher)
-            .category(category)
-            .build());
+    book =
+        bookRepository.save(
+            Book.builder()
+                .title("Book 1")
+                .slug("book-1")
+                .price(100.0)
+                .discount(0.0)
+                .description("desc")
+                .publicationDate("2020")
+                .numberOfPages(100)
+                .weight(1.0)
+                .width(10.0)
+                .length(20.0)
+                .thickness(1.0)
+                .stock(10)
+                .status(1)
+                .author(author)
+                .publisher(publisher)
+                .category(category)
+                .build());
   }
 
   private Order createOrder(String code, int status, LocalDateTime createdAt) {
@@ -116,8 +114,9 @@ class OrderRepositoryTest {
     createOrder("ABC001", 1, LocalDateTime.now());
     createOrder("XYZ001", 1, LocalDateTime.now());
 
-    var result = orderRepository.findByOrderCodeContainingIgnoreCase(
-        "abc", org.springframework.data.domain.PageRequest.of(0, 10));
+    var result =
+        orderRepository.findByOrderCodeContainingIgnoreCase(
+            "abc", org.springframework.data.domain.PageRequest.of(0, 10));
 
     assertThat(result.getTotalElements()).isEqualTo(1);
   }
@@ -136,7 +135,8 @@ class OrderRepositoryTest {
     createOrder("O1", 3, LocalDateTime.now());
     createOrder("O2", 1, LocalDateTime.now());
 
-    var result = orderRepository.findByStatus(3, org.springframework.data.domain.PageRequest.of(0, 10));
+    var result =
+        orderRepository.findByStatus(3, org.springframework.data.domain.PageRequest.of(0, 10));
 
     assertThat(result.getTotalElements()).isEqualTo(1);
   }
@@ -149,10 +149,11 @@ class OrderRepositoryTest {
     createOrder("B", 1, now.minusDays(2));
     createOrder("C", 1, now.plusDays(1));
 
-    var result = orderRepository.findByCreatedAtBetween(
-        now.minusDays(3),
-        now.plusDays(2),
-        org.springframework.data.domain.PageRequest.of(0, 10));
+    var result =
+        orderRepository.findByCreatedAtBetween(
+            now.minusDays(3),
+            now.plusDays(2),
+            org.springframework.data.domain.PageRequest.of(0, 10));
 
     assertThat(result.getTotalElements()).isEqualTo(2);
   }
@@ -176,7 +177,8 @@ class OrderRepositoryTest {
     createOrder("B", 3, now.plusDays(1));
     createOrder("C", 3, now.minusDays(10));
 
-    Double total = orderRepository.sumTotalByStatusAndCreatedAtBetween(3, now.minusDays(5), now.plusDays(3));
+    Double total =
+        orderRepository.sumTotalByStatusAndCreatedAtBetween(3, now.minusDays(5), now.plusDays(3));
 
     assertThat(total).isEqualTo(400.0);
   }
@@ -206,8 +208,9 @@ class OrderRepositoryTest {
     addOrderDetail(o2, 6);
     addOrderDetail(o3, 99);
 
-    Long qty = orderRepository.sumQuantityByStatusAndCreatedAtBetween(
-        3, now.minusDays(5), now.plusDays(5));
+    Long qty =
+        orderRepository.sumQuantityByStatusAndCreatedAtBetween(
+            3, now.minusDays(5), now.plusDays(5));
 
     assertThat(qty).isEqualTo(10);
   }

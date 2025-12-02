@@ -15,11 +15,9 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class CartRepositoryTest {
 
-  @Autowired
-  private CartRepository cartRepository;
+  @Autowired private CartRepository cartRepository;
 
-  @Autowired
-  private UserRepository userRepository;
+  @Autowired private UserRepository userRepository;
 
   private User user;
   private Cart cart;
@@ -27,14 +25,15 @@ class CartRepositoryTest {
   @BeforeEach
   void setup() {
     // Tạo User để tránh lỗi NOT NULL constraint
-    user = userRepository.save(
-        User.builder()
-            .email("test@gmail.com")
-            .fullname("Test User")
-            .password("123456")
-            .role(3)
-            .status(1)
-            .build());
+    user =
+        userRepository.save(
+            User.builder()
+                .email("test@gmail.com")
+                .fullname("Test User")
+                .password("123456")
+                .role(3)
+                .status(1)
+                .build());
 
     cart = cartRepository.save(Cart.builder().user(user).build());
   }
@@ -65,14 +64,15 @@ class CartRepositoryTest {
   @Test
   void deleteByUserId_shouldNotAffectOtherCarts() {
     // Create user 2 + cart 2
-    User user2 = userRepository.save(
-        User.builder()
-            .email("user2@gmail.com")
-            .fullname("User 2")
-            .password("abc123")
-            .role(3)
-            .status(1)
-            .build());
+    User user2 =
+        userRepository.save(
+            User.builder()
+                .email("user2@gmail.com")
+                .fullname("User 2")
+                .password("abc123")
+                .role(3)
+                .status(1)
+                .build());
 
     Cart cart2 = cartRepository.save(Cart.builder().user(user2).build());
 

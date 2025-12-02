@@ -72,43 +72,45 @@ public class MomoService {
     String orderInfo = "Payment order " + orderId;
     String extraData = "";
 
-    String rawSignature = "accessKey="
-        + accessKey
-        + "&amount="
-        + amount
-        + "&extraData="
-        + extraData
-        + "&ipnUrl="
-        + ipnUrl
-        + "&orderId="
-        + orderId
-        + "&orderInfo="
-        + orderInfo
-        + "&partnerCode="
-        + partnerCode
-        + "&redirectUrl="
-        + redirectUrl
-        + "&requestId="
-        + requestId
-        + "&requestType=captureWallet";
+    String rawSignature =
+        "accessKey="
+            + accessKey
+            + "&amount="
+            + amount
+            + "&extraData="
+            + extraData
+            + "&ipnUrl="
+            + ipnUrl
+            + "&orderId="
+            + orderId
+            + "&orderInfo="
+            + orderInfo
+            + "&partnerCode="
+            + partnerCode
+            + "&redirectUrl="
+            + redirectUrl
+            + "&requestId="
+            + requestId
+            + "&requestType=captureWallet";
 
     // Tạo chữ ký HMAC SHA256
     String signature = HmacSHA256(rawSignature, secretKey);
 
-    MomoRequest request = MomoRequest.builder()
-        .partnerCode(partnerCode)
-        .accessKey(accessKey)
-        .requestId(requestId)
-        .amount(amount)
-        .orderId(orderId)
-        .orderInfo(orderInfo)
-        .redirectUrl(redirectUrl)
-        .ipnUrl(ipnUrl)
-        .extraData(extraData)
-        .requestType("captureWallet")
-        .lang("en")
-        .signature(signature)
-        .build();
+    MomoRequest request =
+        MomoRequest.builder()
+            .partnerCode(partnerCode)
+            .accessKey(accessKey)
+            .requestId(requestId)
+            .amount(amount)
+            .orderId(orderId)
+            .orderInfo(orderInfo)
+            .redirectUrl(redirectUrl)
+            .ipnUrl(ipnUrl)
+            .extraData(extraData)
+            .requestType("captureWallet")
+            .lang("en")
+            .signature(signature)
+            .build();
 
     MomoResponse response = restTemplate.postForObject(momoUrl, request, MomoResponse.class);
 
@@ -119,12 +121,12 @@ public class MomoService {
   public boolean handleSuccessfulPayment(Map<String, Object> payload) throws Exception {
     String orderId = (String) payload.get("orderId"); // orderCode
 
-    Order order = orderRepository
-        .findByOrderCode(orderId)
-        .orElseThrow(() -> new EntityNotFoundException("Đơn hàng không tìm thấy"));
+    Order order =
+        orderRepository
+            .findByOrderCode(orderId)
+            .orElseThrow(() -> new EntityNotFoundException("Đơn hàng không tìm thấy"));
 
-    if (order.getStatus() != -1)
-      return true;
+    if (order.getStatus() != -1) return true;
 
     boolean enoughStock = true;
 
@@ -182,35 +184,38 @@ public class MomoService {
 
     String refundOrderId = originalOrderId + "_REFUND_" + System.currentTimeMillis();
     String requestId = UUID.randomUUID().toString();
-    String description = "Hoàn tiền do một hoặc nhiều sản phẩm trong đơn hàng của bạn không đủ số lượng sách đã mua";
+    String description =
+        "Hoàn tiền do một hoặc nhiều sản phẩm trong đơn hàng của bạn không đủ số lượng sách đã mua";
 
-    String rawSignature = "accessKey="
-        + accessKey
-        + "&amount="
-        + amount
-        + "&description="
-        + description
-        + "&orderId="
-        + refundOrderId
-        + "&partnerCode="
-        + partnerCode
-        + "&requestId="
-        + requestId
-        + "&transId="
-        + transId;
+    String rawSignature =
+        "accessKey="
+            + accessKey
+            + "&amount="
+            + amount
+            + "&description="
+            + description
+            + "&orderId="
+            + refundOrderId
+            + "&partnerCode="
+            + partnerCode
+            + "&requestId="
+            + requestId
+            + "&transId="
+            + transId;
 
     String signature = HmacSHA256(rawSignature, secretKey);
 
-    Map<String, Object> requestBody = Map.of(
-        "partnerCode", partnerCode,
-        "accessKey", accessKey,
-        "requestId", requestId,
-        "amount", amount,
-        "orderId", refundOrderId,
-        "transId", transId,
-        "lang", "en",
-        "description", description,
-        "signature", signature);
+    Map<String, Object> requestBody =
+        Map.of(
+            "partnerCode", partnerCode,
+            "accessKey", accessKey,
+            "requestId", requestId,
+            "amount", amount,
+            "orderId", refundOrderId,
+            "transId", transId,
+            "lang", "en",
+            "description", description,
+            "signature", signature);
 
     Map<String, Object> response = restTemplate.postForObject(refundUrl, requestBody, Map.class);
 
@@ -221,7 +226,8 @@ public class MomoService {
 
   private String HmacSHA256(String data, String key) throws Exception {
     Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
-    SecretKeySpec secret_key = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
+    SecretKeySpec secret_key =
+        new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
     sha256_HMAC.init(secret_key);
     byte[] hash = sha256_HMAC.doFinal(data.getBytes(StandardCharsets.UTF_8));
     return Hex.encodeHexString(hash);
@@ -232,30 +238,31 @@ public class MomoService {
     String resultCode = String.valueOf(payload.get("resultCode"));
     String transId = String.valueOf(payload.get("transId"));
 
-    String rawSignature = "partnerCode="
-        + partnerCode
-        + "&accessKey="
-        + accessKey
-        + "&requestId="
-        + payload.get("requestId")
-        + "&amount="
-        + payload.get("amount")
-        + "&orderId="
-        + orderId
-        + "&orderInfo="
-        + payload.get("orderInfo")
-        + "&orderType="
-        + payload.get("orderType")
-        + "&transId="
-        + transId
-        + "&resultCode="
-        + resultCode
-        + "&message="
-        + payload.get("message")
-        + "&responseTime="
-        + payload.get("responseTime")
-        + "&extraData="
-        + payload.get("extraData");
+    String rawSignature =
+        "partnerCode="
+            + partnerCode
+            + "&accessKey="
+            + accessKey
+            + "&requestId="
+            + payload.get("requestId")
+            + "&amount="
+            + payload.get("amount")
+            + "&orderId="
+            + orderId
+            + "&orderInfo="
+            + payload.get("orderInfo")
+            + "&orderType="
+            + payload.get("orderType")
+            + "&transId="
+            + transId
+            + "&resultCode="
+            + resultCode
+            + "&message="
+            + payload.get("message")
+            + "&responseTime="
+            + payload.get("responseTime")
+            + "&extraData="
+            + payload.get("extraData");
 
     String checkSignature = HmacSHA256(rawSignature, secretKey);
     String signature = (String) payload.get("signature");

@@ -14,26 +14,19 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class CartItemRepositoryTest {
 
-  @Autowired
-  private CartItemRepository cartItemRepository;
+  @Autowired private CartItemRepository cartItemRepository;
 
-  @Autowired
-  private CartRepository cartRepository;
+  @Autowired private CartRepository cartRepository;
 
-  @Autowired
-  private UserRepository userRepository;
+  @Autowired private UserRepository userRepository;
 
-  @Autowired
-  private BookRepository bookRepository;
+  @Autowired private BookRepository bookRepository;
 
-  @Autowired
-  private CategoryRepository categoryRepository;
+  @Autowired private CategoryRepository categoryRepository;
 
-  @Autowired
-  private AuthorRepository authorRepository;
+  @Autowired private AuthorRepository authorRepository;
 
-  @Autowired
-  private PublisherRepository publisherRepository;
+  @Autowired private PublisherRepository publisherRepository;
 
   private User user;
   private Cart cart;
@@ -42,49 +35,54 @@ class CartItemRepositoryTest {
   @BeforeEach
   void setup() {
     // Tạo User
-    user = userRepository.save(
-        User.builder()
-            .email("test@gmail.com")
-            .fullname("Test User")
-            .password("123456")
-            .role(3)
-            .status(1)
-            .build());
+    user =
+        userRepository.save(
+            User.builder()
+                .email("test@gmail.com")
+                .fullname("Test User")
+                .password("123456")
+                .role(3)
+                .status(1)
+                .build());
 
     // Tạo Cart
     cart = cartRepository.save(Cart.builder().user(user).build());
 
     // Tạo Category
-    Category category = categoryRepository.save(
-        Category.builder().name("Fiction").slug("fiction").status(1).build());
+    Category category =
+        categoryRepository.save(
+            Category.builder().name("Fiction").slug("fiction").status(1).build());
 
     // Tạo Author
-    Author author = authorRepository.save(Author.builder().fullname("Author A").slug("author-a").build());
+    Author author =
+        authorRepository.save(Author.builder().fullname("Author A").slug("author-a").build());
 
     // Tạo Publisher
-    Publisher publisher = publisherRepository.save(
-        Publisher.builder().name("Publisher A").slug("publisher-a").build());
+    Publisher publisher =
+        publisherRepository.save(
+            Publisher.builder().name("Publisher A").slug("publisher-a").build());
 
     // Tạo Book
-    book = bookRepository.save(
-        Book.builder()
-            .title("Book A")
-            .slug("book-a")
-            .price(100.0)
-            .discount(0.0)
-            .description("Description")
-            .publicationDate("2024")
-            .numberOfPages(120)
-            .weight(200.0)
-            .width(10.0)
-            .length(20.0)
-            .thickness(2.0)
-            .status(1)
-            .stock(50)
-            .category(category)
-            .author(author)
-            .publisher(publisher)
-            .build());
+    book =
+        bookRepository.save(
+            Book.builder()
+                .title("Book A")
+                .slug("book-a")
+                .price(100.0)
+                .discount(0.0)
+                .description("Description")
+                .publicationDate("2024")
+                .numberOfPages(120)
+                .weight(200.0)
+                .width(10.0)
+                .length(20.0)
+                .thickness(2.0)
+                .status(1)
+                .stock(50)
+                .category(category)
+                .author(author)
+                .publisher(publisher)
+                .build());
 
     // Tạo CartItem
     cartItemRepository.save(CartItem.builder().cart(cart).book(book).quantity(2).build());
@@ -98,25 +96,26 @@ class CartItemRepositoryTest {
 
   @Test
   void existsByBook_shouldReturnFalse_ifBookNotInCart() {
-    Book otherBook = bookRepository.save(
-        Book.builder()
-            .title("Book B")
-            .slug("book-b")
-            .price(150.0)
-            .discount(10.0)
-            .description("Desc")
-            .publicationDate("2025")
-            .numberOfPages(150)
-            .weight(250.0)
-            .width(12.0)
-            .length(22.0)
-            .thickness(3.0)
-            .status(1)
-            .stock(30)
-            .category(categoryRepository.findAll().get(0))
-            .author(authorRepository.findAll().get(0))
-            .publisher(publisherRepository.findAll().get(0))
-            .build());
+    Book otherBook =
+        bookRepository.save(
+            Book.builder()
+                .title("Book B")
+                .slug("book-b")
+                .price(150.0)
+                .discount(10.0)
+                .description("Desc")
+                .publicationDate("2025")
+                .numberOfPages(150)
+                .weight(250.0)
+                .width(12.0)
+                .length(22.0)
+                .thickness(3.0)
+                .status(1)
+                .stock(30)
+                .category(categoryRepository.findAll().get(0))
+                .author(authorRepository.findAll().get(0))
+                .publisher(publisherRepository.findAll().get(0))
+                .build());
 
     boolean exists = cartItemRepository.existsByBook(otherBook);
     assertThat(exists).isFalse();

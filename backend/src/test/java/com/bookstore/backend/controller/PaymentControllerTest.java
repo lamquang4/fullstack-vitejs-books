@@ -3,6 +3,7 @@ package com.bookstore.backend.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.bookstore.backend.dto.PaymentDTO;
 import com.bookstore.backend.service.PaymentService;
 import java.time.LocalDateTime;
@@ -23,26 +24,25 @@ import org.springframework.test.web.servlet.MockMvc;
 @ActiveProfiles("test")
 class PaymentControllerTest {
 
-  @Autowired
-  private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-  @MockBean
-  private PaymentService paymentService;
+  @MockBean private PaymentService paymentService;
 
   private PaymentDTO paymentDTO;
 
   @BeforeEach
   void setup() {
-    paymentDTO = PaymentDTO.builder()
-        .id("pay1")
-        .orderId("ord1")
-        .orderCode("ORD001")
-        .paymethod("MOMO")
-        .amount(150000.0)
-        .transactionId("TRANS123")
-        .status(1)
-        .createdAt(LocalDateTime.now())
-        .build();
+    paymentDTO =
+        PaymentDTO.builder()
+            .id("pay1")
+            .orderId("ord1")
+            .orderCode("ORD001")
+            .paymethod("MOMO")
+            .amount(150000.0)
+            .transactionId("TRANS123")
+            .status(1)
+            .createdAt(LocalDateTime.now())
+            .build();
   }
 
   // Lấy tất cả giao dịch thanh toán

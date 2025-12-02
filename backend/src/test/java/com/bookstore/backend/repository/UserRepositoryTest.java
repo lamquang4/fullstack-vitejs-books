@@ -17,8 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class UserRepositoryTest {
 
-  @Autowired
-  private UserRepository userRepository;
+  @Autowired private UserRepository userRepository;
 
   private User admin1;
   private User admin2;
@@ -26,32 +25,35 @@ class UserRepositoryTest {
 
   @BeforeEach
   void setup() {
-    admin1 = userRepository.save(
-        User.builder()
-            .email("admin1@example.com")
-            .fullname("Admin One")
-            .password("pass")
-            .role(1)
-            .status(1)
-            .build());
+    admin1 =
+        userRepository.save(
+            User.builder()
+                .email("admin1@example.com")
+                .fullname("Admin One")
+                .password("pass")
+                .role(1)
+                .status(1)
+                .build());
 
-    admin2 = userRepository.save(
-        User.builder()
-            .email("admin2@example.com")
-            .fullname("Admin Two")
-            .password("pass")
-            .role(1)
-            .status(0)
-            .build());
+    admin2 =
+        userRepository.save(
+            User.builder()
+                .email("admin2@example.com")
+                .fullname("Admin Two")
+                .password("pass")
+                .role(1)
+                .status(0)
+                .build());
 
-    customer1 = userRepository.save(
-        User.builder()
-            .email("customer@example.com")
-            .fullname("Cust One")
-            .password("pass")
-            .role(3)
-            .status(1)
-            .build());
+    customer1 =
+        userRepository.save(
+            User.builder()
+                .email("customer@example.com")
+                .fullname("Cust One")
+                .password("pass")
+                .role(3)
+                .status(1)
+                .build());
   }
 
   @Test
@@ -85,23 +87,26 @@ class UserRepositoryTest {
 
   @Test
   void findByEmailContainingIgnoreCaseAndRoleIn_shouldReturnUsers() {
-    Page<User> result = userRepository.findByEmailContainingIgnoreCaseAndRoleIn(
-        "admin", Arrays.asList(1), PageRequest.of(0, 10));
+    Page<User> result =
+        userRepository.findByEmailContainingIgnoreCaseAndRoleIn(
+            "admin", Arrays.asList(1), PageRequest.of(0, 10));
 
     assertThat(result.getTotalElements()).isEqualTo(2);
   }
 
   @Test
   void findByEmailContainingIgnoreCaseAndRoleIn_shouldReturnEmpty() {
-    Page<User> result = userRepository.findByEmailContainingIgnoreCaseAndRoleIn(
-        "xyz", Arrays.asList(1), PageRequest.of(0, 10));
+    Page<User> result =
+        userRepository.findByEmailContainingIgnoreCaseAndRoleIn(
+            "xyz", Arrays.asList(1), PageRequest.of(0, 10));
 
     assertThat(result.getTotalElements()).isZero();
   }
 
   @Test
   void findByRoleInAndStatus_shouldReturnMatchingUsers() {
-    Page<User> result = userRepository.findByRoleInAndStatus(Arrays.asList(1), 1, PageRequest.of(0, 10));
+    Page<User> result =
+        userRepository.findByRoleInAndStatus(Arrays.asList(1), 1, PageRequest.of(0, 10));
 
     assertThat(result.getTotalElements()).isEqualTo(1); // only admin1
     assertThat(result.getContent().get(0).getEmail()).isEqualTo("admin1@example.com");
@@ -109,15 +114,17 @@ class UserRepositoryTest {
 
   @Test
   void findByRoleInAndStatus_shouldReturnEmpty_whenNoMatch() {
-    Page<User> result = userRepository.findByRoleInAndStatus(Arrays.asList(1), 2, PageRequest.of(0, 10));
+    Page<User> result =
+        userRepository.findByRoleInAndStatus(Arrays.asList(1), 2, PageRequest.of(0, 10));
 
     assertThat(result.getTotalElements()).isZero();
   }
 
   @Test
   void findByEmailContainingIgnoreCaseAndRoleInAndStatus_shouldReturnMatching() {
-    Page<User> result = userRepository.findByEmailContainingIgnoreCaseAndRoleInAndStatus(
-        "admin", Arrays.asList(1), 1, PageRequest.of(0, 10));
+    Page<User> result =
+        userRepository.findByEmailContainingIgnoreCaseAndRoleInAndStatus(
+            "admin", Arrays.asList(1), 1, PageRequest.of(0, 10));
 
     assertThat(result.getTotalElements()).isEqualTo(1);
     assertThat(result.getContent().get(0).getEmail()).isEqualTo("admin1@example.com");
@@ -125,8 +132,9 @@ class UserRepositoryTest {
 
   @Test
   void findByEmailContainingIgnoreCaseAndRoleInAndStatus_shouldReturnEmpty() {
-    Page<User> result = userRepository.findByEmailContainingIgnoreCaseAndRoleInAndStatus(
-        "admin", Arrays.asList(1), 99, PageRequest.of(0, 10));
+    Page<User> result =
+        userRepository.findByEmailContainingIgnoreCaseAndRoleInAndStatus(
+            "admin", Arrays.asList(1), 99, PageRequest.of(0, 10));
 
     assertThat(result.getTotalElements()).isZero();
   }

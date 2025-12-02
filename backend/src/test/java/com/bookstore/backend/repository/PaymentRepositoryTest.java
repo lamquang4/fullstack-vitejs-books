@@ -14,12 +14,9 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class PaymentRepositoryTest {
 
-  @Autowired
-  private PaymentRepository paymentRepository;
-  @Autowired
-  private OrderRepository orderRepository;
-  @Autowired
-  private UserRepository userRepository;
+  @Autowired private PaymentRepository paymentRepository;
+  @Autowired private OrderRepository orderRepository;
+  @Autowired private UserRepository userRepository;
 
   private User user;
   private Order order1;
@@ -27,44 +24,47 @@ class PaymentRepositoryTest {
 
   @BeforeEach
   void setup() {
-    user = userRepository.save(
-        User.builder()
-            .email("test@gmail.com")
-            .fullname("Test User")
-            .password("123")
-            .role(3)
-            .status(1)
-            .build());
+    user =
+        userRepository.save(
+            User.builder()
+                .email("test@gmail.com")
+                .fullname("Test User")
+                .password("123")
+                .role(3)
+                .status(1)
+                .build());
 
-    order1 = orderRepository.save(
-        Order.builder()
-            .orderCode("ORD001")
-            .fullname("User A")
-            .phone("111")
-            .speaddress("Addr")
-            .city("City")
-            .ward("Ward")
-            .paymethod("COD")
-            .status(1)
-            .total(100.0)
-            .user(user)
-            .createdAt(LocalDateTime.now())
-            .build());
+    order1 =
+        orderRepository.save(
+            Order.builder()
+                .orderCode("ORD001")
+                .fullname("User A")
+                .phone("111")
+                .speaddress("Addr")
+                .city("City")
+                .ward("Ward")
+                .paymethod("COD")
+                .status(1)
+                .total(100.0)
+                .user(user)
+                .createdAt(LocalDateTime.now())
+                .build());
 
-    order2 = orderRepository.save(
-        Order.builder()
-            .orderCode("TEST002")
-            .fullname("User B")
-            .phone("222")
-            .speaddress("Addr")
-            .city("City")
-            .ward("Ward")
-            .paymethod("COD")
-            .status(1)
-            .total(200.0)
-            .user(user)
-            .createdAt(LocalDateTime.now())
-            .build());
+    order2 =
+        orderRepository.save(
+            Order.builder()
+                .orderCode("TEST002")
+                .fullname("User B")
+                .phone("222")
+                .speaddress("Addr")
+                .city("City")
+                .ward("Ward")
+                .paymethod("COD")
+                .status(1)
+                .total(200.0)
+                .user(user)
+                .createdAt(LocalDateTime.now())
+                .build());
 
     paymentRepository.save(
         Payment.builder()
@@ -96,23 +96,26 @@ class PaymentRepositoryTest {
 
   @Test
   void findByOrderCodeContainingIgnoreCase_shouldReturnCorrectPayments() {
-    var result = paymentRepository.findByOrder_OrderCodeContainingIgnoreCase(
-        "ord", org.springframework.data.domain.PageRequest.of(0, 10));
+    var result =
+        paymentRepository.findByOrder_OrderCodeContainingIgnoreCase(
+            "ord", org.springframework.data.domain.PageRequest.of(0, 10));
 
     assertThat(result.getTotalElements()).isEqualTo(2);
   }
 
   @Test
   void findByStatus_shouldReturnCorrectPayments() {
-    var result = paymentRepository.findByStatus(1, org.springframework.data.domain.PageRequest.of(0, 10));
+    var result =
+        paymentRepository.findByStatus(1, org.springframework.data.domain.PageRequest.of(0, 10));
 
     assertThat(result.getTotalElements()).isEqualTo(2);
   }
 
   @Test
   void findByOrderCodeAndStatus_shouldReturnCorrectPayments() {
-    var result = paymentRepository.findByOrder_OrderCodeContainingIgnoreCaseAndStatus(
-        "ord", 1, org.springframework.data.domain.PageRequest.of(0, 10));
+    var result =
+        paymentRepository.findByOrder_OrderCodeContainingIgnoreCaseAndStatus(
+            "ord", 1, org.springframework.data.domain.PageRequest.of(0, 10));
 
     assertThat(result.getTotalElements()).isEqualTo(1);
   }

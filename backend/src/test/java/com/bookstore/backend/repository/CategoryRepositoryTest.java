@@ -20,27 +20,25 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class CategoryRepositoryTest {
 
-  @Autowired
-  private CategoryRepository categoryRepository;
+  @Autowired private CategoryRepository categoryRepository;
 
-  @Autowired
-  private AuthorRepository authorRepository;
+  @Autowired private AuthorRepository authorRepository;
 
-  @Autowired
-  private PublisherRepository publisherRepository;
+  @Autowired private PublisherRepository publisherRepository;
 
-  @Autowired
-  private BookRepository bookRepository;
+  @Autowired private BookRepository bookRepository;
 
   private Category cat1, cat2;
 
   @BeforeEach
   void setUp() {
-    cat1 = categoryRepository.save(
-        Category.builder().name("Fiction").slug("fiction").status(1).build());
+    cat1 =
+        categoryRepository.save(
+            Category.builder().name("Fiction").slug("fiction").status(1).build());
 
-    cat2 = categoryRepository.save(
-        Category.builder().name("History").slug("history").status(0).build());
+    cat2 =
+        categoryRepository.save(
+            Category.builder().name("History").slug("history").status(0).build());
   }
 
   @Test
@@ -60,7 +58,8 @@ class CategoryRepositoryTest {
 
   @Test
   void findByNameContainingIgnoreCase_shouldReturnPagedResults() {
-    Page<Category> page = categoryRepository.findByNameContainingIgnoreCase("fi", PageRequest.of(0, 10));
+    Page<Category> page =
+        categoryRepository.findByNameContainingIgnoreCase("fi", PageRequest.of(0, 10));
 
     assertThat(page.getTotalElements()).isEqualTo(1);
     assertThat(page.getContent().get(0).getName()).isEqualTo("Fiction");
@@ -76,7 +75,8 @@ class CategoryRepositoryTest {
 
   @Test
   void findByNameContainingIgnoreCaseAndStatus_shouldReturnFilteredResults() {
-    Page<Category> page = categoryRepository.findByNameContainingIgnoreCaseAndStatus("his", 0, PageRequest.of(0, 10));
+    Page<Category> page =
+        categoryRepository.findByNameContainingIgnoreCaseAndStatus("his", 0, PageRequest.of(0, 10));
 
     assertThat(page.getTotalElements()).isEqualTo(1);
     assertThat(page.getContent().get(0).getName()).isEqualTo("History");
@@ -86,10 +86,12 @@ class CategoryRepositoryTest {
   void findActiveCategoriesWithActiveBooks_shouldReturnOnlyActiveOnes() {
 
     // Author
-    Author author = authorRepository.save(Author.builder().fullname("John Writer").slug("john-writer").build());
+    Author author =
+        authorRepository.save(Author.builder().fullname("John Writer").slug("john-writer").build());
 
     // Publisher
-    Publisher publisher = publisherRepository.save(Publisher.builder().name("Pub House").slug("pub-house").build());
+    Publisher publisher =
+        publisherRepository.save(Publisher.builder().name("Pub House").slug("pub-house").build());
 
     // Book active (status=1) thuộc category cat1 (status=1)
     bookRepository.save(
