@@ -6,7 +6,7 @@ import type { Publisher } from "../../types/type";
 export default function useUpdatePublisher(id: string) {
   const [isLoading, setIsLoading] = useState(false);
   const updatePublisher = async (data: Publisher) => {
-    if (!id) return;
+    if (!id || !data) return;
     const loadingToast = toast.loading("Đang cập nhật...");
     setIsLoading(true);
     try {

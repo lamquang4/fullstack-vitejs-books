@@ -8,10 +8,10 @@ type ProfileMenuProp = {
 };
 
 function ProfileMenu({ isOpen }: ProfileMenuProp) {
-  if (!isOpen) return null;
   const { handleLogout } = useLogout();
   const { user } = useGetCurrentUser("client");
 
+  if (!isOpen) return null;
   return (
     <>
       {user ? (

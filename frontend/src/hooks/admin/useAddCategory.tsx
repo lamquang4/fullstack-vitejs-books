@@ -6,6 +6,9 @@ import type { Category } from "../../types/type";
 export default function useAddCategory() {
   const [isLoading, setIsLoading] = useState(false);
   const addCategory = async (data: Category) => {
+    if (!data) {
+      return;
+    }
     const loadingToast = toast.loading("Đang thêm...");
     setIsLoading(true);
     try {

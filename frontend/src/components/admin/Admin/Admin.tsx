@@ -160,7 +160,7 @@ function Admin() {
 
                       <button
                         disabled={isLoadingDelete}
-                        onClick={() => handleDelete(admin.id!)}
+                        onClick={() => handleDelete(admin.id || "")}
                       >
                         <VscTrash size={22} className="text-[#d9534f]" />
                       </button>

@@ -1,11 +1,11 @@
 import axios from "axios";
 import useSWR from "swr";
-import type {  User } from "../../types/type";
+import type { User } from "../../types/type";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 export default function useGetUser(id: string) {
-  const url = `${import.meta.env.VITE_BACKEND_URL}/api/user/${id}`;
+  const url = id ? `${import.meta.env.VITE_BACKEND_URL}/api/user/${id}` : null;
   const { data, error, isLoading, mutate } = useSWR<User>(url, fetcher, {
     shouldRetryOnError: false,
     revalidateOnFocus: false,

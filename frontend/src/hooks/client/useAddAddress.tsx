@@ -6,6 +6,9 @@ import type { Address } from "../../types/type";
 export default function useAddAddress() {
   const [isLoading, setIsLoading] = useState(false);
   const addAddress = async (data: Address) => {
+    if (!data) {
+      return;
+    }
     const loadingToast = toast.loading("Đang thêm...");
     setIsLoading(true);
     try {

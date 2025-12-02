@@ -6,6 +6,9 @@ export default function useAddOrder(userId: string) {
   const [isLoading, setIsLoading] = useState(false);
 
   const addOrder = async (data: OrderAdd) => {
+    if (!data) {
+      return;
+    }
     setIsLoading(true);
     try {
       const url = `${

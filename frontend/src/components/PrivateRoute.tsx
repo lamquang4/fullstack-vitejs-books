@@ -44,7 +44,7 @@ const PrivateRoute = ({
     }
 
     return <>{children}</>;
-  } catch (error) {
+  } catch {
     Cookies.remove("token");
     return <Navigate to={redirectPath} replace />;
   }

@@ -179,7 +179,7 @@ function Order() {
                   <td className="p-[1rem]  ">{order.accountEmail}</td>
                   <td className="p-[1rem] uppercase">{order.paymethod}</td>
                   <td className="p-[1rem]  ">
-                    {order.total!.toLocaleString("vi-VN")}₫
+                    {order.total.toLocaleString("vi-VN")}₫
                   </td>
                   <td className="p-[1rem]">
                     {new Date(order.createdAt).toLocaleString("vi-VN", {

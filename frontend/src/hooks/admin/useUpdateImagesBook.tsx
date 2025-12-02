@@ -6,6 +6,9 @@ export default function useUpdateImagesBook() {
   const [isLoading, setIsLoading] = useState(false);
 
   const updateImagesBook = async (formData: FormData) => {
+    if (!formData) {
+      return;
+    }
     const loadingToast = toast.loading("Đang cập nhật hình...");
     setIsLoading(true);
 

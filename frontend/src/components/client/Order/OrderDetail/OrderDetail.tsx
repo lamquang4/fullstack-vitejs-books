@@ -10,7 +10,7 @@ function OrderDetail() {
   const navigate = useNavigate();
   const { code } = useParams();
   const { user } = useGetCurrentUser("client");
-  const { order, isLoading } = useGetOrder(user?.id!, code as string);
+  const { order, isLoading } = useGetOrder(user?.id || "", code as string);
 
   const array = [
     {

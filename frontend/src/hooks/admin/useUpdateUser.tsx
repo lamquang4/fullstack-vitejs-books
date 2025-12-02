@@ -6,7 +6,7 @@ import type { User } from "../../types/type";
 export default function useUpdateUser(id: string) {
   const [isLoading, setIsLoading] = useState(false);
   const updateUser = async (data: User) => {
-    if (!id) return;
+    if (!id || !data) return;
     const loadingToast = toast.loading("Đang cập nhật...");
     setIsLoading(true);
     try {

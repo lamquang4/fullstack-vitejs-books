@@ -5,6 +5,9 @@ import toast from "react-hot-toast";
 export default function useAddBook() {
   const [isLoading, setIsLoading] = useState(false);
   const addBook = async (formData: FormData) => {
+    if (!formData) {
+      return;
+    }
     const loadingToast = toast.loading("Đang thêm...");
     setIsLoading(true);
     try {

@@ -135,7 +135,7 @@ function Customer() {
 
                       <button
                         disabled={isLoadingDelete}
-                        onClick={() => handleDelete(customer.id!)}
+                        onClick={() => handleDelete(customer.id || "")}
                       >
                         <VscTrash size={22} className="text-[#d9534f]" />
                       </button>
