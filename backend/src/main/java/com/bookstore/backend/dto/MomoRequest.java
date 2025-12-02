@@ -10,16 +10,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class MomoRequest {
-    private String partnerCode;
-    private String accessKey;
-    private String requestId;
-    private String amount;
-    private String orderId;
-    private String orderInfo;
-    private String redirectUrl;
-    private String ipnUrl;
-    private String extraData;
-    private String requestType; // "captureWallet" cho QR
-    private String signature;
-    private String lang;
+  private String partnerCode;
+  private String accessKey;
+  private String requestId;
+  private String amount;
+  private String orderId;
+  private String orderInfo;
+  private String redirectUrl;
+  private String ipnUrl;
+  private String extraData;
+  private String requestType; // "captureWallet" cho QR
+  private String signature;
+  private String lang;
 }

@@ -22,18 +22,18 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class CartItem {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "cartId", nullable = false)
-    private Cart cart;
+  @ManyToOne
+  @JoinColumn(name = "cartId", nullable = false)
+  private Cart cart;
 
-    @ManyToOne
-    @JoinColumn(name = "bookId", nullable = false)
-    private Book book;
+  @ManyToOne
+  @JoinColumn(name = "bookId", nullable = false)
+  private Book book;
 
-    @Column(nullable = false)
-    private int quantity;
+  @Column(nullable = false)
+  private int quantity;
 }

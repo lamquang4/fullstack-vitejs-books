@@ -1,9 +1,8 @@
 package com.bookstore.backend.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDateTime;
+import lombok.*;
 
 @Entity
 @Table(name = "imagebook")
@@ -14,18 +13,18 @@ import java.time.LocalDateTime;
 @Builder
 public class ImageBook {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private String id;
 
-    @Column(nullable = false, length = 250)
-    private String image;
+  @Column(nullable = false, length = 250)
+  private String image;
 
-    @ManyToOne
-    @JoinColumn(name = "bookId", nullable = false)
-    private Book book;
+  @ManyToOne
+  @JoinColumn(name = "bookId", nullable = false)
+  private Book book;
 
-    @Builder.Default
-    @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+  @Builder.Default
+  @Column(nullable = false)
+  private LocalDateTime createdAt = LocalDateTime.now();
 }

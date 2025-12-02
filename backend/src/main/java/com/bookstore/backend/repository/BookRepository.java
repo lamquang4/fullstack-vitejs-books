@@ -4,15 +4,14 @@ import com.bookstore.backend.entities.Author;
 import com.bookstore.backend.entities.Book;
 import com.bookstore.backend.entities.Category;
 import com.bookstore.backend.entities.Publisher;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, String> {
@@ -32,12 +31,13 @@ public interface BookRepository extends JpaRepository<Book, String> {
 
   Page<Book> findByStatus(Integer status, Pageable pageable);
 
-  Page<Book> findByTitleContainingIgnoreCaseAndStatus(String title, Integer status, Pageable pageable);
+  Page<Book> findByTitleContainingIgnoreCaseAndStatus(
+      String title, Integer status, Pageable pageable);
 
   Page<Book> findByCategorySlugAndStatus(String slug, Integer status, Pageable pageable);
 
-  Page<Book> findByTitleContainingIgnoreCaseAndCategorySlugAndStatus(String title, String slug, Integer status,
-      Pageable pageable);
+  Page<Book> findByTitleContainingIgnoreCaseAndCategorySlugAndStatus(
+      String title, String slug, Integer status, Pageable pageable);
 
   // lấy sách có discount > 0
   Page<Book> findByDiscountGreaterThanAndStatus(int i, int status, Pageable pageable);
@@ -46,41 +46,43 @@ public interface BookRepository extends JpaRepository<Book, String> {
       int discount, int status, String title, Pageable pageable);
 
   // status = 1
-  @Query("SELECT b FROM Book b " +
-      "WHERE (:status IS NULL OR b.status = :status) AND (" +
-      "LOWER(b.title) LIKE LOWER(CONCAT('%', :q, '%')) OR " +
-      "LOWER(b.author.fullname) LIKE LOWER(CONCAT('%', :q, '%')) OR " +
-      "LOWER(b.publisher.name) LIKE LOWER(CONCAT('%', :q, '%')) OR " +
-      "LOWER(b.category.name) LIKE LOWER(CONCAT('%', :q, '%'))" +
-      ")")
-  Page<Book> searchByTitleAuthorPublisherCategory(@Param("q") String q,
-      @Param("status") Integer status,
-      Pageable pageable);
+  @Query(
+      "SELECT b FROM Book b "
+          + "WHERE (:status IS NULL OR b.status = :status) AND ("
+          + "LOWER(b.title) LIKE LOWER(CONCAT('%', :q, '%')) OR "
+          + "LOWER(b.author.fullname) LIKE LOWER(CONCAT('%', :q, '%')) OR "
+          + "LOWER(b.publisher.name) LIKE LOWER(CONCAT('%', :q, '%')) OR "
+          + "LOWER(b.category.name) LIKE LOWER(CONCAT('%', :q, '%'))"
+          + ")")
+  Page<Book> searchByTitleAuthorPublisherCategory(
+      @Param("q") String q, @Param("status") Integer status, Pageable pageable);
 
   // category
-  @Query("SELECT b FROM Book b " +
-      "WHERE b.category.slug = :slug AND b.status = :status AND (" +
-      "LOWER(b.title) LIKE LOWER(CONCAT('%', :q, '%')) OR " +
-      "LOWER(b.author.fullname) LIKE LOWER(CONCAT('%', :q, '%')) OR " +
-      "LOWER(b.publisher.name) LIKE LOWER(CONCAT('%', :q, '%')) OR " +
-      "LOWER(b.category.name) LIKE LOWER(CONCAT('%', :q, '%'))" +
-      ")")
-  Page<Book> searchByCategoryAndTitleAuthorPublisherCategory(@Param("slug") String slug,
+  @Query(
+      "SELECT b FROM Book b "
+          + "WHERE b.category.slug = :slug AND b.status = :status AND ("
+          + "LOWER(b.title) LIKE LOWER(CONCAT('%', :q, '%')) OR "
+          + "LOWER(b.author.fullname) LIKE LOWER(CONCAT('%', :q, '%')) OR "
+          + "LOWER(b.publisher.name) LIKE LOWER(CONCAT('%', :q, '%')) OR "
+          + "LOWER(b.category.name) LIKE LOWER(CONCAT('%', :q, '%'))"
+          + ")")
+  Page<Book> searchByCategoryAndTitleAuthorPublisherCategory(
+      @Param("slug") String slug,
       @Param("q") String q,
       @Param("status") Integer status,
       Pageable pageable);
 
   // Discount
-  @Query("SELECT b FROM Book b " +
-      "WHERE b.discount > 0 AND b.status = :status AND (" +
-      "LOWER(b.title) LIKE LOWER(CONCAT('%', :q, '%')) OR " +
-      "LOWER(b.author.fullname) LIKE LOWER(CONCAT('%', :q, '%')) OR " +
-      "LOWER(b.publisher.name) LIKE LOWER(CONCAT('%', :q, '%')) OR " +
-      "LOWER(b.category.name) LIKE LOWER(CONCAT('%', :q, '%'))" +
-      ")")
-  Page<Book> searchDiscountedActiveCategory(@Param("q") String q,
-      @Param("status") Integer status,
-      Pageable pageable);
+  @Query(
+      "SELECT b FROM Book b "
+          + "WHERE b.discount > 0 AND b.status = :status AND ("
+          + "LOWER(b.title) LIKE LOWER(CONCAT('%', :q, '%')) OR "
+          + "LOWER(b.author.fullname) LIKE LOWER(CONCAT('%', :q, '%')) OR "
+          + "LOWER(b.publisher.name) LIKE LOWER(CONCAT('%', :q, '%')) OR "
+          + "LOWER(b.category.name) LIKE LOWER(CONCAT('%', :q, '%'))"
+          + ")")
+  Page<Book> searchDiscountedActiveCategory(
+      @Param("q") String q, @Param("status") Integer status, Pageable pageable);
 
   @Query("SELECT b FROM Book b WHERE b.status = :status")
   Page<Book> findByStatus(@Param("status") int status, Pageable pageable);
@@ -94,21 +96,27 @@ public interface BookRepository extends JpaRepository<Book, String> {
   @Query("SELECT b FROM Book b WHERE b.status = :status AND b.discount > 0")
   Page<Book> findDiscounted(@Param("status") int status, Pageable pageable);
 
-  @Query("SELECT b FROM Book b WHERE b.status = :status AND b.discount > 0 ORDER BY (b.price - b.discount) ASC")
+  @Query(
+      "SELECT b FROM Book b WHERE b.status = :status AND b.discount > 0 ORDER BY (b.price - b.discount) ASC")
   Page<Book> findDiscountedOrderByEffectivePriceAsc(@Param("status") int status, Pageable pageable);
 
-  @Query("SELECT b FROM Book b WHERE b.status = :status AND b.discount > 0 ORDER BY (b.price - b.discount) DESC")
-  Page<Book> findDiscountedOrderByEffectivePriceDesc(@Param("status") int status, Pageable pageable);
-
-  @Query("SELECT b FROM Book b WHERE b.status = :status AND b.category.slug = :slug ORDER BY (b.price - b.discount) ASC")
-  Page<Book> findByCategorySlugAndStatusOrderByEffectivePriceAsc(@Param("slug") String slug,
+  @Query(
+      "SELECT b FROM Book b WHERE b.status = :status AND b.discount > 0 ORDER BY (b.price - b.discount) DESC")
+  Page<Book> findDiscountedOrderByEffectivePriceDesc(
       @Param("status") int status, Pageable pageable);
 
-  @Query("SELECT b FROM Book b WHERE b.status = :status AND b.category.slug = :slug ORDER BY (b.price - b.discount) DESC")
-  Page<Book> findByCategorySlugAndStatusOrderByEffectivePriceDesc(@Param("slug") String slug,
-      @Param("status") int status, Pageable pageable);
+  @Query(
+      "SELECT b FROM Book b WHERE b.status = :status AND b.category.slug = :slug ORDER BY (b.price - b.discount) ASC")
+  Page<Book> findByCategorySlugAndStatusOrderByEffectivePriceAsc(
+      @Param("slug") String slug, @Param("status") int status, Pageable pageable);
 
-  @Query("""
+  @Query(
+      "SELECT b FROM Book b WHERE b.status = :status AND b.category.slug = :slug ORDER BY (b.price - b.discount) DESC")
+  Page<Book> findByCategorySlugAndStatusOrderByEffectivePriceDesc(
+      @Param("slug") String slug, @Param("status") int status, Pageable pageable);
+
+  @Query(
+      """
           SELECT b FROM Book b
           LEFT JOIN OrderDetail od ON od.book = b
           LEFT JOIN od.order o
@@ -119,26 +127,27 @@ public interface BookRepository extends JpaRepository<Book, String> {
           GROUP BY b
           ORDER BY SUM(COALESCE(od.quantity, 0)) DESC
       """)
-
-  Page<Book> findByStatusAndPriceRangeOrderByTotalSold(@Param("status") int status,
+  Page<Book> findByStatusAndPriceRangeOrderByTotalSold(
+      @Param("status") int status,
       @Param("min") Integer min,
       @Param("max") Integer max,
       Pageable pageable);
 
-  @Query("""
+  @Query(
+      """
           SELECT b FROM Book b
           WHERE b.status = :status
             AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) >= COALESCE(:min, 0))
             AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) <= COALESCE(:max, 999999999))
       """)
-
   Page<Book> findByStatusAndPriceRange(
       @Param("status") int status,
       @Param("min") Integer min,
       @Param("max") Integer max,
       Pageable pageable);
 
-  @Query("""
+  @Query(
+      """
           SELECT b FROM Book b
           WHERE b.status = :status
             AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) >= COALESCE(:min, 0))
@@ -151,7 +160,8 @@ public interface BookRepository extends JpaRepository<Book, String> {
       @Param("max") Integer max,
       Pageable pageable);
 
-  @Query("""
+  @Query(
+      """
           SELECT b FROM Book b
           WHERE b.status = :status
             AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) >= COALESCE(:min, 0))
@@ -164,7 +174,8 @@ public interface BookRepository extends JpaRepository<Book, String> {
       @Param("max") Integer max,
       Pageable pageable);
 
-  @Query("""
+  @Query(
+      """
           SELECT b FROM Book b
           WHERE b.status = :status
             AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) >= COALESCE(:min, 0))
@@ -183,42 +194,49 @@ public interface BookRepository extends JpaRepository<Book, String> {
       @Param("max") Integer max,
       Pageable pageable);
 
-  @Query("""
+  @Query(
+      """
           SELECT b FROM Book b
           WHERE b.discount > 0 AND b.status = :status
             AND ((b.price - b.discount) >= COALESCE(:min, 0))
             AND ((b.price - b.discount) <= COALESCE(:max, 999999999))
       """)
-  Page<Book> findDiscountedAndPriceRange(@Param("status") int status,
+  Page<Book> findDiscountedAndPriceRange(
+      @Param("status") int status,
       @Param("min") Integer min,
       @Param("max") Integer max,
       Pageable pageable);
 
-  @Query("""
+  @Query(
+      """
           SELECT b FROM Book b
           WHERE b.discount > 0 AND b.status = :status
             AND ((b.price - b.discount) >= COALESCE(:min, 0))
             AND ((b.price - b.discount) <= COALESCE(:max, 999999999))
           ORDER BY (b.price - b.discount) ASC
       """)
-  Page<Book> findDiscountedAndPriceRangeOrderByEffectivePriceAsc(@Param("status") int status,
+  Page<Book> findDiscountedAndPriceRangeOrderByEffectivePriceAsc(
+      @Param("status") int status,
       @Param("min") Integer min,
       @Param("max") Integer max,
       Pageable pageable);
 
-  @Query("""
+  @Query(
+      """
           SELECT b FROM Book b
           WHERE b.discount > 0 AND b.status = :status
             AND ((b.price - b.discount) >= COALESCE(:min, 0))
             AND ((b.price - b.discount) <= COALESCE(:max, 999999999))
           ORDER BY (b.price - b.discount) DESC
       """)
-  Page<Book> findDiscountedAndPriceRangeOrderByEffectivePriceDesc(@Param("status") int status,
+  Page<Book> findDiscountedAndPriceRangeOrderByEffectivePriceDesc(
+      @Param("status") int status,
       @Param("min") Integer min,
       @Param("max") Integer max,
       Pageable pageable);
 
-  @Query("""
+  @Query(
+      """
           SELECT b FROM Book b
           LEFT JOIN OrderDetail od ON od.book = b
           LEFT JOIN od.order o
@@ -228,12 +246,14 @@ public interface BookRepository extends JpaRepository<Book, String> {
           GROUP BY b
           ORDER BY SUM(COALESCE(od.quantity, 0)) DESC
       """)
-  Page<Book> findDiscountedAndPriceRangeOrderByTotalSold(@Param("status") int status,
+  Page<Book> findDiscountedAndPriceRangeOrderByTotalSold(
+      @Param("status") int status,
       @Param("min") Integer min,
       @Param("max") Integer max,
       Pageable pageable);
 
-  @Query("""
+  @Query(
+      """
           SELECT b FROM Book b
           WHERE b.discount > 0 AND b.status = :status
             AND ((b.price - b.discount) >= COALESCE(:min, 0))
@@ -245,51 +265,59 @@ public interface BookRepository extends JpaRepository<Book, String> {
              OR LOWER(b.category.name) LIKE LOWER(CONCAT('%', :q, '%'))
             )
       """)
-  Page<Book> searchDiscountedActiveCategoryAndPrice(@Param("q") String q,
+  Page<Book> searchDiscountedActiveCategoryAndPrice(
+      @Param("q") String q,
       @Param("status") int status,
       @Param("min") Integer min,
       @Param("max") Integer max,
       Pageable pageable);
 
-  @Query("""
+  @Query(
+      """
           SELECT b FROM Book b
           WHERE b.category.slug = :slug AND b.status = :status
             AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) >= COALESCE(:min, 0))
             AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) <= COALESCE(:max, 999999999))
       """)
-  Page<Book> findByCategorySlugAndStatusAndPriceRange(@Param("slug") String slug,
+  Page<Book> findByCategorySlugAndStatusAndPriceRange(
+      @Param("slug") String slug,
       @Param("status") int status,
       @Param("min") Integer min,
       @Param("max") Integer max,
       Pageable pageable);
 
-  @Query("""
+  @Query(
+      """
           SELECT b FROM Book b
           WHERE b.category.slug = :slug AND b.status = :status
             AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) >= COALESCE(:min, 0))
             AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) <= COALESCE(:max, 999999999))
           ORDER BY (CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) ASC
       """)
-  Page<Book> findByCategorySlugAndStatusAndPriceRangeOrderByEffectivePriceAsc(@Param("slug") String slug,
+  Page<Book> findByCategorySlugAndStatusAndPriceRangeOrderByEffectivePriceAsc(
+      @Param("slug") String slug,
       @Param("status") int status,
       @Param("min") Integer min,
       @Param("max") Integer max,
       Pageable pageable);
 
-  @Query("""
+  @Query(
+      """
           SELECT b FROM Book b
           WHERE b.category.slug = :slug AND b.status = :status
             AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) >= COALESCE(:min, 0))
             AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) <= COALESCE(:max, 999999999))
           ORDER BY (CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) DESC
       """)
-  Page<Book> findByCategorySlugAndStatusAndPriceRangeOrderByEffectivePriceDesc(@Param("slug") String slug,
+  Page<Book> findByCategorySlugAndStatusAndPriceRangeOrderByEffectivePriceDesc(
+      @Param("slug") String slug,
       @Param("status") int status,
       @Param("min") Integer min,
       @Param("max") Integer max,
       Pageable pageable);
 
-  @Query("""
+  @Query(
+      """
           SELECT b FROM Book b
           LEFT JOIN OrderDetail od ON od.book = b
           LEFT JOIN od.order o
@@ -299,13 +327,15 @@ public interface BookRepository extends JpaRepository<Book, String> {
           GROUP BY b
           ORDER BY SUM(COALESCE(od.quantity, 0)) DESC
       """)
-  Page<Book> findByCategorySlugAndStatusAndPriceRangeOrderByTotalSold(@Param("slug") String slug,
+  Page<Book> findByCategorySlugAndStatusAndPriceRangeOrderByTotalSold(
+      @Param("slug") String slug,
       @Param("status") int status,
       @Param("min") Integer min,
       @Param("max") Integer max,
       Pageable pageable);
 
-  @Query("""
+  @Query(
+      """
           SELECT b FROM Book b
           WHERE b.category.slug = :slug AND b.status = :status
             AND ((CASE WHEN b.discount > 0 THEN (b.price - b.discount) ELSE b.price END) >= COALESCE(:min, 0))
@@ -317,7 +347,8 @@ public interface BookRepository extends JpaRepository<Book, String> {
              OR LOWER(b.category.name) LIKE LOWER(CONCAT('%', :q, '%'))
             )
       """)
-  Page<Book> searchByCategoryAndTitleAuthorPublisherCategoryAndPrice(@Param("slug") String slug,
+  Page<Book> searchByCategoryAndTitleAuthorPublisherCategoryAndPrice(
+      @Param("slug") String slug,
       @Param("q") String q,
       @Param("status") int status,
       @Param("min") Integer min,
@@ -325,7 +356,8 @@ public interface BookRepository extends JpaRepository<Book, String> {
       Pageable pageable);
 
   // bestseller
-  @Query("""
+  @Query(
+      """
           SELECT b
           FROM Book b
           JOIN OrderDetail od ON od.book = b
@@ -335,9 +367,11 @@ public interface BookRepository extends JpaRepository<Book, String> {
           GROUP BY b
           ORDER BY SUM(od.quantity) DESC
       """)
-  Page<Book> findByStatusInOrderByTotalSold(@Param("statuses") List<Integer> statuses, Pageable pageable);
+  Page<Book> findByStatusInOrderByTotalSold(
+      @Param("statuses") List<Integer> statuses, Pageable pageable);
 
-  @Query("""
+  @Query(
+      """
           SELECT b
           FROM Book b
           LEFT JOIN OrderDetail od ON od.book = b
@@ -349,7 +383,8 @@ public interface BookRepository extends JpaRepository<Book, String> {
       """)
   Page<Book> findByStatusOrderByTotalSold(@Param("status") Integer status, Pageable pageable);
 
-  @Query("""
+  @Query(
+      """
           SELECT b
           FROM Book b
           LEFT JOIN OrderDetail od ON od.book = b
@@ -361,7 +396,8 @@ public interface BookRepository extends JpaRepository<Book, String> {
       """)
   Page<Book> findDiscountedOrderByTotalSold(@Param("status") int status, Pageable pageable);
 
-  @Query("""
+  @Query(
+      """
           SELECT b
           FROM Book b
           LEFT JOIN OrderDetail od ON od.book = b
@@ -371,7 +407,6 @@ public interface BookRepository extends JpaRepository<Book, String> {
           HAVING SUM(COALESCE(od.quantity, 0)) > 0
           ORDER BY SUM(COALESCE(od.quantity, 0)) DESC
       """)
-  Page<Book> findByCategorySlugAndStatusOrderByTotalSold(@Param("slug") String slug, @Param("status") int status,
-      Pageable pageable);
-
+  Page<Book> findByCategorySlugAndStatusOrderByTotalSold(
+      @Param("slug") String slug, @Param("status") int status, Pageable pageable);
 }

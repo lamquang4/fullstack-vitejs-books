@@ -23,24 +23,24 @@ import lombok.Setter;
 @Builder
 public class OrderDetail {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private String id;
 
-    @Column(nullable = false)
-    private Integer quantity;
+  @Column(nullable = false)
+  private Integer quantity;
 
-    @Column(nullable = false)
-    private Double price;
+  @Column(nullable = false)
+  private Double price;
 
-    @Column(nullable = false)
-    private Double discount;
+  @Column(nullable = false)
+  private Double discount;
 
-    @ManyToOne
-    @JoinColumn(name = "bookId", nullable = false)
-    private Book book;
+  @ManyToOne
+  @JoinColumn(name = "bookId", nullable = false)
+  private Book book;
 
-    @ManyToOne
-    @JoinColumn(name = "orderId", nullable = false)
-    private Order order;
+  @ManyToOne
+  @JoinColumn(name = "orderId", nullable = false)
+  private Order order;
 }

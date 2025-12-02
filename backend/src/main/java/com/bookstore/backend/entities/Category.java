@@ -1,9 +1,8 @@
 package com.bookstore.backend.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDateTime;
+import lombok.*;
 
 @Entity
 @Table(name = "category")
@@ -13,20 +12,20 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class Category {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private String id;
 
-    @Column(nullable = false, unique = true, length = 50)
-    private String name;
+  @Column(nullable = false, unique = true, length = 50)
+  private String name;
 
-    @Column(nullable = false, unique = true, length = 50)
-    private String slug;
+  @Column(nullable = false, unique = true, length = 50)
+  private String slug;
 
-    @Column(nullable = false)
-    private Integer status;
+  @Column(nullable = false)
+  private Integer status;
 
-    @Builder.Default
-    @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+  @Builder.Default
+  @Column(nullable = false)
+  private LocalDateTime createdAt = LocalDateTime.now();
 }
