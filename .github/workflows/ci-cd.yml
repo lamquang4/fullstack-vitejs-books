@@ -54,6 +54,7 @@ jobs:
         working-directory: ./frontend
         run: npm run lint
 
+      # Save test failure
       - name: Save test error log
         if: failure()
         run: |
@@ -61,13 +62,24 @@ jobs:
           echo "Commit: $GITHUB_SHA" >> test-error-log.md
           echo "Branch: $GITHUB_REF_NAME" >> test-error-log.md
 
-  # Lưu lỗi của job test
+      - name: Upload test error artifact
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-error-log
+          path: test-error-log.md
+
   report-test-failure:
     runs-on: ubuntu-latest
     needs: test
     if: ${{ needs.test.result == 'failure' }}
     steps:
       - uses: actions/checkout@v3
+
+      - name: Download test error artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: test-error-log
 
       - name: Create Issue for test failure
         uses: peter-evans/create-issue-from-file@v5
@@ -105,13 +117,25 @@ jobs:
           echo "Commit: $GITHUB_SHA" >> deploy-error-log.md
           echo "Branch: $GITHUB_REF_NAME" >> deploy-error-log.md
 
-  # Lưu lỗi của job deploy
+      - name: Upload CD error artifact
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-error-log
+          path: deploy-error-log.md
+
   report-deploy-failure:
     runs-on: ubuntu-latest
     needs: deploy
     if: ${{ needs.deploy.result == 'failure' }}
     steps:
       - uses: actions/checkout@v3
+
+      - name: Download CD error artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: deploy-error-log
+
       - name: Create Issue for deploy failure
         uses: peter-evans/create-issue-from-file@v5
         with:
