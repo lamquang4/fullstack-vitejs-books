@@ -54,21 +54,22 @@ jobs:
         working-directory: ./frontend
         run: npm run lint
 
-      # Save test failure
       - name: Save test error log
         if: failure()
         run: |
-          echo "Failed at step: $GITHUB_JOB" > test-error-log.md
+          # $GITHUB_JOB là tên của job hiện tại, ở đây là 'test'
+          echo "Failed at job: test" > test-error-log.md
           echo "Commit: $GITHUB_SHA" >> test-error-log.md
           echo "Branch: $GITHUB_REF_NAME" >> test-error-log.md
 
-      - name: Upload test error artifact
+      - name: Upload test error log Artifact
+        uses: actions/upload-artifact@v3
         if: failure()
-        uses: actions/upload-artifact@v4
         with:
           name: test-error-log
           path: test-error-log.md
 
+  # Lưu lỗi của job test
   report-test-failure:
     runs-on: ubuntu-latest
     needs: test
@@ -76,15 +77,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Download test error artifact
-        uses: actions/download-artifact@v4
+      - name: Download test error log Artifact
+        uses: actions/download-artifact@v3
         with:
           name: test-error-log
+          path: .
 
       - name: Create Issue for test failure
         uses: peter-evans/create-issue-from-file@v5
         with:
-          title: "CI Pipeline Failed"
+          title: "CI Pipeline Failed: Test Job Error"
           content-filepath: ./test-error-log.md
           labels: "ci,error"
 
@@ -92,7 +94,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: test
-    if: ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/main' && needs.test.result == 'success' }}
 
     steps:
       - name: Checkout code
@@ -113,17 +115,18 @@ jobs:
       - name: Save CD error log
         if: failure()
         run: |
-          echo "Failed at step: $GITHUB_JOB" > deploy-error-log.md
+          echo "Failed at job: deploy" > deploy-error-log.md
           echo "Commit: $GITHUB_SHA" >> deploy-error-log.md
           echo "Branch: $GITHUB_REF_NAME" >> deploy-error-log.md
 
-      - name: Upload CD error artifact
+      - name: Upload deploy error log Artifact
+        uses: actions/upload-artifact@v3
         if: failure()
-        uses: actions/upload-artifact@v4
         with:
           name: deploy-error-log
           path: deploy-error-log.md
 
+  # Lưu lỗi của job deploy
   report-deploy-failure:
     runs-on: ubuntu-latest
     needs: deploy
@@ -131,14 +134,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Download CD error artifact
-        uses: actions/download-artifact@v4
+      - name: Download deploy error log Artifact
+        uses: actions/download-artifact@v3
         with:
           name: deploy-error-log
+          path: .
 
       - name: Create Issue for deploy failure
         uses: peter-evans/create-issue-from-file@v5
         with:
-          title: "CD Pipeline Failed"
-          content-filepath: ./deploy-error-log.md
+          title: "CD Pipeline Failed: Deploy Job Error"
+          content-filepath: ./deploy-error-log.md # Sử dụng file đã tải về
           labels: "cd,error"
