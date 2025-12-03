@@ -2,9 +2,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches:
-      - testing
-      - main
+    branches: [testing, main]
 
 jobs:
   test:
@@ -81,7 +79,7 @@ jobs:
     if: failure()
     permissions:
       issues: write
-    
+
     steps:
       - name: Create Issue on Failure using GitHub Script
         uses: actions/github-script@v7
@@ -102,7 +100,7 @@ jobs:
               
               *Created by GitHub Actions.*
             `;
-            
+
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -113,45 +111,45 @@ jobs:
             });
 
   close_issue:
-      runs-on: ubuntu-latest
-      needs: [test, deploy]
-      if: success()
-      permissions:
-        issues: write
-      
-      steps:
-        - name: Close Failure Issue on Success
-          uses: actions/github-script@v7
-          with:
-            github-token: ${{ secrets.GITHUB_TOKEN }}
-            script: |
-              const issueTitle = `FAILURE: CI/CD Pipeline Failed on branch ${{ github.ref_name }}`;
-              const failureLabel = 'ci/cd-failure';
-              const owner = context.repo.owner;
-              const repo = context.repo.repo;
+    runs-on: ubuntu-latest
+    needs: [test, deploy]
+    if: ${{ needs.test.result == 'success' || needs.deploy.result == 'success' }}
+    permissions:
+      issues: write
 
-              const issues = await github.rest.search.issuesAndPullRequests({
-                q: `is:open label:"${failureLabel}" repo:${owner}/${repo} in:title "${issueTitle}"`,
-              });
+    steps:
+      - name: Close Failure Issue on Success
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issueTitle = `FAILURE: CI/CD Pipeline Failed on branch ${{ github.ref_name }}`;
+            const failureLabel = 'ci/cd-failure';
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            const issues = await github.rest.search.issuesAndPullRequests({
+              q: `is:open label:"${failureLabel}" repo:${owner}/${repo} in:title "${issueTitle}"`,
+            });
+
+            if (issues.data.items.length > 0) {
+              const issueNumber = issues.data.items[0].number;
               
-              if (issues.data.items.length > 0) {
-                const issueNumber = issues.data.items[0].number;
-                
-                await github.rest.issues.createComment({
-                  owner,
-                  repo,
-                  issue_number: issueNumber,
-                  body: `The CI/CD pipeline has successfully passed on branch \`${{ github.ref_name }}\`. The previous failure has been resolved!`,
-                });
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: issueNumber,
+                body: `The CI/CD pipeline has successfully passed on branch \`${{ github.ref_name }}\`. The previous failure has been resolved!`,
+              });
 
-                await github.rest.issues.update({
-                  owner,
-                  repo,
-                  issue_number: issueNumber,
-                  state: 'closed',
-                });
+              await github.rest.issues.update({
+                owner,
+                repo,
+                issue_number: issueNumber,
+                state: 'closed',
+              });
 
-                console.log(`Successfully closed Issue #${issueNumber}`);
-              } else {
-                console.log('No open failure issue found for this branch. No action needed.');
-              }
+              console.log(`Successfully closed Issue #${issueNumber}`);
+            } else {
+              console.log('No open failure issue found for this branch. No action needed.');
+            }
