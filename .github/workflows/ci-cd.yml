@@ -73,7 +73,7 @@ jobs:
         uses: peter-evans/create-issue-from-file@v5
         with:
           title: "CI Pipeline Failed"
-          content-filepath: ./ci-error-log.md
+          content-filepath: ./test-error-log.md
           labels: "ci,error"
 
   # CD
