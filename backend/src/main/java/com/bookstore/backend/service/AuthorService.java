@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthorService {
 
-  private final AuthorRepositorys authorRepository;
+  private final AuthorRepository authorRepository;
   private final BookRepository bookRepository;
 
   public AuthorService(AuthorRepository authorRepository, BookRepository bookRepository) {
@@ -79,10 +79,9 @@ public class AuthorService {
 
   // xóa author
   public void deleteAuthor(String id) {
-    Author author =
-        authorRepository
-            .findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy tác giả"));
+    Author author = authorRepository
+        .findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy tác giả"));
 
     if (bookRepository.existsByAuthor(author)) {
       throw new IllegalStateException("Tác giả này không thể xóa vì vẫn còn sách liên kết với họ");
