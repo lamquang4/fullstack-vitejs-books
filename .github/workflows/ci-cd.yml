@@ -58,6 +58,7 @@ jobs:
         if: failure()
         uses: peter-evans/create-issue@v5
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           title: "CI test failed - Run #${{ github.run_number }}"
           body: |
             The CI test job failed.
@@ -67,7 +68,7 @@ jobs:
             **Run URL:** https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
             Please check the workflow logs for more details.
-          labels: "ci,failure"
+          labels: ci,failure
 
   deploy:
     runs-on: ubuntu-latest
@@ -94,6 +95,7 @@ jobs:
         if: failure()
         uses: peter-evans/create-issue@v5
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           title: "Deploy failed - Run #${{ github.run_number }}"
           body: |
             The deploy job failed.
