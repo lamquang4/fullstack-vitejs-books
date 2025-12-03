@@ -72,7 +72,7 @@ jobs:
           curl -X POST "https://api.render.com/deploy/${{ secrets.RENDER_BACKEND_SERVICE_ID }}" \
           -H "Accept: application/json" \
           -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}"
-  
+
   create_issue:
     runs-on: ubuntu-latest
     needs: [test, deploy]
@@ -110,68 +110,68 @@ jobs:
               assignees: ['${{ github.actor }}']
             });
 
-close_issue_test:
-  runs-on: ubuntu-latest
-  needs: test
-  if: ${{ needs.test.result == 'success' }}
-  permissions:
-    issues: write
-  steps:
-    - name: Close Issue after Test Pass
-      uses: actions/github-script@v7
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          const issueTitle = `FAILURE: CI/CD Pipeline Failed on branch ${{ github.ref_name }}`;
-          const failureLabel = 'ci/cd-failure';
-          const issues = await github.rest.search.issuesAndPullRequests({
-            q: `is:open label:"${failureLabel}" repo:${context.repo.owner}/${context.repo.repo} in:title "${issueTitle}"`,
-          });
-          if (issues.data.items.length > 0) {
-            const issueNumber = issues.data.items[0].number;
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issueNumber,
-              body: `Test job has passed. Closing the previous failure issue.`,
+  close_issue_test:
+    runs-on: ubuntu-latest
+    needs: test
+    if: ${{ needs.test.result == 'success' }}
+    permissions:
+      issues: write
+    steps:
+      - name: Close Issue after Test Pass
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issueTitle = `FAILURE: CI/CD Pipeline Failed on branch ${{ github.ref_name }}`;
+            const failureLabel = 'ci/cd-failure';
+            const issues = await github.rest.search.issuesAndPullRequests({
+              q: `is:open label:"${failureLabel}" repo:${context.repo.owner}/${context.repo.repo} in:title "${issueTitle}"`,
             });
-            await github.rest.issues.update({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issueNumber,
-              state: 'closed',
-            });
-          }
+            if (issues.data.items.length > 0) {
+              const issueNumber = issues.data.items[0].number;
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: `Test job has passed. Closing the previous failure issue.`,
+              });
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                state: 'closed',
+              });
+            }
 
-close_issue_deploy:
-  runs-on: ubuntu-latest
-  needs: deploy
-  if: ${{ needs.deploy.result == 'success' }}
-  permissions:
-    issues: write
-  steps:
-    - name: Close Issue after Deploy Pass
-      uses: actions/github-script@v7
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          const issueTitle = `FAILURE: CI/CD Pipeline Failed on branch ${{ github.ref_name }}`;
-          const failureLabel = 'ci/cd-failure';
-          const issues = await github.rest.search.issuesAndPullRequests({
-            q: `is:open label:"${failureLabel}" repo:${context.repo.owner}/${context.repo.repo} in:title "${issueTitle}"`,
-          });
-          if (issues.data.items.length > 0) {
-            const issueNumber = issues.data.items[0].number;
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issueNumber,
-              body: `Deploy job has passed. Closing the previous failure issue.`,
+  close_issue_deploy:
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: ${{ needs.deploy.result == 'success' }}
+    permissions:
+      issues: write
+    steps:
+      - name: Close Issue after Deploy Pass
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issueTitle = `FAILURE: CI/CD Pipeline Failed on branch ${{ github.ref_name }}`;
+            const failureLabel = 'ci/cd-failure';
+            const issues = await github.rest.search.issuesAndPullRequests({
+              q: `is:open label:"${failureLabel}" repo:${context.repo.owner}/${context.repo.repo} in:title "${issueTitle}"`,
             });
-            await github.rest.issues.update({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issueNumber,
-              state: 'closed',
-            });
-          }
+            if (issues.data.items.length > 0) {
+              const issueNumber = issues.data.items[0].number;
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: `Deploy job has passed. Closing the previous failure issue.`,
+              });
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                state: 'closed',
+              });
+            }
