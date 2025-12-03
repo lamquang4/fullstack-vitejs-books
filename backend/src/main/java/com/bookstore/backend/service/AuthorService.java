@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthorService {
 
-  private final AuthorRepository authorRepository;
+  private final AuthorRepositorys authorRepository;
   private final BookRepository bookRepository;
 
   public AuthorService(AuthorRepository authorRepository, BookRepository bookRepository) {
