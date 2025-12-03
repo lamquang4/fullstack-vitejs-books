@@ -76,7 +76,7 @@ jobs:
   create_issue:
     runs-on: ubuntu-latest
     needs: [test, deploy]
-    if: ${{ needs.test.result == 'failure' || (github.ref == 'refs/heads/main' && needs.deploy.result == 'failure') }}
+    if: failure()
     permissions:
       issues: write
 
@@ -111,54 +111,54 @@ jobs:
             });
 
   close_issue:
-    runs-on: ubuntu-latest
-    needs: [test, deploy]
-    if: ${{ needs.test.result == 'success' || (github.ref == 'refs/heads/main' && needs.deploy.result == 'success') }}
-    permissions:
-      issues: write
-    steps:
-      - name: Close Issues After Jobs Pass
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const failureLabel = 'ci/cd-failure';
-            const issueTitle = `FAILURE: CI/CD Pipeline Failed on branch ${{ github.ref_name }}`;
+      runs-on: ubuntu-latest
+      needs: [test, deploy]
+      if: ${{ needs.test.result == 'success' || (github.ref == 'refs/heads/main' && needs.deploy.result == 'success') }}
+      permissions:
+        issues: write
+      steps:
+        - name: Close Issues After Jobs Pass
+          uses: actions/github-script@v7
+          with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            script: |
+              const failureLabel = 'ci/cd-failure';
+              const issueTitle = `FAILURE: CI/CD Pipeline Failed on branch ${{ github.ref_name }}`;
 
-            const issues = await github.rest.search.issuesAndPullRequests({
-              q: `is:open label:"${failureLabel}" repo:${context.repo.owner}/${context.repo.repo} in:title "${issueTitle}"`,
-            });
-
-            if (issues.data.items.length === 0) return;
-
-            const issueNumber = issues.data.items[0].number;
-
-            if (needs.test.result === 'success') {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issueNumber,
-                body: `Test job has passed. Closing the previous failure issue.`,
+              const issues = await github.rest.search.issuesAndPullRequests({
+                q: `is:open label:"${failureLabel}" repo:${context.repo.owner}/${context.repo.repo} in:title "${issueTitle}"`,
               });
-              await github.rest.issues.update({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issueNumber,
-                state: 'closed',
-              });
-            }
 
-            if (github.ref === 'refs/heads/main' && needs.deploy.result === 'success') {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issueNumber,
-                body: `Deploy job has passed. Closing the previous failure issue.`,
-              });
-              await github.rest.issues.update({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issueNumber,
-                state: 'closed',
-              });
-            }
+              if (issues.data.items.length === 0) return;
+
+              const issueNumber = issues.data.items[0].number;
+
+              if (needs.test.result === 'success') {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  body: `Test job has passed. Closing the previous failure issue.`,
+                });
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  state: 'closed',
+                });
+              }
+
+              if (github.ref === 'refs/heads/main' && needs.deploy.result === 'success') {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  body: `Deploy job has passed. Closing the previous failure issue.`,
+                });
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  state: 'closed',
+                });
+              }
