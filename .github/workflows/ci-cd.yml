@@ -82,7 +82,7 @@ jobs:
 
     steps:
       - name: Create Issue on Failure
-        uses: peter-evans/create-issue@v5
+        uses: peter-evans/create-or-update-issue@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           title: "FAILURE: CI/CD Pipeline Failed on branch ${{ github.ref_name }}"
