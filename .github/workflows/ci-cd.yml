@@ -54,22 +54,6 @@ jobs:
         working-directory: ./frontend
         run: npm run lint
 
-      - name: Create issue on test failure
-        if: failure()
-        uses: peter-evans/create-issue@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          title: "CI test failed - Run #${{ github.run_number }}"
-          body: |
-            The CI test job failed.
-
-            **Repo:** ${{ github.repository }}
-            **Branch:** ${{ github.ref }}
-            **Run URL:** https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-
-            Please check the workflow logs for more details.
-          labels: ci,failure
-
   deploy:
     runs-on: ubuntu-latest
     needs: test
@@ -91,18 +75,31 @@ jobs:
           -H "Accept: application/json" \
           -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}"
 
-      - name: Create issue on deploy failure
-        if: failure()
-        uses: peter-evans/create-issue@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          title: "Deploy failed - Run #${{ github.run_number }}"
-          body: |
-            The deploy job failed.
-
-            **Repo:** ${{ github.repository }}
-            **Branch:** ${{ github.ref }}
-            **Run URL:** https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-
-            Please check the workflow logs for more details.
-          labels: "deploy,failure"
+  create_issue:
+      runs-on: ubuntu-latest
+      needs: [test, deploy]
+      if: failure()
+      
+      steps:
+        - name: Create Issue on Failure
+          uses: peter-evans/create-or-update-issue@v4
+          with:
+            token: ${{ secrets.GITHUB_TOKEN }}
+            title: "FAILURE: CI/CD Pipeline Failed on branch ${{ github.ref_name }}"
+            body: |
+              Pipeline CI/CD đã thất bại.
+              
+              **Workflow Run URL:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+              
+              **Branch:** `${{ github.ref_name }}`
+              **Commit:** `${{ github.sha }}`
+              
+              Vui lòng kiểm tra log của các jobs sau:
+              * **Test Job Status:** `${{ needs.test.result }}`
+              * **Deploy Job Status:** `${{ needs.deploy.result }}`
+              
+              *Được tạo bởi GitHub Actions.*
+            labels: |
+              bug
+              ci/cd-failure
+            assignees: ${{ github.actor }}
