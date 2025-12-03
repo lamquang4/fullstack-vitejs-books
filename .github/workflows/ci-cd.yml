@@ -54,6 +54,21 @@ jobs:
         working-directory: ./frontend
         run: npm run lint
 
+      - name: Create issue on test failure
+        if: failure()
+        uses: peter-evans/create-issue@v5
+        with:
+          title: "CI test failed - Run #${{ github.run_number }}"
+          body: |
+            The CI test job failed.
+
+            **Repo:** ${{ github.repository }}
+            **Branch:** ${{ github.ref }}
+            **Run URL:** https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            Please check the workflow logs for more details.
+          labels: "ci,failure"
+
   deploy:
     runs-on: ubuntu-latest
     needs: test
@@ -74,3 +89,18 @@ jobs:
           curl -X POST "https://api.render.com/deploy/${{ secrets.RENDER_BACKEND_SERVICE_ID }}" \
           -H "Accept: application/json" \
           -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}"
+
+      - name: Create issue on deploy failure
+        if: failure()
+        uses: peter-evans/create-issue@v5
+        with:
+          title: "Deploy failed - Run #${{ github.run_number }}"
+          body: |
+            The deploy job failed.
+
+            **Repo:** ${{ github.repository }}
+            **Branch:** ${{ github.ref }}
+            **Run URL:** https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            Please check the workflow logs for more details.
+          labels: "deploy,failure"
