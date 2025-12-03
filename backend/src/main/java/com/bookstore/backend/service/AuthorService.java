@@ -79,9 +79,10 @@ public class AuthorService {
 
   // xóa author
   public void deleteAuthor(String id) {
-    Author author = authorRepository
-        .findById(id)
-        .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy tác giả"));
+    Author author =
+        authorRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy tác giả"));
 
     if (bookRepository.existsByAuthor(author)) {
       throw new IllegalStateException("Tác giả này không thể xóa vì vẫn còn sách liên kết với họ");
