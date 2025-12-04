@@ -2,7 +2,14 @@ package com.bookstore.backend.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.bookstore.backend.entities.*;
+import com.bookstore.backend.entities.Author;
+import com.bookstore.backend.entities.Book;
+import com.bookstore.backend.entities.Cart;
+import com.bookstore.backend.entities.CartItem;
+import com.bookstore.backend.entities.Category;
+import com.bookstore.backend.entities.Publisher;
+import com.bookstore.backend.entities.User;
+import java.time.LocalDate;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -71,7 +78,7 @@ class CartItemRepositoryTest {
                 .price(100.0)
                 .discount(0.0)
                 .description("Description")
-                .publicationDate("2024")
+                .publicationDate(LocalDate.of(2024, 5, 1))
                 .numberOfPages(120)
                 .weight(200.0)
                 .width(10.0)
@@ -104,7 +111,7 @@ class CartItemRepositoryTest {
                 .price(150.0)
                 .discount(10.0)
                 .description("Desc")
-                .publicationDate("2025")
+                .publicationDate(LocalDate.of(2025, 2, 1))
                 .numberOfPages(150)
                 .weight(250.0)
                 .width(12.0)

@@ -9,6 +9,7 @@ import com.bookstore.backend.entities.Order;
 import com.bookstore.backend.entities.OrderDetail;
 import com.bookstore.backend.entities.Publisher;
 import com.bookstore.backend.entities.User;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,7 +63,7 @@ class OrderRepositoryTest {
                 .price(100.0)
                 .discount(0.0)
                 .description("desc")
-                .publicationDate("2020")
+                .publicationDate(LocalDate.of(2020, 1, 1))
                 .numberOfPages(100)
                 .weight(1.0)
                 .width(10.0)

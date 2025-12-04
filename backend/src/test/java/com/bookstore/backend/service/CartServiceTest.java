@@ -1,15 +1,24 @@
 package com.bookstore.backend.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.bookstore.backend.dto.CartDTO;
-import com.bookstore.backend.entities.*;
+import com.bookstore.backend.entities.Book;
+import com.bookstore.backend.entities.Cart;
+import com.bookstore.backend.entities.CartItem;
+import com.bookstore.backend.entities.ImageBook;
+import com.bookstore.backend.entities.User;
 import com.bookstore.backend.repository.BookRepository;
 import com.bookstore.backend.repository.CartItemRepository;
 import com.bookstore.backend.repository.CartRepository;
 import com.bookstore.backend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +59,7 @@ class CartServiceTest {
             .price(100.0)
             .discount(10.0)
             .stock(20)
+            .publicationDate(LocalDate.of(2024, 1, 1))
             .images(
                 List.of(
                     ImageBook.builder()

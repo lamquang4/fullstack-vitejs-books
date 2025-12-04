@@ -1,7 +1,4 @@
 -- MySQL dump 10.13  Distrib 8.0.43, for Win64 (x86_64)
---
--- Host: localhost    Database: bookstore
--- ------------------------------------------------------
 -- Server version	8.0.43
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -90,7 +87,7 @@ CREATE TABLE `book` (
   `length` double NOT NULL,
   `number_of_pages` int NOT NULL,
   `price` double NOT NULL,
-  `publication_date` varchar(255) NOT NULL,
+  `publication_date` date NOT NULL,
   `slug` varchar(255) NOT NULL,
   `status` int NOT NULL,
   `stock` int NOT NULL,
@@ -404,4 +401,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-01 18:21:26
+-- Dump completed on 2025-12-04 16:35:29

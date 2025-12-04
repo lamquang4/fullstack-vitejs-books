@@ -1,14 +1,25 @@
 package com.bookstore.backend.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.bookstore.backend.entities.Book;
 import com.bookstore.backend.entities.Category;
-import com.bookstore.backend.repository.*;
+import com.bookstore.backend.repository.BookRepository;
+import com.bookstore.backend.repository.CartItemRepository;
+import com.bookstore.backend.repository.CategoryRepository;
+import com.bookstore.backend.repository.ImageBookRepository;
+import com.bookstore.backend.repository.OrderDetailRepository;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,6 +58,7 @@ class BookService_UpdateTest {
             .price(100.0)
             .discount(10.0)
             .stock(10)
+            .publicationDate(LocalDate.of(2024, 1, 1))
             .numberOfPages(300)
             .weight(200.0)
             .width(10.0)
@@ -61,6 +73,7 @@ class BookService_UpdateTest {
             .price(200.0)
             .discount(20.0)
             .stock(5)
+            .publicationDate(LocalDate.of(2025, 1, 1))
             .numberOfPages(250)
             .weight(300.0)
             .width(12.0)

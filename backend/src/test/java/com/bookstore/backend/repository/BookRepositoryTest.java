@@ -9,6 +9,7 @@ import com.bookstore.backend.entities.Order;
 import com.bookstore.backend.entities.OrderDetail;
 import com.bookstore.backend.entities.Publisher;
 import com.bookstore.backend.entities.User;
+import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,7 @@ class BookRepositoryTest {
                 .price(100.0)
                 .discount(20.0)
                 .description("desc")
-                .publicationDate("2021")
+                .publicationDate(LocalDate.of(2020, 2, 1))
                 .numberOfPages(200)
                 .weight(1.0)
                 .width(10.0)
@@ -167,7 +168,7 @@ class BookRepositoryTest {
                 .price(200.0)
                 .discount(50.0)
                 .description("desc")
-                .publicationDate("2020")
+                .publicationDate(LocalDate.of(2020, 1, 1))
                 .numberOfPages(100)
                 .weight(1.0)
                 .width(10.0)

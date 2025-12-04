@@ -6,6 +6,7 @@ import com.bookstore.backend.entities.Author;
 import com.bookstore.backend.entities.Book;
 import com.bookstore.backend.entities.Category;
 import com.bookstore.backend.entities.Publisher;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -99,7 +100,7 @@ class CategoryRepositoryTest {
             .price(100.0)
             .discount(0.0)
             .description("desc")
-            .publicationDate("2020")
+            .publicationDate(LocalDate.of(2020, 1, 1))
             .numberOfPages(100)
             .weight(1.0)
             .width(1.0)

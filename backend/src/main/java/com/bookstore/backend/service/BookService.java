@@ -285,7 +285,8 @@ public class BookService {
             .findBySlugAndStatus(slug, 1)
             .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy sách"));
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     AuthorDTO authorDTO = null;
     if (book.getAuthor() != null) {
@@ -322,7 +323,7 @@ public class BookService {
                             img.getId(),
                             img.getImage(),
                             img.getCreatedAt() != null
-                                ? img.getCreatedAt().format(formatter)
+                                ? img.getCreatedAt().format(dateTimeFormatter)
                                 : null))
                 .collect(Collectors.toList())
             : Collections.emptyList();
@@ -335,14 +336,14 @@ public class BookService {
         book.getDescription(),
         book.getSlug(),
         book.getNumberOfPages(),
-        book.getPublicationDate(),
+        book.getPublicationDate().format(dateFormatter),
         book.getWeight(),
         book.getWidth(),
         book.getLength(),
         book.getThickness(),
         book.getStock(),
         book.getStatus(),
-        book.getCreatedAt() != null ? book.getCreatedAt().format(formatter) : null,
+        book.getCreatedAt() != null ? book.getCreatedAt().format(dateTimeFormatter) : null,
         authorDTO,
         publisherDTO,
         categoryDTO,
@@ -356,7 +357,8 @@ public class BookService {
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy sách"));
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     AuthorDTO authorDTO = null;
     if (book.getAuthor() != null) {
@@ -393,7 +395,7 @@ public class BookService {
                             img.getId(),
                             img.getImage(),
                             img.getCreatedAt() != null
-                                ? img.getCreatedAt().format(formatter)
+                                ? img.getCreatedAt().format(dateTimeFormatter)
                                 : null))
                 .collect(Collectors.toList())
             : Collections.emptyList();
@@ -406,14 +408,14 @@ public class BookService {
         book.getDescription(),
         book.getSlug(),
         book.getNumberOfPages(),
-        book.getPublicationDate(),
+        book.getPublicationDate().format(dateFormatter),
         book.getWeight(),
         book.getWidth(),
         book.getLength(),
         book.getThickness(),
         book.getStock(),
         book.getStatus(),
-        book.getCreatedAt() != null ? book.getCreatedAt().format(formatter) : null,
+        book.getCreatedAt() != null ? book.getCreatedAt().format(dateTimeFormatter) : null,
         authorDTO,
         publisherDTO,
         categoryDTO,

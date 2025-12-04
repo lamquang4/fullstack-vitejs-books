@@ -298,7 +298,12 @@ function BookDetail({ book }: Props) {
                       <span>Ngày xuất bản</span>
                       <span className="font-medium">
                         {new Date(book.publicationDate).toLocaleDateString(
-                          "vi-VN"
+                          "vi-VN",
+                          {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                          }
                         )}
                       </span>
                     </div>
