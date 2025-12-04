@@ -2,14 +2,26 @@ package com.bookstore.backend.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
 import com.bookstore.backend.dto.BookDTO;
 import com.bookstore.backend.dto.BookDetailDTO;
-import com.bookstore.backend.entities.*;
-import com.bookstore.backend.repository.*;
+import com.bookstore.backend.entities.Author;
+import com.bookstore.backend.entities.Book;
+import com.bookstore.backend.entities.Category;
+import com.bookstore.backend.entities.ImageBook;
+import com.bookstore.backend.entities.Publisher;
+import com.bookstore.backend.repository.BookRepository;
+import com.bookstore.backend.repository.CartItemRepository;
+import com.bookstore.backend.repository.CategoryRepository;
+import com.bookstore.backend.repository.ImageBookRepository;
+import com.bookstore.backend.repository.OrderDetailRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -67,6 +79,7 @@ class BookService_GetTest {
             .discount(20.0)
             .status(1)
             .stock(10)
+            .publicationDate(LocalDate.of(2024, 1, 1))
             .createdAt(LocalDateTime.now())
             .author(Author.builder().id("auth1").fullname("John Doe").slug("john-doe").build())
             .publisher(Publisher.builder().id("pub1").name("ABC Publisher").slug("abc-pub").build())

@@ -1,6 +1,7 @@
 package com.bookstore.backend.entities;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.*;
@@ -31,7 +32,7 @@ public class Book {
   private String description;
 
   @Column(nullable = false)
-  private String publicationDate;
+  private LocalDate publicationDate;
 
   @Column(nullable = false)
   private Integer numberOfPages;

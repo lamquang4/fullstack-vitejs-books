@@ -1,7 +1,16 @@
 package com.bookstore.backend.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.bookstore.backend.entities.Book;
 import com.bookstore.backend.entities.Category;
@@ -184,7 +193,6 @@ class BookService_ImageAndDeleteTest {
     when(file.getContentType()).thenReturn("image/jpeg");
     when(imageBookRepository.findById("img1")).thenReturn(Optional.of(img));
 
-    // 5️⃣ mock transferTo ghi đè file thật
     doAnswer(
             inv -> {
               File dest = inv.getArgument(0);

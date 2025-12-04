@@ -7,6 +7,7 @@ import com.bookstore.backend.entities.Book;
 import com.bookstore.backend.entities.Category;
 import com.bookstore.backend.entities.ImageBook;
 import com.bookstore.backend.entities.Publisher;
+import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,7 +52,7 @@ class ImageBookRepositoryTest {
                 .price(100.0)
                 .discount(0.0)
                 .description("desc")
-                .publicationDate("2020")
+                .publicationDate(LocalDate.of(2020, 1, 1))
                 .numberOfPages(300)
                 .weight(1.2)
                 .width(10.0)

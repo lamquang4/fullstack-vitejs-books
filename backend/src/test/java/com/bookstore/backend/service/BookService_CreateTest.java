@@ -1,16 +1,26 @@
 package com.bookstore.backend.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.bookstore.backend.entities.Book;
 import com.bookstore.backend.entities.Category;
 import com.bookstore.backend.entities.ImageBook;
-import com.bookstore.backend.repository.*;
+import com.bookstore.backend.repository.BookRepository;
+import com.bookstore.backend.repository.CartItemRepository;
+import com.bookstore.backend.repository.CategoryRepository;
+import com.bookstore.backend.repository.ImageBookRepository;
+import com.bookstore.backend.repository.OrderDetailRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,6 +64,7 @@ class BookService_CreateTest {
             .length(20.0)
             .thickness(5.0)
             .stock(5)
+            .publicationDate(LocalDate.of(2024, 1, 1))
             .category(activeCategory)
             .build();
   }
