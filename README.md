@@ -85,9 +85,7 @@ Với kiểm soát truy cập, hệ thống cung cấp chức năng đăng nhậ
 
 **Quy trình xử lý giỏ hàng**
 
-<p align="center">
-  <img src="docs/images/qtnv1.pn" alt="">
-</p>
+![](docs/images/qtnv1.png)
 
 **Quy trình đặt hàng và thanh toán**
 
