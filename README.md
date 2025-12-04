@@ -38,8 +38,6 @@
 
 &nbsp;&nbsp;[4.4. Test Summary](#44-test-summary)
 
----
-
 ## 1. Giới thiệu phần mềm
 
 ### 1.1. Tổng quan dự án
@@ -87,7 +85,9 @@ Với kiểm soát truy cập, hệ thống cung cấp chức năng đăng nhậ
 
 **Quy trình xử lý giỏ hàng**
 
-![](docs/images/qtnv1.png)
+<p align="center">
+  <img src="docs/images/qtnv1.pn" alt="">
+</p>
 
 **Quy trình đặt hàng và thanh toán**
 
