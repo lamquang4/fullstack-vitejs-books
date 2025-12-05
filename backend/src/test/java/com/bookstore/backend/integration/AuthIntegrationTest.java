@@ -61,9 +61,7 @@ class AuthIntegrationTest {
     userRepository.save(user);
   }
 
-  // ----------------------
-  // LOGIN SUCCESS
-  // ----------------------
+  // Đăng nhập thành công
   @Test
   void testLoginSuccess() throws Exception {
     LoginRequest request = new LoginRequest("user@gmail.com", "123456");
@@ -88,9 +86,7 @@ class AuthIntegrationTest {
     assertEquals(user.getId(), response.getId());
   }
 
-  // ----------------------
-  // LOGIN - WRONG PASSWORD
-  // ----------------------
+  // Đăng nhập - sai mật khẩu
   @Test
   void testLoginWrongPassword() throws Exception {
     LoginRequest request = new LoginRequest("user@gmail.com", "wrong-password");
@@ -104,9 +100,7 @@ class AuthIntegrationTest {
         .andExpect(status().isBadRequest());
   }
 
-  // ----------------------
-  // LOGIN - EMAIL NOT FOUND
-  // ----------------------
+  // Đăng nhập - email không tìm thấy
   @Test
   void testLoginEmailNotFound() throws Exception {
     LoginRequest request = new LoginRequest("notfound@gmail.com", "123456");
@@ -120,12 +114,10 @@ class AuthIntegrationTest {
         .andExpect(status().isBadRequest());
   }
 
-  // ----------------------
-  // LOGIN - USER LOCKED
-  // ----------------------
+  // Đăng nhập - tài khoản bị khóa
   @Test
   void testLoginUserLocked() throws Exception {
-    user.setStatus(0); // user locked
+    user.setStatus(0);
     userRepository.save(user);
 
     LoginRequest request = new LoginRequest("user@gmail.com", "123456");
@@ -139,20 +131,15 @@ class AuthIntegrationTest {
         .andExpect(status().isBadRequest());
   }
 
-  // ----------------------
   // /me WITHOUT TOKEN → 401
-  // ----------------------
   @Test
   void testGetMeWithoutToken() throws Exception {
     mockMvc.perform(get("/api/auth/me")).andExpect(status().isUnauthorized());
   }
 
-  // ----------------------
   // /me WITH VALID TOKEN
-  // ----------------------
   @Test
   void testGetMeWithValidToken() throws Exception {
-    // Generate real JWT token using JwtUtils
     String jwt = jwtUtils.generateToken(user);
 
     mockMvc

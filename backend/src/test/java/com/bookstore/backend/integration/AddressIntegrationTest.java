@@ -59,9 +59,7 @@ class AddressIntegrationTest {
     userRepository.save(user);
   }
 
-  // --------------------
-  // CREATE
-  // --------------------
+  // Thêm
   @Test
   void testCreateAddress_Success() throws Exception {
 
@@ -93,9 +91,7 @@ class AddressIntegrationTest {
     }
   }
 
-  // --------------------
-  // GET LIST
-  // --------------------
+  // Lấy nhiều
   @Test
   void testGetAddressesByUserId() throws Exception {
 
@@ -117,9 +113,7 @@ class AddressIntegrationTest {
         .andExpect(jsonPath("$[0].city").value("HN"));
   }
 
-  // --------------------
-  // GET ONE
-  // --------------------
+  // Lấy một
   @Test
   void testGetAddressByIdAndUserId() throws Exception {
 
@@ -141,9 +135,7 @@ class AddressIntegrationTest {
         .andExpect(jsonPath("$.city").value("DN"));
   }
 
-  // --------------------
-  // UPDATE
-  // --------------------
+  // Cập nhật
   @Test
   void testUpdateAddress_Success() throws Exception {
 
@@ -184,9 +176,7 @@ class AddressIntegrationTest {
     }
   }
 
-  // --------------------
-  // DELETE
-  // --------------------
+  // Xóa
   @Test
   void testDeleteAddress_Success() throws Exception {
 

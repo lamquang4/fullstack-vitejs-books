@@ -50,14 +50,12 @@ class BookIntegrationTest {
   private Category category;
   private Publisher publisher;
 
-  // root uploads dir used by service: System.getProperty("user.dir") + "/uploads/books/"
   private final File uploadsRoot =
       new File(
           System.getProperty("user.dir") + File.separator + "uploads" + File.separator + "books");
 
   @BeforeEach
   void beforeEach() throws Exception {
-    // clean DB
     orderDetailRepository.deleteAll();
     orderRepository.deleteAll();
     cartItemRepository.deleteAll();
@@ -68,12 +66,10 @@ class BookIntegrationTest {
     publisherRepository.deleteAll();
     userRepository.deleteAll();
 
-    // ensure uploads folder removed
     if (uploadsRoot.exists()) {
       deleteRecursively(uploadsRoot);
     }
 
-    // create fixtures
     author =
         Author.builder()
             .fullname("Integration Author")
@@ -102,7 +98,6 @@ class BookIntegrationTest {
 
   @AfterEach
   void afterEach() throws Exception {
-    // cleanup DB
     orderDetailRepository.deleteAll();
     orderRepository.deleteAll();
     cartItemRepository.deleteAll();
@@ -113,7 +108,6 @@ class BookIntegrationTest {
     publisherRepository.deleteAll();
     userRepository.deleteAll();
 
-    // cleanup uploads
     if (uploadsRoot.exists()) {
       deleteRecursively(uploadsRoot);
     }
@@ -143,7 +137,7 @@ class BookIntegrationTest {
     b.setThickness(1.0);
     b.setStock(50);
     b.setStatus(1);
-    // attach only id for nested entities (service will lookup category by id)
+
     Category c = new Category();
     c.setId(category.getId());
     b.setCategory(c);
@@ -159,9 +153,7 @@ class BookIntegrationTest {
     return b;
   }
 
-  // --------------------
   // CREATE - POST multipart
-  // --------------------
   @Test
   void createBook_withMultipart_shouldReturnOk_and_saveImages() throws Exception {
     Book book = buildBookEntityTemplate();
@@ -178,12 +170,10 @@ class BookIntegrationTest {
         .andExpect(jsonPath("$.id").exists())
         .andExpect(jsonPath("$.slug").exists());
 
-    // DB assertions
     List<Book> books = bookRepository.findAll();
     assertThat(books).hasSize(1);
     Book saved = books.get(0);
 
-    // image folder and file should exist
     File bookDir =
         new File(
             System.getProperty("user.dir")
@@ -194,21 +184,18 @@ class BookIntegrationTest {
                 + File.separator
                 + saved.getId());
     assertThat(bookDir.exists()).isTrue();
-    // image record exists
+
     List<ImageBook> imgs = imageBookRepository.findByBook(saved);
     assertThat(imgs).isNotEmpty();
-    // posted image file present
+
     assertThat(imgs.get(0).getImage()).contains("/uploads/books/" + saved.getId() + "/");
     File actualImg = new File(System.getProperty("user.dir") + imgs.get(0).getImage());
     assertThat(actualImg.exists()).isTrue();
   }
 
-  // --------------------
   // GET paging
-  // --------------------
   @Test
   void getAllBooks_shouldReturnPagingResult() throws Exception {
-    // create book quickly (save via repository to use service mapping)
     Book b = buildBookEntityTemplate();
     b.setSlug("integration-book");
     Book saved = bookRepository.save(b);
@@ -220,9 +207,7 @@ class BookIntegrationTest {
         .andExpect(jsonPath("$.total").value(1));
   }
 
-  // --------------------
   // GET by slug & id
-  // --------------------
   @Test
   void getBookBySlugAndById_shouldReturnDetail() throws Exception {
     Book b = buildBookEntityTemplate();
@@ -240,15 +225,12 @@ class BookIntegrationTest {
         .andExpect(jsonPath("$.title").value("Integration Test Book"));
   }
 
-  // --------------------
   // DELETE book (success)
-  // --------------------
   @Test
   void deleteBook_successAndRemovesFiles() throws Exception {
     Book b = buildBookEntityTemplate();
     Book saved = bookRepository.save(b);
 
-    // prepare image record and file
     File bookDir =
         new File(
             System.getProperty("user.dir")
