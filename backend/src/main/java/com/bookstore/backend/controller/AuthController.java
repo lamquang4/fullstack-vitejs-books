@@ -3,10 +3,11 @@ package com.bookstore.backend.controller;
 import com.bookstore.backend.dto.LoginRequest;
 import com.bookstore.backend.dto.LoginResponse;
 import com.bookstore.backend.service.AuthService;
-import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -27,7 +28,7 @@ public class AuthController {
 
   @GetMapping("/me")
   public ResponseEntity<Map<String, Object>> getCurrentUser(
-      @RequestHeader("Authorization") String authHeader) {
+      @RequestHeader(value = "Authorization", required = false) String authHeader) {
     if (authHeader == null || !authHeader.startsWith("Bearer ")) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
