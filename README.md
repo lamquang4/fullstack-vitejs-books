@@ -30,7 +30,7 @@
 
 [4. Kế hoạch kiểm thử](#4-kế-hoạch-kiểm-thử)
 
-[5. Thiết kế kiểm thử](#4-kế-hoạch-kiểm-thử)
+[5. Thiết kế kiểm thử](#5-thiết-kế-kiểm-thử)
 
 ## 1. Giới thiệu phần mềm
 
@@ -38,7 +38,7 @@
 
 Dự án “Website thương mại điện tử Fahasa” là một hệ thống bán sách giấy trực tuyến được xây dựng nhằm mô phỏng hoạt động của một nền tảng thương mại điện tử thực tế.
 
-Để đảm bảo chất lượng phần mềm, quá trình kiểm thử website phải được thực hiện. Kiểm thử giúp đánh giá tính đúng đắn của dữ liệu, mức độ ổn định của hệ thống, khả năng xử lý yêu cầu, tính bảo mật và hiệu năng khi hoạt động trong môi trường thực. Các hoạt động kiểm thử bao gồm xây dựng và thực hiện các test case, kiểm thử đơn vị, kiểm thử tích hợp và kiểm thử hệ thống trước khi triển khai thực tế.
+Để đảm bảo chất lượng phần mềm, quá trình kiểm thử website phải được thực hiện. Kiểm thử giúp đánh giá tính đúng đắn của dữ liệu, mức độ ổn định của hệ thống, khả năng xử lý yêu cầu, tính bảo mật và hiệu năng khi hoạt động trong môi trường thực. Các hoạt động kiểm thử bao gồm xây dựng và thực hiện các test case, kiểm thử đơn vị, kiểm thử tích hợp, kiểm thử hệ thống và kiểm thử chấp nhận trước khi triển khai thực tế.
 
 ### 1.2. Công nghệ sử dụng
 
