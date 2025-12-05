@@ -94,11 +94,7 @@ class AuthorIntegrationTest {
   // POST /api/author (success)
   @Test
   void testCreateAuthorSuccess() throws Exception {
-    Author newAuthor =
-        Author.builder()
-            .fullname("J. K. Rowling")
-            .slug("unused")
-            .build();
+    Author newAuthor = Author.builder().fullname("J. K. Rowling").slug("unused").build();
 
     try (MockedStatic<SlugUtil> mocked = org.mockito.Mockito.mockStatic(SlugUtil.class)) {
       mocked.when(() -> SlugUtil.toSlug("J. K. Rowling")).thenReturn("jk-rowling");

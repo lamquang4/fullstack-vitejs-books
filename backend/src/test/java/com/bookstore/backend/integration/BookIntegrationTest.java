@@ -137,7 +137,7 @@ class BookIntegrationTest {
     b.setThickness(1.0);
     b.setStock(50);
     b.setStatus(1);
-   
+
     Category c = new Category();
     c.setId(category.getId());
     b.setCategory(c);
