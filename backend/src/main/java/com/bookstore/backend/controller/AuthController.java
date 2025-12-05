@@ -27,7 +27,7 @@ public class AuthController {
 
   @GetMapping("/me")
   public ResponseEntity<Map<String, Object>> getCurrentUser(
-      @RequestHeader("Authorization") String authHeader) {
+      @RequestHeader(value = "Authorization", required = false) String authHeader) {
     if (authHeader == null || !authHeader.startsWith("Bearer ")) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }

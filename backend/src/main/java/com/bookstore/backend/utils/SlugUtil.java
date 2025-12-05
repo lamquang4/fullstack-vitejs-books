@@ -7,6 +7,8 @@ public class SlugUtil {
 
     String slug = input.toLowerCase();
 
+    slug = slug.replace("đ", "d").replace("Đ", "d");
+
     slug = java.text.Normalizer.normalize(slug, java.text.Normalizer.Form.NFD);
     slug = slug.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
 
