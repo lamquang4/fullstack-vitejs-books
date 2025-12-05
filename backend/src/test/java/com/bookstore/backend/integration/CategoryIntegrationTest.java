@@ -1,10 +1,5 @@
 package com.bookstore.backend.integration;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.bookstore.backend.entities.Author;
 import com.bookstore.backend.entities.Book;
 import com.bookstore.backend.entities.Category;
@@ -14,9 +9,6 @@ import com.bookstore.backend.repository.BookRepository;
 import com.bookstore.backend.repository.CategoryRepository;
 import com.bookstore.backend.repository.PublisherRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +19,16 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Map;
+
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -45,6 +47,7 @@ class CategoryIntegrationTest {
 
   private Category cat1;
   private Category cat2;
+  private Category cat3;
 
   @BeforeEach
   void setup() {
@@ -70,6 +73,15 @@ class CategoryIntegrationTest {
                 .status(0)
                 .createdAt(LocalDateTime.now())
                 .build());
+
+    cat3 =
+        categoryRepository.save(
+            Category.builder()
+                .name("Science")
+                .slug("science")
+                .status(1)
+                .createdAt(LocalDateTime.now())
+                .build());
   }
 
   // ------------------------------------------------------------
@@ -88,7 +100,7 @@ class CategoryIntegrationTest {
     mockMvc
         .perform(get("/api/category/all"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].name").value("Fiction"));
+        .andExpect(jsonPath("$[*].name", containsInAnyOrder("Fiction", "Science", "History")));
   }
 
   // ------------------------------------------------------------
