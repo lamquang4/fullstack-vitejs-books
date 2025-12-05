@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [testing, main]
+    branches: [dev, main]
 
 jobs:
   test:
@@ -141,7 +141,6 @@ jobs:
                 state: 'closed',
               });
             }
-
 
   close_issue_deploy:
     runs-on: ubuntu-latest
