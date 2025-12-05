@@ -63,9 +63,7 @@ class AuthorIntegrationTest {
     authorRepository.save(author);
   }
 
-  // -----------------------------
   // GET /api/author (paging)
-  // -----------------------------
   @Test
   void testGetAllAuthorsPaging() throws Exception {
     mockMvc
@@ -75,9 +73,7 @@ class AuthorIntegrationTest {
         .andExpect(jsonPath("$.total").value(1));
   }
 
-  // -----------------------------
   // GET /api/author/all
-  // -----------------------------
   @Test
   void testGetAllAuthorsList() throws Exception {
     mockMvc
@@ -86,9 +82,7 @@ class AuthorIntegrationTest {
         .andExpect(jsonPath("$[0].slug").value("nguyen-nhat-anh"));
   }
 
-  // -----------------------------
   // GET /api/author/{id}
-  // -----------------------------
   @Test
   void testGetAuthorById() throws Exception {
     mockMvc
@@ -97,15 +91,13 @@ class AuthorIntegrationTest {
         .andExpect(jsonPath("$.fullname").value("Nguyen Nhat Anh"));
   }
 
-  // -----------------------------
   // POST /api/author (success)
-  // -----------------------------
   @Test
   void testCreateAuthorSuccess() throws Exception {
     Author newAuthor =
         Author.builder()
             .fullname("J. K. Rowling")
-            .slug("unused") // ignored
+            .slug("unused")
             .build();
 
     try (MockedStatic<SlugUtil> mocked = org.mockito.Mockito.mockStatic(SlugUtil.class)) {
@@ -124,9 +116,7 @@ class AuthorIntegrationTest {
     assertEquals(2, authorRepository.count());
   }
 
-  // -----------------------------
   // POST /api/author (duplicate fullname)
-  // -----------------------------
   @Test
   void testCreateAuthorDuplicate() throws Exception {
     Author duplicate = Author.builder().fullname("Nguyen Nhat Anh").slug("will-fail").build();
@@ -140,9 +130,7 @@ class AuthorIntegrationTest {
         .andExpect(status().isBadRequest());
   }
 
-  // -----------------------------
   // PUT /api/author/{id} (success)
-  // -----------------------------
   @Test
   void testUpdateAuthorSuccess() throws Exception {
     Author updateData = Author.builder().fullname("Updated Name").slug("old").build();
@@ -162,9 +150,7 @@ class AuthorIntegrationTest {
     }
   }
 
-  // -----------------------------
   // PUT /api/author/{id} (duplicate fullname with another author)
-  // -----------------------------
   @Test
   void testUpdateAuthorDuplicateName() throws Exception {
     Author other = Author.builder().fullname("Existing Name").slug("existing-name").build();
@@ -181,9 +167,7 @@ class AuthorIntegrationTest {
         .andExpect(status().isBadRequest());
   }
 
-  // -----------------------------
   // DELETE /api/author/{id} (author HAS books → 400)
-  // -----------------------------
   @Test
   void testDeleteAuthorHasBooks() throws Exception {
 
@@ -220,9 +204,7 @@ class AuthorIntegrationTest {
         .andExpect(status().isConflict());
   }
 
-  // -----------------------------
   // DELETE /api/author/{id} (success)
-  // -----------------------------
   @Test
   void testDeleteAuthorSuccess() throws Exception {
     mockMvc
