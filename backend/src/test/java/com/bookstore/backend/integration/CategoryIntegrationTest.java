@@ -91,7 +91,7 @@ class CategoryIntegrationTest {
         .perform(get("/api/category").param("page", "1").param("limit", "10"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.categories").isArray())
-        .andExpect(jsonPath("$.total").value(2));
+        .andExpect(jsonPath("$.total").value(3));
   }
 
   // ------------------------------------------------------------
@@ -159,7 +159,7 @@ class CategoryIntegrationTest {
   // ------------------------------------------------------------
   @Test
   void createCategory_success() throws Exception {
-    Category newCat = Category.builder().name("Science").status(1).build();
+    Category newCat = Category.builder().name("Technology").status(1).build();
 
     mockMvc
         .perform(
@@ -168,7 +168,7 @@ class CategoryIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(newCat)))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.slug").value("science"));
+        .andExpect(jsonPath("$.slug").value("technology"));
   }
 
   @Test
