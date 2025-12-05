@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class AddressController {
 
-  private final AddressServices addressService;
+  private final AddressService addressService;
 
   public AddressController(AddressService addressService) {
     this.addressService = addressService;

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class AuthController {
 
-  private final AuthServices authService;
+  private final AuthService authService;
 
   public AuthController(AuthService authService) {
     this.authService = authService;
