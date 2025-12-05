@@ -28,15 +28,9 @@
 
 &nbsp;&nbsp;[3.3. Sơ đồ triển khai](#33-sơ-đồ-triển-khai)
 
-[4. Kiểm thử phần mềm](#4-kiểm-thử-phần-mềm)
+[4. Kế hoạch kiểm thử](#4-kế-hoạch-kiểm-thử)
 
-&nbsp;&nbsp;[4.1. Test Plan](#41-test-plan)
-
-&nbsp;&nbsp;[4.2. Thiết kế kiểm thử (V-Model)](#42-thiết-kế-kiểm-thử-v-model)
-
-&nbsp;&nbsp;[4.3. Test Case](#43-test-case)
-
-&nbsp;&nbsp;[4.4. Test Summary](#44-test-summary)
+[5. Thiết kế kiểm thử](#4-kế-hoạch-kiểm-thử)
 
 ## 1. Giới thiệu phần mềm
 
