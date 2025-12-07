@@ -22,29 +22,33 @@ docker compose up --build
 
 &nbsp;&nbsp;[1.2. Công nghệ sử dụng](#12-công-nghệ-sử-dụng)
 
-[2. Thiết kế phần mềm](#2-thiết-kế-phần-mềm)
+&nbsp;&nbsp;[1.3. Thiết kế phần mềm](#13-thiết-kế-phần-mềm)
 
-&nbsp;&nbsp;[2.1. Bối cảnh kinh doanh](#21-bối-cảnh-kinh-doanh)
+&nbsp;&nbsp;&nbsp;[1.3.1. Bối cảnh kinh doanh](#131-bối-cảnh-kinh-doanh)
 
-&nbsp;&nbsp;[2.2. Quy trình nghiệp vụ](#22-quy-trình-nghiệp-vụ)
+&nbsp;&nbsp;&nbsp;[1.3.2. Quy trình nghiệp vụ](#132-quy-trình-nghiệp-vụ)
 
-&nbsp;&nbsp;[2.3. Use Case](#23-use-case)
+&nbsp;&nbsp;&nbsp;[1.3.3. Use Case](#133-use-case)
 
-&nbsp;&nbsp;[2.4. Domain Driven Design](#24-domain-driven-design)
+&nbsp;&nbsp;&nbsp;[1.3.4. Domain Driven Design](#134-domain-driven-design)
 
-&nbsp;&nbsp;[2.5. Data Model](#25-data-model)
+&nbsp;&nbsp;&nbsp;[1.3.5. Data Model](#135-data-model)
 
-[3. Thiết kế kiến trúc](#3-thiết-kế-kiến-trúc)
+&nbsp;&nbsp;[1.4. Thiết kế kiến trúc](#3-thiết-kế-kiến-trúc)
 
-&nbsp;&nbsp;[3.1. Sơ đồ khối](#31-sơ-đồ-khối)
+&nbsp;&nbsp;&nbsp;[1.4.1. Sơ đồ khối](#141-sơ-đồ-khối)
 
-&nbsp;&nbsp;[3.2. Kiến trúc C4](#32-kiến-trúc-c4)
+&nbsp;&nbsp;&nbsp;[1.4.2. Kiến trúc C4](#142-kiến-trúc-c4)
 
-&nbsp;&nbsp;[3.3. Sơ đồ triển khai](#33-sơ-đồ-triển-khai)
+&nbsp;&nbsp;&nbsp;[1.4.3. Sơ đồ triển khai](#143-sơ-đồ-triển-khai)
 
-[4. Kế hoạch kiểm thử](#4-kế-hoạch-kiểm-thử)
+[2. Kế hoạch kiểm thử](#2-kế-hoạch-kiểm-thử)
 
-[5. Thiết kế kiểm thử](#5-thiết-kế-kiểm-thử)
+&nbsp;&nbsp;[2.1. Danh mục kiểm thử](#21-danh-mục-kiểm-thử)
+
+&nbsp;&nbsp;[2.2. Chiến lược kiểm thử](#22-chiến-lược-kiểm-thử)
+
+[3. Thiết kế kiểm thử](#3-thiết-kế-kiểm-thử)
 
 ## 1. Giới thiệu phần mềm
 
@@ -62,13 +66,13 @@ Dự án “Website thương mại điện tử Fahasa” là một hệ thống
 | Backend        | Spring Boot, Maven                                           |
 | Database       | MySQL                                                        |
 | Authentication | Spring Security, JWT                                         |
-| Testing        | JUnit, Mockito, Spring Boot Test, MockMvc, H2 và Selenium    |
+| Testing        | JUnit, Mockito, Spring Boot Test, MockMvc, H2                |
 | CI/CD          | GitHub Actions                                               |
 | Deployment     | Render deploy Frotnend và Backend, Aiven host Database MySQL |
 
-## 2. Thiết kế phần mềm
+## 1.3. Thiết kế phần mềm
 
-### 2.1. Bối cảnh kinh doanh
+### 1.3.1. Bối cảnh kinh doanh
 
 Với quản lý sản phẩm, khách hàng có thể tìm kiếm và sắp xếp các đầu sách theo các tiêu chí tên sách, tác giả, nhà xuất bản và danh mục. Khi nhấp vào một cuốn sách bất kỳ, khách hàng sẽ được chuyển đến trang chi tiết sản phẩm, nơi hiển thị đầy đủ thông tin gồm tên sách, tác giả, nhà xuất bản, mô tả nội dung, thông tin chi tiết, cùng hình ảnh minh họa của sách.
 
@@ -87,7 +91,7 @@ Với quản lý sổ địa chỉ, khách hàng có thể lưu trữ nhiều đ
 
 Với kiểm soát truy cập, hệ thống cung cấp chức năng đăng nhập, đăng xuất và quản lý người dùng. Quản trị viên hệ thống có thể thêm, sửa, xóa hoặc khóa tài khoản các người dùng. Đảm bảo phân quyền rõ ràng, chỉ cho phép người dùng thực hiện các hành động phù hợp với chức vụ của họ.
 
-### 2.2. Quy trình nghiệp vụ
+### 1.3.2. Quy trình nghiệp vụ
 
 **Quy trình xử lý giỏ hàng**
 
@@ -101,7 +105,7 @@ Với kiểm soát truy cập, hệ thống cung cấp chức năng đăng nhậ
 
 ![](docs/images/qtnv3.png)
 
-### 2.3. Use case
+### 1.3.3. Use case
 
 **Use case summary**
 
@@ -131,7 +135,7 @@ Với kiểm soát truy cập, hệ thống cung cấp chức năng đăng nhậ
 
 ![](docs/images/uc6.png)
 
-### 2.4. Domain driven design
+### 1.3.4. Domain driven design
 
 **Mô tả miền nghiệp vụ**
 
@@ -159,7 +163,7 @@ Kiểm soát truy cập có thực thể chính là Người dùng và Chức v�
 
 ![](docs/images/conceptualmodel.png)
 
-### 2.5. Data model
+### 1.3.5. Data model
 
 **Mô hình thực thể kết hợp mức khái niệm**
 
@@ -173,13 +177,13 @@ Kiểm soát truy cập có thực thể chính là Người dùng và Chức v�
 
 ![](docs/images/erd3.png)
 
-## 3. Thiết kế kiến trúc
+## 1.4. Thiết kế kiến trúc
 
-### 3.1. Sơ đồ khối
+### 1.4.1. Sơ đồ khối
 
 ![](docs/images/block.png)
 
-### 3.2. Kiến trúc C4
+### 1.4.2. Kiến trúc C4
 
 **C1 - System context**
 
@@ -225,6 +229,51 @@ Kiểm soát truy cập có thực thể chính là Người dùng và Chức v�
 
 ![](docs/images/seq6.png)
 
-### 3.3. Sơ đồ triển khai
+### 1.4.3. Sơ đồ triển khai
 
 ![](docs/images/deployment.png)
+
+## 2. Giới thiệu phần mềm
+
+### 2.1. Danh mục kiểm thử
+
+**Các tính năng được kiểm thử**
+
+Tất cả các yêu cầu chức năng nghiệp vụ của hệ thống trong tài liệu sẽ được kiểm thử, bao gồm:
+
+Kiểm soát truy cập: Đăng ký, đăng nhập (cho 3 chức vụ), đăng xuất (cả 2 phía quản trị viên và khách hàng). Quản lý người dùng (phía quản trị viên)
+
+Quản lý sản phẩm: Chức năng quản lý sách, danh mục, tác giả, nhà xuất bản (phía quản trị viên). Chức năng tìm kiếm, lọc và sắp xếp sách (phía khách hàng).
+
+Quản lý giỏ hàng: Thêm, cập nhật số lượng, xóa sách khỏi giỏ hàng (phía khách hàng).
+
+Quản lý đơn hàng: Quy trình đặt hàng, xem lịch sử đơn hàng (phía khách hàng). Cập nhật trạng thái đơn hàng (phía quản trị viên).
+
+Quản lý thanh toán: Quy trình xử lý thanh toán bằng cổng Momo thành công và thất bại (phía khách hàng). Xem các giao dịch thanh toán Momo (phía quản trị viên).
+
+Quản lý sổ địa chỉ: Thêm, cập nhật và xóa địa chỉ (phía khách hàng).
+
+**Các tính năng không được kiểm thử**
+
+Các phi chức năng sau sẽ không được kiểm thử do giới hạn về thời gian và nguồn lực:
+
+Kiểm thử hiệu năng (Performance Testing) gồm kiểm thử tải (Load Test) và kiểm thử căng thẳng (Stress Test) sẽ không được thực hiện.
+
+Kiểm thử tính khả dụng (Usability Testing) sẽ không có đánh giá chính thức về đánh giá trải nghiệm người dùng (UX) và độ thân thiện của giao diện (UI), chỉ được thực hiện ở mức cơ bản trong quá trình kiểm thử hệ thống.
+
+Kiểm thử tương thích (Compatibility Testing) sẽ không kiểm thử công trên các trình duyệt khác, chỉ tập trung vào trình duyệt Google Chrome trên máy tính và điện thoại.
+
+Hệ thống của bên thứ ba sẽ không được kiểm thử nội bộ hệ thống của Momo; chỉ kiểm thử API tích hợp (đầu vào/đầu ra) giữa Backend và cổng thanh toán Momo.
+
+### 2.2. Chiến lược kiểm thử
+
+Dự án áp dụng phương pháp kiểm thử theo khung nhìn V-Model, trong đó kiểm thử được tiến hành song song với từng giai đoạn phát triển phần mềm.
+
+Tích hợp CI/CD bằng việc sử dụng GitHub Actions để tự động hóa quy trình Build, Test và Deploy.
+
+| Loại kiểm thử      | Mục đích                                       | Kỹ thuật  | Phương pháp                                           |
+| ------------------ | ---------------------------------------------- | --------- | ----------------------------------------------------- |
+| Kiểm thử đơn vị    | Kiểm tra tính đúng đắn của các hàm/phương thức | Hộp trắng | Kiểm thử tự động bằng JUnit và Mockito                |
+| Kiểm thử tích hợp  | Kiểm tra sự tương tác giữa các module          | Hộp trắng | Kiểm thử tự động bằng Spring Boot Test, MockMvc và H2 |
+| Kiểm thử hệ thống  | Kiểm tra các luồng nghiệp vụ và giao diện      | Hộp đen   | Kiểm thử thủ công cho các Test Case                   |
+| Kiểm thử chấp nhận | Kiểm tra và nghiệm thu sản phẩm                | Hộp đen   | Kiểm thử thủ công                                     |
