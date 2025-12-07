@@ -158,7 +158,7 @@ public class UserIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(dto)))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message").value("Email đã tồn tại"));
+        .andExpect(jsonPath("$.message").value("Email này đã được sử dụng"));
   }
 
   @Test
@@ -223,7 +223,7 @@ public class UserIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(dto)))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message").value("Email đã tồn tại"));
+        .andExpect(jsonPath("$.message").value("Email này đã được sử dụng"));
   }
 
   @Test
