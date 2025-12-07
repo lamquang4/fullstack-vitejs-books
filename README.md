@@ -1,5 +1,19 @@
 # Website fullstack Fahasa
 
+## Cài đặt môi trường
+
+**1. Clone repository**
+
+```
+git clone https://github.com/lamquang4/fullstack-vitejs-books.git
+```
+
+**2. Chạy website bằng Docker**
+
+```
+docker compose up --build
+```
+
 ## Mục lục
 
 [1. Giới thiệu phần mềm](#1-giới-thiệu-phần-mềm)
@@ -42,17 +56,15 @@ Dự án “Website thương mại điện tử Fahasa” là một hệ thống
 
 ### 1.2. Công nghệ sử dụng
 
-**Frontend**
-
-Hệ thống giao diện người dùng được phát triển bằng ReactJS kết hợp với TypeScript để tăng tính mạnh kiểu (type safety) và dễ bảo trì. ViteJS được sử dụng làm công cụ xây dựng (build tool) giúp tăng tốc quá trình phát triển và tối ưu hóa ứng dụng.
-
-**Backend**
-
-Phần xử lý logic nghiệp vụ được triển khai bằng Spring Boot, một framework Java mạnh mẽ, giúp xây dựng API nhanh chóng, dễ dàng mở rộng và bảo trì.
-
-**Database**
-
-Hệ quản trị cơ sở dữ liệu MySQL được sử dụng để lưu trữ dữ liệu, đảm bảo tính toàn vẹn và hiệu suất cao cho các truy vấn.
+| Danh mục       | Tools / Frameworks                                           |
+| -------------- | ------------------------------------------------------------ |
+| Frontend       | Vite, ReactJS, TypeScript                                    |
+| Backend        | Spring Boot, Maven                                           |
+| Database       | MySQL                                                        |
+| Authentication | Spring Security, JWT                                         |
+| Testing        | JUnit, Mockito, Spring Boot Test, MockMvc, H2 và Selenium    |
+| CI/CD          | GitHub Actions                                               |
+| Deployment     | Render deploy Frotnend và Backend, Aiven host Database MySQL |
 
 ## 2. Thiết kế phần mềm
 
@@ -123,25 +135,25 @@ Với kiểm soát truy cập, hệ thống cung cấp chức năng đăng nhậ
 
 **Mô tả miền nghiệp vụ**
 
-Những lý do chính để chọn miền nghiệp vụ này: 
+Những lý do chính để chọn miền nghiệp vụ này:
 
-1. Đã có hệ thống thực tế cho miền nghiệp vụ này, vì vậy mọi người có thể đối chiếu phần triển khai với một trang web đang hoạt động. 
+1. Đã có hệ thống thực tế cho miền nghiệp vụ này, vì vậy mọi người có thể đối chiếu phần triển khai với một trang web đang hoạt động.
 
-2. Miền nghiệp vụ cũng không quá đơn giản, vẫn có một số nghiệp vụ phức tạp và logic, không đơn thuần là các thao tác CRUD. 
+2. Miền nghiệp vụ cũng không quá đơn giản, vẫn có một số nghiệp vụ phức tạp và logic, không đơn thuần là các thao tác CRUD.
 
-3. Miền nghiệp vụ không quá phức tạp nên dễ hiểu và không quá lớn và dễ triển khai. 
+3. Miền nghiệp vụ không quá phức tạp nên dễ hiểu và không quá lớn và dễ triển khai.
 
-Sản phẩm có các thực thể chính gồm Sách, Tác giả, Danh mục và Nhà xuất bản. Khách hàng có thể xem, tìm kiếm và lọc danh sách Sách. Quản trị viên hệ thống và nhân viên bán hàng có thể CRUD đối với Sách, Danh mục, Tác giả và Nhà xuất bản. 
+Sản phẩm có các thực thể chính gồm Sách, Tác giả, Danh mục và Nhà xuất bản. Khách hàng có thể xem, tìm kiếm và lọc danh sách Sách. Quản trị viên hệ thống và nhân viên bán hàng có thể CRUD đối với Sách, Danh mục, Tác giả và Nhà xuất bản.
 
-Giỏ hàng chỉ khách hàng đã đăng nhập mới có thể thêm Sách vào Giỏ hàng. Khách hàng có thể xem lại, thay đổi số lượng hoặc xóa sách khỏi Giỏ hàng và sau đó tiến hành đặt hàng và thanh toán. 
+Giỏ hàng chỉ khách hàng đã đăng nhập mới có thể thêm Sách vào Giỏ hàng. Khách hàng có thể xem lại, thay đổi số lượng hoặc xóa sách khỏi Giỏ hàng và sau đó tiến hành đặt hàng và thanh toán.
 
-Đơn hàng có thực thể chính là Đơn hàng và Chi tiết đơn hàng. Sau khi đã thêm sản phẩm vào giỏ hàng, khách hàng nhập thông tin giao hàng và phương thức thanh toán sẽ tạo đơn hàng. Quản trị viên hệ thống và nhân viên bán hàng có thể cập nhật trạng thái Đơn hàng. 
+Đơn hàng có thực thể chính là Đơn hàng và Chi tiết đơn hàng. Sau khi đã thêm sản phẩm vào giỏ hàng, khách hàng nhập thông tin giao hàng và phương thức thanh toán sẽ tạo đơn hàng. Quản trị viên hệ thống và nhân viên bán hàng có thể cập nhật trạng thái Đơn hàng.
 
-Thanh toán có thực thể chính là Thanh toán, Phương thức thanh toán, Tình trạng thanh toán. Khách hàng có thể lựa chọn thanh toán bằng Momo. Quản trị viên hệ thống và nhân viên bán hàng có thể xem danh sách các giao dịch Thanh toán. 
+Thanh toán có thực thể chính là Thanh toán, Phương thức thanh toán, Tình trạng thanh toán. Khách hàng có thể lựa chọn thanh toán bằng Momo. Quản trị viên hệ thống và nhân viên bán hàng có thể xem danh sách các giao dịch Thanh toán.
 
-Sổ địa chỉ có thưc thể chính là Địa chỉ. Khách hàng có thể thêm, sửa hoặc xóa Địa chỉ. 
+Sổ địa chỉ có thưc thể chính là Địa chỉ. Khách hàng có thể thêm, sửa hoặc xóa Địa chỉ.
 
-Kiểm soát truy cập có thực thể chính là Người dùng và Chức vụ. Người dùng gồm Khách hàng, Quản trị viên hệ thống và Nhân viên bán hàng. Mỗi người dùng có thể đăng nhập vào hệ thống, đăng xuất khỏi hệ thống. Quản trị viên hệ thống có quyền quản lý các tài khoản người dùng. 
+Kiểm soát truy cập có thực thể chính là Người dùng và Chức vụ. Người dùng gồm Khách hàng, Quản trị viên hệ thống và Nhân viên bán hàng. Mỗi người dùng có thể đăng nhập vào hệ thống, đăng xuất khỏi hệ thống. Quản trị viên hệ thống có quyền quản lý các tài khoản người dùng.
 
 **Mô hình khái niệm**
 

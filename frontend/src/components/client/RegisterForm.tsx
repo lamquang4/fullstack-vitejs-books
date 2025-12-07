@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { HiOutlineEye, HiOutlineEyeOff } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
-import useAddUser from "../../hooks/admin/useAddUser";
 import toast from "react-hot-toast";
 import { validateEmail } from "../../utils/validateEmail";
+import useRegister from "../../hooks/client/useRegister";
 
 function RegisterForm() {
   const navigate = useNavigate();
 
-  const { addUser, isLoading } = useAddUser();
+  const { handleRegister, isLoading } = useRegister();
 
   const [data, setData] = useState({
     fullname: "",
@@ -42,7 +42,7 @@ function RegisterForm() {
       return;
     }
     try {
-      await addUser({
+      await handleRegister({
         fullname: data.fullname.trim(),
         email: data.email.toLowerCase().trim(),
         password: data.password.trim(),

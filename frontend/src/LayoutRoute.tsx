@@ -118,7 +118,7 @@ function LayoutRoute() {
       <Route
         path="/admin/login"
         element={
-          <PublicRoute type="admin" redirectPath="/admin/account">
+          <PublicRoute type="admin" redirectPath="/admin/dashboard">
             <LoginAdminPage />
           </PublicRoute>
         }
@@ -130,7 +130,7 @@ function LayoutRoute() {
           <PrivateRoute
             type="admin"
             allowedRoles={[0, 1, 2]}
-            redirectPath="/admin/dashboard"
+            redirectPath="/admin/login"
           >
             <DashboardPage />
           </PrivateRoute>
