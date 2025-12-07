@@ -132,7 +132,7 @@ public class UserService {
     }
 
     if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
-      throw new IllegalArgumentException("Email đã tồn tại");
+      throw new IllegalArgumentException("Email này đã được sử dụng");
     }
 
     if (dto.getPassword() == null || dto.getPassword().length() < 6) {
@@ -166,7 +166,7 @@ public class UserService {
               }
 
               if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
-                throw new IllegalArgumentException("Email đã tồn tại");
+                throw new IllegalArgumentException("Email này đã được sử dụng");
               }
 
               if (userDTO.getEmail() != null) {

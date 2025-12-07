@@ -30,7 +30,7 @@ public class AddressService {
   public Address getAddressByIdAndUserId(String id, String userId) {
     return addressRepository
         .findByIdAndUserId(id, userId)
-        .orElseThrow(() -> new EntityNotFoundException("Địa chỉ không tìm  thấy"));
+        .orElseThrow(() -> new EntityNotFoundException("Địa chỉ không tìm thấy"));
   }
 
   // tạo address
