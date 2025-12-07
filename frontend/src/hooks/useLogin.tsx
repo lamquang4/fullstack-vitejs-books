@@ -47,7 +47,7 @@ export default function useLogin() {
           sameSite: "strict",
           secure: import.meta.env.VITE_ENV === "production",
         });
-        window.location.href = "/admin/account";
+        window.location.href = "/admin/dashboard";
       }
     } catch (err: any) {
       console.error("Lỗi:", err);
