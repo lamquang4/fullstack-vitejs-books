@@ -233,7 +233,7 @@ Kiểm soát truy cập có thực thể chính là Người dùng và Chức v�
 
 ![](docs/images/deployment.png)
 
-## 2. Giới thiệu phần mềm
+## 2. Kế hoạch kiểm thử
 
 ### 2.1. Danh mục kiểm thử
 
@@ -273,7 +273,7 @@ Tích hợp CI/CD bằng việc sử dụng GitHub Actions để tự động h�
 
 | Loại kiểm thử      | Kỹ thuật  | Phương pháp                   | Phạm vi kiểm thử                               | Người thực hiện | Môi trường  |
 | ------------------ | --------- | ----------------------------- | ---------------------------------------------- | --------------- | ----------- |
-| Kiểm thử đơn vị    | Hộp trắng | JUnit, Mockito                | Các hàm/phương thức trong Service & Repository | Kiểm thử viên   | Development |
-| Kiểm thử tích hợp  | Hộp trắng | Spring Boot Test, MockMvc, H2 | Tương tác giữa các module qua Controller       | Kiểm thử viên   | Development |
+| Kiểm thử đơn vị    | Hộp trắng | JUnit, Mockito                | Các hàm/phương thức trong Service & Repository | Lập trình viên  | Development |
+| Kiểm thử tích hợp  | Hộp trắng | Spring Boot Test, MockMvc, H2 | Tương tác giữa các module qua Controller       | Lập trình viên  | Development |
 | Kiểm thử hệ thống  | Hộp đen   | Thủ công theo Test Case       | Các luồng nghiệp vụ và giao diện               | Kiểm thử viên   | Production  |
 | Kiểm thử chấp nhận | Hộp đen   | Thủ công                      | Toàn hệ thống                                  | Product Owner   | Production  |
