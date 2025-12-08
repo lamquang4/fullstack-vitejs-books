@@ -271,9 +271,9 @@ Dự án áp dụng phương pháp kiểm thử theo khung nhìn V-Model, trong 
 
 Tích hợp CI/CD bằng việc sử dụng GitHub Actions để tự động hóa quy trình Build, Test và Deploy.
 
-| Loại kiểm thử      | Kỹ thuật  | Phương pháp                   | Phạm vi kiểm thử                                    | Người thực hiện            | Môi trường  |
-| ------------------ | --------- | ----------------------------- | --------------------------------------------------- | -------------------------- | ----------- |
-| Kiểm thử đơn vị    | Hộp trắng | JUnit, Mockito                | Các hàm/phương thức trong Service & Repository      | Kiểm thử viên              | Development |
-| Kiểm thử tích hợp  | Hộp trắng | Spring Boot Test, MockMvc, H2 | Tương tác giữa các module qua Controller Controller | Kiểm thử viên              | Development |
-| Kiểm thử hệ thống  | Hộp đen   | Thủ công theo Test Case       | Các luồng nghiệp vụ và giao diện                    | Kiểm thử viên              | Production  |
-| Kiểm thử chấp nhận | Hộp đen   | Thủ công                      | Toàn hệ thống                                       | Giảng viên / Product Owner | Production  |
+| Loại kiểm thử      | Kỹ thuật  | Phương pháp                   | Phạm vi kiểm thử                                    | Người thực hiện | Môi trường  |
+| ------------------ | --------- | ----------------------------- | --------------------------------------------------- | --------------- | ----------- |
+| Kiểm thử đơn vị    | Hộp trắng | JUnit, Mockito                | Các hàm/phương thức trong Service & Repository      | Kiểm thử viên   | Development |
+| Kiểm thử tích hợp  | Hộp trắng | Spring Boot Test, MockMvc, H2 | Tương tác giữa các module qua Controller Controller | Kiểm thử viên   | Development |
+| Kiểm thử hệ thống  | Hộp đen   | Thủ công theo Test Case       | Các luồng nghiệp vụ và giao diện                    | Kiểm thử viên   | Production  |
+| Kiểm thử chấp nhận | Hộp đen   | Thủ công                      | Toàn hệ thống                                       | Product Owner   | Production  |
