@@ -271,9 +271,9 @@ Dự án áp dụng phương pháp kiểm thử theo khung nhìn V-Model, trong 
 
 Tích hợp CI/CD bằng việc sử dụng GitHub Actions để tự động hóa quy trình Build, Test và Deploy.
 
-| Loại kiểm thử      | Mục đích                                       | Kỹ thuật  | Phương pháp                                           |
-| ------------------ | ---------------------------------------------- | --------- | ----------------------------------------------------- |
-| Kiểm thử đơn vị    | Kiểm tra tính đúng đắn của các hàm/phương thức | Hộp trắng | Kiểm thử tự động bằng JUnit và Mockito                |
-| Kiểm thử tích hợp  | Kiểm tra sự tương tác giữa các module          | Hộp trắng | Kiểm thử tự động bằng Spring Boot Test, MockMvc và H2 |
-| Kiểm thử hệ thống  | Kiểm tra các luồng nghiệp vụ và giao diện      | Hộp đen   | Kiểm thử thủ công cho các Test Case                   |
-| Kiểm thử chấp nhận | Kiểm tra và nghiệm thu sản phẩm                | Hộp đen   | Kiểm thử thủ công                                     |
+| Loại kiểm thử      | Kỹ thuật  | Phương pháp                   | Phạm vi kiểm thử                                    | Người thực hiện | Môi trường  |
+| ------------------ | --------- | ----------------------------- | --------------------------------------------------- | --------------- | ----------- |
+| Kiểm thử đơn vị    | Hộp trắng | JUnit, Mockito                | Các hàm/phương thức trong Service & Repository      | Kiểm thử viên   | Development |
+| Kiểm thử tích hợp  | Hộp trắng | Spring Boot Test, MockMvc, H2 | Tương tác giữa các module qua Controller Controller | Kiểm thử viên   | Development |
+| Kiểm thử hệ thống  | Hộp đen   | Thủ công theo Test Case       | Các luồng nghiệp vụ và giao diện                    | Kiểm thử viên   | Production  |
+| Kiểm thử chấp nhận | Hộp đen   | Thủ công                      | Toàn hệ thống                                       | Product Owner   | Production  |
