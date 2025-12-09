@@ -267,9 +267,9 @@ Hệ thống của bên thứ ba sẽ không được kiểm thử nội bộ h�
 
 ### 2.2. Chiến lược kiểm thử
 
-Dự án áp dụng phương pháp kiểm thử theo khung nhìn V-Model, trong đó kiểm thử được tiến hành song song với từng giai đoạn phát triển phần mềm.
+Dự án áp dụng phương pháp kiểm thử theo khung nhìn V-Model, trong đó kiểm thử được thực hiện song song với các giai đoạn phát triển phần mềm: từ kiểm thử đơn vị, kiểm thử tích hợp, đến kiểm thử hệ thống và kiểm thử chấp nhận. Các Test Case được thiết kế dựa vào các yêu cầu chức năng.
 
-Tích hợp CI/CD bằng việc sử dụng GitHub Actions để tự động hóa quy trình Build, Test và Deploy.
+Quy trình kiểm thử được tích hợp với CI/CD thông qua GitHub Actions, nhằm tự động hóa quá trình Build, Test và Deploy, giúp phát hiện lỗi sớm và đảm bảo chất lượng phần mềm liên tục.
 
 | Loại kiểm thử      | Kỹ thuật  | Phương pháp                   | Phạm vi kiểm thử                               | Người thực hiện | Môi trường  |
 | ------------------ | --------- | ----------------------------- | ---------------------------------------------- | --------------- | ----------- |
