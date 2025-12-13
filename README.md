@@ -64,13 +64,13 @@ docker compose up --build
 
 ## 1. Giới thiệu phần mềm
 
-## 1.1. Tổng quan dự án
+### 1.1. Tổng quan dự án
 
 Dự án “Website thương mại điện tử Fahasa” là một hệ thống bán sách giấy trực tuyến được xây dựng nhằm mô phỏng hoạt động của một nền tảng thương mại điện tử thực tế.
 
 Để đảm bảo chất lượng phần mềm, quá trình kiểm thử website phải được thực hiện. Kiểm thử giúp đánh giá tính đúng đắn của dữ liệu, mức độ ổn định của hệ thống, khả năng xử lý yêu cầu, tính bảo mật và hiệu năng khi hoạt động trong môi trường thực. Các hoạt động kiểm thử bao gồm xây dựng và thực hiện các test case, kiểm thử đơn vị, kiểm thử tích hợp, kiểm thử hệ thống và kiểm thử chấp nhận trước khi triển khai thực tế.
 
-## 1.2. Công nghệ sử dụng
+### 1.2. Công nghệ sử dụng
 
 | Danh mục       | Tools / Frameworks                                           |
 | -------------- | ------------------------------------------------------------ |
@@ -82,7 +82,7 @@ Dự án “Website thương mại điện tử Fahasa” là một hệ thống
 | CI/CD          | GitHub Actions                                               |
 | Deployment     | Render deploy Frotnend và Backend, Aiven host Database MySQL |
 
-## 1.3. Thiết kế phần mềm
+### 1.3. Thiết kế phần mềm
 
 ### 1.3.1. Bối cảnh kinh doanh
 
@@ -189,7 +189,7 @@ Kiểm soát truy cập có thực thể chính là Người dùng và Chức v�
 
 ![](docs/images/erd3.png)
 
-## 1.4. Thiết kế kiến trúc
+### 1.4. Thiết kế kiến trúc
 
 ### 1.4.1. Sơ đồ khối
 
@@ -245,9 +245,9 @@ Kiểm soát truy cập có thực thể chính là Người dùng và Chức v�
 
 ![](docs/images/deployment.png)
 
-## 2. Kế hoạch kiểm thử
+### 2. Kế hoạch kiểm thử
 
-## 2.1. Hạng mục kiểm thử
+### 2.1. Hạng mục kiểm thử
 
 ### 2.1.1. Hạng mục được kiểm thử
 
@@ -281,7 +281,7 @@ Kiểm thử tính khả dụng (Usability Testing) sẽ không có đánh giá 
 
 Hệ thống của bên thứ ba sẽ không được kiểm thử nội bộ hệ thống của Momo; chỉ kiểm thử API tích hợp (đầu vào/đầu ra) giữa Backend và cổng thanh toán Momo.
 
-## 2.2. Chiến lược kiểm thử
+### 2.2. Chiến lược kiểm thử
 
 ### 2.2.1. Phương pháp kiểm thử
 
@@ -291,20 +291,20 @@ Kiểm thử tự động được thực hiện thông qua quy trình CI/CD b�
 
 ### 2.2.2. Loại kiểm thử
 
-| Loại kiểm thử        | Mục đích                                                                                                             | Công cụ / kỹ thuật                                                      |
-| -------------------- | -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| Kiểm thử chức năng   | Đảm bảo các chức năng nghiệp vụ của hệ thống hoạt động đúng với đặc tả yêu cầu                                       | Test case, Selenium                                                     |
-| Kiểm giao diện       | Đảm bảo giao diện người dùng hiển thị đúng bố cục, nội dung, thao tác và phản hồi chính xác khi người dùng tương tác | Selenium, kiểm thử thủ công                                             |
-| Kiểm thử API         | Đánh giá tính chính xác và ổn định của các API về dữ liệu trả về, mã trạng thái, tính hợp lệ của request và response | Postman                                                                 |
-| Kiểm thử tương thích | Kiểm tra website hoạt động ổn định trên nhiều trình duyệt và thiết bị khác nhau                                      | Trình duyệt: Chrome, Firefox, Safari<br>Thiết bị: iOS, Android, Desktop |
-| Kiểm thử bảo mật     | Phát hiện các lỗ hổng dễ thấy như truy cập trái phép, phân quyền sai, lỗi bảo mật đầu vào                            | Kiểm thử thủ công                                                       |
-| Kiểm thử hồi quy     | Đảm bảo các chức năng đã hoạt động ổn định không bị ảnh hưởng sau khi cập nhật, sửa lỗi hoặc bổ sung tính năng mới   | Selenium, CI/CD của GitHub Actions                                      |
+| Loại kiểm thử        | Mục đích                                                                                                             | Công cụ / kỹ thuật                                                            |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Kiểm thử chức năng   | Đảm bảo các chức năng nghiệp vụ của hệ thống hoạt động đúng với đặc tả yêu cầu                                       | Test case, Selenium                                                           |
+| Kiểm giao diện       | Đảm bảo giao diện người dùng hiển thị đúng bố cục, nội dung, thao tác và phản hồi chính xác khi người dùng tương tác | Selenium, kiểm thử thủ công                                                   |
+| Kiểm thử API         | Đánh giá tính chính xác và ổn định của các API về dữ liệu trả về, mã trạng thái, tính hợp lệ của request và response | Postman                                                                       |
+| Kiểm thử tương thích | Kiểm tra website hoạt động ổn định trên nhiều trình duyệt và thiết bị khác nhau                                      | Trình duyệt gồm Chrome, Firefox, Safari và thiết bị gồm iOS, Android, Desktop |
+| Kiểm thử bảo mật     | Phát hiện các lỗ hổng dễ thấy như truy cập trái phép, phân quyền sai, lỗi bảo mật đầu vào                            | Kiểm thử thủ công                                                             |
+| Kiểm thử hồi quy     | Đảm bảo các chức năng đã hoạt động ổn định không bị ảnh hưởng sau khi cập nhật, sửa lỗi hoặc bổ sung tính năng mới   | Selenium, CI/CD của GitHub Actions                                            |
 
 ### 2.2.3. Cấp độ kiểm thử
 
-| Cấp độ             | Mục đích                                        | Kỹ thuật  | Phương pháp                                                           |
-| ------------------ | ----------------------------------------------- | --------- | --------------------------------------------------------------------- |
-| Kiểm thử đơn vị    | Kiểm tra tính đúng đắn của các hàm/phương thức  | Hộp trắng | Kiểm thử tự động bằng JUnit và Mockito ở Development                  |
-| Kiểm thử tích hợp  | Kiểm tra sự tương tác giữa các module chức năng | Hộp trắng | Kiểm thử tự động bằng Spring Boot Test, MockMvc và H2 ở Development   |
-| Kiểm thử hệ thống  | Kiểm tra các luồng nghiệp vụ và giao diện       | Hộp đen   | Kiểm thử thủ công cho các Test Case<br>Kiểm thử tự động bằng Selenium |
-| Kiểm thử chấp nhận | Kiểm tra và nghiệm thu sản phẩm                 | Hộp đen   | Kiểm thử thủ công ở môi trường Production                             |
+| Cấp độ             | Mục đích                                        | Kỹ thuật  | Phương pháp                                                                                   |
+| ------------------ | ----------------------------------------------- | --------- | --------------------------------------------------------------------------------------------- |
+| Kiểm thử đơn vị    | Kiểm tra tính đúng đắn của các hàm/phương thức  | Hộp trắng | Kiểm thử tự động bằng JUnit và Mockito ở môi trường Development                               |
+| Kiểm thử tích hợp  | Kiểm tra sự tương tác giữa các module chức năng | Hộp trắng | Kiểm thử tự động bằng Spring Boot Test, MockMvc và H2 ở môi trường Development                |
+| Kiểm thử hệ thống  | Kiểm tra các luồng nghiệp vụ và giao diện       | Hộp đen   | Kiểm thử thủ công cho các Test Case và kiểm thử tự động bằng Selenium ở môi trường Production |
+| Kiểm thử chấp nhận | Kiểm tra và nghiệm thu sản phẩm                 | Hộp đen   | Kiểm thử thủ công ở môi trường Production                                                     |
