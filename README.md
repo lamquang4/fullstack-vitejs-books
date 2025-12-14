@@ -44,19 +44,17 @@ docker compose up --build
 
 [2. Kế hoạch kiểm thử](#2-kế-hoạch-kiểm-thử)
 
-&nbsp;&nbsp;[2.1. Hạng mục kiểm thử](#21-hạng-mục-kiểm-thử)
+&nbsp;&nbsp;[2.1. Hạng mục được kiểm thử](#21-hạng-mục-được-kiểm-thử)
 
-&nbsp;&nbsp;&nbsp;[2.1.1. Hạng mục được kiểm thử](#211-hạng-được-kiểm-thử)
+&nbsp;&nbsp;[2.2. Hạng mục không được kiểm thử](#22-hạng-mục-không-được-kiểm-thử)
 
-&nbsp;&nbsp;&nbsp;[2.1.2. Hạng mục không được kiểm thử](#212-hạng-mục-không-được-kiểm-thử)
+&nbsp;&nbsp;[2.3. Chiến lược kiểm thử](#23-chiến-lược-kiểm-thử)
 
-&nbsp;&nbsp;[2.2. Chiến lược kiểm thử](#22-chiến-lược-kiểm-thử)
+&nbsp;&nbsp;&nbsp;[2.3.1. Phương pháp kiểm thử](#231-phương-pháp-kiểm-thử)
 
-&nbsp;&nbsp;&nbsp;[2.2.1. Phương pháp kiểm thử](#221-phương-pháp-kiểm-thử)
+&nbsp;&nbsp;&nbsp;[2.3.2. Loại kiểm thử](#232-loại-kiểm-thử)
 
-&nbsp;&nbsp;&nbsp;[2.2.2. Loại kiểm thử](#222-loại-kiểm-thử)
-
-&nbsp;&nbsp;&nbsp;[2.2.3. Cấp độ kiểm thử](#223-cấp-độ-kiểm-thử)
+&nbsp;&nbsp;&nbsp;[2.3.3. Cấp độ kiểm thử](#233-cấp-độ-kiểm-thử)
 
 [3. Thiết kế kiểm thử](#3-thiết-kế-kiểm-thử)
 
@@ -325,7 +323,7 @@ Kiểm thử API Backend gồm kiểm tra dữ liệu trả về, mã trạng th
 
 Kiểm thử tương thích gồm kiểm tra khả năng hoạt động ổn định của hệ thống trên các trình duyệt Chrome, Firefox, Safari và trên các thiết bị Desktop, Android, iOS.
 
-### 2.1. Hạng mục không được kiểm thử
+### 2.2. Hạng mục không được kiểm thử
 
 Một số phi chức năng sau sẽ không được kiểm thử do giới hạn về thời gian và nguồn lực:
 
@@ -335,15 +333,15 @@ Kiểm thử tính khả dụng (Usability Testing) sẽ không có đánh giá 
 
 Hệ thống của bên thứ ba sẽ không được kiểm thử nội bộ hệ thống của Momo; chỉ kiểm thử API tích hợp (đầu vào/đầu ra) giữa Backend và cổng thanh toán Momo.
 
-### 2.2. Chiến lược kiểm thử
+### 2.3. Chiến lược kiểm thử
 
-### 2.2.1. Phương pháp kiểm thử
+### 2.3.1. Phương pháp kiểm thử
 
 Dự án áp dụng phương pháp kiểm thử theo khung nhìn V-Model, trong đó kiểm thử được thực hiện song song với các giai đoạn phát triển phần mềm: từ kiểm thử đơn vị, kiểm thử tích hợp, đến kiểm thử hệ thống và kiểm thử chấp nhận. Các Test Case được thiết kế dựa vào các yêu cầu chức năng.
 
 Kiểm thử tự động được thực hiện thông qua quy trình CI/CD bằng GitHub Actions, giúp tự động hóa các bước Build, Test và Deploy. Quy trình này hỗ trợ phát hiện lỗi sớm, rút ngắn thời gian kiểm thử và đảm bảo chất lượng phần mềm một cách liên tục.
 
-### 2.2.2. Loại kiểm thử
+### 2.3.2. Loại kiểm thử
 
 | Loại kiểm thử        | Mục đích                                                                                                             | Công cụ/kỹ thuật                                                              |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
@@ -354,7 +352,7 @@ Kiểm thử tự động được thực hiện thông qua quy trình CI/CD b�
 | Kiểm thử bảo mật     | Phát hiện các lỗ hổng dễ thấy như truy cập trái phép, phân quyền sai, lỗi bảo mật đầu vào                            | Kiểm thử thủ công                                                             |
 | Kiểm thử hồi quy     | Đảm bảo các chức năng đã hoạt động ổn định không bị ảnh hưởng sau khi cập nhật, sửa lỗi hoặc bổ sung tính năng mới   | Selenium, CI/CD của GitHub Actions                                            |
 
-### 2.2.3. Cấp độ kiểm thử
+### 2.3.3. Cấp độ kiểm thử
 
 | Cấp độ             | Mục đích                                        | Kỹ thuật  | Phương pháp                                                                                   |
 | ------------------ | ----------------------------------------------- | --------- | --------------------------------------------------------------------------------------------- |
