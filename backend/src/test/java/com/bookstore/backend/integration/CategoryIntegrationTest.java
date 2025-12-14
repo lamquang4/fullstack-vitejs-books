@@ -83,7 +83,6 @@ class CategoryIntegrationTest {
                 .build());
   }
 
-  // ------------------------------------------------------------
   @Test
   void getAllCategories_shouldReturnPaged() throws Exception {
     mockMvc
@@ -93,7 +92,6 @@ class CategoryIntegrationTest {
         .andExpect(jsonPath("$.total").value(3));
   }
 
-  // ------------------------------------------------------------
   @Test
   void getAllCategories1_shouldReturnAll() throws Exception {
     mockMvc
@@ -102,7 +100,6 @@ class CategoryIntegrationTest {
         .andExpect(jsonPath("$[*].name", containsInAnyOrder("Fiction", "Science", "History")));
   }
 
-  // ------------------------------------------------------------
   @Test
   void getCategoryById_found() throws Exception {
     mockMvc
@@ -116,7 +113,6 @@ class CategoryIntegrationTest {
     mockMvc.perform(get("/api/category/xxx")).andExpect(status().isNotFound());
   }
 
-  // ------------------------------------------------------------
   @Test
   void getActiveCategoriesWithActiveBooks_shouldReturnOnlyActiveOnes() throws Exception {
 
@@ -155,7 +151,6 @@ class CategoryIntegrationTest {
         .andExpect(jsonPath("$.categories.length()").value(1));
   }
 
-  // ------------------------------------------------------------
   @Test
   void createCategory_success() throws Exception {
     Category newCat = Category.builder().name("Technology").status(1).build();
@@ -184,7 +179,6 @@ class CategoryIntegrationTest {
         .andExpect(jsonPath("$.message").value("Tên danh mục đã tồn tại"));
   }
 
-  // ------------------------------------------------------------
   @Test
   void updateCategory_success() throws Exception {
 
@@ -213,7 +207,6 @@ class CategoryIntegrationTest {
         .andExpect(status().isNotFound());
   }
 
-  // ------------------------------------------------------------
   @Test
   void updateCategoryStatus_shouldHideBooks() throws Exception {
 
@@ -256,7 +249,6 @@ class CategoryIntegrationTest {
     assert updated.getStatus() == 0;
   }
 
-  // ------------------------------------------------------------
   @Test
   void deleteCategory_success() throws Exception {
 

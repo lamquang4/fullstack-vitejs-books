@@ -259,9 +259,7 @@ class BookIntegrationTest {
     assertThat(img.exists()).isFalse();
   }
 
-  // --------------------
   // DELETE book (in order) -> should return 409/BadRequest depending on your handler
-  // --------------------
   @Test
   void deleteBook_inOrder_shouldFail() throws Exception {
     Book b = buildBookEntityTemplate();
@@ -302,9 +300,7 @@ class BookIntegrationTest {
         .andExpect(status().isConflict()); // project maps IllegalStateException -> 409
   }
 
-  // --------------------
   // updateImagesBook (PUT /api/book/image) success
-  // --------------------
   @Test
   void updateImagesBook_success() throws Exception {
     // create book and image records
@@ -353,9 +349,7 @@ class BookIntegrationTest {
     assertThat(new String(bytes)).isEqualTo("newcontent");
   }
 
-  // --------------------
   // deleteImageBook
-  // --------------------
   @Test
   void deleteImageBook_success() throws Exception {
     Book b = buildBookEntityTemplate();

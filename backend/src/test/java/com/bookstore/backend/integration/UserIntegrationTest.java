@@ -69,9 +69,8 @@ public class UserIntegrationTest {
                 .build());
   }
 
-  // -------------------------------------------------------
   // GET all customers
-  // -------------------------------------------------------
+
   @Test
   void getAllCustomers_shouldReturnPaged() throws Exception {
     mockMvc
@@ -80,9 +79,8 @@ public class UserIntegrationTest {
         .andExpect(jsonPath("$.customers").isArray());
   }
 
-  // -------------------------------------------------------
   // GET all admins
-  // -------------------------------------------------------
+
   @Test
   void getAllAdmins_shouldReturnPaged() throws Exception {
     mockMvc
@@ -91,9 +89,8 @@ public class UserIntegrationTest {
         .andExpect(jsonPath("$.admins").isArray());
   }
 
-  // -------------------------------------------------------
   // GET user by id
-  // -------------------------------------------------------
+
   @Test
   void getUserById_shouldReturnUser() throws Exception {
     mockMvc
@@ -107,9 +104,8 @@ public class UserIntegrationTest {
     mockMvc.perform(get("/api/user/unknown-id")).andExpect(status().isNotFound());
   }
 
-  // -------------------------------------------------------
   // CREATE user
-  // -------------------------------------------------------
+
   @Test
   void createUser_success() throws Exception {
     UserDTO dto =
@@ -175,9 +171,8 @@ public class UserIntegrationTest {
         .andExpect(jsonPath("$.message").value("Mật khẩu phải có ít nhất 6 ký tự"));
   }
 
-  // -------------------------------------------------------
   // UPDATE user
-  // -------------------------------------------------------
+
   @Test
   void updateUser_success() throws Exception {
     UserDTO dto = UserDTO.builder().email("updated@mail.com").fullname("Updated Name").build();
@@ -239,9 +234,8 @@ public class UserIntegrationTest {
         .andExpect(status().isNotFound());
   }
 
-  // -------------------------------------------------------
   // PATCH → update status
-  // -------------------------------------------------------
+
   @Test
   void updateUserStatus_success() throws Exception {
     mockMvc
@@ -280,9 +274,8 @@ public class UserIntegrationTest {
         .andExpect(status().isNotFound());
   }
 
-  // -------------------------------------------------------
   // DELETE user
-  // -------------------------------------------------------
+
   @Test
   void deleteUser_success() throws Exception {
     mockMvc

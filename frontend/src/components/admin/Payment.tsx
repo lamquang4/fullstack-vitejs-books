@@ -33,7 +33,7 @@ function Payment() {
             <tr className="bg-[#E9EDF2] text-left">
               <th className="p-[1rem]   ">Mã đơn</th>
               <th className="p-[1rem]  ">Mã giao dịch</th>
-              <th className="p-[1rem]  ">Phương thức thanh toán</th>
+              <th className="p-[1rem]  ">Cổng thanh toán</th>
               <th className="p-[1rem]  ">Số tiền</th>
               <th className="p-[1rem]   relative">
                 <FilterDropDownMenu

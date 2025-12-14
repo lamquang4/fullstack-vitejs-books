@@ -129,7 +129,7 @@ class OrderIntegrationTest {
     cart = cartRepository.save(Cart.builder().user(user).createdAt(LocalDateTime.now()).build());
   }
 
-  // ----------------- Create order COD: stock deducted and cart deleted ---------------
+  // Create order COD: stock deducted and cart deleted
   @Test
   void createOrder_COD_reducesStock_andDeletesCart() throws Exception {
     // build request DTO payload
@@ -171,7 +171,7 @@ class OrderIntegrationTest {
     assertThat(cartRepository.findByUserId(user.getId())).isNotPresent();
   }
 
-  // ----------------- Create order with momo: status = -1 and stock not deducted ---------------
+  //  Create order with momo: status = -1 and stock not deducted
   @Test
   void createOrder_Momo_statusMinusOne_noStockChange() throws Exception {
     Map<String, Object> detail =
@@ -206,7 +206,7 @@ class OrderIntegrationTest {
     assertThat(unchanged.getStock()).isEqualTo(50);
   }
 
-  // ----------------- Get order by id ---------------
+  //  Get order by id
   @Test
   void getOrderById_shouldReturnOrder() throws Exception {
     Order order =
@@ -243,7 +243,7 @@ class OrderIntegrationTest {
         .andExpect(jsonPath("$.items[0].bookId").value(book.getId()));
   }
 
-  // ----------------- Get all orders (basic) ---------------
+  //  Get all orders (basic)
   @Test
   void getAllOrders_shouldReturnPaged() throws Exception {
     // create two orders

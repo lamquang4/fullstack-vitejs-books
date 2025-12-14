@@ -93,7 +93,7 @@ function Book() {
           <thead>
             <tr className="bg-[#E9EDF2] text-left">
               <th className="p-[1rem]  ">Tiêu đề</th>
-              <th className="p-[1rem]  ">Giá</th>
+              <th className="p-[1rem]  ">Giá bán</th>
               <th className="p-[1rem]  ">Số lượng</th>
               <th className="p-[1rem]  ">Tác giả</th>
               <th className="p-[1rem]  ">Nhà xuất bản</th>

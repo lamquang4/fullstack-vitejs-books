@@ -62,7 +62,7 @@ function AddBook() {
     e.preventDefault();
 
     if (Number(data.price) < Number(data.discount)) {
-      toast.error("Số tiền giảm không được lớn hơn giá gốc");
+      toast.error("Số tiền giảm không được lớn hơn giá bán");
       return;
     }
 
@@ -72,7 +72,7 @@ function AddBook() {
     }
 
     if (Number(data.price) <= 0) {
-      toast.error("Giá gốc phải lớn hơn 0");
+      toast.error("Giá bán phải lớn hơn 0");
       return;
     }
 
@@ -298,7 +298,7 @@ function AddBook() {
               <div className="flex flex-wrap md:flex-nowrap gap-[15px]">
                 <div className="flex flex-col gap-1 w-full">
                   <label htmlFor="" className="text-[0.9rem] font-medium">
-                    Giá gốc
+                    Giá bán
                   </label>
                   <input
                     type="number"
