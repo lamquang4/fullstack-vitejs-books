@@ -433,7 +433,7 @@ public class BookService {
     }
 
     if (book.getPrice() == null || book.getPrice() <= 0) {
-      throw new IllegalArgumentException("Giá gốc phải lớn hơn 0");
+      throw new IllegalArgumentException("Giá bán phải lớn hơn 0");
     }
 
     if (book.getDiscount() != null) {
@@ -441,7 +441,7 @@ public class BookService {
         throw new IllegalArgumentException("Giảm giá phải lớn hơn hoặc bằng 0");
       }
       if (book.getDiscount() > book.getPrice()) {
-        throw new IllegalArgumentException("Giảm giá không được lớn hơn giá gốc");
+        throw new IllegalArgumentException("Giảm giá không được lớn hơn giá bán");
       }
     }
 
@@ -550,7 +550,7 @@ public class BookService {
             .orElseThrow(() -> new EntityNotFoundException("Sách không tìm thấy"));
 
     if (updatedBookData.getPrice() <= 0) {
-      throw new IllegalArgumentException("Giá gốc phải lớn hơn 0");
+      throw new IllegalArgumentException("Giá bán phải lớn hơn 0");
     }
 
     if (updatedBookData.getDiscount() < 0) {
@@ -558,7 +558,7 @@ public class BookService {
     }
 
     if (updatedBookData.getDiscount() > updatedBookData.getPrice()) {
-      throw new IllegalArgumentException("Số tiền giảm không được lớn hơn giá gốc");
+      throw new IllegalArgumentException("Số tiền giảm không được lớn hơn giá bán");
     }
 
     if (updatedBookData.getStock() < 0) {

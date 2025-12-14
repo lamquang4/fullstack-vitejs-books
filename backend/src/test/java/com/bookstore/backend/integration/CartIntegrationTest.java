@@ -61,7 +61,7 @@ class CartIntegrationTest {
 
     userRepository.deleteAll();
 
-    // -------------- tạo mới dữ liệu hợp lệ ----------------
+    // tạo mới dữ liệu hợp lệ
     user =
         userRepository.save(
             User.builder()
@@ -109,7 +109,7 @@ class CartIntegrationTest {
     item = cartItemRepository.save(CartItem.builder().cart(cart).book(book).quantity(3).build());
   }
 
-  // ------------------- ADD ITEM -------------------------
+  // Thêm sản phẩm
   @Test
   void addItemToCart_shouldIncreaseQuantity() throws Exception {
     mockMvc
@@ -170,7 +170,7 @@ class CartIntegrationTest {
     assertThat(updated.getQuantity()).isEqualTo(15);
   }
 
-  // ------------------- UPDATE ITEM -------------------------
+  // Cập nhật sản phẩm
   @Test
   void updateCartItemQuantity_shouldUpdateQuantity() throws Exception {
     mockMvc
@@ -190,7 +190,7 @@ class CartIntegrationTest {
     assertThat(cartItemRepository.findById(item.getId())).isEmpty();
   }
 
-  // ------------------- REMOVE ITEM -------------------------
+  // Xóa sản phẩm
   @Test
   void removeItemFromCart_shouldDeleteItem() throws Exception {
     mockMvc

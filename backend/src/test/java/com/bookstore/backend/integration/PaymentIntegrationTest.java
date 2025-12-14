@@ -121,7 +121,7 @@ public class PaymentIntegrationTest {
                 .build());
   }
 
-  // ------------------- 1. getAllPayments no filter ----------------------
+  // 1. getAllPayments no filter
   @Test
   void getAllPayments_shouldReturnAll() throws Exception {
     paymentRepository.save(
@@ -140,7 +140,7 @@ public class PaymentIntegrationTest {
         .andExpect(jsonPath("$.total").value(1));
   }
 
-  // ------------------- 2. filter by orderCode ----------------------
+  // 2. filter by orderCode
   @Test
   void getAllPayments_filterByOrderCode() throws Exception {
     paymentRepository.save(
@@ -159,7 +159,7 @@ public class PaymentIntegrationTest {
         .andExpect(jsonPath("$.total").value(1));
   }
 
-  // ------------------- 3. filter by status ----------------------
+  // 3. filter by status
   @Test
   void getAllPayments_filterByStatus() throws Exception {
     paymentRepository.save(
@@ -178,7 +178,7 @@ public class PaymentIntegrationTest {
         .andExpect(jsonPath("$.total").value(1));
   }
 
-  // ------------------- 4. filter by both orderCode + status ----------------------
+  // 4. filter by both orderCode + status
   @Test
   void getAllPayments_filterByOrderCodeAndStatus() throws Exception {
     paymentRepository.save(
@@ -203,7 +203,7 @@ public class PaymentIntegrationTest {
         .andExpect(jsonPath("$.total").value(1));
   }
 
-  // ------------------- 5. create payment ----------------------
+  // 5. create payment
   @Test
   void createPayment_shouldSaveSuccessfully() {
     Payment payment =

@@ -44,19 +44,17 @@ docker compose up --build
 
 [2. Kế hoạch kiểm thử](#2-kế-hoạch-kiểm-thử)
 
-&nbsp;&nbsp;[2.1. Hạng mục kiểm thử](#21-hạng-mục-kiểm-thử)
+&nbsp;&nbsp;[2.1. Hạng mục được kiểm thử](#21-hạng-mục-được-kiểm-thử)
 
-&nbsp;&nbsp;&nbsp;[2.1.1. Hạng mục được kiểm thử](#211-hạng-được-kiểm-thử)
+&nbsp;&nbsp;[2.2. Hạng mục không được kiểm thử](#22-hạng-mục-không-được-kiểm-thử)
 
-&nbsp;&nbsp;&nbsp;[2.1.2. Hạng mục không được kiểm thử](#212-hạng-mục-không-được-kiểm-thử)
+&nbsp;&nbsp;[2.3. Chiến lược kiểm thử](#23-chiến-lược-kiểm-thử)
 
-&nbsp;&nbsp;[2.2. Chiến lược kiểm thử](#22-chiến-lược-kiểm-thử)
+&nbsp;&nbsp;&nbsp;[2.3.1. Phương pháp kiểm thử](#231-phương-pháp-kiểm-thử)
 
-&nbsp;&nbsp;&nbsp;[2.2.1. Phương pháp kiểm thử](#221-phương-pháp-kiểm-thử)
+&nbsp;&nbsp;&nbsp;[2.3.2. Loại kiểm thử](#232-loại-kiểm-thử)
 
-&nbsp;&nbsp;&nbsp;[2.2.2. Loại kiểm thử](#222-loại-kiểm-thử)
-
-&nbsp;&nbsp;&nbsp;[2.2.3. Cấp độ kiểm thử](#223-cấp-độ-kiểm-thử)
+&nbsp;&nbsp;&nbsp;[2.3.3. Cấp độ kiểm thử](#233-cấp-độ-kiểm-thử)
 
 [3. Thiết kế kiểm thử](#3-thiết-kế-kiểm-thử)
 
@@ -247,23 +245,77 @@ Kiểm soát truy cập có thực thể chính là Người dùng và Chức v�
 
 ### 2. Kế hoạch kiểm thử
 
-### 2.1. Hạng mục kiểm thử
+### 2.1. Hạng mục được kiểm thử
 
-### 2.1.1. Hạng mục được kiểm thử
+Tất cả các yêu cầu chức năng nghiệp vụ của hệ thống sẽ được kiểm thử, bao gồm:
 
-Tất cả các yêu cầu chức năng nghiệp vụ của hệ thống trong tài liệu sẽ được kiểm thử, bao gồm:
+**Kiểm soát truy cập**
 
-- Kiểm soát truy cập: Đăng ký, đăng nhập (cho 3 chức vụ), đăng xuất (cả 2 phía quản trị viên và khách hàng). Quản lý người dùng (phía quản trị viên).
+    Xác minh rằng hệ thống cho phép đăng nhập cho chức vụ là khách hàng, quản trị viên.
 
-- Quản lý sản phẩm: Chức năng quản lý sách, danh mục, tác giả, nhà xuất bản (phía quản trị viên). Chức năng tìm kiếm, lọc và sắp xếp sách (phía khách hàng).
+    Xác minh rằng hệ thống cho phép đăng ký tài khoản cho khách hàng.
 
-- Quản lý giỏ hàng: Thêm, cập nhật số lượng, xóa sách khỏi giỏ hàng (phía khách hàng).
+    Xác minh rằng hệ thống cho phép đăng xuất đối với tất cả người dùng đã đăng nhập.
 
-- Quản lý đơn hàng: Quy trình đặt hàng, xem lịch sử đơn hàng (phía khách hàng). Cập nhật trạng thái đơn hàng (phía quản trị viên).
+    Xác minh rằng hệ thống thực thi phân quyền truy cập đúng, chỉ cho phép người dùng truy cập các chức năng phù hợp với vai trò của mình.
 
-- Quản lý thanh toán: Quy trình xử lý thanh toán bằng cổng Momo thành công và thất bại (phía khách hàng). Xem các giao dịch thanh toán Momo (phía quản trị viên).
+    Xác minh rằng hệ thống cho phép quản trị viên thực hiện quản lý người dùng với các thao tác CRUD.
 
-- Quản lý sổ địa chỉ: Thêm, cập nhật và xóa địa chỉ (phía khách hàng).
+**Quản lý sản phẩm**
+
+    Xác minh rằng hệ thống cung cấp các thao tác CRUD chức năng quản lý sản phẩm cho quản trị viên.
+
+    Xác minh rằng hệ thống hỗ trợ quản lý liên quan đến sản phẩm, bao gồm danh mục, tác giả và nhà xuất bản.
+
+    Xác minh rằng hệ thống cho phép khách hàng truy cập và xem danh sách sản phẩm.
+
+    Xác minh rằng hệ thống hỗ trợ các chức năng tìm kiếm, lọc và sắp xếp sản phẩm nhằm giúp khách hàng dễ dàng tìm kiếm sản phẩm mong muốn.
+
+    Xác minh rằng hệ thống đảm bảo tính nhất quán và chính xác của dữ liệu sản phẩm giữa giao diện người dùng và hệ thống backend.
+
+**Quản lý giỏ hàng**
+
+    Xác minh rằng hệ thống cung cấp các thao tác CRUD chức năng quản lý giỏ hàng cho khách hàng.
+
+    Xác minh rằng hệ thống tự động cập nhật và hiển thị chính xác thông tin giỏ hàng, bao gồm danh sách sản phẩm, số lượng và tổng tiền.
+
+    Xác minh rằng hệ thống đảm bảo tính nhất quán dữ liệu giỏ hàng trong suốt quá trình người dùng thao tác và chuyển đổi giữa các trang.
+
+    Xác minh rằng hệ thống có các ràng buộc nghiệp vụ đối với giỏ hàng giới hạn số lượng mua một sản phẩm theo số lượng hiện có.
+
+    Xác minh rằng hệ thống cho phép khách hàng tiếp tục quy trình mua hàng từ giỏ hàng để chuyển sang bước đặt hàng.
+
+**Quản lý đơn hàng**
+
+    Xác minh rằng hệ thống cung cấp đầy đủ quản lý đơn hàng cho khách hàng, bao gồm đặt hàng, xem danh sách đơn hàng và xem chi tiết đơn hàng đã đặt.
+
+    Xác minh rằng hệ thống cung cấp đầy đủ các chức năng quản lý đơn hàng cho quản trị viên, bao gồm xem danh sách, tìm kiếm, lọc và cập nhật trạng thái đơn hàng.
+
+    Xác minh rằng hệ thống hỗ trợ quy trình xử lý đơn hàng theo đúng nghiệp vụ, từ lúc tạo đơn hàng đến khi hoàn tất hoặc hủy đơn.
+
+    Xác minh rằng hệ thống đảm bảo tính chính xác và nhất quán của dữ liệu đơn hàng, bao gồm trạng thái đơn hàng, thông tin sản phẩm và tổng tiền.
+
+**Quản lý thanh toán**
+
+    Xác minh rằng hệ thống cung cấp đầy đủ các phương thức thanh toán cho khách hàng, bao gồm thanh toán khi nhận hàng và thanh toán qua cổng Momo.
+
+    Xác minh rằng hệ thống hỗ trợ quy trình thanh toán Momo.
+
+    Xác minh rằng hệ thống xử lý chính xác kết quả thanh toán từ Momo, bao gồm các trường hợp thanh toán thành công, hủy giao dịch và giao dịch hết hạn.
+
+    Xác minh rằng hệ thống xử lý đúng các tình huống lỗi trong quá trình thanh toán.
+
+    Xác minh rằng hệ thống đảm bảo tính nhất quán và chính xác của dữ liệu thanh toán và đơn hàng.
+
+    Xác minh rằng hệ thống cho phép quản trị viên xem danh sách các giao dịch thanh toán Momo.
+
+**Quản lý sổ địa chỉ**
+
+    Xác minh rằng hệ thống cung cấp các thao tác CRUD chức năng quản lý sổ địa chỉ cho khách hàng.
+
+    Xác minh rằng hệ thống kiểm tra và hiển thị thông báo lỗi khi khách hàng nhập thiếu hoặc nhập sai thông tin bắt buộc.
+
+    Xác minh rằng hệ thống cho phép Khách hàng chọn địa chỉ đã lưu khi thực hiện đặt hàng và tự động điền thông tin giao hàng tương ứng.
 
 Kiểm thử giao diện Frontend gồm kiểm tra bố cục, nội dung, tính nhất quán giao diện và khả năng thao tác của người dùng.
 
@@ -271,7 +323,7 @@ Kiểm thử API Backend gồm kiểm tra dữ liệu trả về, mã trạng th
 
 Kiểm thử tương thích gồm kiểm tra khả năng hoạt động ổn định của hệ thống trên các trình duyệt Chrome, Firefox, Safari và trên các thiết bị Desktop, Android, iOS.
 
-### 2.1.2. Hạng mục không được kiểm thử
+### 2.2. Hạng mục không được kiểm thử
 
 Một số phi chức năng sau sẽ không được kiểm thử do giới hạn về thời gian và nguồn lực:
 
@@ -281,26 +333,26 @@ Kiểm thử tính khả dụng (Usability Testing) sẽ không có đánh giá 
 
 Hệ thống của bên thứ ba sẽ không được kiểm thử nội bộ hệ thống của Momo; chỉ kiểm thử API tích hợp (đầu vào/đầu ra) giữa Backend và cổng thanh toán Momo.
 
-### 2.2. Chiến lược kiểm thử
+### 2.3. Chiến lược kiểm thử
 
-### 2.2.1. Phương pháp kiểm thử
+### 2.3.1. Phương pháp kiểm thử
 
 Dự án áp dụng phương pháp kiểm thử theo khung nhìn V-Model, trong đó kiểm thử được thực hiện song song với các giai đoạn phát triển phần mềm: từ kiểm thử đơn vị, kiểm thử tích hợp, đến kiểm thử hệ thống và kiểm thử chấp nhận. Các Test Case được thiết kế dựa vào các yêu cầu chức năng.
 
 Kiểm thử tự động được thực hiện thông qua quy trình CI/CD bằng GitHub Actions, giúp tự động hóa các bước Build, Test và Deploy. Quy trình này hỗ trợ phát hiện lỗi sớm, rút ngắn thời gian kiểm thử và đảm bảo chất lượng phần mềm một cách liên tục.
 
-### 2.2.2. Loại kiểm thử
+### 2.3.2. Loại kiểm thử
 
-| Loại kiểm thử        | Mục đích                                                                                                             | Công cụ / kỹ thuật                                                            |
+| Loại kiểm thử        | Mục đích                                                                                                             | Công cụ/kỹ thuật                                                              |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| Kiểm thử chức năng   | Đảm bảo các chức năng nghiệp vụ của hệ thống hoạt động đúng với đặc tả yêu cầu                                       | Test case, Selenium                                                           |
-| Kiểm giao diện       | Đảm bảo giao diện người dùng hiển thị đúng bố cục, nội dung, thao tác và phản hồi chính xác khi người dùng tương tác | Selenium, kiểm thử thủ công                                                   |
+| Kiểm thử chức năng   | Đảm bảo các chức năng nghiệp vụ của hệ thống hoạt động đúng với đặc tả yêu cầu                                       | Selenium                                                                      |
+| Kiểm giao diện       | Đảm bảo giao diện người dùng hiển thị đúng bố cục, nội dung, thao tác và phản hồi chính xác khi người dùng tương tác | Selenium                                                                      |
 | Kiểm thử API         | Đánh giá tính chính xác và ổn định của các API về dữ liệu trả về, mã trạng thái, tính hợp lệ của request và response | Postman                                                                       |
 | Kiểm thử tương thích | Kiểm tra website hoạt động ổn định trên nhiều trình duyệt và thiết bị khác nhau                                      | Trình duyệt gồm Chrome, Firefox, Safari và thiết bị gồm iOS, Android, Desktop |
 | Kiểm thử bảo mật     | Phát hiện các lỗ hổng dễ thấy như truy cập trái phép, phân quyền sai, lỗi bảo mật đầu vào                            | Kiểm thử thủ công                                                             |
 | Kiểm thử hồi quy     | Đảm bảo các chức năng đã hoạt động ổn định không bị ảnh hưởng sau khi cập nhật, sửa lỗi hoặc bổ sung tính năng mới   | Selenium, CI/CD của GitHub Actions                                            |
 
-### 2.2.3. Cấp độ kiểm thử
+### 2.3.3. Cấp độ kiểm thử
 
 | Cấp độ             | Mục đích                                        | Kỹ thuật  | Phương pháp                                                                                   |
 | ------------------ | ----------------------------------------------- | --------- | --------------------------------------------------------------------------------------------- |

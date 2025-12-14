@@ -58,7 +58,7 @@ class PublisherIntegrationTest {
                 .build());
   }
 
-  // --------------------- GET paged ---------------------
+  // GET paged
   @Test
   void getAllPublishers_shouldReturnPaged() throws Exception {
 
@@ -72,7 +72,7 @@ class PublisherIntegrationTest {
         .andExpect(jsonPath("$.total").value(2));
   }
 
-  // --------------------- GET all (unpaged) ---------------------
+  // GET all (unpaged)
   @Test
   void getAllPublishers1_shouldReturnList() throws Exception {
     mockMvc
@@ -82,7 +82,7 @@ class PublisherIntegrationTest {
         .andExpect(jsonPath("$.length()").value(1));
   }
 
-  // --------------------- GET by id ---------------------
+  // GET by id
   @Test
   void getPublisherById_shouldReturnPublisher() throws Exception {
     mockMvc
@@ -96,7 +96,7 @@ class PublisherIntegrationTest {
     mockMvc.perform(get("/api/publisher/{id}", "unknown")).andExpect(status().isNotFound());
   }
 
-  // --------------------- CREATE publisher ---------------------
+  // CREATE publisher
   @Test
   void createPublisher_shouldCreateSuccessfully() throws Exception {
 
@@ -128,7 +128,7 @@ class PublisherIntegrationTest {
         .andExpect(status().isBadRequest());
   }
 
-  // --------------------- UPDATE publisher ---------------------
+  // UPDATE publisher
   @Test
   void updatePublisher_shouldUpdateSuccessfully() throws Exception {
 
@@ -178,7 +178,7 @@ class PublisherIntegrationTest {
         .andExpect(status().isNotFound());
   }
 
-  // --------------------- DELETE publisher ---------------------
+  // DELETE publisher
   @Test
   void deletePublisher_shouldDeleteSuccessfully() throws Exception {
 
