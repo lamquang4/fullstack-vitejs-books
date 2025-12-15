@@ -1,6 +1,7 @@
 package com.bookstore.backend.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.*;
@@ -17,6 +18,7 @@ public class Cart {
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
+  @NotNull
   @ManyToOne
   @JoinColumn(name = "userId", nullable = false, unique = true)
   private User user;
