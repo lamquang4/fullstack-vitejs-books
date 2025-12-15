@@ -31,6 +31,18 @@ jobs:
       - name: Run tests
         working-directory: ./backend
         run: mvn test
+      
+      # PERFORMANCE TESTS
+      - name: Install k6
+        run: sudo apt-get update && sudo apt-get install -y k6
+      
+      - name: Run k6 Load Test
+        working-directory: ./performance/k6
+        run: k6 run load-test.js
+
+      - name: Run k6 Stress Test
+        working-directory: ./performance/k6
+        run: k6 run stress-test.js
 
       # FRONTEND
       - name: Set up Node.js
