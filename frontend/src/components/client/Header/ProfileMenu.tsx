@@ -22,12 +22,14 @@ function ProfileMenu({ isOpen }: ProfileMenuProp) {
 
           <Link
             to="/account"
+            data-testid="account"
             className="hover:bg-gray-100 w-full block p-2.5 text-[0.95rem]  "
           >
             Thông tin tài khoản
           </Link>
 
           <Link
+            data-testid="order"
             to="/order"
             className="hover:bg-gray-100 w-full block p-2.5 text-[0.95rem]  "
           >
@@ -36,6 +38,7 @@ function ProfileMenu({ isOpen }: ProfileMenuProp) {
 
           <Link
             to="/address"
+            data-testid="address"
             className="hover:bg-gray-100 w-full block p-2.5 text-[0.95rem]  "
           >
             Sổ địa chỉ
@@ -43,6 +46,7 @@ function ProfileMenu({ isOpen }: ProfileMenuProp) {
 
           <button
             type="button"
+            data-testid="logout"
             onClick={() => handleLogout("client")}
             className="hover:bg-gray-100 w-full block p-2.5 text-[0.95rem]   text-left"
           >
@@ -52,6 +56,7 @@ function ProfileMenu({ isOpen }: ProfileMenuProp) {
       ) : (
         <div className="w-[120px] absolute top-[22px] right-[-40px] overflow-hidden z-20 bg-white shadow-md rounded-md font-normal">
           <Link
+            data-testid="login"
             to="/login"
             className="hover:bg-gray-100 w-full block p-2.5 text-[0.95rem]  "
           >
@@ -59,6 +64,7 @@ function ProfileMenu({ isOpen }: ProfileMenuProp) {
           </Link>
 
           <Link
+            data-testid="register"
             to="/register"
             className="hover:bg-gray-100 w-full block p-2.5 text-[0.95rem]  "
           >

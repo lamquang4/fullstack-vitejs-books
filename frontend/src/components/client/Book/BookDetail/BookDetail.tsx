@@ -269,6 +269,7 @@ function BookDetail({ book }: Props) {
 
                     <button
                       type="button"
+                      data-testid="btn-add-to-cart"
                       onClick={handleAddItemToCart}
                       disabled={isLoadingAddItem}
                       className="p-[10px] w-full uppercase text-[0.9rem] font-semibold border bg-[#C62028] text-white"

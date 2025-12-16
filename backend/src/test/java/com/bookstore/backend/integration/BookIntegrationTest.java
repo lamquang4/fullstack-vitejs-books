@@ -66,10 +66,6 @@ class BookIntegrationTest {
     publisherRepository.deleteAll();
     userRepository.deleteAll();
 
-    if (uploadsRoot.exists()) {
-      deleteRecursively(uploadsRoot);
-    }
-
     author =
         Author.builder()
             .fullname("Integration Author")
@@ -107,10 +103,6 @@ class BookIntegrationTest {
     categoryRepository.deleteAll();
     publisherRepository.deleteAll();
     userRepository.deleteAll();
-
-    if (uploadsRoot.exists()) {
-      deleteRecursively(uploadsRoot);
-    }
   }
 
   private void deleteRecursively(File f) throws Exception {
@@ -259,7 +251,8 @@ class BookIntegrationTest {
     assertThat(img.exists()).isFalse();
   }
 
-  // DELETE book (in order) -> should return 409/BadRequest depending on your handler
+  // DELETE book (in order) -> should return 409/BadRequest depending on your
+  // handler
   @Test
   void deleteBook_inOrder_shouldFail() throws Exception {
     Book b = buildBookEntityTemplate();

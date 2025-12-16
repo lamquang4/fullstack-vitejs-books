@@ -165,8 +165,11 @@ public class UserService {
                 throw new IllegalArgumentException("Email không hợp lệ");
               }
 
-              if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
-                throw new IllegalArgumentException("Email này đã được sử dụng");
+              if (!userDTO.getEmail().equals(user.getEmail())) {
+                if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
+                  throw new IllegalArgumentException("Email này đã được sử dụng");
+                }
+                user.setEmail(userDTO.getEmail());
               }
 
               if (userDTO.getEmail() != null) {
