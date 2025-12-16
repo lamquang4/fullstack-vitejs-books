@@ -109,7 +109,7 @@ function Header() {
                 <ProfileMenu isOpen={profileMenuOpen} />
               </div>
 
-              <Link to={"/cart"} className="relative">
+              <Link to={"/cart"} className="relative" data-testid="cart">
                 <CiShoppingCart size={26} />
 
                 <small
@@ -141,7 +141,7 @@ function Header() {
                 <ProfileMenu isOpen={profileMenuOpen} />
               </div>
 
-              <Link to={"/cart"} className="relative">
+              <Link to={"/cart"} className="relative" data-testid="cart">
                 <CiShoppingCart size={26} />
 
                 <small

@@ -149,6 +149,7 @@ function CartItem({ cart, mutate }: Props) {
                             </div>
 
                             <button
+                              data-testid="btn-remove"
                               type="button"
                               disabled={isLoadingRemove}
                               onClick={() => handleRemoveItem(item.id)}
@@ -174,6 +175,7 @@ function CartItem({ cart, mutate }: Props) {
                           <div className="flex-wrap justify-between flex gap-4 mt-auto">
                             <div className="flex items-center gap-1">
                               <button
+                                data-testid="btn-decrement"
                                 type="button"
                                 onClick={() =>
                                   handleDecrement(item.id, item.quantity)
@@ -190,6 +192,7 @@ function CartItem({ cart, mutate }: Props) {
                                 {item.quantity}
                               </h5>
                               <button
+                                data-testid="btn-increment"
                                 type="button"
                                 name="button-1"
                                 onClick={() =>
@@ -245,6 +248,7 @@ function CartItem({ cart, mutate }: Props) {
 
                 <div className="flex md:flex-row flex-col justify-between items-center gap-[10px]">
                   <button
+                    data-testid="btn-checkout"
                     type="submit"
                     className="text-[0.9rem] px-4 py-2.5 w-full font-semibold tracking-wide bg-[#C62028] text-white rounded-md"
                   >

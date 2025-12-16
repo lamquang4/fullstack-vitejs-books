@@ -47,6 +47,7 @@ function AddressInfo({
         <h2>Sổ địa chỉ</h2>
 
         <button
+          data-testid="btn-add-address"
           onClick={toggleAddressModal}
           type="button"
           className="px-[10px] py-[6px] bg-red-600 text-white text-[0.9rem] font-medium text-center rounded-sm hover:bg-red-700"
@@ -85,6 +86,7 @@ function AddressInfo({
 
                   <div className="flex gap-[25px] items-center">
                     <button
+                      data-testid="btn-edit-address"
                       className="border-0 p-1 outline-0 text-[0.9rem] text-blue-500 font-medium"
                       type="button"
                       onClick={() => {
@@ -95,6 +97,7 @@ function AddressInfo({
                       Chỉnh sửa
                     </button>
                     <button
+                      data-testid="btn-remove-address"
                       className="border-0 p-1 outline-0 text-[0.9rem] text-red-500 font-medium"
                       type="button"
                       disabled={isLoadingDeleteAddress}

@@ -207,7 +207,7 @@ function AddressModal({
                     Tỉnh/thành phố
                   </label>
                   <select
-                    name="cỉty"
+                    name="city"
                     required
                     value={data.city}
                     onChange={(e) =>
