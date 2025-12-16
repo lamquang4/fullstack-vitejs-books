@@ -219,7 +219,7 @@ Kiểm soát truy cập có thực thể chính là Người dùng và Chức v�
 
 ![](docs/images/deployment.png)
 
-### 2. Kế hoạch kiểm thử
+## 2. Kế hoạch kiểm thử
 
 ### 2.1. Hạng mục được kiểm thử
 
