@@ -1,4 +1,4 @@
-# Website fullstack Fahasa
+# WEBSITE FULLSTACK FAHASA
 
 ## Cài đặt môi trường
 
@@ -34,7 +34,17 @@ docker compose up --build
 
 [3. Thiết kế kiểm thử](#3-thiết-kế-kiểm-thử)
 
+&nbsp;&nbsp;[3.1. Quy trình thiết kế kiểm thử theo V-Model](#31-quy-trình-thiết-kế-kiểm-thử-theo-v-model)
+
+&nbsp;&nbsp;[3.2. Kỹ thuật thiết kế kiểm thử](#32-kỹ-thuật-thiết-kế-kiểm-thử)
+
+&nbsp;&nbsp;[3.3. Phương pháp thiết kế kiểm thử](#33-phương-pháp-thiết-kế-kiểm-thử)
+
 [4. Báo cáo kiểm thử](#4-báo-cáo-kiểm-thử)
+
+&nbsp;&nbsp;[4.1. Báo cáo trường hợp kiểm thử](#41-báo-cáo-trường-hợp-kiểm-thử)
+
+&nbsp;&nbsp;[4.2. Báo cáo lỗi](#42-báo-cáo-lỗi)
 
 ## 1. Giới thiệu phần mềm
 
@@ -420,3 +430,192 @@ Bên cạnh đó, dự án áp dụng kiểm thử tự động thông qua quy t
 | Kiểm thử đám đông         |                 |                   | x                 | x                  |
 | Kiểm thử hồi quy          | x               | x                 | x                 |                    |
 | Kiểm thử API              | x               | x                 |                   |                    |
+
+## 3. Thiết kế kiểm thử
+
+### 3.1. Quy trình thiết kế kiểm thử theo V-Model
+
+### 3.1.1. Phân tích yêu cầu - 1a
+
+Ở giai đoạn đầu tiên, nhóm tiến hành thu thập, phân tích và làm rõ các yêu cầu nghiệp vụ của hệ thống bán sách giấy trực tuyến. Mục tiêu của bước này là đảm bảo tất cả yêu cầu được mô tả đầy đủ, đúng phạm vi và có thể kiểm thử được. Nhóm xây dựng tài liệu đặc tả yêu cầu phần mềm (SRS) làm cơ sở cho toàn bộ hoạt động kiểm thử về sau.
+
+Từ quá trình phân tích, nhóm xác định hệ thống có hai đối tượng sử dụng chính (Khách hàng và Quản trị viên) và phân rã thành 6 module chức năng: Quản lý sản phẩm, Giỏ hàng, Đơn hàng, Thanh toán, Kiểm soát truy cập và Sổ địa chỉ.
+
+Kết quả phân tích yêu cầu là nền tảng trực tiếp cho việc xây dựng các trường hợp kiểm thử chấp nhận. Các yêu cầu được chuyển hóa thành tiêu chí nghiệm thu, đảm bảo rằng mọi chức năng người dùng mong đợi đều có thể được xác minh thông qua kiểm thử.
+
+### 3.1.2. Phân tích hệ thống - 2a
+
+Sau khi yêu cầu đã được xác định rõ, nhóm tiến hành thiết kế hệ thống ở mức tổng thể. Nội dung thiết kế bao gồm việc mô tả các chức năng chính, các luồng nghiệp vụ, các sơ đồ use case và mối quan hệ giữa các tác nhân tương tác với hệ thống.
+
+Thông tin từ giai đoạn này được dùng để xây dựng kịch bản kiểm thử hệ thống. Các chức năng được mô tả trong sơ đồ use case sẽ trở thành đối tượng kiểm thử, bảo đảm rằng hệ thống vận hành đúng theo luồng nghiệp vụ tổng quan.
+
+### 3.1.3. Phân tích kiến trúc - 3a
+
+Trong giai đoạn thiết kế kiến trúc, nhóm áp dụng kiến trúc C4 Model (Context – Container – Component – Code) để phân rã hệ thống từ cấp độ ngữ cảnh đến cấp độ thành phần. Mục đích là xác định rõ giao tiếp giữa các tầng, sự phân tách trách nhiệm và luồng dữ liệu giữa các thành phần trong kiến trúc tổng thể.
+
+Kết quả thiết kế kiến trúc là cơ sở để xây dựng kiểm thử tích hợp. Các điểm giao tiếp giữa các module – như giữa API và database, giữa backend và frontend – được liệt kê và phân tích để thiết kế các trường hợp kiểm thử nhằm đánh giá tính chính xác của việc trao đổi dữ liệu giữa các thành phần.
+
+### 3.1.4. Phân tích module - 4a
+
+Trong bước thiết kế module, nhóm thực hiện phân tích và thiết kế từng module của hệ thống. Các sơ đồ lớp (Class Diagram) được sử dụng để mô tả cấu trúc dữ liệu, thuộc tính, phương thức và mối quan hệ giữa các lớp.
+
+Tài liệu từ bước này được sử dụng để xây dựng các trường hợp kiểm thử đơn vị. Các lớp và phương thức trọng yếu của từng module được xác định để viết kiểm thử tự động, giúp phát hiện sớm lỗi ở mức độ thấp nhất trước khi module được tích hợp vào hệ thống.
+
+### 3.1.5. Kiểm thử đơn vị - 1b
+
+Dựa trên thiết kế module, nhóm tiến hành xây dựng và thực thi các trường hợp kiểm thử đơn vị để đánh giá tính đúng đắn của từng phương thức, hàm hoặc lớp độc lập.
+Mục tiêu của kiểm thử đơn vị là đảm bảo từng thành phần nhỏ nhất hoạt động chính xác theo mô tả trong thiết kế, từ đó giảm thiểu rủi ro lỗi lan truyền sang các giai đoạn tích hợp và triển khai.
+
+Các ca kiểm thử đơn vị được triển khai kiểm thử tự động bằng JUnit kết hợp với Mockito để mô phỏng (mock) các đối tượng phụ thuộc, giúp tách biệt logic kiểm thử khỏi các thành phần bên ngoài như database hay service khác. Việc sử dụng Mockito cho phép nhóm cô lập và kiểm tra từng hàm một cách chính xác, đặc biệt trong các tình huống cần mô phỏng dữ liệu hoặc hành vi phức tạp.
+
+Toàn bộ kiểm thử đơn vị được tích hợp vào môi trường CI/CD thông qua GitHub Actions, cho phép các bài test chạy tự động mỗi khi có cập nhật mã nguồn. Điều này giúp nhóm phát hiện lỗi sớm, ổn định chất lượng phần mềm trong suốt quá trình phát triển.
+
+### 3.1.6. Kiểm thử tích hợp - 2b
+
+Sau khi từng module đã ổn định thông qua kiểm thử đơn vị, nhóm tiến hành kiểm thử tích hợp để đánh giá sự tương tác giữa các thành phần trong hệ thống.
+
+Kiểm thử tích hợp tập trung vào việc xác minh dữ liệu truyền tải qua các API, các tầng giao tiếp giữa Controller – Service – Repository, cũng như sự tương thích giữa backend và database.
+Nhóm sử dụng Spring Boot Test kết hợp MockMvc để kiểm thử tích hợp API trong môi trường mô phỏng gần giống thực tế.
+MockMvc cho phép gửi request, nhận response và kiểm tra toàn bộ luồng xử lý mà không cần chạy ứng dụng thực tế trên server. Ngoài ra, cơ sở dữ liệu trong quá trình kiểm thử được thay thế bằng H2 Database (in-memory) nhằm đảm bảo kiểm thử có tính cô lập, lặp lại và không gây ảnh hưởng đến dữ liệu thật.
+
+Các ca kiểm thử tích hợp được thiết kế dựa trên những điểm giao tiếp đã xác định trong giai đoạn Thiết kế kiến trúc, đảm bảo quá trình kiểm thử tuân thủ đúng cấu trúc hệ thống và bao phủ toàn bộ các luồng tương tác quan trọng.
+
+### 3.1.7. Kiểm thử hệ thống - 3b
+
+Ở cấp độ cao hơn, nhóm tiến hành kiểm thử hệ thống nhằm đánh giá toàn bộ hoạt động của phần mềm như một thể thống nhất. Kiểm thử hệ thống được thực hiện theo cách tiếp cận thủ công dựa trên tập Test Case đã được xây dựng ở giai đoạn thiết kế kiểm thử, bao gồm đầy đủ các tình huống theo use case và luồng nghiệp vụ chính của người dùng.
+
+Các hoạt động kiểm thử bao gồm:
+
+- Kiểm thử chức năng: kiểm tra các luồng nghiệp vụ từ đầu đến cuối (end-to-end) như đăng nhập, mua hàng, thanh toán…
+
+- Kiểm thử giao diện: đảm bảo giao diện trực quan, nhất quán và đáp ứng tiêu chuẩn hiển thị.
+
+- Kiểm thử bảo mật cơ bản: xác minh luồng đăng nhập, phân quyền và kiểm soát truy cập.
+
+Kết quả kiểm thử hệ thống phản ánh chất lượng tổng thể của phần mềm trước khi chuyển sang giai đoạn nghiệm thu.
+
+### 3.1.8. Kiểm thử chấp nhận - 4b
+
+Kiểm thử chấp nhận là giai đoạn cuối cùng của quy trình kiểm thử, nhằm đánh giá hệ thống dưới góc nhìn người dùng thực tế. Ở bước này, nhóm đối chiếu các tiêu chí nghiệm thu với tài liệu SRS để đảm bảo hệ thống đáp ứng đầy đủ yêu cầu của khách hàng.
+
+Sau khi hoàn thành kiểm thử hệ thống nội bộ, phần mềm được bàn giao cho Product Owner tiến hành kiểm thử chấp nhận. Product Owner sẽ đóng vai trò người dùng cuối, mô phỏng các tình huống thực tế và đưa ra đánh giá về mức độ đáp ứng nhu cầu, tính tiện dụng, độ ổn định và mức độ phù hợp với nghiệp vụ.
+
+Kết quả kiểm thử chấp nhận là căn cứ quan trọng để đưa ra quyết định cuối cùng về việc triển khai hệ thống lên môi trường vận hành.
+
+### 3.2. Kỹ thuật thiết kế kiểm thử
+
+### 3.2.1. Kiểm thử hộp đen
+
+Kiểm thử hộp đen được sử dụng để kiểm tra chức năng của hệ thống dựa trên yêu cầu nghiệp vụ, mà không cần quan tâm đến cấu trúc bên trong của phần mềm.
+Trong dự án, phương pháp này áp dụng cho kiểm thử hệ thống và kiểm thử chấp nhận, vì mục tiêu là xác minh phần mềm hoạt động đúng như kỳ vọng của người dùng cuối và đáp ứng các tiêu chí nghiệm thu.
+
+Việc sử dụng hộp đen giúp nhóm mô phỏng các tình huống thực tế và kiểm tra toàn bộ luồng nghiệp vụ từ đầu đến cuối, phù hợp với thực hiện thủ công hoặc tự động hóa ở mức giao diện.
+
+### 3.2.2. Kiểm thử hộp trắng
+
+Kiểm thử hộp trắng được sử dụng để kiểm tra logic bên trong code, luồng dữ liệu, nhánh điều kiện và vòng lặp, giúp phát hiện lỗi ở mức module hoặc phương thức riêng lẻ.
+
+Trong dự án, phương pháp này áp dụng cho kiểm thử đơn vị và kiểm thử tích hợp, vì mục tiêu là đảm bảo từng thành phần hoạt động chính xác theo thiết kế và các module tương tác đúng.
+
+Việc sử dụng hộp trắng giúp nhóm phát hiện lỗi sớm, giảm rủi ro khi tích hợp, và thuận tiện cho kiểm thử tự động.
+
+### 3.3. Phương pháp thiết kế kiểm thử
+
+### 3.3.1. Kiểm thử thủ công
+
+Dự án áp dụng kiểm thử thủ công cho giai đoạn kiểm thử chấp nhận. Phương pháp này được sử dụng nhằm đánh giá hệ thống dưới góc nhìn người dùng cuối, kiểm tra các luồng nghiệp vụ chính và xác nhận mức độ đáp ứng của hệ thống so với các yêu cầu đã đặc tả.
+
+Các ca kiểm thử thủ công được thực hiện dựa trên Test Case và Review Checklist đã thiết kế, kết quả kiểm thử được ghi nhận và đối chiếu với kết quả mong đợi trước khi tiến hành nghiệm thu hệ thống.
+
+### 3.3.2. Kiểm thử tự động
+
+Dự án áp dụng kiểm thử tự động thông qua việc tích hợp quy trình CI/CD bằng GitHub Actions nhằm tự động hóa quá trình build, kiểm thử và triển khai hệ thống. Kiểm thử tự động được sử dụng cho các kiểm thử hộp trắng bao gồm kiểm thử đơn vị và kiểm thử tích hợp và kiểm thử hệ thống.
+
+Mỗi khi có thay đổi mã nguồn được đẩy lên kho lưu trữ GitHub, pipeline CI/CD sẽ tự động kích hoạt job test Job này thực hiện các bước build dự án và chạy toàn bộ các bộ kiểm thử tự động đã được xây dựng.
+
+- Nếu job test thất bại, pipeline sẽ tự động tạo Issue trên GitHub để ghi nhận lỗi phát sinh, hỗ trợ nhóm phát triển theo dõi và xử lý kịp thời.
+
+- Nếu job test thành công, pipeline sẽ tự động đóng các Issue liên quan đến lỗi kiểm thử trước đó, đảm bảo trạng thái hệ thống luôn được cập nhật chính xác.
+
+Khi mã nguồn được merge vào nhánh chính (Main), pipeline CI/CD sẽ kích hoạt job deploy, thực hiện gọi đến nền tảng Render để tiến hành triển khai lại hệ thống.
+
+![](docs/images/pipeline-cicd.png)
+
+![](docs/images/workflow.png)
+
+## 4. Báo cáo kiểm thử
+
+### 4.1. Báo cáo trường hợp kiểm thử
+
+### 4.1.1. Giới thiệu
+
+Các trường hợp kiểm thử này được phân loại thành hai nhóm Positive (kiểm tra hành vi đúng với mong đợi của hệ thống) và Negative (kiểm tra khả năng xử lý lỗi, ngoại lệ và điều kiện không hợp lệ).
+
+Bộ kiểm thử được xây dựng cho 6 module chức năng chính của hệ thống gồm kiểm soát truy cập, sản phẩm, giỏ hàng, đơn hàng, thanh toán và sổ địa chỉ, với tổng cộng 72 trường hợp kiểm thử.
+
+| Module             | Mã   | Số lượng | Kết quả         |
+| ------------------ | ---- | -------- | --------------- |
+| Kiểm soát truy cập | AC   | 21       | 21 Pass, 1 Fail |
+| Sản phẩm           | PM   | 16       | 16 Pass, 0 Fail |
+| Giỏ hàng           | CART | 12       | 12 Pass, 0 Fail |
+| Đơn hàng           | ORD  | 9        | 8 Pass, 1 Fail  |
+| Thanh toán         | PAY  | 7        | 7 Pass, 0 Fail  |
+| Sổ địa chỉ         | ADD  | 7        | 7 Pass, 0 Fail  |
+
+### 4.1.2. Thống kê kết quả thực thi
+
+Biểu đồ tròn hiện thị tỷ lệ phần trăm thực thi của tất cả các Test Case.
+
+Tổng cộng 72 Test Case trong đó có 70 thành công và 2 thất bại.
+
+- 97.2% các Test Case thành công (Passed).
+
+- 2.8% các Test Case thất bại (Failed).
+
+- 0% các Test Case bị chặn (Blocked).
+
+- 0% các Test Case chưa chạy (Not run).
+
+![](docs/images/testcase-ex.png)
+
+### 4.2. Báo cáo lỗi
+
+### 4.2.1. Phân loại lỗi theo mức độ nghiêm trọng
+
+Trong quá trình kiểm thử Test Case, nhóm đã phát hiện và ghi nhận 2 lỗi. Các lỗi này được phân loại theo mức độ nghiêm trọng như sau:
+
+Severity 3 – Medium: có 1 lỗi đây là lỗi liên quan đến hệ thống. Lỗi không làm gián đoạn hoạt động chính nhưng gây sai lệch dữ liệu hoặc trải nghiệm người dùng không chính xác xuất hiện ở module kiểm soát truy cập với Test Case TC_AC_006 (lỗi do trùng Email).
+
+Severity 4 – Low: có 1 lỗi đây là lỗi nhỏ, liên quan đến giao diện khiến hành vi không tương tác được với module chức năng đơn hàng với Test Case TC_ORD_005 (thiếu chức năng lọc trạng thái đơn hàng trong giao diện quản trị viên).
+
+Trong quá trình kiểm thử CI/CD GitHub Actions, nhóm đã phát hiện và ghi nhận 11 lỗi. Các lỗi này được phân loại theo mức độ nghiêm trọng như sau:
+
+Severity 3 – Medium: có 7 lỗi đây là lỗi liên quan đến kiểm thử trong job test của CI/CD, xảy ra khi một hoặc nhiều bài kiểm thử tự động đã chạy thất bại do mã nguồn sai format Spotless của Google Java.
+
+Severity 2 – High: có 4 lỗi đây là lỗi liên quan đến biên dịch do viết sai tên lớp trong mã nguồn.
+
+### 4.2.2. Thống kê lỗi
+
+Biểu đồ cột hiện thị số lượng lỗi của Test Case theo mức độ nghiêm trọng.
+
+Tổng cộng 2 lỗi được phát hiện, trong đó:
+
+- 50% là 1 lỗi mức trung bình (medium).
+
+- 50% là 1 lỗi mức thấp (low).
+
+- 0 lỗi mức nghiêm trọng (critical) và cao (high).
+
+Số lượng lỗi đã được sửa đã sửa 1 lỗi mức trung bình và 1 lỗi mức thấp.
+
+Số lượng lỗi còn tồn đọng là 0 lỗi ở bất kỳ mức độ nào.
+
+![](docs/images/defect.png)
+
+Trong Pipeline CI/CD của GitHub Actions có 11 lỗi đã đóng, tức là đã sửa, trong đó:
+
+- 64% là 7 lỗi mức trung bình (medium).
+
+- 36% là 4 lỗi mức cao (high).
+
+![](docs/images/issue.png)
