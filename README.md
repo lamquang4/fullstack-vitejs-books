@@ -1,4 +1,4 @@
-# Website fullstack Fahasa
+# WEBSITE FULLSTACK FAHASA
 
 ## Cài đặt môi trường
 
@@ -502,7 +502,7 @@ Sau khi hoàn thành kiểm thử hệ thống nội bộ, phần mềm được
 
 Kết quả kiểm thử chấp nhận là căn cứ quan trọng để đưa ra quyết định cuối cùng về việc triển khai hệ thống lên môi trường vận hành.
 
-### 3.2. Kỹ thuật thiết kê kiểm thử
+### 3.2. Kỹ thuật thiết kế kiểm thử
 
 ### 3.2.1. Kiểm thử hộp đen
 
@@ -553,14 +553,14 @@ Các trường hợp kiểm thử này được phân loại thành hai nhóm Po
 
 Bộ kiểm thử được xây dựng cho 6 module chức năng chính của hệ thống gồm kiểm soát truy cập, sản phẩm, giỏ hàng, đơn hàng, thanh toán và sổ địa chỉ, với tổng cộng 72 trường hợp kiểm thử.
 
-| Module             | Mã   | Số lượng | Mô tả                                                                   | Kết quả           |
-| ------------------ | ---- | -------- | ----------------------------------------------------------------------- | ----------------- |
-| Kiểm soát truy cập | AC   | 21       | Kiểm tra các quy trình đăng nhập, đăng ký;<br>Thêm, sửa, xóa người dùng | 21 Pass<br>1 Fail |
-| Sản phẩm           | PM   | 16       | Hiển thị, tìm kiếm, lọc sản phẩm;<br>Thêm, sửa, xóa cho quản trị viên   | 16 Pass<br>0 Fail |
-| Giỏ hàng           | CART | 12       | Thêm, sửa, xóa giỏ hàng;<br>Kiểm tra số lượng tồn kho                   | 12 Pass<br>0 Fail |
-| Đơn hàng           | ORD  | 9        | Quy trình đặt hàng;<br>Quản lý & cập nhật trạng thái đơn hàng           | 8 Pass<br>1 Fail  |
-| Thanh toán         | PAY  | 7        | Thanh toán COD & MoMo;<br>Xử lý các kịch bản giao dịch                  | 7 Pass<br>0 Fail  |
-| Sổ địa chỉ         | ADD  | 7        | Thêm, sửa, xóa địa chỉ khách hàng                                       | 7 Pass<br>0 Fail  |
+| Module             | Mã   | Số lượng | Kết quả         |
+| ------------------ | ---- | -------- | --------------- |
+| Kiểm soát truy cập | AC   | 21       | 21 Pass, 1 Fail |
+| Sản phẩm           | PM   | 16       | 16 Pass, 0 Fail |
+| Giỏ hàng           | CART | 12       | 12 Pass, 0 Fail |
+| Đơn hàng           | ORD  | 9        | 8 Pass, 1 Fail  |
+| Thanh toán         | PAY  | 7        | 7 Pass, 0 Fail  |
+| Sổ địa chỉ         | ADD  | 7        | 7 Pass, 0 Fail  |
 
 ### 4.1.2. Thống kê kết quả thực thi
 
