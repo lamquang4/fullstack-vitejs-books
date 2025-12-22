@@ -92,7 +92,7 @@ function BookList({ category, books, isLoading, total }: Props) {
 
       <AdvancedSearch
         isOpen={advancedSearchOpen}
-        toggleMenu={toggleAdvancedSearch}
+        onToggleMenu={toggleAdvancedSearch}
       />
 
       {isLoading ? (
