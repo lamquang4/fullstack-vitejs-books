@@ -17,10 +17,10 @@ import { GrBook } from "react-icons/gr";
 import { AiOutlineCreditCard } from "react-icons/ai";
 type Props = {
   menuOpen: boolean;
-  toggleMenu: () => void;
+  onToggleMenu: () => void;
 };
 
-function MenuSide({ menuOpen, toggleMenu }: Props) {
+function MenuSide({ menuOpen, onToggleMenu }: Props) {
   const location = useLocation();
   const pathname = location.pathname;
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
@@ -214,7 +214,7 @@ function MenuSide({ menuOpen, toggleMenu }: Props) {
         </ul>
       </nav>
 
-      {menuOpen && <Overplay closeMenu={toggleMenu} />}
+      {menuOpen && <Overplay onClose={onToggleMenu} />}
     </>
   );
 }

@@ -4,10 +4,10 @@ import { TbMaximize } from "react-icons/tb";
 import ProfileMenu from "./ProfileMenu";
 
 type Props = {
-  toggleMenu: () => void;
+  onToggleMenu: () => void;
 };
 
-function Header({ toggleMenu }: Props) {
+function Header({ onToggleMenu }: Props) {
   const [profileMenuOpen, setProfileMenuOpen] = useState<boolean>(false);
 
   const toggleProfileMenu = useCallback(() => {
@@ -28,7 +28,7 @@ function Header({ toggleMenu }: Props) {
       <header className="sticky top-0 z-10 flex w-full bg-white border-b-gray-200 items-center border-b">
         <div className="w-full flex justify-between items-center sm:px-[20px] py-3.5 px-[15px]">
           <button
-            onClick={toggleMenu}
+            onClick={onToggleMenu}
             className="w-8.5 h-8.5 rounded-lg border border-gray-200 justify-center items-center flex"
           >
             <AiOutlineMenu size={18} />
@@ -43,7 +43,7 @@ function Header({ toggleMenu }: Props) {
             </button>
 
             <ProfileMenu
-              toggleMenu={toggleProfileMenu}
+              onToggleMenu={toggleProfileMenu}
               menuOpen={profileMenuOpen}
             />
           </div>

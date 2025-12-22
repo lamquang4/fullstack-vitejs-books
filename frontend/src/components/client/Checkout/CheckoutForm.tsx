@@ -201,8 +201,8 @@ function CheckoutForm() {
                 <ShippingInfoForm
                   data={data}
                   setData={setData}
-                  handleGetAddress={handleGetAddress}
-                  handleChange={handleChange}
+                  onGetAddress={handleGetAddress}
+                  onChange={handleChange}
                   addresses={addresses ?? []}
                   provinces={provinces ?? []}
                 />

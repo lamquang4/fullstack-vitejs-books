@@ -3,11 +3,11 @@ import { matchPath, useLocation, useNavigate } from "react-router-dom";
 import Suggestion from "../Suggestion";
 
 type Props = {
-  toggleSearch: () => void;
+  onToggleSearch: () => void;
   openSearch: boolean;
 };
 
-function SearchMobile({ toggleSearch, openSearch }: Props) {
+function SearchMobile({ onToggleSearch, openSearch }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
   const [search, setSearch] = useState<string>("");
@@ -35,7 +35,7 @@ function SearchMobile({ toggleSearch, openSearch }: Props) {
 
     navigate(target);
     setSearch("");
-    toggleSearch();
+    onToggleSearch();
   };
 
   useEffect(() => {
@@ -79,7 +79,7 @@ function SearchMobile({ toggleSearch, openSearch }: Props) {
             />
           </form>
 
-          <button onClick={toggleSearch}>
+          <button onClick={onToggleSearch}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

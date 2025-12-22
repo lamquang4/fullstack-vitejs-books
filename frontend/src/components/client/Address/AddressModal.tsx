@@ -10,7 +10,7 @@ import { validatePhone } from "../../../utils/validatePhone";
 
 type Props = {
   isOpen: boolean;
-  toggleMenu: () => void;
+  onToggleModal: () => void;
   mutateAddresses: () => void;
   addressId: string;
   addressesLength: number;
@@ -18,7 +18,7 @@ type Props = {
 };
 function AddressModal({
   isOpen,
-  toggleMenu,
+  onToggleModal,
   mutateAddresses,
   addressesLength,
   addressId,
@@ -134,7 +134,7 @@ function AddressModal({
               <button
                 type="button"
                 className="bg-transparent ms-auto"
-                onClick={toggleMenu}
+                onClick={onToggleModal}
               >
                 <HiMiniXMark size={30} />
               </button>
@@ -266,7 +266,7 @@ function AddressModal({
           </div>
         </div>
 
-        {isOpen && <Overplay closeMenu={toggleMenu} IndexForZ={15} />}
+        {isOpen && <Overplay onClose={onToggleModal} IndexForZ={15} />}
       </div>
     </div>
   );
