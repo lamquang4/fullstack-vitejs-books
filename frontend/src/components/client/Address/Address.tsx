@@ -37,7 +37,7 @@ function Address() {
             <SideBarMenu />
 
             <AddressInfo
-              toggleAddressModal={toggleAddressModal}
+              onToggleModal={toggleAddressModal}
               addresses={addresses}
               mutate={mutate}
               isLoading={isLoading}
@@ -53,7 +53,7 @@ function Address() {
             mutateAddresses={mutate}
             addressesLength={addresses.length}
             userId={user?.id || ""}
-            toggleMenu={toggleAddressModal}
+            onToggleModal={toggleAddressModal}
             isOpen={openAddressModal}
           />
         )}

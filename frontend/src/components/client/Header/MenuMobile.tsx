@@ -6,9 +6,9 @@ import { Link } from "react-router-dom";
 import useGetCategories from "../../../hooks/client/useGetCategories";
 type MenuMobileProps = {
   isOpen: boolean;
-  toggleMenu: () => void;
+  onToggleMenu: () => void;
 };
-function MenuMobile({ isOpen, toggleMenu }: MenuMobileProps) {
+function MenuMobile({ isOpen, onToggleMenu }: MenuMobileProps) {
   const { categories } = useGetCategories();
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
 
@@ -39,7 +39,7 @@ function MenuMobile({ isOpen, toggleMenu }: MenuMobileProps) {
         }`}
       >
         <div className="flex justify-end items-center">
-          <button onClick={toggleMenu}>
+          <button onClick={onToggleMenu}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -106,7 +106,7 @@ function MenuMobile({ isOpen, toggleMenu }: MenuMobileProps) {
         </ul>
       </nav>
 
-      {isOpen && <Overplay closeMenu={toggleMenu} IndexForZ={15} />}
+      {isOpen && <Overplay onClose={onToggleMenu} IndexForZ={15} />}
     </>
   );
 }

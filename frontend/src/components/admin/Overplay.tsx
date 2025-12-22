@@ -1,10 +1,10 @@
 type Props = {
-  closeMenu?: () => void;
+  onClose?: () => void;
   children?: React.ReactNode;
 };
-function Overplay({ closeMenu, children }: Props) {
+function Overplay({ onClose, children }: Props) {
   const handleOverlayClick = () => {
-    if (closeMenu) closeMenu();
+    if (onClose) onClose();
   };
 
   return (
