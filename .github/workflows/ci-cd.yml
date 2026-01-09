@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # BACKEND
       - name: Set up JDK 17
@@ -44,15 +44,15 @@ jobs:
 
       - name: Install frontend deps
         working-directory: ./frontend
-        run: npm install
-
-      - name: Build frontend
-        working-directory: ./frontend
-        run: npm run build
+        run: npm ci
 
       - name: Run ESLint
         working-directory: ./frontend
         run: npm run lint
+
+      - name: Build frontend
+        working-directory: ./frontend
+        run: npm run build
 
   deploy:
     runs-on: ubuntu-latest
