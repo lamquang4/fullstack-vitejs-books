@@ -54,7 +54,7 @@ function TextBoxEditor({ content, onChange }: Props) {
     editorProps: {
       attributes: {
         class:
-          "prose focus:outline-none p-2 border border-gray-300 min-h-[150px]",
+          "prose focus:outline-none p-2 border border-gray-300 h-[350px] max-h-[350px] overflow-y-auto",
       },
     },
     onUpdate: ({ editor }) => {
