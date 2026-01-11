@@ -65,15 +65,11 @@ jobs:
 
       - name: Trigger frontend deploy on Render
         run: |
-          curl -X POST "https://api.render.com/deploy/${{ secrets.RENDER_FRONTEND_SERVICE_ID }}" \
-          -H "Accept: application/json" \
-          -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}"
+          curl -X POST "${{ secrets.RENDER_FRONTEND_DEPLOY_HOOK }}"
 
       - name: Trigger backend deploy on Render
         run: |
-          curl -X POST "https://api.render.com/deploy/${{ secrets.RENDER_BACKEND_SERVICE_ID }}" \
-          -H "Accept: application/json" \
-          -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}"
+          curl -X POST "${{ secrets.RENDER_BACKEND_DEPLOY_HOOK }}"
 
   create_issue:
     runs-on: ubuntu-latest
